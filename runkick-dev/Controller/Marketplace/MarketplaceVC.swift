@@ -1,0 +1,239 @@
+//
+//  MarketplaceVC.swift
+//  runkick-dev
+//
+//  Created by Cameron Frasier on 8/19/19.
+//  Copyright © 2019 Cameron Frasier. All rights reserved.
+//
+
+import UIKit
+import Firebase
+
+private let reuseIdentifier = "MarketplaceCell"
+
+class MarketplaceVC: UICollectionViewController {
+
+    // MARK: - Properties
+    
+    let shoppingCartButton: UIButton = {
+     let button = UIButton(type: UIButton.ButtonType.custom)
+     //button.setImage(UIImage(named: "simpleCartLimer"), for: .normal)
+     button.setImage(UIImage(named: "trueBlueCircle"), for: .normal)
+     button.addTarget(self, action: #selector(handleShoppingCart), for: .touchUpInside)
+     button.backgroundColor = .clear
+     button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+     button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
+     button.layer.shadowRadius = 5.0
+     button.layer.shadowOffset = CGSize(width: 0, height: 3)
+     button.alpha = 1
+     return button
+    }()
+    
+    let shoppingCartBackground: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.isUserInteractionEnabled = true
+        let shoppingCartTap = UITapGestureRecognizer(target: self, action: #selector(handleShoppingCart))
+        shoppingCartTap.numberOfTapsRequired = 1
+        view.addGestureRecognizer(shoppingCartTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    let beBoppShoppingButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "beBoppShoppingCart"), for: .normal)
+        button.addTarget(self, action: #selector(handleShoppingCart), for: .touchUpInside)
+        button.backgroundColor = .clear
+     button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+     button.layer.shadowColor = UIColor(red: 10/255, green: 10/255, blue: 10/255, alpha: 0.75).cgColor
+     button.layer.shadowRadius = 4.0
+     button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.alpha = 1
+        return button
+    }()
+    
+    let timelineBarView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)
+        view.alpha = 1
+        return view
+    }()
+  
+    //var stores = [Store]()
+    var categories = [MarketCategory]()
+    
+    // MARK: - Init
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //extends the edges beyound the tab bar
+        edgesForExtendedLayout = .all
+        extendedLayoutIncludesOpaqueBars = true
+        
+        configureViewComponents()
+        
+        configureNavigationaBar()
+        
+        configureTabBar()
+            
+        collectionView.register(MarketplaceCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
+        fetchStores()
+    }
+    
+    // MARK: - Selectors
+    
+    @objc func showSearchBar() {
+        print("show search bar")
+    }
+    
+    // MARK: - API
+    
+    
+    
+    func fetchStores() {
+        DataService.instance.REF_MARKETPLACE.observeSingleEvent(of: .value) { (snapshot) in
+            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            allObjects.forEach({ (snapshot) in
+                let categoryId = snapshot.key
+                Database.fetchCategory(with: categoryId, completion: { (category) in
+                    DispatchQueue.main.async {
+                        
+                        self.categories.append(category)
+                        self.collectionView.reloadData()
+                        //print(snapshot)
+                    }
+                })
+            })
+        }
+    }
+    
+    // MARK: - Helper Functions
+    
+    func configureViewComponents() {
+        //collectionView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        
+        collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
+        
+        view.addSubview(shoppingCartButton)
+        shoppingCartButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
+        
+        shoppingCartButton.addSubview(beBoppShoppingButton)
+        beBoppShoppingButton.anchor(top: shoppingCartButton.topAnchor, left: shoppingCartButton.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6.5, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        
+    }
+    
+    func configureNavigationaBar() {
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        //navigationController?.navigationBar.barTintColor = UIColor(red: 187/255, green: 216/255, blue: 224/255, alpha: 1)
+        //navigationController?.navigationBar.barTintColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
+        
+        
+        navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+
+              //UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
+        
+              let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
+              self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]
+
+        
+        navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        navigationItem.title = "Marketplace"
+
+        //let font = UIFont(name: "Helvetica", size: 17)!
+        //self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font]
+        
+        navigationController?.navigationBar.addSubview(timelineBarView)
+        timelineBarView.anchor(top: navigationController?.navigationBar.bottomAnchor, left: navigationController?.navigationBar.leftAnchor, bottom: nil, right: navigationController?.navigationBar.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
+            navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
+    }
+    
+    func configureTabBar() {
+        // adding shadow view to the tab bar
+               tabBarController?.tabBar.isTranslucent = false
+               tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+               tabBarController?.tabBar.layer.cornerRadius = 15
+               tabBarController?.tabBar.layer.masksToBounds = true
+               tabBarController?.tabBar.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+               tabBarController?.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
+    
+    @objc func handleShoppingCart() {
+        print("handle shopping cart")
+    }
+}
+ 
+extension MarketplaceVC {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return categories.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MarketplaceCell
+        
+        // where we define each one of our cells in our collection view
+        cell.categoryPost = categories[indexPath.item]
+        return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //categories
+        //let post = categories[indexPath.item]
+        
+        //guard let category = post.category else { return }
+        
+        
+        
+        // i need to send this category to the next view.. in order to determine which feed should be shown
+        
+        let categoryFeedVC = CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        categoryFeedVC.post = categories[indexPath.item]
+        navigationController?.pushViewController(categoryFeedVC, animated: true)
+        
+        
+        print("DEBUG: Here is the post value\(categoryFeedVC.post)")
+        /*
+         
+         let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+         
+         feedVC.viewSinglePost = true
+         
+         feedVC.post = posts[indexPath.item]
+         
+         navigationController?.pushViewController(feedVC, animated: true)
+         */
+        
+    }
+}
+
+// extension to create the marketplace cell size for squares
+extension MarketplaceVC: UICollectionViewDelegateFlowLayout {
+    
+    // calling function to give space and insets
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        return UIEdgeInsets(top: 32, left: 12, bottom: 12, right: 12)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let width = (view.frame.width - 36) / 2
+        //let width = (view.frame.width - 26) / 2
+        return CGSize(width: width, height: width)
+    }
+    
+}
