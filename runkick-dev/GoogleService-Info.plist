@@ -6,8 +6,6 @@
 	<string>566496883281-5pjmqee825k3od2gofugoomp1j771bbi.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.566496883281-5pjmqee825k3od2gofugoomp1j771bbi</string>
-	<key>API_KEY</key>
-	<string>AIzaSyCcK5CkyOlEfv10JV8ygfTbcl1XJPb8u3I</string>
 	<key>GCM_SENDER_ID</key>
 	<string>566496883281</string>
 	<key>PLIST_VERSION</key>
@@ -19,15 +17,15 @@
 	<key>STORAGE_BUCKET</key>
 	<string>runkick-360a9.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:566496883281:ios:825444f56eb6af15</string>
 	<key>DATABASE_URL</key>
