@@ -36,8 +36,9 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
 
-        collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-
+        //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+        collectionView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        
         // Register cell classes
         self.collectionView!.register(UserSpecificFeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         

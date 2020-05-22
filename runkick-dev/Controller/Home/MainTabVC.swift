@@ -41,6 +41,12 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // observe notifications
         // observeNotifications()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tabBar.frame.size.height = 70
+        tabBar.frame.origin.y = view.frame.height - 70
+    }
 
     // Function to create view controllers that exist within tab bar controller
     func configureViewControllers() {
@@ -59,7 +65,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - marketplace controller placeholder
-        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Market", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Marketplace", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Notification controller
         let notificationsVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Updates", rootViewController: NotificationsVC())
@@ -71,7 +77,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let searchVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Find", rootViewController: SearchVC())
         
         // Mark: - home feed controller
-        let homeVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Map", rootViewController: HomeVC())
+        let homeVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Home", rootViewController: HomeVC())
         
         let categoryFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
@@ -79,7 +85,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         //let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Photo")
         
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
-        viewControllers = [homeVC, feedVC, marketplaceVC]
+        viewControllers = [homeVC, marketplaceVC, feedVC]
         
     
         // configure notification dot

@@ -114,9 +114,10 @@ class Colors {
         self.gl.locations = [0.0, 1.0]
     }
 }
-
+/*
 // extension to inrease height of the tabBar
 extension UITabBar {
+    
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
     var sizeThatFits = super.sizeThatFits(size)
     sizeThatFits.height = 70 // adjust your size here
@@ -124,6 +125,6 @@ extension UITabBar {
    }
 }
 
-
+*/
 
 

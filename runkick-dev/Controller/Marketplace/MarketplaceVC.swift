@@ -15,6 +15,8 @@ class MarketplaceVC: UICollectionViewController {
 
     // MARK: - Properties
     
+    
+    
     let shoppingCartButton: UIButton = {
      let button = UIButton(type: UIButton.ButtonType.custom)
      //button.setImage(UIImage(named: "simpleCartLimer"), for: .normal)
@@ -64,8 +66,10 @@ class MarketplaceVC: UICollectionViewController {
         return view
     }()
   
-    //var stores = [Store]()
     var categories = [MarketCategory]()
+    var filteredCategories = [MarketCategory]()
+    var searchBar: UISearchBar!
+    var inSearchMode = false
     
     // MARK: - Init
     
@@ -90,7 +94,7 @@ class MarketplaceVC: UICollectionViewController {
     // MARK: - Selectors
     
     @objc func showSearchBar() {
-        print("show search bar")
+        configureSearchBar()
     }
     
     // MARK: - API
@@ -117,6 +121,41 @@ class MarketplaceVC: UICollectionViewController {
     
     // MARK: - Helper Functions
     
+    func configureSearchBar() {
+        
+        // using the searchbar constructor
+        searchBar = UISearchBar()
+        searchBar.delegate = self
+        searchBar.sizeToFit()
+        searchBar.showsCancelButton = true
+        searchBar.placeholder = "Search"
+        searchBar.autocapitalizationType = .none
+        searchBar.becomeFirstResponder()
+        searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        
+        // SearchBar text
+        let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.textColor = UIColor.red
+        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
+        
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            searchBar.searchTextField.layer.cornerRadius = 0
+            searchBar.searchTextField.layer.masksToBounds = true
+        } else {
+            // Fallback on earlier versions
+        }
+            
+        navigationItem.rightBarButtonItem = nil
+        navigationItem.titleView = searchBar
+    }
+    
+    func configureSearchBarButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+    }
+    
     func configureViewComponents() {
         //collectionView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
@@ -129,6 +168,9 @@ class MarketplaceVC: UICollectionViewController {
         
         shoppingCartButton.addSubview(beBoppShoppingButton)
         beBoppShoppingButton.anchor(top: shoppingCartButton.topAnchor, left: shoppingCartButton.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6.5, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        
+        // configure search bar button
+        configureSearchBarButton()
         
     }
     
@@ -156,9 +198,7 @@ class MarketplaceVC: UICollectionViewController {
         
         navigationController?.navigationBar.addSubview(timelineBarView)
         timelineBarView.anchor(top: navigationController?.navigationBar.bottomAnchor, left: navigationController?.navigationBar.leftAnchor, bottom: nil, right: navigationController?.navigationBar.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
+  
     }
     
     func configureTabBar() {
@@ -175,17 +215,57 @@ class MarketplaceVC: UICollectionViewController {
         print("handle shopping cart")
     }
 }
+
+// MARK: - UISearchBarDelegate
+
+extension MarketplaceVC: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        navigationItem.titleView = nil
+        configureSearchBarButton()
+        inSearchMode = false
+        collectionView.reloadData()
+    }
+     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // text printing out the text real time
+        print(searchText)
+        
+        if searchText == "" || searchBar.text == nil {
+            inSearchMode = false
+            collectionView.reloadData()
+            view.endEditing(true)
+        } else {
+            inSearchMode = true
+            // whatever pokemon we are looking at look at there name and see if there name contains that search text, here $0 represnts any categories array
+            filteredCategories = categories.filter({ $0.category?.range(of: searchText) != nil
+                
+                return ($0.category?.localizedCaseInsensitiveContains(searchText))!
+            })
+            collectionView.reloadData()
+
+        }
+    }
+}
+
+
+// MARK: - UICollectionViewDataSource/Delegate
  
 extension MarketplaceVC {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categories.count
+        
+        //shorthand if statement.. if in searchmode is true, return filtered categories else return the original catergories count
+        return inSearchMode ? filteredCategories.count : categories.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MarketplaceCell
         
+        cell.categoryPost = inSearchMode ? filteredCategories[indexPath.row] : categories[indexPath.row]
+        
         // where we define each one of our cells in our collection view
-        cell.categoryPost = categories[indexPath.item]
+        //cell.categoryPost = categories[indexPath.item]
         return cell
     }
     
@@ -226,7 +306,7 @@ extension MarketplaceVC: UICollectionViewDelegateFlowLayout {
     // calling function to give space and insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 32, left: 12, bottom: 12, right: 12)
+        return UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

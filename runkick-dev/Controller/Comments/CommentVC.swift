@@ -35,7 +35,7 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
         super.viewDidLoad()
         
         // background color
-        collectionView?.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        collectionView?.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
         collectionView?.alwaysBounceVertical = true
         collectionView?.keyboardDismissMode = .interactive
         

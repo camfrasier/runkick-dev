@@ -176,7 +176,8 @@ class RightMenuVC: UIViewController {
         tableView.anchor(top: menuSubView.topAnchor, left: menuSubView.leftAnchor, bottom: menuSubView.bottomAnchor, right: menuSubView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
-        view.addSubview(tableSuperView)
+        //view.addSubview(tableSuperView)
+        tableView.addSubview(tableSuperView)
         
         tableSuperView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 407, paddingLeft: 0, paddingBottom: 0, paddingRight: 340, width: 0, height: 0)
         

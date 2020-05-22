@@ -570,7 +570,7 @@ class HomeVC: UIViewController, Alertable {
         let view = UIView()
         view.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
         view.layer.borderWidth = 1
-        view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        view.layer.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 1).cgColor
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: -2)
         view.layer.shadowRadius = 6.0
@@ -1336,7 +1336,8 @@ class HomeVC: UIViewController, Alertable {
     }
     
     func centerMapOnUserLocation() {
-        let coordinateRegion = MKCoordinateRegion.init(center: mapView.userLocation.coordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
+        //let coordinateRegion = MKCoordinateRegion.init(center: mapView.userLocation.coordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
+        let coordinateRegion = MKCoordinateRegion.init(center: mapView.userLocation.coordinate, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
@@ -2560,10 +2561,13 @@ extension HomeVC: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        
+        /*
         let lineRenderer = MKPolylineRenderer(overlay: self.route.polyline)
 
         //lineRenderer.strokeColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
         lineRenderer.strokeColor = UIColor.rgb(red: 26, green: 172, blue: 249)
+        
         //lineRenderer.strokeColor = UIColor(red: 236/255, green: 38/255, blue: 125/255, alpha: 1)
         //lineRenderer.strokeColor = UIColor(red: 253/255, green: 145/255, blue: 20/255, alpha: 1) // orange
         //lineRenderer.strokeColor = UIColor(red: 122/255, green: 206/255, blue: 33/255, alpha: 1) // limer
@@ -2577,6 +2581,28 @@ extension HomeVC: MKMapViewDelegate {
         
         
         return lineRenderer
+ */
+        
+        let overlay = overlay as? MKPolyline
+                // define a list of colors you want in your gradient
+        let gradientColors = [UIColor.rgb(red: 0, green: 0, blue: 255), UIColor.rgb(red: 236, green: 38, blue: 125), UIColor.rgb(red: 253, green: 145, blue: 20), UIColor.rgb(red: 253, green: 190, blue: 60)]
+        
+        //UIColor.rgb(red: 122, green: 206, blue: 33)
+        
+                // Initialise a GradientPathRenderer with the colors
+        let polylineRenderer = GradientPathRenderer(polyline: overlay!, colors: gradientColors)
+
+                // set a linewidth
+        polylineRenderer.lineWidth = 13
+        polylineRenderer.lineCap = .round
+        polylineRenderer.lineJoin = .bevel
+        polylineRenderer.lineDashPattern = [NSNumber(value: 0.1), NSNumber(value: 10)]
+        
+        polylineRenderer.showsBorder = true
+        polylineRenderer.borderColor = UIColor.white /* defaults to white if not specified*/
+        
+        return polylineRenderer
+       // }
     }
 
     func dropPinFor(mapItem: MKMapItem) {

@@ -20,8 +20,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     lazy var containerView: UIView = {
         let containerView = UIView()
-        containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 70)
-        containerView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 55)
+        containerView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
         // embedding the send button within container view with a target
         containerView.addSubview(sendButton)
         sendButton.anchor(top: nil, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 50, height: 0)
@@ -31,13 +31,14 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let searchBarBackground = UIView()
         containerView.addSubview(searchBarBackground)
-        searchBarBackground.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: sendButton.leftAnchor, paddingTop:10, paddingLeft: 22, paddingBottom: 20, paddingRight: 5, width: 0, height: 0)
-        searchBarBackground.layer.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215).cgColor
-        searchBarBackground.layer.cornerRadius = 20
+        searchBarBackground.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: sendButton.leftAnchor, paddingTop: 20, paddingLeft: 22, paddingBottom: 10, paddingRight: 5, width: 0, height: 0)
+        //searchBarBackground.layer.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215).cgColor
+        searchBarBackground.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 250).cgColor
+        searchBarBackground.layer.cornerRadius = 15
         
         // send button should be above message field in order to have it not run over when typing int the text field
         containerView.addSubview(messageTextField)
-        messageTextField.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: sendButton.leftAnchor, paddingTop:10, paddingLeft: 40, paddingBottom: 20, paddingRight: 5, width: 0, height: 0)
+        messageTextField.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: sendButton.leftAnchor, paddingTop:10, paddingLeft: 40, paddingBottom: 10, paddingRight: 5, width: 0, height: 0)
         
         let separatorView = UIView()
         separatorView.backgroundColor = .lightGray
@@ -47,7 +48,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         
         messageTextField.attributedPlaceholder = NSAttributedString(string:"What's up?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
-        messageTextField.font = UIFont.systemFont(ofSize: 18)
+        messageTextField.font = UIFont.systemFont(ofSize: 22)
         messageTextField.keyboardType = UIKeyboardType.default
         //messageTextField.layer.backgroundColor = UIColor.rgb(red: 201, green: 221, blue: 235).cgColor
         //messageTextField.layer.cornerRadius = 22
@@ -66,7 +67,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         button.setTitle("Send", for: .normal)
         button.tintColor = UIColor.rgb(red: 26, green: 172, blue: 249)
         button.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return button
         
     } ()
@@ -81,7 +82,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         extendedLayoutIncludesOpaqueBars = true
         
         //collectionView?.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)  // launch screen color
-        collectionView?.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        collectionView?.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
         
         collectionView?.register(ChatCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -183,7 +184,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
-            cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+            //cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+            cell.bubbleView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
             cell.textView.textColor = .black
             cell.profileImageView.isHidden = false
         }

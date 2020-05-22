@@ -58,7 +58,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     let beBoppActionButton: UIButton = {
            let button = UIButton(type: .custom)
-           button.setImage(UIImage(named: "beBoppPencil"), for: .normal)
+           button.setImage(UIImage(named: "beBoppAddPhotoIcon"), for: .normal)
            button.addTarget(self, action: #selector(handlePhotoButton), for: .touchUpInside)
            button.backgroundColor = .clear
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
@@ -124,9 +124,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // self.clearsSelectionOnViewWillAppear = false
         
         // adjust view background color
-        //collectionView?.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        //collectionView?.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
-        collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+        collectionView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         
         
         // register cell classes
@@ -182,9 +181,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         let width = view.frame.width
         //var height = width
-        var height = width - 220
+        var height = width - 230
         
-        height += 40
+        height += 20
         //height += 10
       
         /*
@@ -235,7 +234,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        // sets the vertical spacing between photos
+        // sets the vertical spacing between posts
         return 0
     }
 
@@ -286,7 +285,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     @objc func handleBlurDismiss() {
         
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.25, animations: {
             self.visualEffectView.alpha = 0
             self.photoFeedView.alpha = 0
             self.photoFeedView.transform = CGAffineTransform(scaleX: 1.75, y: 1.75)
@@ -877,7 +876,7 @@ extension FeedVC: AltFeedCellDelegate {
                 photoFeedView.transform = CGAffineTransform(scaleX: 0.50, y:0.50)
                 photoFeedView.alpha = 0
                 
-                UIView.animate(withDuration: 0.5) {
+                UIView.animate(withDuration: 0.25) {
                     self.visualEffectView.alpha = 1
                     self.photoFeedView.alpha = 1
                     self.photoFeedView.transform = .identity
@@ -894,7 +893,7 @@ extension FeedVC: AltFeedCellDelegate {
 extension FeedVC: PhotoFeedViewDelegate {
     func dismissPhotoFeedView(withFeed post: Post?) {
         
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.25, animations: {
             self.visualEffectView.alpha = 0
             self.photoFeedView.alpha = 0
             self.photoFeedView.transform = CGAffineTransform(scaleX: 1.75, y: 1.75)

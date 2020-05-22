@@ -41,7 +41,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         // seperator insets.
         //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
         
-        tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+        //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+        tableView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
 
         
         // configure search bar
@@ -58,6 +59,10 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // fetch posts
         fetchPosts()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationItem.setHidesBackButton(true, animated: true)
     }
 
     // MARK: - Table view data source
@@ -160,16 +165,17 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 4
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top:0, left: 4, bottom: 4, right: 4)
+        return UIEdgeInsets(top: 0, left: 2, bottom: 2, right: 2)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.frame.width - 16) / 3
+        //let width = (view.frame.width - 16) / 3
+        let width = (view.frame.width - 8) / 3
         return CGSize(width: width, height: width)
     }
     
@@ -224,19 +230,30 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         searchBar.sizeToFit()
         searchBar.delegate = self
-        searchBar.placeholder = "Find friends.."
+        searchBar.placeholder = "Search"
         searchBar.autocapitalizationType = .none
+        searchBar.showsCancelButton = false
+        
+        // SearchBar text
+        let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.textColor = UIColor.red
+        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
     
         navigationItem.titleView = searchBar
         //searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         searchBar.isTranslucent = false
         searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0) // changes the text
         searchBar.alpha = 0.90
-
-        searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        searchBar.searchTextField.layer.cornerRadius = 18
-        searchBar.searchTextField.layer.masksToBounds = true
+        
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            //searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            searchBar.searchTextField.layer.cornerRadius = 0
+            searchBar.searchTextField.layer.masksToBounds = true
+        } else {
+            // Fallback on earlier versions
+        }
         //searchBar.searchTextField.layer.borderColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1).cgColor
         //searchBar.searchTextField.layer.borderWidth = 0.25
         
@@ -259,27 +276,28 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         
         
-        
-        
+        configureLeftBarButton()
+    }
+    
+    func configureLeftBarButton() {
         // custom back button
-                   
-               let customNotificationsButton = UIButton(type: UIButton.ButtonType.custom)
-               
-               customNotificationsButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
-               
-               //using this code to show the true image without rendering color
-               customNotificationsButton.setImage(UIImage(named:"whiteCircleLeftArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
-              
-               customNotificationsButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
-                customNotificationsButton.addTarget(self, action: #selector(SearchVC.handleBackButton), for: .touchUpInside)
-               customNotificationsButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
-               customNotificationsButton.backgroundColor = .clear
-                   
-               
-               //let barSearchTitle = UIBarButtonItem(customView: customSearchTitle)
-               let barNotificationButton = UIBarButtonItem(customView: customNotificationsButton)
-               self.navigationItem.leftBarButtonItems = [barNotificationButton]
-
+             
+         let customNotificationsButton = UIButton(type: UIButton.ButtonType.custom)
+         
+         customNotificationsButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
+         
+         //using this code to show the true image without rendering color
+         customNotificationsButton.setImage(UIImage(named:"whiteCircleLeftArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+         customNotificationsButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
+          customNotificationsButton.addTarget(self, action: #selector(SearchVC.handleBackButton), for: .touchUpInside)
+         customNotificationsButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+         customNotificationsButton.backgroundColor = .clear
+             
+         
+         //let barSearchTitle = UIBarButtonItem(customView: customSearchTitle)
+         let barNotificationButton = UIBarButtonItem(customView: customNotificationsButton)
+         self.navigationItem.leftBarButtonItems = [barNotificationButton]
     }
     
     @objc func handleBackButton() {
@@ -305,6 +323,16 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
+        
+        self.navigationItem.leftBarButtonItems = nil
+        
+        
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        } else {
+            // Fallback on earlier versions
+        }
+        
         
         fetchUsers()
         
@@ -345,7 +373,14 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
         
-        searchBar.showsCancelButton = true
+        configureLeftBarButton()
+        
+        searchBar.showsCancelButton = false
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        } else {
+            // Fallback on earlier versions
+        }
         
         inSearchMode = false
         

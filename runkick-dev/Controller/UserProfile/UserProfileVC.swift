@@ -74,7 +74,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
-        self.collectionView?.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+        self.collectionView?.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
         
         if Auth.auth().currentUser != nil {
             

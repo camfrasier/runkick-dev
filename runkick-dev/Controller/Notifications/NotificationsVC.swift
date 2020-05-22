@@ -91,7 +91,7 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.backgroundColor = UIColor.rgb(red: 201, green: 221, blue: 235)
+        tableView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
         tableView.addSubview(cancelViewButton)
         
         // register cell class

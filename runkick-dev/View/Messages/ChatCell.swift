@@ -64,7 +64,8 @@ class ChatCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        //layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        layer.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235).cgColor
         addSubview(bubbleView)
         
         addSubview(textView)

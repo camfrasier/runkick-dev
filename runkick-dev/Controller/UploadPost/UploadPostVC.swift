@@ -50,7 +50,7 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
 
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+        button.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
         button.setTitle("Share", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
