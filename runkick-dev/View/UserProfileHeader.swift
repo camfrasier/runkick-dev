@@ -620,9 +620,7 @@ class UserProfileHeader: UICollectionViewCell {
         gridViewButton.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 290, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
         gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
         
-        addSubview(refreshCategories)
-        refreshCategories.anchor(top: profileImageView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 140, height: 30)
-        refreshCategories.layer.cornerRadius = 15
+        
 
         /*
         addSubview(messageInboxButton)
@@ -782,6 +780,10 @@ class UserProfileHeader: UICollectionViewCell {
                            
                     self.messageBackgroundButton.addSubview(self.beBoppMessageButton)
                     self.beBoppMessageButton.anchor(top: self.messageBackgroundButton.topAnchor, left: self.messageBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
+                    
+                    self.addSubview(self.refreshCategories)
+                    self.refreshCategories.anchor(top: self.profileImageView.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 140, height: 30)
+                    self.refreshCategories.layer.cornerRadius = 15
  
                     
                 } else {

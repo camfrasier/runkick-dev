@@ -94,6 +94,7 @@ class HomeVC: UIViewController, Alertable {
     let searchStoreCell = SearchStoreCell()
     let notificationsVC = NotificationsVC()
     let loginVC = LoginVC()
+    //var user: User?
     
     enum ExpansionState {
         case NotExpanded
@@ -142,7 +143,7 @@ class HomeVC: UIViewController, Alertable {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
         tf.attributedPlaceholder = NSAttributedString(string:"Find a location..", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
-        tf.font = UIFont.systemFont(ofSize: 18)
+        tf.font = UIFont.systemFont(ofSize: 22)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
         tf.layer.cornerRadius = 25
@@ -241,7 +242,7 @@ class HomeVC: UIViewController, Alertable {
         let view = UIView()
         //view.layer.cornerRadius = 15
         // to ajdust the color of the background search table
-        view.layer.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250).cgColor
+        view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         view.alpha = 1
         return view
     }()
@@ -1449,7 +1450,7 @@ class HomeVC: UIViewController, Alertable {
         tableView.dataSource = self
         
         // search table view background
-        tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+        tableView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         //tableView.alpha = 0.8
         
         //tableView.register(UITableViewCell.self, forCellReuseIdentifier: "locationCell")
@@ -3281,8 +3282,16 @@ extension HomeVC: MKMapViewDelegate {
             print("show groups")
             
         case .Posts:
+            //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+            //navigationController?.pushViewController(userSpecificFeedVC, animated: true)
+            
+            guard let currentUid = Auth.auth().currentUser?.uid else { return }
+            print("THIS IS THE CURRENT USER ID FOR YOUR POST")
             let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+            userSpecificFeedVC.uid = currentUid
             navigationController?.pushViewController(userSpecificFeedVC, animated: true)
+            
+            
             
         case .Followers:
             
@@ -3896,7 +3905,7 @@ extension HomeVC: UITextFieldDelegate {
                 self.destTextFieldBlurView.transform = CGAffineTransform(scaleX: 1.25, y: 1)
                 self.destTextFieldBlurView.layer.cornerRadius = 22.75
                 self.visualEffectView.layer.cornerRadius = 22.75
-                self.destTextFieldBlurView.layer.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215).cgColor
+                self.destTextFieldBlurView.layer.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240).cgColor
                 //self.destTextFieldBlurView.layer.backgroundColor = UIColor(red: 187/255, green: 216/255, blue: 224/255, alpha: 1).cgColor
                 self.destTextFieldBlurView.layer.shadowColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
                 self.destTextFieldBlurView.layer.borderWidth = 0.75

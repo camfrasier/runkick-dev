@@ -37,7 +37,7 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
         extendedLayoutIncludesOpaqueBars = true
 
         //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        collectionView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        collectionView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         
         // Register cell classes
         self.collectionView!.register(UserSpecificFeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -60,6 +60,40 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
     // MARK: UICollectionViewFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if viewSinglePost {
+            
+        if let post = self.post {
+            if let captionText = post.caption {
+                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+                           
+                           // the height of all the variables in the cell
+                           let knownHeight: CGFloat = 10 + 50 + 180 + 20 + 20 + 15
+                           
+                           return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 55)
+            }
+            
+        }
+        } else {
+            
+            // if statement safely unwraps status text
+            if let captionText = posts[indexPath.item].caption {
+                
+                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+                
+                // the height of all the variables in the cell
+                let knownHeight: CGFloat = 10 + 50 + 180 + 20 + 20 + 15
+                
+                return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 55)
+            }
+            
+        }
+
+        
+        return CGSize(width: view.frame.width - 0, height: 200)
+
+        /*
+        
         let width = view.frame.width
         //var height = width
         var height = width - 220
@@ -68,6 +102,7 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
         //height += 10
           
           return CGSize(width: width, height: height)
+        */
     }
     
 

@@ -31,7 +31,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
         configurNavigationButtons()
-        collectionView?.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        collectionView?.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         
         fetchPhotos()
     }

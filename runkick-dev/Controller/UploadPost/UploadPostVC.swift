@@ -73,7 +73,7 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         
         captionTextView.delegate = self // Just telling our program that this view controller will be the delegate for handling all the data.
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
     }
     
     // using view will appear because view did load actually only calls once, which is not the case in view did appear

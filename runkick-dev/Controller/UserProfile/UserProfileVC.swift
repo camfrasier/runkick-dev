@@ -74,7 +74,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
-        self.collectionView?.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        self.collectionView?.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         
         if Auth.auth().currentUser != nil {
             
@@ -178,7 +178,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         cell.post = posts[indexPath.item]
         cell.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        cell.layer.borderWidth = 2.5
+        cell.layer.borderWidth = 1
         
         // we need to set the delegate variable in order for this to work. now when we call on the delegate it will go back to the controller and execute it. anytime we have an action inside of a cell to implement a protocol we will need to ensure that the delegate is set. this is a part of the model <-- controller --> view protocol.
         cell.delegate = self
@@ -310,6 +310,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let barSearchFriendsIconButton = UIBarButtonItem(customView: customSearchFriendsIconButton)
         //self.navigationItem.rightBarButtonItems = [barSearchFriendsIconButton, barSearchFriendsButton]
         
+        
+        /*
         // custom back button
              
          let returnNavButton = UIButton(type: UIButton.ButtonType.custom)
@@ -325,6 +327,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
              
          let notificationBarBackButton = UIBarButtonItem(customView: returnNavButton)
          self.navigationItem.leftBarButtonItems = [notificationBarBackButton]
+        */
          
     }
     

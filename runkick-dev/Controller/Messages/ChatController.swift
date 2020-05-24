@@ -21,7 +21,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     lazy var containerView: UIView = {
         let containerView = UIView()
         containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 55)
-        containerView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        containerView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         // embedding the send button within container view with a target
         containerView.addSubview(sendButton)
         sendButton.anchor(top: nil, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 50, height: 0)
@@ -47,11 +47,11 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         
         
-        messageTextField.attributedPlaceholder = NSAttributedString(string:"What's up?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
+        messageTextField.attributedPlaceholder = NSAttributedString(string:" What's up?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
         messageTextField.font = UIFont.systemFont(ofSize: 22)
         messageTextField.keyboardType = UIKeyboardType.default
-        //messageTextField.layer.backgroundColor = UIColor.rgb(red: 201, green: 221, blue: 235).cgColor
-        //messageTextField.layer.cornerRadius = 22
+        messageTextField.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        messageTextField.layer.cornerRadius = 0
         
         return containerView
     } ()
@@ -82,7 +82,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         extendedLayoutIncludesOpaqueBars = true
         
         //collectionView?.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)  // launch screen color
-        collectionView?.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        collectionView?.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         
         collectionView?.register(ChatCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         

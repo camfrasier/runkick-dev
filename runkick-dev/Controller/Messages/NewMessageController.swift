@@ -34,7 +34,7 @@ class NewMessageController: UITableViewController {
         
         // register cell
         tableView.register(NewMessageCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        tableView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         tableView.separatorStyle = .none
         // fetch users
         fetchUsers()

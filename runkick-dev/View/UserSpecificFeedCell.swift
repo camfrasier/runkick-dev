@@ -23,8 +23,9 @@ class UserSpecificFeedCell: UICollectionViewCell {
             Database.fetchUser(with: ownerUid) { (user) in  // In order to grab the photo of the correct post owner.
                 
                 self.profileImageView.loadImage(with: user.profileImageURL)
-                self.usernameButton.setTitle(user.username, for: .normal)
+                self.usernameButton.setTitle("@\(user.username ?? "")", for: .normal)
                 self.firstnameButton.setTitle(user.firstname, for: .normal)
+                self.lastnameButton.setTitle(user.lastname, for: .normal)
                 self.configurePostCaption(user: user)
             }
             
@@ -34,6 +35,11 @@ class UserSpecificFeedCell: UICollectionViewCell {
             configureLikeButton()
         }
     }
+    
+    lazy var backgroundPostView: UIView = {
+        let view = UIView()
+        return view
+    }()
     
     let profileImageView: CustomImageView = {  // Using the Custom image view class.
         let iv = CustomImageView()
@@ -46,6 +52,7 @@ class UserSpecificFeedCell: UICollectionViewCell {
     let circleDotView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 3 / 2
+        view.backgroundColor = UIColor.rgb(red: 120, green: 120, blue: 120)
         return view
     }()
         
@@ -66,6 +73,14 @@ class UserSpecificFeedCell: UICollectionViewCell {
     lazy var firstnameButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .system)
         button.setTitle("Firstname", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.setTitleColor(UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1), for: .normal)
+        button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var lastnameButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
+        let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1), for: .normal)
         button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
@@ -132,6 +147,7 @@ class UserSpecificFeedCell: UICollectionViewCell {
     let postTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)
         label.text = "2 days ago"
         return label
     } ()
@@ -146,6 +162,24 @@ class UserSpecificFeedCell: UICollectionViewCell {
     let tlProgressBarView: UIView = {
         let view = UIView()
         return view
+    } ()
+    
+    lazy var commentLabel: UILabel = {
+        let label = UILabel()
+        //label.layer.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
+        //label.layer.cornerRadius = 20 / 2
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.text = "0"
+        label.textAlignment = .center
+        label.textColor = UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)
+        
+        // add gesture recognizer to label
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
+        commentTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(commentTap)
+        
+        return label
     } ()
     
     lazy var commentButton: UIButton = {
@@ -189,7 +223,7 @@ class UserSpecificFeedCell: UICollectionViewCell {
         super.init(frame: frame)
         
         configureContraints()
-        backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
 
     }
     
@@ -240,140 +274,118 @@ class UserSpecificFeedCell: UICollectionViewCell {
     
     func configureContraints() {
         
-        // profile attributes and constraints
-        addSubview(profileImageView)
-        profileImageView.layer.cornerRadius = 35 / 2
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-    
-    
-           addSubview(captionBlock)
-           captionBlock.translatesAutoresizingMaskIntoConstraints = false
-           captionBlock.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-           
-           // caption label attributes and constraints
-           captionBlock.addSubview(captionLabel)
-           captionLabel.translatesAutoresizingMaskIntoConstraints = false
-  
-           // photo attributes and constraints
-           addSubview(postImageView)
-           postImageView.translatesAutoresizingMaskIntoConstraints = false
-           postImageView.layer.cornerRadius = 5
-           
-           // timeline view constraints
-           addSubview(tlProgressBarView)
-           tlProgressBarView.translatesAutoresizingMaskIntoConstraints = false
-           tlProgressBarView.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1)
-           
-           // separator view constraints
-           addSubview(separatorView)
-           separatorView.translatesAutoresizingMaskIntoConstraints = false
-           separatorView.backgroundColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)
-           
-           // firstname attributes and constraints
-           addSubview(firstnameButton)
-           firstnameButton.translatesAutoresizingMaskIntoConstraints = false
+      // background for post
+            addSubview(backgroundPostView)
+            backgroundPostView.translatesAutoresizingMaskIntoConstraints = false
+            backgroundPostView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            backgroundPostView.layer.cornerRadius = 0
+                    
+            // photo attributes and constraints
+            backgroundPostView.addSubview(postImageView)
+            postImageView.translatesAutoresizingMaskIntoConstraints = false
+            postImageView.layer.cornerRadius = 6
+            
+            // caption attributes and constraints
+            backgroundPostView.addSubview(captionLabel)
+            captionLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            // profile attributes and constraints
+            backgroundPostView.addSubview(profileImageView)
+            profileImageView.translatesAutoresizingMaskIntoConstraints = false
+            profileImageView.layer.cornerRadius = 45 / 2
         
-            // hometown label attributes and constraints
-            addSubview(hometownLabel)
-            hometownLabel.translatesAutoresizingMaskIntoConstraints = false
-           
-           // date and time attributes and constraints
-           addSubview(postTimeLabel)
-           postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
-           postTimeLabel.textColor = UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)
-           
-           // date and time attributes and constraints
-           addSubview(circleDotView)
-           circleDotView.translatesAutoresizingMaskIntoConstraints = false
-           circleDotView.backgroundColor = UIColor(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
-           
-           //options background
-           addSubview(backgroundOptionsButton)
-           backgroundOptionsButton.backgroundColor = .clear
-           
-           // option button constraints
-           backgroundOptionsButton.addSubview(optionsButton)
-           optionsButton.translatesAutoresizingMaskIntoConstraints = false
-           optionsButton.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-           
-           addSubview(usernameSymbolLabel)
-           usernameSymbolLabel.translatesAutoresizingMaskIntoConstraints = false
-           usernameSymbolLabel.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-           
-           // username attributes and constraints
-           addSubview(usernameButton)
-           usernameButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        // show likes button and label attributes and constraints
-        addSubview(likesButton)
-        likesButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(likesLabel)
-        likesLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            // name attributes and constraints
+            backgroundPostView.addSubview(firstnameButton)
+            firstnameButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            backgroundPostView.addSubview(lastnameButton)
+            lastnameButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            // username attributes and constraints
+            backgroundPostView.addSubview(usernameButton)
+            usernameButton.translatesAutoresizingMaskIntoConstraints = false
 
-        // press to comment button
-        addSubview(commentButton)
-        commentButton.translatesAutoresizingMaskIntoConstraints = false
-           
-           
-           
-           //comment icon and label attributes and constraints
-           //addSubview(commentIcon)
-           //commentIcon.translatesAutoresizingMaskIntoConstraints = false
-           
-           // press to like button
-           //postImageView.addSubview(newLikeButton)
-           //newLikeButton.translatesAutoresizingMaskIntoConstraints = false
-           
-           
-        
+            // date and time attributes and constraints
+            backgroundPostView.addSubview(postTimeLabel)
+            postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            // date and time attributes and constraints
+            backgroundPostView.addSubview(circleDotView)
+            circleDotView.translatesAutoresizingMaskIntoConstraints = false
+            
+            //options background
+            addSubview(backgroundOptionsButton)
+            backgroundOptionsButton.translatesAutoresizingMaskIntoConstraints = false
+            backgroundOptionsButton.backgroundColor = .clear
+            //backgroundOptionsButton.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+            
+            // option button constraints
+            backgroundOptionsButton.addSubview(optionsButton)
+            optionsButton.translatesAutoresizingMaskIntoConstraints = false
+            optionsButton.tintColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)
+            
+            // show likes button and label attributes and constraints
+            backgroundOptionsButton.addSubview(likesButton)
+            likesButton.translatesAutoresizingMaskIntoConstraints = false
+                   
+            backgroundOptionsButton.addSubview(likesLabel)
+            likesLabel.translatesAutoresizingMaskIntoConstraints = false
 
-              // vertical constraints
+            // press to comment button
+            backgroundOptionsButton.addSubview(commentButton)
+            commentButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            backgroundOptionsButton.addSubview(commentLabel)
+            commentLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            
+            // Header and footer constraints
+            
+            backgroundPostView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 8, paddingBottom: 4, paddingRight: 8, width: 0, height: 0)
+            
+            profileImageView.anchor(top: backgroundPostView.topAnchor, left: backgroundPostView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 26, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+            profileImageView.layer.cornerRadius = 50 / 2
+            
+            firstnameButton.anchor(top: backgroundPostView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            lastnameButton.anchor(top: firstnameButton.topAnchor, left: firstnameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            usernameButton.anchor(top: backgroundPostView.topAnchor, left: firstnameButton.leftAnchor, bottom: nil, right: nil, paddingTop: 32, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            circleDotView.anchor(top: backgroundPostView.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 47, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 3, height: 3)
+            
+            postTimeLabel.anchor(top: backgroundPostView.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 39, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            backgroundOptionsButton.anchor(top: backgroundPostView.topAnchor, left: nil, bottom: nil, right: backgroundPostView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 35, height: 35)
+            backgroundOptionsButton.layer.cornerRadius = 35 / 2
+            
+            
+            
+            commentButton.anchor(top: postImageView.bottomAnchor, left: postImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 19, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 16, height: 14)
+            
+            commentLabel.anchor(top: postImageView.bottomAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 18, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            likesButton.anchor(top: commentButton.topAnchor, left: commentLabel.rightAnchor, bottom: backgroundPostView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 35, paddingBottom: 14, paddingRight: 0, width: 16, height: 14)
+            
+            likesLabel.anchor(top: commentLabel.topAnchor, left: likesButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
-              self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[caption]-0-|", options: [], metrics: nil, views: ["caption": captionLabel]))
-              
-              // horizontal constraints
-        
-              self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[caption]-0-|", options: [], metrics: nil, views: ["caption": captionLabel]))
-              
-        
-              /*
-               postImageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-               captionBlock.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-              */
-              
-              
-              // global contraints
-              profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)
-              
-              separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
-              
-              firstnameButton.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-              
-              usernameSymbolLabel.anchor(top: firstnameButton.topAnchor, left: firstnameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-              
-              usernameButton.anchor(top: firstnameButton.topAnchor, left: usernameSymbolLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-              
-              hometownLabel.anchor(top: firstnameButton.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: -8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-              
-              postImageView.anchor(top: firstnameButton.bottomAnchor, left: captionBlock.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 3, paddingLeft: 4, paddingBottom: 0, paddingRight: 16, width: 150, height: 150)
-              
-              backgroundOptionsButton.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 30, height: 20)
-              
-              optionsButton.anchor(top: backgroundOptionsButton.topAnchor, left: backgroundOptionsButton.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 14, height: 7)
-              
-              captionBlock.anchor(top: profileImageView.bottomAnchor
-                  , left: profileImageView.leftAnchor, bottom: nil, right: postImageView.leftAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 0, height: 0)
-              
-              //circleDotView.anchor(top: firstnameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 3, height: 3)
-              
-              postTimeLabel.anchor(top: postImageView.bottomAnchor, left: captionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-              
-              commentButton.anchor(top: postImageView.bottomAnchor, left: postImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 17, height: 15)
-              
-              likesButton.anchor(top: postImageView.bottomAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 17, height: 15)
-              
-              likesLabel.anchor(top: postImageView.bottomAnchor, left: likesButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            //stackView.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+            
+            
+            // Horizontal Constraints
+            
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-24-[caption]-24-|", options: [], metrics: nil, views: ["caption": captionLabel]))
+            
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-24-[image]-24-|", options: [], metrics: nil, views: ["image": postImageView]))
+            
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[optionsButton(16)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
+            
+            // Vertical Constraints
+            
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[profile]-1-[caption]-5-[image(190)]", options: [], metrics: nil, views: ["profile": profileImageView, "caption": captionLabel, "image": postImageView]))
+
+            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[optionsButton(8)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
    
     }
     

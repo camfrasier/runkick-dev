@@ -227,7 +227,8 @@ class MenuVC: UIViewController {
     }
     
     @objc func handleViewProfile() {
-        delegate?.handleProfileToggle(shouldDismiss: true)
+        print("Profile picture pressed")
+        //delegate?.handleProfileToggle(shouldDismiss: true)
     }
     
     @objc func handleSleep() {

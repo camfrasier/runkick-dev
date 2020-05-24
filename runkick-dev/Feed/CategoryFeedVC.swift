@@ -71,7 +71,7 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         extendedLayoutIncludesOpaqueBars = true
         
         //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        collectionView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        collectionView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         
         // register cell classes
         self.collectionView!.register(CategoryFeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)

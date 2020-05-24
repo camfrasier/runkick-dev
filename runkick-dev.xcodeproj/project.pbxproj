@@ -424,8 +424,8 @@
 				692CAE17233C23470056FC7A /* SearchPostCell.swift */,
 				69FBDCFB244A1B8500709E21 /* AdminProfileHeader.swift */,
 				691A86FD231754EB00EBB64A /* UserProfileHeader.swift */,
-				69FBDCEF2443A43D00709E21 /* UserSpecificFeedCell.swift */,
 				69FB5F22245E328D00A02FA1 /* AdminStorePostCell.swift */,
+				69FBDCEF2443A43D00709E21 /* UserSpecificFeedCell.swift */,
 				69E70849240467FA0083444B /* MarketplaceCell.swift */,
 			);
 			path = View;

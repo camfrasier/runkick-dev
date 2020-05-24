@@ -65,7 +65,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - marketplace controller placeholder
-        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Marketplace", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Martket", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Notification controller
         let notificationsVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Updates", rootViewController: NotificationsVC())
@@ -85,7 +85,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         //let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Photo")
         
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
-        viewControllers = [homeVC, marketplaceVC, feedVC]
+        viewControllers = [homeVC, marketplaceVC, feedVC, userProfileVC]
         
     
         // configure notification dot

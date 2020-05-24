@@ -124,7 +124,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // self.clearsSelectionOnViewWillAppear = false
         
         // adjust view background color
-        collectionView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 235)
+        collectionView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         
         
@@ -179,26 +179,29 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
+        // if statement safely unwraps status text
+        if let captionText = posts[indexPath.item].caption {
+            
+            let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+            
+            // the height of all the variables in the cell
+            let knownHeight: CGFloat = 10 + 50 + 180 + 20 + 20 + 15
+            
+            return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 55)
+        }
+        
+        return CGSize(width: view.frame.width - 0, height: 200)
+        /*
         let width = view.frame.width
         //var height = width
-        var height = width - 230
+        var height = width - 150
         
         height += 20
         //height += 10
-      
-        /*
-        let referenceHeight: CGFloat = 400.0 // Approximate height of the cell
-        // Cell width calculation
-        let sectionInset = (collectionViewLayout as! UICollectionViewFlowLayout).sectionInset
-        let referenceWidth = collectionView.safeAreaLayoutGuide.layoutFrame.width
-            - sectionInset.left
-            - sectionInset.right
-            - collectionView.contentInset.left
-            - collectionView.contentInset.right
-        
-        */
         
         return CGSize(width: width, height: height)
+        */
+        
     }
 
     
@@ -236,6 +239,12 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         // sets the vertical spacing between posts
         return 0
+    }
+    
+    // calling function to give space and insets
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
