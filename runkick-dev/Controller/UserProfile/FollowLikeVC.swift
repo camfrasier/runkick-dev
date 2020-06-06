@@ -226,7 +226,7 @@ class FollowLikeVC: UITableViewController, FollowLikeCellDelegate {
                     self.followCurrentKey = first.key
                 })
                 
-            } else {
+            } else {  
                 
                 ref.child(uid).queryOrderedByKey().queryEnding(atValue: self.followCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
                     guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }

@@ -21,6 +21,14 @@ extension UIColor {
         return UIColor.rgb(red: 221, green: 94, blue: 86)
     }
     
+    static func actionRed() -> UIColor {
+        return UIColor.rgb(red: 236, green: 38, blue: 125)
+    }
+    
+    static func trueBlue() -> UIColor {
+        return UIColor.rgb(red: 26, green: 172, blue: 239)
+    }
+    
     static func mainBlue() -> UIColor {
         return UIColor.rgb(red: 55, green: 120, blue: 250)
     }
@@ -28,6 +36,8 @@ extension UIColor {
     static func directionsGreen() -> UIColor {
         return UIColor.rgb(red: 76, green: 217, blue: 100)
     }
+    
+    
 }
 
 extension UIButton {

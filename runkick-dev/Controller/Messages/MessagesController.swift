@@ -132,7 +132,7 @@ class MessagesController: UITableViewController {
         
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
         
-        let font = UIFont(name: "HelveticaNeue", size: 17)!
+        let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]
         navigationItem.title = "Messages"
         

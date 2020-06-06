@@ -179,6 +179,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
+        
+        /*
         // if statement safely unwraps status text
         if let captionText = posts[indexPath.item].caption {
             
@@ -189,18 +191,37 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             
             return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 55)
         }
-        
-        return CGSize(width: view.frame.width - 0, height: 200)
-        /*
-        let width = view.frame.width
-        //var height = width
-        var height = width - 150
-        
-        height += 20
-        //height += 10
-        
-        return CGSize(width: width, height: height)
         */
+        
+        
+        if viewSinglePost {
+            
+        if let post = self.post {
+            if let captionText = post.caption {
+                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
+                           
+                           // the height of all the variables in the cell
+                           let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
+                           
+                           return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 20)
+            }
+            
+        }
+        } else {
+            
+            // if statement safely unwraps status text
+            if let captionText = posts[indexPath.item].caption {
+                
+                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
+                
+                // the height of all the variables in the cell
+                let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
+                
+                return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 20)
+            }
+            
+        }
+        return CGSize(width: view.frame.width - 0, height: 200)
         
     }
 
@@ -882,7 +903,7 @@ extension FeedVC: AltFeedCellDelegate {
                 //photoFeedView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -14).isActive = true
                 
                 // should start with a zoomed out and animate into a zoomed in effect
-                photoFeedView.transform = CGAffineTransform(scaleX: 0.50, y:0.50)
+                photoFeedView.transform = CGAffineTransform(scaleX: 0.50, y: 0.50)
                 photoFeedView.alpha = 0
                 
                 UIView.animate(withDuration: 0.25) {

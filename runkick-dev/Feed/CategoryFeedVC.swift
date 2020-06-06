@@ -252,6 +252,8 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
     func fetchPostByCategory(withCategoryKey categoryKey: String) {
 
                if currentKey == nil {
+                
+                print("THE CURRENT KEY IS NIL DOGG!!!!!!!")
                 DataService.instance.REF_CATEGORIES.queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
                        
                        self.collectionView?.refreshControl?.endRefreshing()
@@ -275,16 +277,28 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
                } else {
                 DataService.instance.REF_CATEGORIES.queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 6).observeSingleEvent(of: .value, with: { (snapshot) in
                        
+                     print("THE CURRENT KEY IS NIL SO now we are HEEEEEEERE")
+                    
                        guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                        guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                        
-                       //allObjects.forEach({ (snapshot) in
-                           //let postId = snapshot.key
-                            let postId = categoryKey
+                        //starting the order at the current key we get the snapshot which should represent the current key value of the last post in the previous section, if the post ID is not the currentKey or first key established then fetch the postID of the next post and so on until we reach the last key of the last post in the second pack of photos.
+                    
+                           let postId = snapshot.key
+                           //let postId = categoryKey
                            if postId != self.currentKey {
                                self.fetchPost(withPostId: postId)
                            }
-                      // })
+
+                    /*
+                    allObjects.forEach({ (snapshot) in
+                        let postId = snapshot.key
+                        if postId != self.currentKey {
+                            self.fetchPost(withPostId: postId)
+                        }
+                    })
+                    */
+                    
                        self.currentKey = first.key
                    })
                }

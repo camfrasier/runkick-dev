@@ -25,9 +25,11 @@ protocol UserProfileHeaderDelegate {
     func handleFavoritesTapped(for header: UserProfileHeader)
     func handledSearchFriendsTapped(for header: UserProfileHeader)
     func handleSearchGroupsTapped(for header: UserProfileHeader)
+    func handleGridViewTapped(for header: UserProfileHeader)
+    func handleActivityTapped(for header: UserProfileHeader)
 }
 
-
+// will be able to delete this protocol
 protocol AdminProfileHeaderDelegate {
     func handleEditFollowTapped(for header: AdminProfileHeader)
     func setUserStats(for header: AdminProfileHeader)

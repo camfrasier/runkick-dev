@@ -65,12 +65,12 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
             
         if let post = self.post {
             if let captionText = post.caption {
-                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
                            
                            // the height of all the variables in the cell
-                           let knownHeight: CGFloat = 10 + 50 + 180 + 20 + 20 + 15
+                           let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
                            
-                           return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 55)
+                           return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 30)
             }
             
         }
@@ -79,12 +79,12 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
             // if statement safely unwraps status text
             if let captionText = posts[indexPath.item].caption {
                 
-                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
                 
                 // the height of all the variables in the cell
-                let knownHeight: CGFloat = 10 + 50 + 180 + 20 + 20 + 15
+                let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
                 
-                return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 55)
+                return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 30)
             }
             
         }
@@ -139,6 +139,12 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         // sets the vertical spacing between photos
         return 0
+    }
+    
+    // calling function to give space and insets
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

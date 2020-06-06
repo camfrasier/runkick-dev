@@ -34,6 +34,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         collectionView?.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         
         fetchPhotos()
+
     }
     
     // MARK: - UICollectionViewFlowLayout

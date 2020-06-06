@@ -44,6 +44,12 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     
+    let gradientProfileView: GradientView = {
+        let view = GradientView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
@@ -67,38 +73,41 @@ class UserProfileHeader: UICollectionViewCell {
     
     let firstnameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
-        label.font = UIFont(name: "HelveticaNeue-Medium", size: 20)
-        label.textColor = UIColor(red: 71/255, green: 98/255, blue: 112/255, alpha: 1)  //dark blue
+        label.font = UIFont(name: "HelveticaNeue", size: 18)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         return label
     } ()
     
     let lastnameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
-        label.font = UIFont(name: "HelveticaNeue-Medium", size: 20)
-        label.textColor = UIColor(red: 71/255, green: 98/255, blue: 112/255, alpha: 1)  //dark blue
+        label.font = UIFont(name: "HelveticaNeue", size: 18)
+        //label.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         return label
     } ()
     
     let usernameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        //label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textAlignment = .center
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
         label.textColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1)
         return label
     } ()
     
     // i would like this label to aventually be able to pinpoint your hometown on apple maps with photos
-    let hometownLabel: UILabel = {
+    let userBioLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 15)
-       // label.textColor = UIColor(red: 160/255, green: 218/255, blue: 22/255, alpha: 1)
-        label.textColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1)
-        label.textAlignment = .center
-        label.text = "Huntington, CA"
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.textColor = UIColor.rgb(red: 90, green: 90, blue: 90)
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        //label.textAlignment = .left
+        label.text = "I'm so, I'm so re-born.."
         return label
     } ()
     
@@ -107,7 +116,7 @@ class UserProfileHeader: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
         
         /*
         let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
@@ -128,7 +137,7 @@ class UserProfileHeader: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
         
         /*
         let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
@@ -162,10 +171,10 @@ class UserProfileHeader: UICollectionViewCell {
     
     lazy var refreshCategories: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Refresh Categories", for: .normal)
+        button.setTitle("Refresh", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
         button.setTitleColor(.init(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), for: .normal)
-        button.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+        button.backgroundColor = UIColor.actionRed()
         button.addTarget(self, action: #selector(handleUpdateCategory), for: .touchUpInside)
         return button
     } ()
@@ -191,10 +200,10 @@ class UserProfileHeader: UICollectionViewCell {
     lazy var editProfileFollowButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Loading", for: .normal)
-        button.layer.backgroundColor = UIColor.rgb(red: 26, green: 172, blue: 239).cgColor
-        button.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
-        button.layer.borderWidth = 2
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        button.layer.borderColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
+        button.layer.borderWidth = 0.25
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(handleEditProfileFollow), for: .touchUpInside)
         return button
@@ -338,6 +347,11 @@ class UserProfileHeader: UICollectionViewCell {
         return view
     }()
     
+    let separatorViewGradient: GradientView = {
+        let view = GradientView()
+        return view
+    }()
+    
     let separatorViewPost: UIView = {
         let view = UIView()
         view.layer.backgroundColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1).cgColor
@@ -392,7 +406,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     let aboutLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.textAlignment = .left
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
@@ -410,10 +424,18 @@ class UserProfileHeader: UICollectionViewCell {
         return label
     }()
     
-    let gridViewButton: UIButton = {
+    lazy var gridViewButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.system)
         button.setImage(UIImage(named: "grid"), for: .normal)
-        //button.addTarget(self, action: #selector(handleCenterMapBtnPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleGridViewTapped), for: .touchUpInside)
+        button.alpha = 1
+        return button
+    }()
+    
+    lazy var activityHistoryView: UIButton = {  // when clicked make color turn gradient action blue to action red
+        let button = UIButton(type: UIButton.ButtonType.system)
+        button.setImage(UIImage(named: "grid"), for: .normal)
+        button.addTarget(self, action: #selector(handleActivityTapped), for: .touchUpInside)
         button.alpha = 1
         return button
     }()
@@ -440,7 +462,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.backgroundColor = .clear
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
-        button.layer.shadowRadius = 5.0
+        button.layer.shadowRadius = 3.0
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.alpha = 1
         return button
@@ -467,7 +489,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.backgroundColor = .clear
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
-        button.layer.shadowRadius = 5.0
+        button.layer.shadowRadius = 3.0
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.alpha = 1
         return button
@@ -489,6 +511,7 @@ class UserProfileHeader: UICollectionViewCell {
          super.init(frame: frame)
         
         layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        
         
         configureViewComponents()
         
@@ -583,160 +606,131 @@ class UserProfileHeader: UICollectionViewCell {
     @objc func handleAddPhotoTapped() {
         delegate?.handleAddPhotoTapped(for: self)
     }
+    
+    @objc func handleGridViewTapped() {
+        delegate?.handleGridViewTapped(for: self)
+        
+        //separatorViewGradient.transform = CGAffineTransform(translationX: 1, y: 1)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.separatorViewGradient.transform = CGAffineTransform(translationX: 210, y: 0)
+        })
+    }
+    
+    @objc func handleActivityTapped() {
+        delegate?.handleActivityTapped(for: self)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.separatorViewGradient.transform = CGAffineTransform(translationX: 0, y: 0)
+        })
+    }
 
     func configureViewComponents() {
         
-        let profileDimension: CGFloat = 100
-        addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileDimension, height: profileDimension)
+        let profileCircleDimension: CGFloat = 96
+        addSubview(gradientProfileView)
+        gradientProfileView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileCircleDimension, height: profileCircleDimension)
+        gradientProfileView.layer.cornerRadius = profileCircleDimension / 2
+        gradientProfileView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        let profileDimension: CGFloat = 90
+        gradientProfileView.addSubview(profileImageView)
+        profileImageView.anchor(top: gradientProfileView.topAnchor, left: gradientProfileView.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: profileDimension, height: profileDimension)
+        profileImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        profileImageView.layer.borderWidth = 3
         profileImageView.layer.cornerRadius = profileDimension / 2
-        profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         addSubview(usernameLabel)
-        usernameLabel.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        usernameLabel.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         usernameLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
-        
-        addSubview(hometownLabel)
-        hometownLabel.anchor(top: usernameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        hometownLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
-        
-        let stackView = UIStackView(arrangedSubviews: [followersLabel, followingLabel, postLabel])
+
+
+        let stackView = UIStackView(arrangedSubviews: [followingLabel, followersLabel, postLabel])
         
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
         stackView.alignment = .center
-        stackView.spacing = 24
+        stackView.spacing = 28
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
-        stackView.anchor(top: hometownLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stackView.anchor(top: usernameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         stackView.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         addSubview(editProfileFollowButton)
-        editProfileFollowButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 105, height: 40)
+        editProfileFollowButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 35)
+        editProfileFollowButton.layer.cornerRadius = 0
         editProfileFollowButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
-        editProfileFollowButton.layer.cornerRadius = 20
-
-        addSubview(gridViewButton)
-        gridViewButton.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 290, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
-        gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
         
-        
-
-        /*
-        addSubview(messageInboxButton)
-        messageInboxButton.anchor(top: profileImageView.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: -35, paddingLeft: -35, paddingBottom: 0, paddingRight: 0, width: 37, height: 37)
-        messageInboxButton.layer.cornerRadius = 37 / 2
-        
-        addSubview(firstnameLabel)
-        firstnameLabel.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        addSubview(lastnameLabel)
-        lastnameLabel.anchor(top: profileImageView.topAnchor, left: firstnameLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-
-        addSubview(aboutSeparator)
-        aboutSeparator.anchor(top: profileImageView.bottomAnchor, left: profileImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        addSubview(aboutSectionBlock)
-        aboutSectionBlock.anchor(top: aboutSeparator.bottomAnchor, left: aboutSeparator.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
-        aboutSectionBlock.translatesAutoresizingMaskIntoConstraints = false
-        
-        aboutSectionBlock.addSubview(aboutLabel)
-        aboutLabel.anchor(top: aboutSectionBlock.topAnchor, left: aboutSectionBlock.leftAnchor, bottom: aboutSectionBlock.bottomAnchor, right: aboutSectionBlock.rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 2, paddingRight: 0, width: 0, height: 0)
-        aboutLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(separatorViewPost)
-        separatorViewPost.anchor(top: postsSeparator.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
-        
-        addSubview(editProfileFollowButton)
-        editProfileFollowButton.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 95, height: 33)
-        
-        
-        
-        // profile header buttons
-        
-        let buttonDimension: CGFloat = 55
-        let containerWidth: CGFloat = 175
+        addSubview(userBioLabel)
+         userBioLabel.anchor(top: editProfileFollowButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        userBioLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         addSubview(separatorView)
-        separatorView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 105, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        separatorView.anchor(top: userBioLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 17, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
         
-        
-        // analytics button
-        
-        addSubview(analyticsButtonContainer)
-        analyticsButtonContainer.anchor(top: separatorView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: containerWidth, height: buttonDimension)
-        
-        analyticsButtonContainer.addSubview(analyticsButton)
-        analyticsButton.anchor(top: nil, left: analyticsButtonContainer.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: buttonDimension, height: buttonDimension)
-        analyticsButton.centerYAnchor.constraint(equalTo: analyticsButtonContainer.centerYAnchor).isActive = true
-        
-        analyticsButtonContainer.addSubview(analyticsLabel)
-        analyticsLabel.anchor(top: nil, left: analyticsButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        analyticsLabel.centerYAnchor.constraint(equalTo: analyticsButton.centerYAnchor).isActive = true
-        
-        
-        // favorites button
-        
-        addSubview(favoritesButtonContainer)
-        favoritesButtonContainer.anchor(top: separatorView.bottomAnchor, left: analyticsButtonContainer.rightAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: containerWidth, height: buttonDimension)
-        
-        favoritesButtonContainer.addSubview(favoriteItemsButton)
-        favoriteItemsButton.anchor(top: nil, left: favoritesButtonContainer.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: buttonDimension, height: buttonDimension)
-        favoriteItemsButton.centerYAnchor.constraint(equalTo: favoritesButtonContainer.centerYAnchor).isActive = true
-        
-        favoritesButtonContainer.addSubview(favoriteItemsLabel)
-        favoriteItemsLabel.anchor(top: nil, left: favoriteItemsButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        favoriteItemsLabel.centerYAnchor.constraint(equalTo: favoriteItemsButton.centerYAnchor).isActive = true
-        
-        
-        
-        // search friends button
-        // favorites button
-        
-        addSubview(searchFriendsButtonContainer)
-        searchFriendsButtonContainer.anchor(top: analyticsButtonContainer.bottomAnchor, left: analyticsButtonContainer.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: containerWidth, height: buttonDimension)
-        
-        searchFriendsButtonContainer.addSubview(searchFriendsButton)
-        searchFriendsButton.anchor(top: nil, left: searchFriendsButtonContainer.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: buttonDimension, height: buttonDimension)
-        searchFriendsButton.centerYAnchor.constraint(equalTo: searchFriendsButtonContainer.centerYAnchor).isActive = true
-        
-        searchFriendsButtonContainer.addSubview(searchFriendsLabel)
-        searchFriendsLabel.anchor(top: nil, left: searchFriendsButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        searchFriendsLabel.centerYAnchor.constraint(equalTo: searchFriendsButton.centerYAnchor).isActive = true
-        
-        
-        
-        // search groups button
-        
-        addSubview(searchGroupsButtonContainer)
-        searchGroupsButtonContainer.anchor(top: favoritesButtonContainer.bottomAnchor, left: favoritesButtonContainer.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: containerWidth, height: buttonDimension)
-        
-        searchGroupsButtonContainer.addSubview(searchGroupsButton)
-        searchGroupsButton.anchor(top: nil, left: searchGroupsButtonContainer.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: buttonDimension, height: buttonDimension)
-        searchGroupsButton.centerYAnchor.constraint(equalTo: searchGroupsButtonContainer.centerYAnchor).isActive = true
-        
-        searchGroupsButtonContainer.addSubview(searchGroupsLabel)
-        searchGroupsLabel.anchor(top: nil, left: favoriteItemsButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        searchGroupsLabel.centerYAnchor.constraint(equalTo: searchGroupsButton.centerYAnchor).isActive = true
-
-        addSubview(postLabel)
-        postLabel.anchor(top: separatorViewPost.bottomAnchor, left: nil, bottom: nil, right: editProfileFollowButton.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+         addSubview(activityHistoryView)
+         activityHistoryView.anchor(top: separatorView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 95, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
+         activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
          
-        */
-         
+         addSubview(gridViewButton)
+         gridViewButton.anchor(top: separatorView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 7, paddingLeft: 95, paddingBottom: 0, paddingRight: 95, width: 16, height: 16)
+         gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
+        
+         addSubview(separatorViewGradient)
+        separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (frame.width / 2), height: 3)
+        
+        
         
         /*
-        let stackView = UIStackView(arrangedSubviews: [firstnameLabel, lastnameLabel])
+        addSubview(firstnameLabel)
+        firstnameLabel.anchor(top: gradientProfileView.topAnchor, left: gradientProfileView.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 27, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(lastnameLabel)
+        lastnameLabel.anchor(top: firstnameLabel.topAnchor, left: firstnameLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(separatorView)
+        separatorView.anchor(top: gradientProfileView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        
+        let stackView = UIStackView(arrangedSubviews: [postLabel, followersLabel, followingLabel])
         
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
         stackView.alignment = .center
-        stackView.spacing = 4
+        stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
-        stackView.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        stackView.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
-         */
+        stackView.anchor(top: firstnameLabel.bottomAnchor, left: firstnameLabel.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 9, paddingLeft: -11, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        
+        addSubview(editProfileFollowButton)
+        editProfileFollowButton.anchor(top: firstnameLabel.topAnchor, left: lastnameLabel.rightAnchor, bottom: nil, right: nil, paddingTop: -1, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 80, height: 23)
+        editProfileFollowButton.layer.cornerRadius = 4
+        
+        addSubview(userBioLabel)
+        userBioLabel.anchor(top: stackView.bottomAnchor, left: firstnameLabel.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        
+        addSubview(activityHistoryView)
+        activityHistoryView.anchor(top: separatorView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 95, paddingBottom: 0, paddingRight: 0, width: 22, height: 22)
+        activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
+        
+        addSubview(gridViewButton)
+        gridViewButton.anchor(top: separatorView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 95, paddingBottom: 0, paddingRight: 95, width: 22, height: 22)
+        gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
+       
+        addSubview(separatorView2)
+        separatorView2.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        */
+        
+        /*
+        
+        
+        
+
+        
+        */
+        
+
     }
  
     func configureSendMessageButton() {
@@ -773,19 +767,14 @@ class UserProfileHeader: UICollectionViewCell {
                     // the current user is NOT the user in question but is an admin so we don't need to add the send message button
                     print("when we are not accessing the current users page, and the user is an admin.. allow user to send a message following or not")
                     
-                    let backgroundDimension: CGFloat = 60
+                    let backgroundDimension: CGFloat = 50
                     self.addSubview(self.messageBackgroundButton)
-                    self.messageBackgroundButton.anchor(top: self.profileImageView.topAnchor, left: self.profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: -20, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
+                    self.messageBackgroundButton.anchor(top: self.profileImageView.topAnchor, left: self.profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: -25, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
                     self.messageBackgroundButton.layer.cornerRadius = backgroundDimension / 2
-                           
+                    
                     self.messageBackgroundButton.addSubview(self.beBoppMessageButton)
-                    self.beBoppMessageButton.anchor(top: self.messageBackgroundButton.topAnchor, left: self.messageBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
-                    
-                    self.addSubview(self.refreshCategories)
-                    self.refreshCategories.anchor(top: self.profileImageView.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 140, height: 30)
-                    self.refreshCategories.layer.cornerRadius = 15
- 
-                    
+                    self.beBoppMessageButton.anchor(top: self.messageBackgroundButton.topAnchor, left: self.messageBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 41, height: 41)
+
                 } else {
                     
                     user.checkIfUserIsFollowed(completion: { (followed) in
@@ -995,6 +984,112 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "category": "Mexican"])
                             }
                           }
+                        
+                        if category.contains("American") {
+                            print("American has been found")
+                          
+                          // now go into the post using the post id and pull the category and store id
+                          DataService.instance.REF_ADMIN_STORE_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
+                              
+                              guard let marketDictionary = snapshot.value as? [String: Any] else { return }
+                                         // may not be the right postId
+                              let market = Category(postId: postId, dictionary: marketDictionary as Dictionary<String, AnyObject>)
+                                         print(marketDictionary)
+                              
+                              //print("DEBUG: This is the caption for this section \(market.caption)")
+                                         
+                              guard let sendCaption = market.caption else { return }
+                              guard let sendUrl = market.imageUrl else { return }
+                              //let sendPoints = market.points  // may not need point value here, it represent the store and not the post
+                              guard let sendStoreId = market.storeId else { return }
+                              //guard let creationDate = market.creationDate else { return }
+                              guard let sendPrice = market.price else { return }
+                              guard let sendPoppPrice = market.poppPrice else { return }
+                              guard let sendAddress = market.address else { return }
+                              let creationDate = Int(NSDate().timeIntervalSince1970)
+                              
+                              DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
+                                                                                                                     "caption" : sendCaption,
+                                                                                                                     "imageUrl" : sendUrl,
+                                                                                                                     "storeId" : sendStoreId,
+                                                                                                                     "creationDate": creationDate,
+                                                                                                                     "price": Float(sendPrice),
+                                                                                                                     "poppPrice": Float(sendPoppPrice),
+                                                                                                                     "address": sendAddress,
+                                                                                                                     "category": "All American"])
+                          }
+                        }
+                        
+                        if category.contains("Mediterranean") {
+                            print("Mediterranean has been found")
+                          
+                          // now go into the post using the post id and pull the category and store id
+                          DataService.instance.REF_ADMIN_STORE_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
+                              
+                              guard let marketDictionary = snapshot.value as? [String: Any] else { return }
+                                         // may not be the right postId
+                              let market = Category(postId: postId, dictionary: marketDictionary as Dictionary<String, AnyObject>)
+                                         print(marketDictionary)
+                              
+                              //print("DEBUG: This is the caption for this section \(market.caption)")
+                                         
+                              guard let sendCaption = market.caption else { return }
+                              guard let sendUrl = market.imageUrl else { return }
+                              //let sendPoints = market.points  // may not need point value here, it represent the store and not the post
+                              guard let sendStoreId = market.storeId else { return }
+                              //guard let creationDate = market.creationDate else { return }
+                              guard let sendPrice = market.price else { return }
+                              guard let sendPoppPrice = market.poppPrice else { return }
+                              guard let sendAddress = market.address else { return }
+                              let creationDate = Int(NSDate().timeIntervalSince1970)
+                              
+                              DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
+                                                                                                                     "caption" : sendCaption,
+                                                                                                                     "imageUrl" : sendUrl,
+                                                                                                                     "storeId" : sendStoreId,
+                                                                                                                     "creationDate": creationDate,
+                                                                                                                     "price": Float(sendPrice),
+                                                                                                                     "poppPrice": Float(sendPoppPrice),
+                                                                                                                     "address": sendAddress,
+                                                                                                                     "category": "Mediterranean"])
+                          }
+                        }
+                        
+                        if category.contains("Protein") {
+                            print("Protein has been found")
+                          
+                          // now go into the post using the post id and pull the category and store id
+                          DataService.instance.REF_ADMIN_STORE_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
+                              
+                              guard let marketDictionary = snapshot.value as? [String: Any] else { return }
+                                         // may not be the right postId
+                              let market = Category(postId: postId, dictionary: marketDictionary as Dictionary<String, AnyObject>)
+                                         print(marketDictionary)
+                              
+                              //print("DEBUG: This is the caption for this section \(market.caption)")
+                                         
+                              guard let sendCaption = market.caption else { return }
+                              guard let sendUrl = market.imageUrl else { return }
+                              //let sendPoints = market.points  // may not need point value here, it represent the store and not the post
+                              guard let sendStoreId = market.storeId else { return }
+                              //guard let creationDate = market.creationDate else { return }
+                              guard let sendPrice = market.price else { return }
+                              guard let sendPoppPrice = market.poppPrice else { return }
+                              guard let sendAddress = market.address else { return }
+                              let creationDate = Int(NSDate().timeIntervalSince1970)
+                              
+                              DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
+                                                                                                                     "caption" : sendCaption,
+                                                                                                                     "imageUrl" : sendUrl,
+                                                                                                                     "storeId" : sendStoreId,
+                                                                                                                     "creationDate": creationDate,
+                                                                                                                     "price": Float(sendPrice),
+                                                                                                                     "poppPrice": Float(sendPoppPrice),
+                                                                                                                     "address": sendAddress,
+                                                                                                                     "category": "Protein"])
+                          }
+                        }
+                        
                             
                       }
                   })
@@ -1061,13 +1156,17 @@ class UserProfileHeader: UICollectionViewCell {
     
     func configureAddPhotoButton() {
         
-        let backgroundDimension: CGFloat = 60
+        let backgroundDimension: CGFloat = 50
         addSubview(addPhotoBackgroundButton)
-        addPhotoBackgroundButton.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: -20, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
+        addPhotoBackgroundButton.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: -25, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
         addPhotoBackgroundButton.layer.cornerRadius = backgroundDimension / 2
                
         addPhotoBackgroundButton.addSubview(beBoppAddPhotoButton)
-        beBoppAddPhotoButton.anchor(top: addPhotoBackgroundButton.topAnchor, left: addPhotoBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
+        beBoppAddPhotoButton.anchor(top: addPhotoBackgroundButton.topAnchor, left: addPhotoBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 43, height: 43)
+        
+        addSubview(refreshCategories)
+        refreshCategories.anchor(top: editProfileFollowButton.topAnchor, left: editProfileFollowButton.rightAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 70, height: 20)
+        refreshCategories.layer.cornerRadius = 2
         
     }
     
@@ -1170,14 +1269,16 @@ class UserProfileHeader: UICollectionViewCell {
         if currentUid == user.uid {
             
             // Configure button as edit profile
-            editProfileFollowButton.setTitle("Edit", for: .normal)
-            editProfileFollowButton.setTitleColor( UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), for: .normal)
+            editProfileFollowButton.setTitle("Edit Profile", for: .normal)
+            editProfileFollowButton.setTitleColor(UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1), for: .normal)
             
         } else {
             
             // Configure button as follow button
-            editProfileFollowButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
-            editProfileFollowButton.backgroundColor = UIColor.rgb(red: 26, green: 172, blue: 239)
+            editProfileFollowButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
+            //editProfileFollowButton.backgroundColor = UIColor.trueBlue()
+            editProfileFollowButton.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+            editProfileFollowButton.layer.borderWidth = 0
            
             user.checkIfUserIsFollowed(completion: { (followed) in
                 

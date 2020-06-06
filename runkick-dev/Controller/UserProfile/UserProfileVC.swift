@@ -13,8 +13,7 @@ private let reuseIdentifier = "Cell"
 private let headerIdentifier = "UserProfileHeader"
 
 class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UserProfileHeaderDelegate {
-    
-    
+     
     // Mark: - Properties
     
     // here we are using the class photo feed view in order to pull up the photo we need from the subclass PhotoProfileView
@@ -37,7 +36,14 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         button.addTarget(self, action: #selector(handleExitProfile), for: .touchUpInside)
         return button
     } ()
-
+    
+    let tableSubView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+        return view
+    }()
+    
+    var tableView: UITableView!
     var homeVC: HomeVC?
     var user: User?  // Set as an optional because it won't have a value initially.
     var posts = [Post]()
@@ -69,18 +75,23 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
         
-        
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.sectionHeadersPinToVisibleBounds = true
+        }
         
         self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
         self.collectionView?.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
-        
+
+        collectionView.isScrollEnabled = false
+
         if Auth.auth().currentUser != nil {
             
             guard let currentUid = Auth.auth().currentUser?.uid else { return }
             
             print("DEBUG: The current user id is \(currentUid)")
+            
             
             self.configureNavigationBar()
 
@@ -92,6 +103,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             }
                 
             self.fetchPosts()
+            
+            configureTableView()
           
         }
     }
@@ -144,7 +157,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 330)
+        return CGSize(width: view.frame.width, height: 324)
     }
     
     // Mark: - UICollectionView
@@ -165,8 +178,10 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // Set delegate
         header.delegate = self
         
+
         // Set the user in header.
         header.user = self.user
+        //navigationItem.title = user?.username
         navigationItem.title = user?.firstname
         //navigationItem.title = "Hi \(String(describing: user?.firstname))"
         
@@ -246,7 +261,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 let user = User(uid: uid, dictionary: dictionary)
                 self.user = user
                 //self.navigationItem.title = user.username
-                
                 //self.navigationItem.title = user.firstname
                 
                 //self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -417,7 +431,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         guard let user = header.user else { return }
         
         // looking for the label string to make the decision of whether or not the user is the current user. Will need this for later functions!
-        if header.editProfileFollowButton.titleLabel?.text == "Edit" {
+        if header.editProfileFollowButton.titleLabel?.text == "Edit Profile" {
             
             let editProfileController = EditProfileController()
             editProfileController.user = user
@@ -485,6 +499,20 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         present(navController, animated: true, completion: nil)
     }
     
+    func handleGridViewTapped(for header: UserProfileHeader) {
+        print("Handle grid view and show media view")
+    
+        // hide table view
+        tableView.isHidden = true
+        collectionView.isScrollEnabled = true
+    }
+    
+    func handleActivityTapped(for header: UserProfileHeader) {
+        print("Handle activity view")
+        
+        tableView.isHidden = false
+        collectionView.isScrollEnabled = false
+    }
     func setUserStats(for header: UserProfileHeader) {
         
         guard let uid = header.user?.uid else { return }
@@ -502,8 +530,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 numberOfFollwers = 0
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfFollwers!)\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
-            attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor(red: 160/255, green: 160/255, blue: 160/255, alpha: 1)]))
+            let attributedText = NSMutableAttributedString(string: "\(numberOfFollwers!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
+            attributedText.append(NSAttributedString(string: "Followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]))
             
             header.followersLabel.attributedText = attributedText
         }
@@ -517,8 +545,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 numberOfFollowing = 0
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
-            attributedText.append(NSAttributedString(string: "following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor(red: 160/255, green: 160/255, blue: 160/255, alpha: 1)]))
+            let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
+            attributedText.append(NSAttributedString(string: "Following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]))
             
             header.followingLabel.attributedText = attributedText
         }
@@ -532,8 +560,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 numberOfPosts = 0
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfPosts!)\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
-            attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor(red: 160/255, green: 160/255, blue: 160/255, alpha: 1)]))
+            let attributedText = NSMutableAttributedString(string: "\(numberOfPosts!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
+            attributedText.append(NSAttributedString(string: "Posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]))
             
             header.postLabel.attributedText = attributedText
         }
@@ -672,6 +700,27 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func handleSearchGroupsTapped(for header: UserProfileHeader) {
         print("Handle search groups here")
     }
+    
+    func configureTableView() {
+        tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.register(ActivityHistoryCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        
+        // disables the scrolling feature for the table view
+        tableView.isScrollEnabled = true
+        //tableView.separatorStyle = .none
+        tableView.rowHeight = 100
+
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 388, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+    }
 }
 
 // delegate created under profile for the UserPostCell (profile view cell)
@@ -694,6 +743,27 @@ extension UserProfileVC: ProfileCellDelegate {
                */
             }
         }
+    }
+}
+
+extension UserProfileVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ActivityHistoryCell
+
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
     }
 }
 

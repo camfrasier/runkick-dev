@@ -49,6 +49,7 @@ class NotificationsCell: UITableViewCell {
     let notificationLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
+        label.font = UIFont(name: "HelveticaNeue", size: 14)
         return label
     } ()
     
@@ -80,6 +81,12 @@ class NotificationsCell: UITableViewCell {
         return button
     } ()
     
+    let separatorView: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220).cgColor
+        return view
+    }()
+    
     
     // MARK: - Handlers
     
@@ -99,13 +106,14 @@ class NotificationsCell: UITableViewCell {
         guard let notification = self.notification else { return }
         guard let user = notification.user else { return }
         guard let username = user.username else { return }
+        
         guard let notificationDate = getNotificationTimeStamp() else { return }
         
         let notificationMessage = notification.notificationType.description
         
-        let attributedText = NSMutableAttributedString(string: username, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: notificationMessage, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
-        attributedText.append(NSAttributedString(string: " \(notificationDate)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+        let attributedText = NSMutableAttributedString(string: "\(username)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 120, green: 120, blue: 120)])
+        attributedText.append(NSAttributedString(string: "\(notificationMessage).", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
+        attributedText.append(NSAttributedString(string: " \(notificationDate) ago", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 110, green: 110, blue: 110)]))
         notificationLabel.attributedText = attributedText
     }
     
@@ -117,11 +125,11 @@ class NotificationsCell: UITableViewCell {
         if notification.notificationType != .Follow {
             
             // notification type is comment or like
-            let postImageDimension = CGFloat(60)
+            let postImageDimension = CGFloat(55)
             addSubview(postImageView)
             postImageView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: postImageDimension, height: postImageDimension)
             postImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-            postImageView.layer.cornerRadius = postImageDimension / 20
+            //postImageView.layer.cornerRadius = postImageDimension / 20
         }
         
        else {
@@ -156,8 +164,11 @@ class NotificationsCell: UITableViewCell {
         }
  
         addSubview(notificationLabel)
-        notificationLabel.anchor(top: nil, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 100, width: 0, height: 0)
-        notificationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        notificationLabel.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 1, paddingLeft: 8, paddingBottom: 0, paddingRight: 80, width: 0, height: 0)
+        //notificationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        addSubview(separatorView)
+        separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
     }
     
     func getNotificationTimeStamp() -> String? {
@@ -179,7 +190,7 @@ class NotificationsCell: UITableViewCell {
         
         selectionStyle = .none
         
-        let profileImageDimension = CGFloat(60)
+        let profileImageDimension = CGFloat(55)
         addSubview(profileImageView)
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true

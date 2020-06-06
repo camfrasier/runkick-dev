@@ -140,28 +140,21 @@ class StoreCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = .lightGray
         view.isUserInteractionEnabled = true
-        //view.layer.borderColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 1).cgColor
-        //view.layer.borderWidth = 0.15
-        
-        //storeImageView.center(inView: view)
-        //storeImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        //storeImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
         return view
     } ()
     
     let locationTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
-    lazy var storeImageView: UIImageView = {
-        let iv = UIImageView()
+    lazy var storeImageView: CustomImageView = {
+        let iv = CustomImageView()
         iv.clipsToBounds = true
-        iv.contentMode = .scaleAspectFit
-        iv.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
-        iv.image = #imageLiteral(resourceName: "send2")
+        iv.contentMode = .scaleAspectFill
+        iv.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         iv.isUserInteractionEnabled = true
         return iv
     } ()
@@ -169,22 +162,38 @@ class StoreCell: UITableViewCell {
     
     let locationAddressLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColor.rgb(red: 60, green: 60, blue: 60)
         return label
     } ()
     
+    let storeHoursLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.text = "Hours: 8am-9pm"
+        return label
+    }()
+    
+    let categoryLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.text = "All American"
+        return label
+    }()
+    
     let locationPointsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         return label
     } ()
     
     let locationDistanceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.textColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
         return label
     } ()
     
@@ -197,26 +206,38 @@ class StoreCell: UITableViewCell {
 
         addSubview(imageContainerView)
         //let dimension: CGFloat = 140
-        imageContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        imageContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
+        imageContainerView.layer.cornerRadius = 7
         
         imageContainerView.addSubview(storeImageView)
-        storeImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 180)
+        storeImageView.anchor(top: imageContainerView.topAnchor, left: imageContainerView.leftAnchor, bottom: imageContainerView.bottomAnchor, right: imageContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeImageView.layer.cornerRadius = 7
         
-        storeImageView.addSubview(locationTitleLabel)
-        locationTitleLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil
-            , paddingTop: 120, paddingLeft: 9, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(locationTitleLabel)
+        locationTitleLabel.anchor(top: topAnchor, left: imageContainerView.rightAnchor, bottom: nil, right: nil
+            , paddingTop: 17, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        storeImageView.addSubview(locationAddressLabel)
-        locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil
-            , paddingTop: 2, paddingLeft: 9, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(locationDistanceLabel)
+        locationDistanceLabel.anchor(top: locationTitleLabel.topAnchor, left: locationTitleLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 3.5, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        storeImageView.addSubview(locationPointsLabel)
-        locationPointsLabel.anchor(top: locationAddressLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 9, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(locationAddressLabel)
+        locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil
+            , paddingTop: 1, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        storeImageView.addSubview(locationDistanceLabel)
-        locationDistanceLabel.anchor(top: topAnchor, left: locationTitleLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 122, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(categoryLabel)
+        categoryLabel.anchor(top: locationAddressLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(storeHoursLabel)
+        storeHoursLabel.anchor(top: categoryLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        addSubview(locationPointsLabel)
+        locationPointsLabel.anchor(top: storeHoursLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
         
     
+        /*
         
         addSubview(saveSegmentButton)
         saveSegmentButton.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 27, height: 27)
@@ -230,7 +251,8 @@ class StoreCell: UITableViewCell {
         
         addSubview(removeSegmentLabel)
         removeSegmentLabel.anchor(top: removeSegmentButton.bottomAnchor, left: removeSegmentButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: -6, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-
+            
+        */
         
         
         /*
@@ -414,12 +436,17 @@ class StoreCell: UITableViewCell {
                     guard let dbStoreLat = store.lat else { return }
                     guard let dbStoreLong = store.long else { return }
                     
+                    
                     if dbStoreLat == mapItemLat && dbStoreLong == mapItemLong {
                         //print("the store lat of we are looking for is \(dbStoreLat)")
                         //print("the store long of we are looking for is \(dbStoreLong)")
                         
                         self.locationTitleLabel.text = store.title
                         self.locationAddressLabel.text = store.location
+                        self.categoryLabel.text = store.category
+                        
+                        guard let imageUrl = store.imageUrl else { return }
+                        self.storeImageView.loadImage(with: imageUrl)
                         
                         guard let dbStorePoints = store.points else { return }
                         //print("here are your coin \(dbStorePoints)")
@@ -427,6 +454,8 @@ class StoreCell: UITableViewCell {
                         self.locationPointsLabel.text = String("\(dbStorePoints) points")
                         
                     }
+                    
+                    
  
                 })
             })

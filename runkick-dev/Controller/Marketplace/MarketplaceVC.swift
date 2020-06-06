@@ -159,7 +159,7 @@ class MarketplaceVC: UICollectionViewController {
     func configureViewComponents() {
         //collectionView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
-        collectionView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
         

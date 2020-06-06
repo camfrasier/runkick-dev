@@ -94,7 +94,7 @@ class StoreDetailView: UIView {
     
     
     func animateInputView(targetPosition: CGFloat, completion: @escaping(Bool) -> ()) {
-        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
             self.frame.origin.y = targetPosition
         }, completion: completion)
     }
@@ -105,12 +105,16 @@ class StoreDetailView: UIView {
         
         //layer.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215).cgColor
         
+        layer.shadowOpacity = 30 // Shadow is 30 percent opaque.
+        layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.35).cgColor
+        layer.shadowRadius = 4
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        
+        /*
         layer.borderColor = UIColor.darkGray.cgColor
         layer.borderWidth = 0.15
-        layer.shadowOpacity = 30 // Shadow is 30 percent opaque.
-        layer.shadowColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 0.75).cgColor
-        layer.shadowRadius = 0
-        layer.shadowOffset = CGSize(width: 2, height: 2)
+        
+        */
         
         //let height: CGFloat = 50
         //let viewY = frame.height - height
@@ -149,13 +153,15 @@ class StoreDetailView: UIView {
     func configureTableView() {
         
         tableView = UITableView()
-        tableView.rowHeight = 400
+        //tableView.rowHeight = 400
+        tableView.rowHeight = 220
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.layer.cornerRadius = 15
+        //tableView.layer.cornerRadius = 13
+        tableView.layer.cornerRadius = 0
         tableView.separatorColor = .none
         //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = false
@@ -198,7 +204,7 @@ class StoreDetailView: UIView {
         }
         */
         
-        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.frame.origin.y =  self.frame.origin.y - 450
         })
     }
@@ -212,7 +218,7 @@ class StoreDetailView: UIView {
         
         if sender.direction == .up {
             
-            
+            print("do nothing")
             
             /*
             if expansionState == .NotExpanded {
@@ -229,6 +235,8 @@ class StoreDetailView: UIView {
             }
             
             */
+            
+            /*
             if expansionState == .PartiallyExpanded {
 
                 animateInputView(targetPosition: self.frame.origin.y - 450) { (_) in
@@ -238,7 +246,10 @@ class StoreDetailView: UIView {
                     
                 }
             }
+            */
         } else {
+            
+            /*
             if expansionState == .FullyExpanded {
 
                 animateInputView(targetPosition: self.frame.origin.y + 450) { (_) in
@@ -249,14 +260,15 @@ class StoreDetailView: UIView {
                  
                 }
             }
-            
+            */
+            // this is the swipe down segment
             
             if expansionState == .PartiallyExpanded {
                 
                 animateInputView(targetPosition: self.frame.origin.y + 300) { (_) in
                     self.expansionState = .NotExpanded
                     print("partially expanded to not expanded")
-                    UIView.animate(withDuration: 0.25, animations:  {
+                    UIView.animate(withDuration: 0.5, animations:  {
                         self.cancelViewButton.alpha = 1
                         self.isHidden = true
                         self.homeVC?.storeViewSetToDismissed()
@@ -273,6 +285,7 @@ class StoreDetailView: UIView {
         
         //self.isHidden = true
         
+        /*
         if expansionState == .FullyExpanded {
 
             animateInputView(targetPosition: self.frame.origin.y + 750) { (_) in
@@ -287,7 +300,7 @@ class StoreDetailView: UIView {
                 self.homeVC?.isStoreDetailViewVisible = false
             }
         }
-        
+        */
         
         if expansionState == .PartiallyExpanded {
             
@@ -295,7 +308,7 @@ class StoreDetailView: UIView {
             animateInputView(targetPosition: self.frame.origin.y + 300) { (_) in
                 self.expansionState = .NotExpanded
                 print("partially expanded to not expanded")
-                UIView.animate(withDuration: 0.25, animations:  {
+                UIView.animate(withDuration: 0.5, animations:  {
                     self.cancelViewButton.alpha = 1
                     self.isHidden = true
                     
@@ -394,9 +407,11 @@ extension StoreDetailView: UITableViewDelegate, UITableViewDataSource {
         guard let selectedAnnotationResults = selectedAnnotationResults else { return }
         let selectedMapItem = selectedAnnotationResults[indexPath.row]
         
-       // print("this is a test \(selectedMapItem.name)" as Any)
         
-        let firstIndexPath = IndexPath(row: 0, section: 0)
+        
+        print("this is a test \(selectedMapItem.name)" as Any)
+        
+        //let firstIndexPath = IndexPath(row: 0, section: 0)
         //let cell = tableView.cellForRow(at: firstIndexPath) as! StoreCell
         //cell.animateButtonIn()
     }

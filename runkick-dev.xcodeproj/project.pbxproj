@@ -64,6 +64,7 @@
 		69A1D56823480CA9003276B1 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1D56723480CA9003276B1 /* CommentInputAccessoryView.swift */; };
 		69A1D56A23480CD9003276B1 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1D56923480CD9003276B1 /* CommentInputTextView.swift */; };
 		69BC7EE023EA527E009F8AD3 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BC7EDF23EA527E009F8AD3 /* HomeVC.swift */; };
+		69C5EDA3247CE48A006A22B1 /* ActivityHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C5EDA2247CE48A006A22B1 /* ActivityHistoryCell.swift */; };
 		69D7C7A02356841300AF2736 /* SearchStoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7C79F2356841200AF2736 /* SearchStoreCell.swift */; };
 		69D7C7A423664C9D00AF2736 /* AdminLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7C7A323664C9D00AF2736 /* AdminLoginVC.swift */; };
 		69D7C7A92366ABC900AF2736 /* EditAdminProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7C7A82366ABC900AF2736 /* EditAdminProfileController.swift */; };
@@ -173,6 +174,7 @@
 		69A1D56723480CA9003276B1 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		69A1D56923480CD9003276B1 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		69BC7EDF23EA527E009F8AD3 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		69C5EDA2247CE48A006A22B1 /* ActivityHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ActivityHistoryCell.swift; path = "/Users/cameronfrasier/Desktop/runkick-dev/runkick-dev/View/Messages/ActivityHistoryCell.swift"; sourceTree = "<absolute>"; };
 		69D7C79F2356841200AF2736 /* SearchStoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStoreCell.swift; sourceTree = "<group>"; };
 		69D7C7A323664C9D00AF2736 /* AdminLoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminLoginVC.swift; sourceTree = "<group>"; };
 		69D7C7A82366ABC900AF2736 /* EditAdminProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAdminProfileController.swift; sourceTree = "<group>"; };
@@ -263,10 +265,10 @@
 			children = (
 				691A870C231AFA1400EBB64A /* FollowLikeVC.swift */,
 				692367442305C567002FCA4D /* UserProfileVC.swift */,
+				69FBDCEB24437E1500709E21 /* PhotoProfileView.swift */,
 				69FBDCF324467D1600709E21 /* AdminProfileVC.swift */,
 				69D7C7A82366ABC900AF2736 /* EditAdminProfileController.swift */,
 				691A870E231AFC6400EBB64A /* EditProfileController.swift */,
-				69FBDCEB24437E1500709E21 /* PhotoProfileView.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -285,8 +287,8 @@
 			isa = PBXGroup;
 			children = (
 				6923674B230B7ECE002FCA4D /* FeedVC.swift */,
-				69E8EEB3246A2CEC006D4AF6 /* CategoryFeedVC.swift */,
 				69FBDCED2443A1F700709E21 /* UserSpecificFeedVC.swift */,
+				69E8EEB3246A2CEC006D4AF6 /* CategoryFeedVC.swift */,
 				69FB5F20245E319D00A02FA1 /* AdminStorePostVC.swift */,
 				696A70B72345296800CDD512 /* HashtagController.swift */,
 				69FBDCE5243D4F5300709E21 /* PhotoFeedView.swift */,
@@ -405,6 +407,7 @@
 			isa = PBXGroup;
 			children = (
 				69FA081F233D4C45002DC00F /* Messages */,
+				69C5EDA1247CE42E006A22B1 /* Active */,
 				696A70B32342656F00CDD512 /* Social */,
 				6937B44922A85D9B00446926 /* GradientView.swift */,
 				696A70B923452A9F00CDD512 /* HashtagCell.swift */,
@@ -493,6 +496,14 @@
 				69A1D56923480CD9003276B1 /* CommentInputTextView.swift */,
 			);
 			path = Comments;
+			sourceTree = "<group>";
+		};
+		69C5EDA1247CE42E006A22B1 /* Active */ = {
+			isa = PBXGroup;
+			children = (
+				69C5EDA2247CE48A006A22B1 /* ActivityHistoryCell.swift */,
+			);
+			path = Active;
 			sourceTree = "<group>";
 		};
 		69E6A0AF236B51E500149219 /* Menu */ = {
@@ -667,6 +678,7 @@
 				6918226223B023D90009F00A /* UserSettingsVC.swift in Sources */,
 				69FE5BC32330159600039BF5 /* CommentVC.swift in Sources */,
 				691A87092319D35D00EBB64A /* SearchUserCell.swift in Sources */,
+				69C5EDA3247CE48A006A22B1 /* ActivityHistoryCell.swift in Sources */,
 				69FB5F1F245E266D00A02FA1 /* StorePost.swift in Sources */,
 				69FB5F21245E319D00A02FA1 /* AdminStorePostVC.swift in Sources */,
 				691A86FE231754EB00EBB64A /* UserProfileHeader.swift in Sources */,

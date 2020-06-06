@@ -20,8 +20,8 @@ class SearchUserCell: UITableViewCell {
             
             profileImageView.loadImage(with: profileImageUrl)
             
-            self.textLabel?.text = username
-            self.detailTextLabel?.text = firstname
+            self.textLabel?.text = firstname
+            self.detailTextLabel?.text = String("@\(username)")
         }
     }
 
@@ -36,11 +36,17 @@ class SearchUserCell: UITableViewCell {
         return iv
     } ()
     
+    let separatorView: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220).cgColor
+        return view
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
         // Add profile image view.
-        let profileImageDimension = CGFloat(50)
+        let profileImageDimension = CGFloat(55)
         addSubview(profileImageView)
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -57,12 +63,24 @@ class SearchUserCell: UITableViewCell {
         
         super.layoutSubviews()
         
-        textLabel?.frame = CGRect(x: 70, y: textLabel!.frame.origin.y + 2, width: textLabel!.frame.width + 50, height: (textLabel?.frame.height)!)
-        textLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+        textLabel?.frame = CGRect(x: 80, y: textLabel!.frame.origin.y - 1, width: textLabel!.frame.width + 50, height: (textLabel?.frame.height)!)
+        textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         
-        detailTextLabel?.frame = CGRect(x: 70, y: detailTextLabel!.frame.origin.y, width: self.frame.width, height: detailTextLabel!.frame.height)
-        detailTextLabel?.textColor = .lightGray
-        detailTextLabel?.font = UIFont.systemFont(ofSize: 15)
+        /*
+        detailTextLabel?.frame = CGRect(x: 72, y: detailTextLabel!.frame.origin.y - 3, width: detailTextLabel!.frame.width + 50, height: detailTextLabel!.frame.height)
+        detailTextLabel?.textColor = UIColor.rgb(red: 130, green: 130, blue: 130)
+        detailTextLabel?.font = UIFont.systemFont(ofSize: 16)
+        */
+        
+        addSubview(detailTextLabel!)
+        detailTextLabel?.anchor(top: textLabel?.bottomAnchor, left: textLabel?.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        detailTextLabel?.textColor = UIColor.rgb(red: 130, green: 130, blue: 130)
+        //detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
+        
+        detailTextLabel?.font = UIFont(name: "HelveticaNeue", size: 15)
+        
+        addSubview(separatorView)
+        separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
     }
     
     required init?(coder aDecoder: NSCoder) {

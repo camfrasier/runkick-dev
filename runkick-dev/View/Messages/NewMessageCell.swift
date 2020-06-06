@@ -36,9 +36,10 @@ class NewMessageCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
+        let profileImageDimension = CGFloat(55)
         addSubview(profileImageView)
-        profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
-        profileImageView.layer.cornerRadius = 50 / 2
+        profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
+        profileImageView.layer.cornerRadius = profileImageDimension / 2
         profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         textLabel?.text = "Joker"

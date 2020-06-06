@@ -1377,7 +1377,6 @@ class HomeVC: UIViewController, Alertable {
                         guard let points = store?.points else { return }
                         storeFrontAnnotation.subtitle = String(points)
                         
-                        
                         self.mapView.addAnnotation(storeFrontAnnotation)
                         
                     }
@@ -2480,9 +2479,10 @@ extension HomeVC: MKMapViewDelegate {
     }
     // Below is from the Udemy lesson 23.
     
+ 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
-    /*
+        /*
        if let annotation = annotation as? RunnerAnnotation {
             let identifier = "waywalker"
             var view: MKAnnotationView
@@ -2492,6 +2492,7 @@ extension HomeVC: MKMapViewDelegate {
         return nil
        */
         
+
         let annotationIdentifier = "MyCustomAnnotation"
         guard !annotation.isKind(of: MKUserLocation.self) else {
             return nil
@@ -2534,7 +2535,7 @@ extension HomeVC: MKMapViewDelegate {
             UIGraphicsEndImageContext()
             
             // when zooming in and out some annotations will disappear accordingly
-            annotationView.displayPriority = .defaultHigh
+            //annotationView.displayPriority = .defaultHigh
             
             
             
@@ -2549,12 +2550,11 @@ extension HomeVC: MKMapViewDelegate {
                 
             }
         }
-
+          
         return annotationView
         
-        
     }
-    
+   
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
         
         centerMapButton.fadeTo(alphaValue: 1, withDuration: 0.75)
@@ -2608,14 +2608,20 @@ extension HomeVC: MKMapViewDelegate {
 
     func dropPinFor(mapItem: MKMapItem) {
         
+        
+        /*
         // Everytime we add a destination pin we must remove the previous one. We do this with the function below.
         for annotation in mapView.annotations {
             if annotation.isKind(of: MKPointAnnotation.self) {
                 mapView.removeAnnotation(annotation)
             }
         }
-
+    */
+        
+        
+        /*
         let annotation = MKPointAnnotation()
+        
         
         let annotationIdentifier = "MyCustomAnnotation"
         
@@ -2637,7 +2643,7 @@ extension HomeVC: MKMapViewDelegate {
             }
           }
         }
-
+    
         
         annotation.coordinate = mapItem.placemark.coordinate
         annotation.title = mapItem.name
@@ -2652,22 +2658,25 @@ extension HomeVC: MKMapViewDelegate {
           }
         }
         
-        mapView.addAnnotation(annotation)
-        zoomToFit(selectedAnnotation: annotation)
-        
-        
-        /*
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = mapItem.placemark.coordinate
-        annotation.title = mapItem.name
         
         mapView.addAnnotation(annotation)
         zoomToFit(selectedAnnotation: annotation)
         */
+        
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = mapItem.placemark.coordinate
+        annotation.title = mapItem.name
+        
+        //mapView.addAnnotation(annotation)
+        zoomToFit(selectedAnnotation: annotation)
+        
     }
     
     
     func zoomToFit(selectedAnnotation: MKAnnotation?) {
+        
+        
         if mapView.annotations.count == 0 {
             return
         } // Nothing past this line gets executed if this condition is met.
@@ -2760,21 +2769,21 @@ extension HomeVC: MKMapViewDelegate {
         //searchTableView.isHidden = true
         //isSearchTableViewVisible = false
         
-        
+        /*
         UIView.animate(withDuration: 0.3, animations: {
             //self.viewSearchBarButton.alpha = 1
             //self.backgroundConfigureSearchBar.alpha = 0.80
             
         })
+        */
         
-        
- 
         if view.annotation is MKUserLocation {
             return
         }
         
         selectedAnnotation = view.annotation as? MKPointAnnotation
         zoomToFit(selectedAnnotation: selectedAnnotation)
+        
         
         guard let selectedAnnotationCoordinate = selectedAnnotation?.coordinate else { return }
         let selectedDestination = MKPlacemark(coordinate: selectedAnnotationCoordinate)
@@ -2789,7 +2798,7 @@ extension HomeVC: MKMapViewDelegate {
             
             //storeDetailView.isHidden = false
             storeDetailView.presentIntialStoreView()
-            
+        
         } else {
             
          let recallStoreDetail = StoreCell()
@@ -2817,6 +2826,64 @@ extension HomeVC: MKMapViewDelegate {
         
         
     }
+    
+    func plotSearchTableSelection(_forMapItem mapItem: MKMapItem) {
+        
+        //MKAnnotationView
+           
+           mapView.removeOverlays(mapView.overlays)
+        
+               
+        //guard let selectedAnnotationCoordinate = selectedAnnotation.coordinate else { return }
+        
+        /*
+        // here we need to find the selected annotation coordinate..
+        
+        
+               let selectedDestination = MKPlacemark(coordinate: selectedAnnotationCoordinate)
+               let selectedMapItem = MKMapItem(placemark: selectedDestination)
+               
+        */
+        let selectedMapItem = mapItem
+        
+        // if we have the selected annotation map item it goes here
+        
+        //selectedMapItem.name = selectedAnnotation.title
+                
+
+               if isStoreDetailViewVisible == false {
+
+                   configureStoreViewComponents()
+                   
+                   //storeDetailView.isHidden = false
+                   //storeDetailView.presentIntialStoreView()
+                   
+               } else {
+                   
+                let recallStoreDetail = StoreCell()
+                   recallStoreDetail.configureCell()
+                   tableView.reloadData()
+                }
+               
+               let selectedMapItemArray = [selectedMapItem]
+
+               storeDetailView?.selectedAnnotationResults = selectedMapItemArray
+               storeDetailView.homeVC = self
+               
+               searchMapKitForResultsWithPolyline(forMapItem: selectedMapItem)
+               selectedMapAnnotation = selectedMapItem
+
+           // --> animateSaveSegmentButtonIn()
+
+               /*
+               if secondSegmentSelected == true {
+                   animateRemoveSegmentButtonIn()
+               }
+                */
+               
+               secondSegmentSelected = true
+       }
+    
     
     /*
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
@@ -2858,10 +2925,25 @@ extension HomeVC: MKMapViewDelegate {
             //storeDetailView.clipsToBounds = true
             //storeDetailView.layer.cornerRadius = 15
             
+            /*
             window.addSubview(storeDetailView)
             storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 270), paddingRight: 0, width: 0, height: window.frame.height + 20)
+            */
+            //window.addSubview(storeDetailView)
+            view.addSubview(storeDetailView)
+            storeDetailView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: -(view.frame.height - 810), paddingRight: 10, width: 0, height: view.frame.height - 540)
 
+            
+            
+            
+            
+            
+            
+            
             /*
+             
+             // this section may be deleted later
+             
             let height: CGFloat = 740
             let storeDetailViewY = view.frame.height - height
                 
@@ -3382,6 +3464,7 @@ extension HomeVC: MKMapViewDelegate {
         }
     }
     
+    
 }
 
 // searchbar and store results tableview
@@ -3449,17 +3532,17 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
- 
+    
+    
     
 
     // after selecting an actual row starts here
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        
         //handleDismiss()
-        handleCancelSearch()
-        shouldPresentLoadingView(true)
+        
+        //shouldPresentLoadingView(true)
         
         let selectedSearchStore = stores[indexPath.row]
         var store: Store!
@@ -3471,11 +3554,9 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         guard let storeName = store?.title else { return }
-        
         guard let lat = selectedSearchStore.lat else { return }
         guard let long = selectedSearchStore.long else { return }
-        
-        guard let points = selectedSearchStore.points else { return }
+        //guard let points = selectedSearchStore.points else { return }
         
         let coordinatePin = CLLocationCoordinate2DMake(lat, long)
         let addressDict = [CNContainerNameKey: selectedSearchStore.title]
@@ -3485,20 +3566,33 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         let newMapItem = MKMapItem(placemark: destinationPin)
         newMapItem.name = storeName
         
-        mapView.removeOverlays(mapView.overlays)
+        //mapView.removeOverlays(mapView.overlays)
   
-        
         dropPinFor(mapItem: newMapItem)
-        print(newMapItem)
+        //print(newMapItem)
         
-        //   animateTableView(shouldShow: false)
-        shouldPresentLoadingView(false)
+        //animateTableView(shouldShow: false)
+        
+        //shouldPresentLoadingView(false)
         
         let annotation = MKPointAnnotation()
-        guard let pointsLabel = selectedSearchStore.points else {return}
-        
         annotation.coordinate = newMapItem.placemark.coordinate
+   
+         
+         /*
+        guard let pointsLabel = selectedSearchStore.points else {return}
         annotation.title = String(pointsLabel)
+        */
+        
+        
+        // got this from new map item
+        plotSearchTableSelection(_forMapItem: newMapItem)
+        
+        
+        //mapView.addAnnotation(annotation)
+        
+        handleCancelSearch()
+ 
         
     }
     
@@ -3566,6 +3660,8 @@ extension UIViewController {
     
     func setupToHideKeyboardOnTapOnView()
     {
+        
+        print("SCREEN IS TAPPED HERE")
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         
         tap.cancelsTouchesInView = false
@@ -3573,6 +3669,7 @@ extension UIViewController {
     }
     
     @objc func dismissKeyboard() {
+        print("SCREEN IS DISMISSED HERE")
         view.endEditing(true)
     }
 }
@@ -3822,20 +3919,22 @@ extension HomeVC: UITextFieldDelegate {
         
         if sender == destinationTextField {
   
+            
         customMenuButton.isHidden = true
-               customMenuButtonArrow.isHidden = true
-               customProfileButton.isHidden = true
+        customMenuButtonArrow.isHidden = true
+        customProfileButton.isHidden = true
                //searchBar.sizeToFit()
               
            
                //isSearchTableViewVisible = true
            
+            /*
                if isStoreDetailViewVisible == true {
                    
                    dismissStoreDetailView()
                    
                }
-    
+            */
             
             searchTableView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             lineView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
@@ -3989,6 +4088,13 @@ extension HomeVC: UITextFieldDelegate {
             //self.destinationTextField.frame.origin.x += 50
         })
         
+        //clears search view
+        destinationTextField.text = nil
+        inSearchMode = false
+        
+        // reloads search table view data
+        tableView.reloadData()
+
         
         cancelSearchButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         searchBarSubView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
@@ -4024,6 +4130,10 @@ extension HomeVC: UITextFieldDelegate {
         
         //self.customMenuButton.alpha = 1
         //self.customProfileButton.alpha = 1
+        
+        
+        print("We reach this point so this should allow the keyboard to be cancelllllled")
+        view.endEditing(true)
     }
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {

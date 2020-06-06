@@ -19,6 +19,8 @@ class Store {
     var points: Int!
     var storeId: String!
     var category: String?
+    var imageUrl: String!
+    
     
     init(storeId: String!, dictionary: Dictionary<String, AnyObject>) {
         
@@ -47,5 +49,10 @@ class Store {
         if let category = dictionary["category"] as? String {
             self.category = category
         }
+        
+        if let imageUrl = dictionary["imageUrl"] as? String {
+            self.imageUrl = imageUrl
+        }
+        
     }
 }
