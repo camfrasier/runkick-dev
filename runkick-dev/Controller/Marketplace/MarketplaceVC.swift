@@ -76,15 +76,17 @@ class MarketplaceVC: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         configureViewComponents()
         
         configureNavigationaBar()
         
-        configureTabBar()
+        //configureTabBar()
             
         collectionView.register(MarketplaceCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -161,7 +163,7 @@ class MarketplaceVC: UICollectionViewController {
         
         collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
+        let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.height)!)
         
         view.addSubview(shoppingCartButton)
         shoppingCartButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
@@ -204,11 +206,14 @@ class MarketplaceVC: UICollectionViewController {
     func configureTabBar() {
         // adding shadow view to the tab bar
                tabBarController?.tabBar.isTranslucent = false
+        
+                /*
                tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
                tabBarController?.tabBar.layer.cornerRadius = 15
                tabBarController?.tabBar.layer.masksToBounds = true
                tabBarController?.tabBar.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
                tabBarController?.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                */
     }
     
     @objc func handleShoppingCart() {

@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/cameronfrasier/Desktop/runkick-dev/runkick-dev/View/Messages/ActivityHistoryCell.swift">
-   </FileRef>
-   <FileRef
       location = "group:runkick-dev.xcodeproj">
    </FileRef>
    <FileRef

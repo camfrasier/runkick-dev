@@ -103,7 +103,7 @@ class UserProfileHeader: UICollectionViewCell {
     let userBioLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
-        label.textColor = UIColor.rgb(red: 90, green: 90, blue: 90)
+        label.textColor = UIColor.rgb(red: 60, green: 60, blue: 60)
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
         //label.textAlignment = .left
@@ -204,6 +204,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.layer.borderColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
         button.layer.borderWidth = 0.25
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+        //button.titleLabel?.font =  UIFont(name: "HelveticaNeue-CondensedBold", size: 14)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(handleEditProfileFollow), for: .touchUpInside)
         return button

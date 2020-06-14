@@ -102,29 +102,29 @@ extension UIImage {
     }
 }
 
-class Colors {
-    var gl:CAGradientLayer!
+extension UILabel {
 
-    init() {
-        let colorTop = UIColor(red: 192.0 / 255.0, green: 38.0 / 255.0, blue: 42.0 / 255.0, alpha: 1.0).cgColor
-        let colorBottom = UIColor(red: 35.0 / 255.0, green: 2.0 / 255.0, blue: 2.0 / 255.0, alpha: 1.0).cgColor
+    // Pass value for any one of both parameters and see result
+    func setLineSpacing(lineSpacing: CGFloat = 0.0, lineHeightMultiple: CGFloat = 0.0) {
 
-        self.gl = CAGradientLayer()
-        self.gl.colors = [colorTop, colorBottom]
-        self.gl.locations = [0.0, 1.0]
+        guard let labelText = self.text else { return }
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = lineSpacing
+        paragraphStyle.lineHeightMultiple = lineHeightMultiple
+
+        let attributedString:NSMutableAttributedString
+        if let labelattributedText = self.attributedText {
+            attributedString = NSMutableAttributedString(attributedString: labelattributedText)
+        } else {
+            attributedString = NSMutableAttributedString(string: labelText)
+        }
+
+        // Line spacing attribute
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
+
+        self.attributedText = attributedString
     }
 }
-/*
-// extension to inrease height of the tabBar
-extension UITabBar {
-    
-    override open func sizeThatFits(_ size: CGSize) -> CGSize {
-    var sizeThatFits = super.sizeThatFits(size)
-    sizeThatFits.height = 70 // adjust your size here
-    return sizeThatFits
-   }
-}
-
-*/
 
 

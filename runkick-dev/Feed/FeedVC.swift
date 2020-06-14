@@ -115,10 +115,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // adding blur effect with this function at alpha 0 initially
         configureViewComponents()
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
-        
+        */
 
         // uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -150,7 +151,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         updateUserFeeds()
         
-        configureTabBar()
+        //configureTabBar()
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             //flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
@@ -161,12 +162,15 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     override func viewDidAppear(_ animated: Bool) {
         // adding shadow view to the tab bar
-        tabBarController?.tabBar.isTranslucent = false
+        
+        //tabBarController?.tabBar.isTranslucent = false
+        
+        /*
         tabBarController?.tabBar.layer.cornerRadius = 15
         tabBarController?.tabBar.layer.masksToBounds = true
         tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         tabBarController?.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-
+        */
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -203,7 +207,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                            // the height of all the variables in the cell
                            let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
                            
-                           return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 20)
+                           return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
             }
             
         }
@@ -217,7 +221,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 // the height of all the variables in the cell
                 let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
                 
-                return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 20)
+                return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
             }
             
         }
@@ -328,25 +332,27 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     func configureNavigationBar() {
         
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        //navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        //navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        // if you want subsequent views to never user large titles automatically
+        //navigationItem.largeTitleDisplayMode = .never
         
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
 
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
+        //UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
          
-        let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]
+        //let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
+        //self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]
 
-        navigationItem.title = "Broadcast"
+
+        //navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        navigationController?.navigationBar.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),NSAttributedString.Key.font: UIFont(name: "Arial-Med", size: 24) ?? UIFont.boldSystemFont(ofSize: 28)]
         
-        navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
-    /*
-        navigationController?.navigationBar.largeTitleTextAttributes =
-            [NSAttributedString.Key.foregroundColor: UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1),
-             NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 30) ??
-                                     UIFont.systemFont(ofSize: 30)]
-    */
+        navigationItem.title = "Feed"
+    
         
         navigationController?.navigationBar.addSubview(timelineBarView)
         timelineBarView.anchor(top: navigationController?.navigationBar.bottomAnchor, left: navigationController?.navigationBar.leftAnchor, bottom: nil, right: navigationController?.navigationBar.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
@@ -750,7 +756,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             if !isDoubleTap {
                 post.adjustLikes(addLike: false, completion: { (likes) in
                     cell.likesLabel.text = "\(likes)"
-                    cell.newLikeButton.setImage(UIImage(named: "simpleBlueHeartGray"), for: .normal)
+                    cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
+                    cell.newLikeButton.alpha = 1
                 })
             }
       
@@ -758,7 +765,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             // handle liking post
             post.adjustLikes(addLike: true, completion: { (likes) in
                 cell.likesLabel.text = "\(likes)"
-                cell.newLikeButton.setImage(UIImage(named: "simpleBlueHeartGray"), for: .normal)
+                cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
+                cell.newLikeButton.alpha = 0.80
+                
             })
         }
     }
@@ -785,7 +794,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 // setting this to true maintains the liked status after a refresh gesture
                 // this may work for maintaining the status of store admin and setting the userVariable LoginVC
                 post.didLike = true
-                cell.newLikeButton.setImage(UIImage(named: "simpleBlueHeartGray"), for: .normal)
+                cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
+                cell.newLikeButton.alpha = 0.80
             }
         }
     }
@@ -846,7 +856,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         // adding shadow view to the tab bar
         tabBarController?.tabBar.isTranslucent = true
-        tabBarController?.tabBar.barTintColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
+        tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        
+        /*
         tabBarController?.tabBar.layer.cornerRadius = 15
         tabBarController?.tabBar.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
         tabBarController?.tabBar.layer.borderWidth = 1
@@ -856,7 +868,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         collectionView.addSubview(tabGradientView)
         tabGradientView.anchor(top: nil, left: collectionView.leftAnchor, bottom: collectionView.bottomAnchor, right: collectionView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
-        
+        */
     }
     
     func handleUsernameLabelTapped(forCell cell: FeedCell) {

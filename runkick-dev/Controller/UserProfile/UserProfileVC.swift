@@ -71,9 +71,11 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.sectionHeadersPinToVisibleBounds = true
@@ -280,7 +282,9 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        
+
+        navigationItem.largeTitleDisplayMode = .never
+            
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
         
         let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
@@ -718,7 +722,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 388, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 325, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
     }
 }

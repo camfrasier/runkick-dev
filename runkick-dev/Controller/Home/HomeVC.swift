@@ -606,10 +606,12 @@ class HomeVC: UIViewController, Alertable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         //let swipeGestures = setupSwipeGestures()
         //setupPanGestures(swipeGestures: swipeGestures)
@@ -1061,6 +1063,7 @@ class HomeVC: UIViewController, Alertable {
         //self.homeVC?.hideTabBar(tabBarController?.tabBar.isHidden = false
         //tabBarController?.tabBar.isTranslucent = false
         
+        /*
         // adding shadow view to the tab bar
         tabBarController?.tabBar.isTranslucent = true
         tabBarController?.tabBar.barTintColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
@@ -1073,7 +1076,7 @@ class HomeVC: UIViewController, Alertable {
         
         mapView.addSubview(tabGradientView)
         tabGradientView.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
-        
+        */
  
         /*
         // remove tab bar top border
@@ -2491,7 +2494,6 @@ extension HomeVC: MKMapViewDelegate {
         }
         return nil
        */
-        
 
         let annotationIdentifier = "MyCustomAnnotation"
         guard !annotation.isKind(of: MKUserLocation.self) else {
@@ -2499,6 +2501,8 @@ extension HomeVC: MKMapViewDelegate {
         }
         
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
+        
+
         if annotationView == nil {
           annotationView = CKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
           if case let annotationView as CKAnnotationView = annotationView {
@@ -2506,14 +2510,20 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.canShowCallout = true
             
             
-            annotationView.label = UILabel(frame: CGRect(x: 6.5, y: 7, width: 36.0, height: 18.0))
+            annotationView.label = UILabel(frame: CGRect(x: 6.5, y: 7, width: 36.0, height: 20.0))
+            
+            
+            
             if let label = annotationView.label {
-                label.font = UIFont(name: "HelveticaNeue-Bold", size: 19.0)
+                label.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
               label.textAlignment = .center
-                label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+             //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+                label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
               label.adjustsFontSizeToFitWidth = true
               annotationView.addSubview(label)
+                
             }
+ 
           }
         }
 
@@ -2522,17 +2532,20 @@ extension HomeVC: MKMapViewDelegate {
         
             //annotationView.image = UIImage(named: "whiteCircleGreenSmall-60x60")
             
-            let pinImage = UIImage(named: "pointsTrueBlue")
-            //let pinImage = UIImage(named: "roundedMutedOrange")
-            //let pinImage = UIImage(named: "roundedMarineRectPointsDark")
+            //let pinImage = UIImage(named: "simpleMarkerTrueBlue")
+            let pinImage = UIImage(named: "simpleMarkerWhite")
+    
+            //let pinImage = UIImage(named: "simpleMarkerWhiteOutline")
+            //let pinImage = UIImage(named: "simpleMarkerActionRed")
             //let pinImage = UIImage(named: "roundedMutedOrangePoints")
             
-            let size = CGSize(width: 50, height: 50)
+            let size = CGSize(width: 48, height: 55)
             //UIGraphicsBeginImageContext(size)
             UIGraphicsBeginImageContextWithOptions(size, false, 10)
             pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
             let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
+            
             
             // when zooming in and out some annotations will disappear accordingly
             //annotationView.displayPriority = .defaultHigh
@@ -2540,17 +2553,51 @@ extension HomeVC: MKMapViewDelegate {
             
             
             annotationView.image = resizedImage
+            
+            
 
-            if let title = annotation.subtitle,
+            if let subtitle = annotation.subtitle,
                 let label = annotationView.label {
 
-            label.text = title
+            //label.text = title
  
-            //label.text = "\(title ?? "?")Pts"
-                
+            label.text = "\(subtitle ?? "?")K"
+
             }
+            
+            /*
+            if let title = annotation.title,
+                           let storeLabel = annotationView.label {
+                           
+                           storeLabel.text = title
+                           
+            }
+                */
+           
+            
         }
-          
+        
+        var storeLabel = UILabel(frame: CGRect(x: -16, y: 55, width: 80, height: 20))
+
+            storeLabel.font = UIFont(name: "HelveticaNeue", size: 10.0)
+        storeLabel.textAlignment = .center
+            storeLabel.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            storeLabel.text = annotation.title as? String
+        
+        //annotationView?.addSubview(storeLabel)
+        
+        let imageView = UIImageView()
+        imageView.frame = CGRect(x: 15.5, y: 26, width: 16, height: 14.5)
+        //imageView.image = UIImage(named: "like_selected-red")
+        imageView.image = UIImage(named: "simpleHeartWhite")
+        
+        annotationView?.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.55).cgColor
+        annotationView?.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
+        annotationView?.layer.shadowRadius = 4.0
+        annotationView?.layer.shadowOffset = CGSize(width: 1, height: 3)
+      
+        annotationView?.addSubview(imageView)
+  
         return annotationView
         
     }
@@ -2712,7 +2759,7 @@ extension HomeVC: MKMapViewDelegate {
     
     func searchMapKitForResultsWithPolyline(forMapItem mapItem: MKMapItem) {
         
-        plotStoreAnnotations()
+        //plotStoreAnnotations()
         
         let request = MKDirections.Request()
         request.source = oldSource
@@ -2791,7 +2838,7 @@ extension HomeVC: MKMapViewDelegate {
         
         //print(selectedMapItem.placemark.coordinate)
         selectedMapItem.name = selectedAnnotation!.title
-
+        
         if isStoreDetailViewVisible == false {
 
             configureStoreViewComponents()
@@ -2845,7 +2892,6 @@ extension HomeVC: MKMapViewDelegate {
                
         */
         let selectedMapItem = mapItem
-        
         // if we have the selected annotation map item it goes here
         
         //selectedMapItem.name = selectedAnnotation.title

@@ -24,7 +24,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         
         // Tab bar tint color
-        tabBar.tintColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1)
+        tabBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
         /*
         self.tabBar.isTranslucent = false
@@ -44,8 +44,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tabBar.frame.size.height = 70
-        tabBar.frame.origin.y = view.frame.height - 70
+        //tabBar.frame.size.height = 80
+        //tabBar.frame.origin.y = view.frame.height + 50
+        //tabBar.layer.cornerRadius = 15
     }
 
     // Function to create view controllers that exist within tab bar controller
@@ -60,7 +61,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // maybe have the below images get smaller when they are unselected.. and can change the tint color
         
         // Mark: - Main feed controller
-        let feedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Broadcast", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let feedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Feed", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
