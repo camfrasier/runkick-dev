@@ -23,9 +23,11 @@ class NewMessageController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         //let userId = selectedUser?.uid
         //print("THIS COULD BE THE USER SNOOP \(userId)")

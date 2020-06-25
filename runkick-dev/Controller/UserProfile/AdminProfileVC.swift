@@ -65,9 +65,11 @@ class AdminProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         self.collectionView!.register(AdminProfileCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(AdminProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)

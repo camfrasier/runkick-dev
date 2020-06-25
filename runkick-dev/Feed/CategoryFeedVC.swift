@@ -13,6 +13,7 @@ private let reuseIdentifier = "Cell"
 
 class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, CategoryFeedCellDelegate {
     
+    
     //var categories = [MarketCategory]() // This need to be a variable so we can mutate it.
     //var category: MarketCategory?
     var currentKey: String?
@@ -65,13 +66,14 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         
         
-        
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        collectionView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        collectionView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         
         // register cell classes
         self.collectionView!.register(CategoryFeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -110,6 +112,8 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         return CGSize(width: width, height: height)
     }
     
+    
+    
     // MARK: UICollectionViewDataSource
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -146,20 +150,28 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CategoryFeedCell
         
+        // don't forget to add the delegate value in order to delegate communication from the VC to the cell class
+        cell.delegate = self
+        
         cell.categoryPost = posts[indexPath.item]
         
         return cell
     }
     
+    
     func handlePhotoTapped(for cell: CategoryFeedCell) {
-        
-       guard let post = cell.categoryPost else { return }
-        //let commentVC = CommentVC(collectionViewLayout: UICollectionViewFlowLayout())
-        
-        // sending this postId over to the comment view controller
-        //commentVC.post = category
-        //navigationController?.pushViewController(commentVC, animated: true)
+             
+             print("THIS SHOULD TAKE US TO THE PROPER POST Store item selection VC")
+             guard let post = cell.categoryPost else { return }
+             let storeItemSelectionVC = StoreItemSelectionVC(collectionViewLayout: UICollectionViewFlowLayout())
+             
+             // sending this postId over to the comment view controller
+        storeItemSelectionVC.categoryPost = post
+             navigationController?.pushViewController(storeItemSelectionVC, animated: true)
+
     }
+    
+ 
     
     func configureNavigationBar() {
         
@@ -173,7 +185,8 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]
 
-        navigationItem.title = "Category"
+        //navigationItem.title = "Category"
+        navigationItem.title = post?.category
         
         navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
     }
@@ -324,10 +337,15 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func configureTabBar() {
         
+        // removing shadow from tab bar
+        tabBarController?.tabBar.layer.shadowRadius = 0
+        tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        
+        /*
         // adding shadow view to the tab bar
         tabBarController?.tabBar.isTranslucent = true
         tabBarController?.tabBar.barTintColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
-        tabBarController?.tabBar.layer.cornerRadius = 15
+        //tabBarController?.tabBar.layer.cornerRadius = 15
         tabBarController?.tabBar.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
         tabBarController?.tabBar.layer.borderWidth = 1
         tabBarController?.tabBar.layer.masksToBounds = true
@@ -336,7 +354,7 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         collectionView.addSubview(tabGradientView)
         tabGradientView.anchor(top: nil, left: collectionView.leftAnchor, bottom: collectionView.bottomAnchor, right: collectionView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
-        
+        */
     }
     
     func configureViewComponents() {
@@ -358,6 +376,7 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         print("handle shopping cart")
     }
     
+
     
     @objc func handleFeedRefresh() {
         // this is a screen pull down function to refresh you feed

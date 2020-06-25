@@ -23,9 +23,11 @@ class MessagesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         view.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         tableView.separatorStyle = .none

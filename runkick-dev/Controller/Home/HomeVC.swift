@@ -22,7 +22,7 @@ class HomeVC: UIViewController, Alertable {
     
     var mapView: MKMapView!
     var manager: CLLocationManager?
-    var regionRadius: CLLocationDistance = 1000
+    var regionRadius: CLLocationDistance = 750
     var route: MKRoute!
     var selectedItemPlacemark: MKPlacemark? = nil
     var selectedAnnotation: MKPointAnnotation?
@@ -74,8 +74,6 @@ class HomeVC: UIViewController, Alertable {
     var compareKey = String()
     var searchBar = UISearchBar()
     var storeCurrentKey: String?
-    //var mySwipeUp: UIGestureRecognizer?
-    var mySwipeDown: UIGestureRecognizer?
     
     let customMenuButton = UIButton(type: UIButton.ButtonType.custom)
     let customMenuButtonArrow = UIButton(type: UIButton.ButtonType.custom)
@@ -85,6 +83,7 @@ class HomeVC: UIViewController, Alertable {
     
     let blackView = UIView()
     let rightMenuBV = UIView()
+    let storeDetailBV = UIView()
     let loginViewBV = UIView()
     
     let menuVC = MenuVC()
@@ -359,18 +358,35 @@ class HomeVC: UIViewController, Alertable {
         return button
     }()
     
-    lazy var simpleRightMenuBackground: UIView = {
+    lazy var simpleActionShadowBackground: UIView = {
         let view = UIView()
-        //view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        view.backgroundColor = .clear
+        view.backgroundColor = UIColor.actionRed()
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckRight))
         menuTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(menuTap)
-        //view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        //view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
-        //view.layer.shadowRadius = 5.0
-        //view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.alpha = 1
+        return view
+    }()
+    
+    lazy var simpleRightMenuBackground: GradientActionView = {
+        let view = GradientActionView()
+        //view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        //view.backgroundColor = UIColor.actionRed()
+        //view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        //view.layer.borderWidth = 4
+        let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckRight))
+        menuTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(menuTap)
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
         view.alpha = 1
         return view
     }()
@@ -406,6 +422,26 @@ class HomeVC: UIViewController, Alertable {
         view.alpha = 0
         return view
     }()
+    
+    lazy var saveSegmentButton: UIButton = {
+            let button = UIButton(type: .system)
+            button.setImage(UIImage(named: "plusSignInCircle"), for: .normal)
+            button.addTarget(self, action: #selector(handleSaveSegment), for: .touchUpInside)
+            //button.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+            button.alpha = 1
+            button.backgroundColor = .clear
+            return button
+        } ()
+       
+       lazy var removeSegmentButton: UIButton = {
+           let button = UIButton(type: .system)
+           button.setImage(UIImage(named: "minusSignInCircle"), for: .normal)
+           button.addTarget(self, action: #selector(handleRemovedSaveSegment), for: .touchUpInside)
+           //button.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+           button.alpha = 1
+           button.backgroundColor = .clear
+           return button
+       } ()
     
     /*
     let analyticsButton: UIButton = {
@@ -613,9 +649,6 @@ class HomeVC: UIViewController, Alertable {
         extendedLayoutIncludesOpaqueBars = true
         */
         
-        //let swipeGestures = setupSwipeGestures()
-        //setupPanGestures(swipeGestures: swipeGestures)
-        
         //self.title = "Home"
         navigationController?.navigationBar.isHidden = true
         
@@ -678,15 +711,14 @@ class HomeVC: UIViewController, Alertable {
         
         mapView.isRotateEnabled = false
         
-        centerMapOnUserLocation() //this command i will have to verify later. may or may not need.
+        
         
         plotStoreAnnotations()
         
         isUserLoggedIn()
         
-        //searchTableDelay()
+        centerMapOnUserLocation() //this command i will have to verify later. may or may not need.
         
-        //resolveAnimationGlitch()
   
     }
     
@@ -697,9 +729,14 @@ class HomeVC: UIViewController, Alertable {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        tabBarController?.tabBar.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.35).cgColor
+        tabBarController?.tabBar.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
+        tabBarController?.tabBar.layer.shadowRadius = 4.0
+        tabBarController?.tabBar.layer.shadowOffset = CGSize(width: 1, height: 0)
+        
         navigationController?.navigationBar.isHidden = true
     }
+    
     
     
     // MARK: - Helper Functions
@@ -720,22 +757,7 @@ class HomeVC: UIViewController, Alertable {
         visualEffectView.removeFromSuperview()
     }
     
-    /*
-    //not sure if this works for the slide menu..
-    func resolveAnimationGlitch() {
-        print("Debug: Animation glitch resolved early")
-            self.cancelSearchButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-            
-            self.cancelSearchButton.alpha = 1
-            self.cancelSearchButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-            
-        }) { (_) in
-            self.cancelSearchButton.transform = .identity
-        }
-    }
-    */
+
     func configureMapViewComponents() {
         
         view.backgroundColor = .white
@@ -753,16 +775,20 @@ class HomeVC: UIViewController, Alertable {
         
         simpleMenuBackground.addSubview(simpleMenuButton)
         simpleMenuButton.anchor(top: simpleMenuBackground.topAnchor, left: simpleMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 5.5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)
- 
-        mapView.addSubview(simpleRightMenuBackground)
-        simpleRightMenuBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
-        simpleRightMenuBackground.layer.cornerRadius = 60 / 2
-
-       simpleRightMenuBackground.addSubview(simpleRightMenuButton)
-       simpleRightMenuButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
-        simpleRightMenuButton.addSubview(beBoppActionButton)
-        beBoppActionButton.anchor(top: simpleRightMenuButton.topAnchor, left: simpleRightMenuButton.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 5.5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+        mapView.addSubview(simpleActionShadowBackground)
+        simpleActionShadowBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 60, height: 60)
+        simpleActionShadowBackground.layer.cornerRadius = 15
+        
+        simpleActionShadowBackground.addSubview(simpleRightMenuBackground)
+        simpleRightMenuBackground.anchor(top: simpleActionShadowBackground.topAnchor, left: simpleActionShadowBackground.leftAnchor, bottom:  simpleActionShadowBackground.bottomAnchor, right: simpleActionShadowBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
+        simpleRightMenuBackground.layer.cornerRadius = 15
+
+       //simpleRightMenuBackground.addSubview(simpleRightMenuButton)
+       //simpleRightMenuButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
+        
+        simpleRightMenuBackground.addSubview(beBoppActionButton)
+        beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 5.5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
 
         
         //configureNavigationSubView()
@@ -774,6 +800,7 @@ class HomeVC: UIViewController, Alertable {
         configureMenuView()
         
         configureRightMenuView()
+        
         
         //configureGestureRecognizers()
         
@@ -877,10 +904,7 @@ class HomeVC: UIViewController, Alertable {
                     self.loginViewBV.backgroundColor = .clear
                    window.addSubview(self.loginViewBV)
                    self.loginViewBV.frame = window.frame
-                    
-                    
-                    
-                    
+
                     
                    }
                }
@@ -1041,27 +1065,34 @@ class HomeVC: UIViewController, Alertable {
     
     
     func configureMapView() {
+        
         mapView = MKMapView()
+        let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
         
         view.addSubview(mapView)
+        //mapView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         mapView.addConstraintsToFillView(view: view)
         
         mapView.addSubview(searchBarSubView)
         searchBarSubView.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 100)
         
-        //mapView.tintColor = UIColor(red: 236/255, green: 38/255, blue: 125/255, alpha: 1)  // action red
-        mapView.tintColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
+        mapView.tintColor = UIColor.airBnBRed()
+        //mapView.tintColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
         //mapView.tintColor = UIColor(red: 122/255, green: 206/255, blue: 33/255, alpha: 1) // limer
 
     }
    
-    
-    
     func configureTabBar() {
         // changing tab bar tint color to white
         //tabBarController?.tabBar.barTintColor = UIColor.white
         //self.homeVC?.hideTabBar(tabBarController?.tabBar.isHidden = false
-        //tabBarController?.tabBar.isTranslucent = false
+        
+        tabBarController?.tabBar.isTranslucent = false
+        tabBarController?.tabBar.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.35).cgColor
+        tabBarController?.tabBar.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
+        tabBarController?.tabBar.layer.shadowRadius = 4.0
+        tabBarController?.tabBar.layer.shadowOffset = CGSize(width: 1, height: 0)
+        
         
         /*
         // adding shadow view to the tab bar
@@ -1340,6 +1371,7 @@ class HomeVC: UIViewController, Alertable {
     }
     
     func centerMapOnUserLocation() {
+        
         //let coordinateRegion = MKCoordinateRegion.init(center: mapView.userLocation.coordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
         let coordinateRegion = MKCoordinateRegion.init(center: mapView.userLocation.coordinate, latitudinalMeters: regionRadius, longitudinalMeters: regionRadius)
         mapView.setRegion(coordinateRegion, animated: true)
@@ -1395,7 +1427,7 @@ class HomeVC: UIViewController, Alertable {
         let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
         
         mapView.addSubview(centerMapBackground)
-        centerMapBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: tabBarHeight + 20, paddingRight: 0, width: 60, height: 60)
+        centerMapBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 20, paddingRight: 0, width: 60, height: 60)
         centerMapBackground.layer.cornerRadius = 60 / 2
         
         centerMapBackground.addSubview(centerMapButton)
@@ -1452,7 +1484,7 @@ class HomeVC: UIViewController, Alertable {
         tableView.dataSource = self
         
         // search table view background
-        tableView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         //tableView.alpha = 0.8
         
         //tableView.register(UITableViewCell.self, forCellReuseIdentifier: "locationCell")
@@ -1473,79 +1505,7 @@ class HomeVC: UIViewController, Alertable {
         
         
     }
-    /*
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        
-        
-        
-        customMenuButton.isHidden = true
-        customMenuButtonArrow.isHidden = true
-        customProfileButton.isHidden = true
-        searchBar.sizeToFit()
-       
-    
-        isSearchTableViewVisible = true
-    
-        if isStoreDetailViewVisible == true {
-            
-            dismissStoreDetailView()
-            
-        }
-        
-        //let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
-        let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
-        print(navBarHeight)
-        
-        if expansionState == .NotExpanded {
- 
-            animateInputView(targetPosition: self.searchTableView.frame.origin.y - 700) { (_) in
-                self.expansionState = .FullyExpanded
-                print("DEBUG: Not expanded to fully expanded")
   
-
-            }
-            
-            //hideTabBar()
-        }
-        
-        /*
-        if expansionState == .PartiallyExpanded {
-            
-            animateInputView(targetPosition: self.searchTableView.frame.origin.y - 342) { (_) in
-                self.expansionState = .FullyExpanded
-                print("partially expanded to fully expanded")
-            }
-            
-        }
-    */
-        //handleBlackView()
-        searchBar.showsCancelButton = true
-        
-        
-        // need to have a cancel button show here
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        //let searchText = searchText.lowercased()
-        let searchText = searchText
-        if searchText.isEmpty || searchText == " " {
-            inSearchMode = false
-            tableView.reloadData()
-        } else {
-            inSearchMode = true
-            
-            // return fitlered stores
-            filteredStores = stores.filter({ (store) -> Bool in
-                
-                // using the username to filter through
-                return store.title.contains(searchText)
-            })
-            tableView.reloadData()
-        }
-    }
-    */
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
         searchBar.text = nil
@@ -1569,153 +1529,6 @@ class HomeVC: UIViewController, Alertable {
         //handleDismiss()
     }
     
-    /*
-     
-    func disableViewInteraction(directionsEnabled: Bool) {
-        self.directionsEnabled = directionsEnabled
-        
-        if directionsEnabled {
-            tableView.allowsSelection = false
-            searchBar.isUserInteractionEnabled = false
-        } else {
-            tableView.allowsSelection = true
-            searchBar.isUserInteractionEnabled = true
-        }
-    }
-     
-    */
-    
-    //tableview used to be view.. but something is not right.
-    
-    /*
-    func configureGestureRecognizers() {
-        
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
-        swipeUp.direction = .up
-        swipeUp.delegate = self
-        searchTableView.addGestureRecognizer(swipeUp)
-        mySwipeUp = swipeUp
-        
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
-        swipeDown.direction = .down
-        swipeDown.delegate = self
-        searchTableView.addGestureRecognizer(swipeDown)
-        mySwipeDown = swipeDown
-    }
-    */
-    
-    /*
-    func createSearchTablePanGesture() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector("handlePanGesture:"))
-        searchTableView.addGestureRecognizer(panGesture)
-    }
-    
-    func handlePanGesture(panGesture: UIPanGestureRecognizer) {
-        // get translation
-        let translation = panGesture.translation(in: view)
-        panGesture.setTranslation(CGPoint.zero, in: view)
-        print(translation)
-
-        // create a new Label and give it the parameters of the old one
-        let label = panGesture.view as! UITableView
-        label.center = CGPoint(x: label.center.x+translation.x, y: label.center.y+translation.y)
-        label.isMultipleTouchEnabled = true
-        label.isUserInteractionEnabled = true
-
-        if panGesture.state == UIGestureRecognizer.State.began {
-            // add something you want to happen when the Label Panning has started
-        }
-
-        if panGesture.state == UIGestureRecognizer.State.ended {
-            // add something you want to happen when the Label Panning has ended
-        }
-
-        if panGesture.state == UIGestureRecognizer.State.changed {
-            // add something you want to happen when the Label Panning has been change ( during the moving/panning )
-        } else {
-            // or something when its not moving
-        }
-    }
-    */
-    
-
-    
-    @objc func handleSwipeGesture(sender: UISwipeGestureRecognizer) {
-        
-        //let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
-        
-        if directionsEnabled {
-            print("Swiping disabled..")
-            return
-        }
-        
-        if sender.direction == .up {
-            if expansionState == .NotExpanded {
-                
-                animateInputView(targetPosition: self.searchTableView.frame.origin.y - 450) { (_) in
-                    self.expansionState = .PartiallyExpanded
-                    print("not expanded to partially Expanded")
-                }
-                
-                //hideTabBar()
-                
-                /*
-                UIView.animate(withDuration: 0.25) {
-                    self.centerMapButton.frame.origin.y -= 174
-                }
-                */
-            }
-            
-            /*
-            if expansionState == .PartiallyExpanded {
-                
-                animateInputView(targetPosition: self.searchTableView.frame.origin.y - 342) { (_) in
-                    self.expansionState = .FullyExpanded
-                    print("partially expanded to fully Expanded")
-                }
-                
-                handleBlackView()
-            }
-           */
-            
-        } else {
-            
-            /*
-            if expansionState == .FullyExpanded {
-                self.searchBar.endEditing(true)
-                self.searchBar.showsCancelButton = false
-                
-                animateInputView(targetPosition: self.searchTableView.frame.origin.y + 342) { (_) in
-      
-                    self.expansionState = .PartiallyExpanded
-                    print("fully expanded to partially expanded")
-                }
-                
-                handleBlackViewOnDismiss()
-            }
-            */
-            
-            
-            if expansionState == .PartiallyExpanded {
-     
-                animateInputView(targetPosition: self.searchTableView.frame.origin.y + 450) { (_) in
-                    self.expansionState = .NotExpanded
-                    
-                    print("partially expanded to not expanded")
-                }
-                
-                //showTabBar()
-                
-                /*
-                UIView.animate(withDuration: 0.25) {
-                    self.centerMapButton.frame.origin.y += 174
-                }
-                */
-            }
-            //handleBlackView()
-        }
-    }
-
     
     func dismissOnSearch() {
         
@@ -1930,7 +1743,25 @@ class HomeVC: UIViewController, Alertable {
         }
     }
     
+    func configureStoreDetailBV() {
+        
+        storeDetailBV.anchor(top: self.mapView.topAnchor, left: self.mapView.leftAnchor, bottom: self.mapView.bottomAnchor, right: self.mapView.rightAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        UIView.animate(withDuration: 0.25, animations: {
+                    self.storeDetailBV.backgroundColor = UIColor(white: 0, alpha: 0.5)
+                    self.storeDetailBV.alpha = 1
+                })
+
+    }
     
+    func handleDismissStoreBV() {
+        
+        UIView.animate(withDuration: 0.25) {
+        self.storeDetailBV.alpha = 0
+        
+        }
+        
+    }
 
     func configureMenuView() {
 
@@ -2007,14 +1838,18 @@ class HomeVC: UIViewController, Alertable {
            }
        }
     
+    
+    
     @objc func handleMenuSlider() {
 
         if isStoreDetailViewVisible == true {
             
             storeDetailView.dismissDetailView()
             
-            presentSlideMenu()
-
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                self.presentSlideMenu()
+            }
+            
         } else {
             
             presentSlideMenu()
@@ -2401,7 +2236,7 @@ class HomeVC: UIViewController, Alertable {
     
     
     
-    /*
+    
     @objc func handleSaveSegment() {
         
         let currentUserID = Auth.auth().currentUser?.uid
@@ -2415,8 +2250,8 @@ class HomeVC: UIViewController, Alertable {
         UpdateService.instance.saveTripSegment(forRunnerKey: currentUserID!)
         UpdateService.instance.updateDestinationToNewOrigin(withCoordinate: mapItem.placemark.coordinate)
         
-        animateSaveSegmentButtonOut()
-        animateRemoveSegmentButtonIn()
+        //animateSaveSegmentButtonOut()
+        //animateRemoveSegmentButtonIn()
     }
     
     @objc func handleRemovedSaveSegment() {
@@ -2426,12 +2261,11 @@ class HomeVC: UIViewController, Alertable {
         removeSelectedPath(forMapItem: mapItem)
         
         UpdateService.instance.cancelTripSegment(forRunnerKey: currentUserID!)
-        animateRemoveSegmentButtonOut()
-        animateSaveSegmentButtonOut()
+        //animateRemoveSegmentButtonOut()
+        //animateSaveSegmentButtonOut()
         
     }
  
-     */
 }
 
 extension HomeVC: CLLocationManagerDelegate {
@@ -2464,6 +2298,8 @@ extension HomeVC: MKMapViewDelegate {
         
         // don't call this function if user has already stopped updating location
         UpdateService.instance.updateUserLocation(withCoordinate: userLocation.coordinate) // Calling the Update user location function.
+        
+        
         
         if didSetUserOrigin == false {
             
@@ -2510,12 +2346,14 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.canShowCallout = true
             
             
-            annotationView.label = UILabel(frame: CGRect(x: 6.5, y: 7, width: 36.0, height: 20.0))
+            annotationView.label = UILabel(frame: CGRect(x: 4.5, y: 6.0, width: 36.0, height: 20.0))
             
             
             
             if let label = annotationView.label {
-                label.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
+                //label.font = UIFont(name: "Arial Rounded MT Bold", size: 14.0)
+                label.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)
+               
               label.textAlignment = .center
              //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
                 label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
@@ -2539,7 +2377,7 @@ extension HomeVC: MKMapViewDelegate {
             //let pinImage = UIImage(named: "simpleMarkerActionRed")
             //let pinImage = UIImage(named: "roundedMutedOrangePoints")
             
-            let size = CGSize(width: 48, height: 55)
+            let size = CGSize(width: 45, height: 52)
             //UIGraphicsBeginImageContext(size)
             UIGraphicsBeginImageContextWithOptions(size, false, 10)
             pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
@@ -2561,7 +2399,7 @@ extension HomeVC: MKMapViewDelegate {
 
             //label.text = title
  
-            label.text = "\(subtitle ?? "?")K"
+            label.text = "\(subtitle ?? "?")"
 
             }
             
@@ -2580,22 +2418,36 @@ extension HomeVC: MKMapViewDelegate {
         var storeLabel = UILabel(frame: CGRect(x: -16, y: 55, width: 80, height: 20))
 
             storeLabel.font = UIFont(name: "HelveticaNeue", size: 10.0)
-        storeLabel.textAlignment = .center
+            storeLabel.textAlignment = .center
             storeLabel.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             storeLabel.text = annotation.title as? String
         
         //annotationView?.addSubview(storeLabel)
         
         let imageView = UIImageView()
-        imageView.frame = CGRect(x: 15.5, y: 26, width: 16, height: 14.5)
+        imageView.frame = CGRect(x: 11, y: 25, width: 23, height: 8)
         //imageView.image = UIImage(named: "like_selected-red")
-        imageView.image = UIImage(named: "simpleHeartWhite")
-        
-        annotationView?.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.55).cgColor
+        imageView.image = UIImage(named: "seventyFivePercentBar")
+        //imageView.image = UIImage(named:"seventyFivePercentBar")!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        //imageView.tintColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
+        annotationView?.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.45).cgColor
         annotationView?.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
-        annotationView?.layer.shadowRadius = 4.0
+        annotationView?.layer.shadowRadius = 5.0
         annotationView?.layer.shadowOffset = CGSize(width: 1, height: 3)
       
+        
+        annotationView?.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+        
+        
+            
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1.3, options: .curveEaseInOut, animations: {
+                annotationView?.alpha = 1
+            annotationView?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+
+            }) { (_) in
+                annotationView?.transform = .identity
+            }
+     
         annotationView?.addSubview(imageView)
   
         return annotationView
@@ -2633,7 +2485,10 @@ extension HomeVC: MKMapViewDelegate {
         
         let overlay = overlay as? MKPolyline
                 // define a list of colors you want in your gradient
-        let gradientColors = [UIColor.rgb(red: 0, green: 0, blue: 255), UIColor.rgb(red: 236, green: 38, blue: 125), UIColor.rgb(red: 253, green: 145, blue: 20), UIColor.rgb(red: 253, green: 190, blue: 60)]
+        //let gradientColors = [UIColor.rgb(red: 0, green: 0, blue: 255), UIColor.rgb(red: 236, green: 38, blue: 125), UIColor.rgb(red: 253, green: 145, blue: 20), UIColor.rgb(red: 253, green: 190, blue: 60)]
+        
+        //let gradientColors = [UIColor.airBnBRed(), UIColor.airBnBDeepRed()]
+        let gradientColors = [UIColor.rgb(red: 255, green: 99, blue: 117), UIColor.airBnBDeepRed()]
         
         //UIColor.rgb(red: 122, green: 206, blue: 33)
         
@@ -2647,8 +2502,8 @@ extension HomeVC: MKMapViewDelegate {
         polylineRenderer.lineDashPattern = [NSNumber(value: 0.1), NSNumber(value: 10)]
         
         polylineRenderer.showsBorder = true
-        polylineRenderer.borderColor = UIColor.white /* defaults to white if not specified*/
-        
+        polylineRenderer.borderColor = UIColor.rgb(red: 252, green: 132, blue: 187) /* defaults to white if not specified*/
+        //polylineRenderer.borderColor = .white
         return polylineRenderer
        // }
     }
@@ -2831,6 +2686,49 @@ extension HomeVC: MKMapViewDelegate {
         selectedAnnotation = view.annotation as? MKPointAnnotation
         zoomToFit(selectedAnnotation: selectedAnnotation)
         
+        /*
+        let pinImage = UIImage(named: "simpleMarkerTrueBlue")
+        let size = CGSize(width: 48, height: 55)
+        pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        view.image = resizedImage
+        */
+        
+        /*
+        let selectedAnnotation = view.annotation
+        for annotation in mapView.annotations {
+            if let annotation = annotation as? MKAnnotation where !annotation.isEqual(selectedAnnotation) {
+                // do some actions on non-selected annotations in 'annotation' var
+            }
+        */
+        
+        // need to work on this function
+        
+        for annotation in mapView.annotations {
+            if let annotation = annotation as? MKPointAnnotation,
+                !annotation.isEqual(selectedAnnotation) {
+            // do some actions on non-selected annotations in 'annotation' var
+                
+                //view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+                mapView.deselectAnnotation(annotation, animated: true)
+                
+            } else {
+                print("THIS ISSSS THE SAME ANNOTATION")
+            }
+        }
+        
+        /*
+         // enlarges annotation, but I would rather change the color of the icon instead
+        view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            view.alpha = 1
+            view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+
+        }) { (_) in
+           // annotationView?.transform = .identity
+        }
+        */
         
         guard let selectedAnnotationCoordinate = selectedAnnotation?.coordinate else { return }
         let selectedDestination = MKPlacemark(coordinate: selectedAnnotationCoordinate)
@@ -2944,61 +2842,32 @@ extension HomeVC: MKMapViewDelegate {
     
     func configureStoreViewComponents() {
         
-        //searchTableView.isHidden = true
-        //isSearchTableViewVisible = false
-
+    mapView.addSubview(self.storeDetailBV)
+    
         
-        //storeDetailView = StoreDetailView()
-        //storeDetailView?.homeVC = self
-   
-        //tabBarController?.tabBar.isHidden = true
-        
-         
-        if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+    if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
         
         if let window:UIWindow = applicationDelegate.window {
             
-            //searchTableView.isHidden = false
             isSearchTableViewVisible = true
-            
-            //window.addSubview(searchTableView)
-            
             
             //let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
             
             storeDetailView = StoreDetailView()
             storeDetailView?.homeVC = self
-            //storeDetailView.clipsToBounds = true
-            //storeDetailView.layer.cornerRadius = 15
+            storeDetailView.layer.cornerRadius = 15
+            storeDetailView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            storeDetailView.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.30).cgColor
+            storeDetailView.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
+            storeDetailView.layer.shadowRadius = 5.0
+            storeDetailView.layer.shadowOffset = CGSize(width: 1, height: -1)
             
-            /*
+            
+            
             window.addSubview(storeDetailView)
             storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 270), paddingRight: 0, width: 0, height: window.frame.height + 20)
-            */
-            //window.addSubview(storeDetailView)
-            view.addSubview(storeDetailView)
-            storeDetailView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: -(view.frame.height - 810), paddingRight: 10, width: 0, height: view.frame.height - 540)
 
-            
-            
-            
-            
-            
-            
-            
-            /*
-             
-             // this section may be deleted later
-             
-            let height: CGFloat = 740
-            let storeDetailViewY = view.frame.height - height
-                
-            UIView.animate(withDuration: 0.50, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1 , options: .curveEaseOut, animations: {
-                
-                self.storeDetailView.frame = CGRect(x: 0, y: storeDetailViewY, width: self.storeDetailView.frame.width, height: self.storeDetailView.frame.height)
-                }, completion: nil)
-            */
-                
+
         }
     }
  
@@ -3653,28 +3522,6 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         //}
     }
     
-    /*
-     @objc func handleDragView(_ sender: UIPanGestureRecognizer) {
-
-        //let point = sender.location(in: mapView)
-        //searchTableView.center = point
-        //print(point)
-        
-        
-        if sender.state == UIGestureRecognizer.State.began || sender.state == UIGestureRecognizer.State.changed {
-            let translation = sender.translation(in: mapView)
-            print(sender.view!.center.y)
-            
-            if(sender.view!.center.y < 450) {
-                sender.view!.center = CGPoint(x: sender.view!.center.x, y: sender.view!.center.y + translation.y)
-            }else {
-                sender.view!.center = CGPoint(x: sender.view!.center.x, y: sender.view!.center.y + 200)
-            }
-            sender.setTranslation(CGPoint(x: 0,y: 0), in: mapView)
-        }
-    }
-    */
-    
 }
 
 // MARK: - StoreCellDelegate
@@ -3715,7 +3562,7 @@ extension UIViewController {
     }
     
     @objc func dismissKeyboard() {
-        print("SCREEN IS DISMISSED HERE")
+        print("KEYBOARD IS DISMISSED HERE")
         view.endEditing(true)
     }
 }
@@ -3894,62 +3741,7 @@ extension HomeVC: AdminLoginControllerDelegate {
         }
     }
 }
-/*
 
-extension HomeVC: UIGestureRecognizerDelegate {
-    
-    private func setupSwipeGestures() -> [UISwipeGestureRecognizer] {
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
-
-        swipeUp.direction = .up
-        swipeDown.direction = .down
-        
-        print("print swiping now!")
-        searchTableView.addGestureRecognizer(swipeUp)
-        searchTableView.addGestureRecognizer(swipeDown)
-
-        return [swipeUp, swipeDown]
-    }
-
-    private func setupPanGestures(swipeGestures: [UISwipeGestureRecognizer]) {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragView(_:)))
-        
-        print("panning now!")
-        panGesture.delegate = self
-        
-        for swipeGesture in swipeGestures {
-            panGesture.require(toFail: swipeGesture)
-        }
-        searchTableView.addGestureRecognizer(panGesture)
-    }
-    
-    /*
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDragView))
-        searchTableView.addGestureRecognizer(panGesture)
-        searchTableView.isUserInteractionEnabled = true
-        
-        
-        /*
-        let swipeGesture = gestureRecognizer as? UISwipeGestureRecognizer
-            
-        if swipeGesture?.direction == .up {
-                
-                // identify gesture recognizer and return true instead of false
-                return gestureRecognizer.isEqual(self.mySwipeUp) ? true : false
-                
-            } else {
-                
-                return gestureRecognizer.isEqual(self.mySwipeDown) ? true : false
-            }
-         */
-         return true
-        }
- */
-}
-*/
 
 extension HomeVC: UITextFieldDelegate {
 
@@ -4050,7 +3842,7 @@ extension HomeVC: UITextFieldDelegate {
                 self.destTextFieldBlurView.transform = CGAffineTransform(scaleX: 1.25, y: 1)
                 self.destTextFieldBlurView.layer.cornerRadius = 22.75
                 self.visualEffectView.layer.cornerRadius = 22.75
-                self.destTextFieldBlurView.layer.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240).cgColor
+                self.destTextFieldBlurView.layer.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250).cgColor
                 //self.destTextFieldBlurView.layer.backgroundColor = UIColor(red: 187/255, green: 216/255, blue: 224/255, alpha: 1).cgColor
                 self.destTextFieldBlurView.layer.shadowColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
                 self.destTextFieldBlurView.layer.borderWidth = 0.75

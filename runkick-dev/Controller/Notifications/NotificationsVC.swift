@@ -32,9 +32,11 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         configureTableView()
         

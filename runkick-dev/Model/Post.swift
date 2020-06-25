@@ -54,6 +54,7 @@ class Post {
     
     func adjustLikes(addLike: Bool, completion: @escaping(Int) -> ()) {
         
+        
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
             
             if addLike {
@@ -83,11 +84,30 @@ class Post {
                 
         } else {
                 
-                // we make sure that everything is handled within the completion block to ensure that we observer the notification snapshot value first
                 DataService.instance.REF_USER_LIKES.child(currentUid).child(postId).observeSingleEvent(of: .value, with: { (snapshot) in
                     
+                    if let notificationId = snapshot.value as? String {
+                        DataService.instance.REF_NOTIFICATIONS.child(self.ownerUid).child(notificationId).removeValue(completionBlock: { (err, ref) in
+                            
+                            self.removeLike(withCompletion: { (likes) in
+                                completion(likes)
+                            })
+                        })
+                    } else {
+                        self.removeLike(withCompletion: { (likes) in
+                            completion(likes)
+                        })
+                    }
+                })
+                /*
+                // we make sure that everything is handled within the completion block to ensure that we observer the notification snapshot value first
+                
+                DataService.instance.REF_USER_LIKES.child(currentUid).child(postId).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    print("WE GET HERE DO WE ADD OR TAKE AWAY like \(snapshot.value)")
                     // notification id ot remove from server
                     guard let notificationId = snapshot.value as? String else { return }
+                    
                     
                     // remove notification from server
                     DataService.instance.REF_NOTIFICATIONS.child(self.ownerUid).child(notificationId).removeValue(completionBlock: { (err, ref) in
@@ -109,7 +129,24 @@ class Post {
                     })
                 })
             }
+                 */
         }
+    }
+        
+    func removeLike(withCompletion completion: @escaping (Int) -> ()) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_USER_LIKES.child(currentUid).child(self.postId).removeValue(completionBlock: { (err, ref) in
+            
+            DataService.instance.REF_POST_LIKES.child(self.postId).child(currentUid).removeValue(completionBlock: { (err, ref) in
+                guard self.likes > 0 else { return }
+                self.likes = self.likes - 1
+                self.didLike = false
+                DataService.instance.REF_POSTS.child(self.postId).child("likes").setValue(self.likes)
+                completion(self.likes)
+            })
+        })
+    }
     
     // will need to create a function similar to this to delete user post
     func deletePost(_ sender: String?) {

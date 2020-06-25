@@ -45,10 +45,12 @@ class FollowLikeVC: UITableViewController, FollowLikeCellDelegate {
         
         print(viewingMode as Any)
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
-
+        */
+        
         // register cell class
         tableView.register(FollowLikeCell.self, forCellReuseIdentifier: reuseidentifier)
         
@@ -59,7 +61,7 @@ class FollowLikeVC: UITableViewController, FollowLikeCellDelegate {
         fetchUsers()
         
         // clear separator lines.
-        tableView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         tableView.separatorStyle = .none
     }
 
@@ -135,6 +137,9 @@ class FollowLikeVC: UITableViewController, FollowLikeCellDelegate {
     
     // MARK: - Handler
     func configureNavigationTitle() {
+        
+        // if you want subsequent views to never user large titles automatically
+        navigationItem.largeTitleDisplayMode = .never
         
         guard let viewingMode = self.viewingMode else { return }
         

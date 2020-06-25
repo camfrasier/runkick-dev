@@ -15,13 +15,14 @@ private let reuseIdentifier = "Cell"
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
     
+    /*
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    var homeVC: HomeVC!
+    */
     
     // MARK: - Properties
-    
+    var homeVC: HomeVC!
     var posts = [Post]() // This need to be a variable so we can mutate it.
     var viewSinglePost = false
     var post: Post?
@@ -42,9 +43,22 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         return view
     }()
     
+    lazy var profileImageView: CustomImageView = {
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.backgroundColor = .lightGray
+        iv.image = UIImage(named: "userProfileIcon")
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleProfileSelected))
+        profileTap.numberOfTapsRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(profileTap)
+        return iv
+    }()
+    
     let photoCommentButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "goldCircle"), for: .normal)
+        button.setImage(UIImage(named: "actionButton"), for: .normal)
         //button.setImage(UIImage(named: "trueBlueCirclePlus"), for: .normal)
         button.addTarget(self, action: #selector(handlePhotoButton), for: .touchUpInside)
         button.backgroundColor = .clear
@@ -68,7 +82,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
            button.alpha = 1
            return button
        }()
-    
+    /*
     let photoCommentBackground: UIView = {
         let view = UIView()
         view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
@@ -83,6 +97,38 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         view.alpha = 1
         return view
     }()
+    */
+    
+    lazy var photoCommentShadowBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.actionRed()
+        let menuTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoButton))
+        menuTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(menuTap)
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.alpha = 1
+        return view
+    }()
+    
+    let photoCommentBackground: GradientActionView = {
+        let view = GradientActionView()
+        //view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.isUserInteractionEnabled = true
+        let shoppingCartTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoButton))
+        shoppingCartTap.numberOfTapsRequired = 1
+        view.addGestureRecognizer(shoppingCartTap)
+        view.alpha = 1
+        return view
+    }()
+    
     
     let tabGradientView: UIView = {
         let view = UIView()
@@ -115,6 +161,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // adding blur effect with this function at alpha 0 initially
         configureViewComponents()
         
+        fetchProfileData()
+        
         /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
@@ -125,7 +173,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // self.clearsSelectionOnViewWillAppear = false
         
         // adjust view background color
-        collectionView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         
         
@@ -141,7 +189,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         configureFeedViewElements()
         
-        setUserFCMTocken()
+        //setUserFCMTocken()
     
         
         // fetch posts if we are not viewing a single post
@@ -151,7 +199,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         updateUserFeeds()
         
-        //configureTabBar()
+        configureTabBar()
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             //flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
@@ -171,6 +219,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         tabBarController?.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         */
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+           
+        configureTabBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -269,7 +322,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     // calling function to give space and insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -329,8 +382,71 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
     }
     
-    func configureNavigationBar() {
+    @objc func handleProfileSelected() {
+        print("DEBUG: Profile view selected")
         
+        let profileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        profileVC.modalPresentationStyle = .fullScreen
+        //present(profileVC, animated: true, completion:nil)
+        
+        let nav = self.navigationController
+        DispatchQueue.main.async {
+            nav?.view.layer.add(CATransition().segueFromBottom(), forKey: nil)
+            nav?.pushViewController(profileVC, animated: true)
+        }
+
+        //navigationController?.pushViewController(profileVC, animated: true)
+    }
+    
+    func fetchProfileData() {
+        
+        // Set the user in header.
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_USERS.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            
+            let uid = snapshot.key
+            let user = User(uid: uid, dictionary: dictionary)
+            
+            guard let profileImageUrl = user.profileImageURL else { return }
+            self.profileImageView.loadImage(with: profileImageUrl)
+        }
+    }
+    
+    func configureNavigationBar() {
+
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            navBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 0, green: 0, blue: 0), NSAttributedString.Key.backgroundColor: UIColor.rgb(red: 255, green: 255, blue: 255), NSAttributedString.Key.font: UIFont(name: "PingFangTC-Semibold", size: 24)!]
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        }
+        
+        navigationItem.title = "Feed"
+            
+        /*
+            profileImageView.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+            profileImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
+            profileImageView.backgroundColor = .clear
+        profileImageView.layer.cornerRadius = 32 / 2
+
+            let profileView = UIBarButtonItem(customView: profileImageView)
+            self.navigationItem.leftBarButtonItems = [profileView]
+        
+            let profileView = UIBarButtonItem(customView: profileImageView)
+            self.navigationItem.leftBarButtonItems = [profileView]
+        
+            */
+        
+        
+        /*
         navigationController?.navigationBar.isTranslucent = false
         //navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         //navigationController?.navigationBar.shadowImage = UIImage()
@@ -414,13 +530,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // custom notifications button
             
         //let customNotificationsButton = UIButton(type: UIButton.ButtonType.system)
-        let customNotificationsButton = UIButton(type: UIButton.ButtonType.custom)
+        
         
         customNotificationsButton.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
         
         //using this code to show the true image without rendering color
         customNotificationsButton.setImage(UIImage(named:"whiteCircleRightArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
        
+         
+         let customNotificationsButton = UIButton(type: UIButton.ButtonType.custom)
+         
         //using this code to be able to adjust tint
     //customNotificationsButton.setImage(UIImage(named:"simpleRoundedEnvelope")!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate), for: .normal)
         
@@ -457,6 +576,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
              
          let notificationBarBackButton = UIBarButtonItem(customView: returnNavButton)
          self.navigationItem.leftBarButtonItems = [notificationBarBackButton]
+        */
+ 
+ 
         */
     }
     
@@ -515,11 +637,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 
                 let tabBarHeight = CGFloat((self.tabBarController?.tabBar.frame.size.height)!)
                 
-                self.view.addSubview(self.photoCommentButton)
-                self.photoCommentButton.anchor(top: nil, left: nil, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
+                self.view.addSubview(self.photoCommentShadowBackground)
+                self.photoCommentShadowBackground.anchor(top: nil, left: nil, bottom: self.view.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 60, height: 60)
+                self.photoCommentShadowBackground.layer.cornerRadius = 15
                 
-                self.photoCommentButton.addSubview(self.beBoppActionButton)
-                self.beBoppActionButton.anchor(top: self.photoCommentButton.topAnchor, left: self.photoCommentButton.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 5.5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+                self.photoCommentShadowBackground.addSubview(self.photoCommentBackground)
+                self.photoCommentBackground.anchor(top: self.photoCommentShadowBackground.topAnchor, left: self.photoCommentShadowBackground.leftAnchor, bottom: self.photoCommentShadowBackground.bottomAnchor, right: self.photoCommentShadowBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                self.photoCommentBackground.layer.cornerRadius = 15
+                
+                self.photoCommentBackground.addSubview(self.beBoppActionButton)
+                self.beBoppActionButton.anchor(top: self.photoCommentBackground.topAnchor, left: self.photoCommentBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
                 
                 /*
                 view.addSubview(photoCommentBackground)
@@ -565,7 +692,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         }
     }
     
-    func setUserFCMTocken() {
+    //func setUserFCMTocken() {
+    func setUserFCMToken() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let fcmToken = Messaging.messaging().fcmToken else { return }
         
@@ -762,7 +890,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             }
       
         } else {
-            // handle liking post
+            // handle like post
             post.adjustLikes(addLike: true, completion: { (likes) in
                 cell.likesLabel.text = "\(likes)"
                 cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
@@ -783,20 +911,37 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func handleConfigureLikeButton(for cell: FeedCell) {
+        
         guard let post = cell.post else { return }
         guard let postId = post.postId else { return }
+        
         // guard statements are placed under individual func so it can be considered optional
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         DataService.instance.REF_USER_LIKES.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
             
+            // check if post id exists in user-like structure
+                       if snapshot.hasChild(postId) {
+                           post.didLike = true
+                           cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
+                            cell.newLikeButton.alpha = 0.80
+                       } else {
+                           post.didLike = false
+                           cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
+                        cell.newLikeButton.alpha = 1
+                       }
+            
+            /*
             if snapshot.hasChild(postId) {
+                
+                print("HERE IS THE POST ID\(postId)")
                 // setting this to true maintains the liked status after a refresh gesture
                 // this may work for maintaining the status of store admin and setting the userVariable LoginVC
                 post.didLike = true
                 cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
                 cell.newLikeButton.alpha = 0.80
             }
+            */
         }
     }
     
@@ -818,6 +963,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         posts.removeAll(keepingCapacity: false)
         self.currentKey = nil
         fetchPosts()
+        
+        let feedCell = FeedCell()
+        feedCell.configureLikeButton()
+        
         collectionView?.reloadData()
     }
     
@@ -854,21 +1003,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     func configureTabBar() {
         
-        // adding shadow view to the tab bar
-        tabBarController?.tabBar.isTranslucent = true
-        tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        
-        /*
-        tabBarController?.tabBar.layer.cornerRadius = 15
-        tabBarController?.tabBar.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
-        tabBarController?.tabBar.layer.borderWidth = 1
-        tabBarController?.tabBar.layer.masksToBounds = true
-        tabBarController?.tabBar.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
-        tabBarController?.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
-        collectionView.addSubview(tabGradientView)
-        tabGradientView.anchor(top: nil, left: collectionView.leftAnchor, bottom: collectionView.bottomAnchor, right: collectionView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
-        */
+        // removing shadow from tab bar
+        tabBarController?.tabBar.layer.shadowRadius = 0
+        tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
     }
     
     func handleUsernameLabelTapped(forCell cell: FeedCell) {

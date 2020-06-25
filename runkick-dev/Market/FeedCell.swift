@@ -86,7 +86,7 @@ class FeedCell: UICollectionViewCell {
     lazy var usernameButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .system)
         button.setTitle("Username", for: .normal)
-        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 15)
+        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 16)
         //button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
         button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
@@ -115,6 +115,10 @@ class FeedCell: UICollectionViewCell {
         let image = UIImage(named: "simpleDownArrow")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(handleOptionTapped), for: .touchUpInside)
+        button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        button.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.70).cgColor
+        button.layer.shadowRadius = 1.0
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
         return button
     } ()
     
@@ -137,8 +141,6 @@ class FeedCell: UICollectionViewCell {
         likeTap.numberOfTapsRequired = 2
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
-        //iv.layer.cornerRadius = 12
-        
         return iv
     } ()
     
@@ -175,10 +177,14 @@ class FeedCell: UICollectionViewCell {
         let label = UILabel()
         //label.layer.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
         //label.layer.cornerRadius = 20 / 2
-        label.font = UIFont.boldSystemFont(ofSize: 13)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
         label.text = "3 likes"
         label.textAlignment = .center
         label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        label.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.90).cgColor
+        label.layer.shadowRadius = 1.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 1)
         
         // add gesture recognizer to label
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
@@ -193,10 +199,14 @@ class FeedCell: UICollectionViewCell {
         let label = UILabel()
         //label.layer.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
         //label.layer.cornerRadius = 20 / 2
-        label.font = UIFont.boldSystemFont(ofSize: 13)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
         label.text = "0"
         label.textAlignment = .center
         label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        label.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.90).cgColor
+        label.layer.shadowRadius = 1.0
+        label.layer.shadowOffset = CGSize(width: 0, height: 1)
         
         // add gesture recognizer to label
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
@@ -214,7 +224,7 @@ class FeedCell: UICollectionViewCell {
         button.setTitle("Comments", for: .normal)
         button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 12)
         //button.titleLabel?.font =  UIFont(name: "HelveticaNeue-CondensedBold", size: 14)
-        button.layer.borderWidth = 0.75
+        button.layer.borderWidth = 0.50
         button.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         button.layer.cornerRadius = 1
         return button
@@ -226,9 +236,9 @@ class FeedCell: UICollectionViewCell {
         //button.setImage(UIImage(named: "comment"), for: .normal)
         button.addTarget(self, action: #selector(handleShowLikes), for: .touchUpInside)
         button.setTitle("Likes", for: .normal)
-        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 12)
+        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 13)
         //button.titleLabel?.font =  UIFont(name: "HelveticaNeue-CondensedBold", size: 14)
-        button.layer.borderWidth = 0.75
+        button.layer.borderWidth = 0.50
         button.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         button.layer.cornerRadius = 1
         return button
@@ -264,7 +274,7 @@ class FeedCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 15)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
         label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.text = "2 days ago"
         return label
@@ -286,9 +296,6 @@ class FeedCell: UICollectionViewCell {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "heartOutline"), for: .normal)
         button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
-        //button.layer.borderWidth = 1
-        //button.layer.borderColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).cgColor
-        //button.layer.cornerRadius = 30 / 2
         return button
     } ()
     
@@ -434,8 +441,8 @@ class FeedCell: UICollectionViewCell {
         addSubview(postImageView)
         postImageView.translatesAutoresizingMaskIntoConstraints = false
         postImageView.layer.cornerRadius = 0
-        postImageView.layer.borderColor = UIColor.rgb(red: 200, green: 200, blue: 200).cgColor
-        postImageView.layer.borderWidth = 0.25
+        //postImageView.layer.borderColor = UIColor.rgb(red: 200, green: 200, blue: 200).cgColor
+        //postImageView.layer.borderWidth = 0.25
         
         // post image gradient
         postImageView.addSubview(gradientImageView)
@@ -446,12 +453,12 @@ class FeedCell: UICollectionViewCell {
         captionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // press to comment button
-        postImageView.addSubview(commentButton)
-        commentButton.translatesAutoresizingMaskIntoConstraints = false
+        //postImageView.addSubview(commentButton)
+        //commentButton.translatesAutoresizingMaskIntoConstraints = false
         
         // press to like button
-        postImageView.addSubview(likeButton)
-        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        //postImageView.addSubview(likeButton)
+        //likeButton.translatesAutoresizingMaskIntoConstraints = false
         
         // profile attributes and constraints
         postImageView.addSubview(profileImageView)
@@ -480,14 +487,9 @@ class FeedCell: UICollectionViewCell {
         backgroundOptionsButton.layer.cornerRadius = 35 / 2
         
         // option button constraints
-        addSubview(optionsButton)
+        backgroundOptionsButton.addSubview(optionsButton)
         optionsButton.translatesAutoresizingMaskIntoConstraints = false
-        optionsButton.tintColor = UIColor.rgb(red: 210, green: 210, blue: 210)
-        
-        // option button constraints
-        addSubview(optionsButton)
-        optionsButton.translatesAutoresizingMaskIntoConstraints = false
-        optionsButton.tintColor = UIColor.rgb(red: 210, green: 210, blue: 210)
+        optionsButton.tintColor = UIColor.rgb(red: 240, green: 240, blue: 240)
         
         // action caption
         postImageView.addSubview(newLikeButton)
@@ -553,45 +555,55 @@ class FeedCell: UICollectionViewCell {
         //backgroundOptionsButton.addSubview(likesButton)
         //likesButton.translatesAutoresizingMaskIntoConstraints = false
                
-        gradientImageView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 300)
+        gradientImageView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 220)
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0.65)-[image]-(0.65)-|", options: [], metrics: nil, views: ["image": postImageView]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0.65)-[image]-(0.65)-|", options: [], metrics: nil, views: ["image": postImageView]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(1.75)-[image]-(1.75)-|", options: [], metrics: nil, views: ["image": postImageView]))
 
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(0.40)-[image]-(0.40)-|", options: [], metrics: nil, views: ["image": postImageView]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(0.40)-[image]-(0.40)-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[caption]-65-|", options: [], metrics: nil, views: ["caption": captionLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-1-[image]-1-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-15-[commentButton(30)]-15-|", options: [], metrics: nil, views: ["caption": captionLabel, "commentButton": commentButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[caption]-65-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-15-[likeButton(30)]-15-|", options: [], metrics: nil, views: ["caption": captionLabel, "likeButton": likeButton]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-15-[commentButton(30)]-15-|", options: [], metrics: nil, views: ["caption": captionLabel, "commentButton": commentButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[commentButton(85)]-15-[likeButton(55)]", options: [], metrics: nil, views: ["commentButton": commentButton, "likeButton": likeButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-20-|", options: [], metrics: nil, views: ["caption": captionLabel]))
+        
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-12-[likeButton(30)]-15-|", options: [], metrics: nil, views: ["caption": captionLabel, "likeButton": likeButton]))
+        
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[commentButton(85)]-15-[likeButton(55)]", options: [], metrics: nil, views: ["commentButton": commentButton, "likeButton": likeButton]))
+        
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[likeButton(60)]", options: [], metrics: nil, views: ["likeButton": likeButton]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[username]-3-[circle(3)]-3-[date]", options: [], metrics: nil, views: ["username": usernameButton, "circle": circleDotView, "date": postTimeLabel]))
         
-         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username(15)]-4-[caption]", options: [], metrics: nil, views: ["username": usernameButton, "caption": captionLabel]))
+         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username(18)]-4-[caption]", options: [], metrics: nil, views: ["username": usernameButton, "caption": captionLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[circle(3)]-8-[caption]", options: [], metrics: nil, views: ["circle": circleDotView, "caption": captionLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[circle(3)]-10-[caption]", options: [], metrics: nil, views: ["circle": circleDotView, "caption": captionLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[date(17)]-3-[caption]", options: [], metrics: nil, views: ["date": postTimeLabel, "caption": captionLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[date(19)]-3-[caption]", options: [], metrics: nil, views: ["date": postTimeLabel, "caption": captionLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[profile(50)]", options: [], metrics: nil, views: ["profile": profileImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profile(50)]-10-|", options: [], metrics: nil, views: ["profile": profileImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[profile(50)]", options: [], metrics: nil, views: ["profile": profileImageView]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[profile(50)]", options: [], metrics: nil, views: ["profile": profileImageView]))
         
         profileImageView.layer.cornerRadius = 50 / 2
-        profileImageView.layer.borderWidth = 1.75
+        profileImageView.layer.borderWidth = 1.5
         profileImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profile(50)]", options: [], metrics: nil, views: ["profile": profileImageView]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profile(50)]", options: [], metrics: nil, views: ["profile": profileImageView]))
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profile(50)]", options: [], metrics: nil, views: ["profile": profileImageView, "username": usernameButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[heartLike(35)]-15-|", options: [], metrics: nil, views: ["heartLike": newLikeButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-220-[heartLike(30)]-50-[newComment(30)]", options: [], metrics: nil, views: ["heartLike": newLikeButton, "newComment": newComment]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[newComment(35)]-15-|", options: [], metrics: nil, views: ["newComment": newComment]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-200-[profile(50)]-40-[heartLike(30)]-40-[newComment(30)]", options: [], metrics: nil, views: ["profile": profileImageView, "heartLike": newLikeButton, "newComment": newComment]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[heartLike(35)]-18-|", options: [], metrics: nil, views: ["heartLike": newLikeButton]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[newComment(35)]-18-|", options: [], metrics: nil, views: ["newComment": newComment]))
 
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[firstname]", options: [], metrics: nil, views: ["firstname": firstnameButton]))
         
@@ -599,9 +611,9 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[backgroundOption(35)]", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[optionsButton(16)]-25-|", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[optionsButton(16)]-10-|", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
          
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[optionsButton(8)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[optionsButton(8)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
         
         likesLabel.anchor(top: newLikeButton.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         likesLabel.centerXAnchor.constraint(equalTo: newLikeButton.centerXAnchor).isActive = true

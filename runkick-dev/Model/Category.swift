@@ -18,10 +18,10 @@ class Category {
     var creationDate: Date!
     var postId: String!
     var category: String!
-    //var price: Int!
-    //var poppPrice: Int!
-    var price: Float!
-    var poppPrice: Float!
+    var price: Double!
+    var poppPrice: Double!
+    //var price: Float!
+    //var poppPrice: Float!
     var address: String!
     var storeId: String!
     var user: User?
@@ -53,12 +53,21 @@ class Category {
         if let category = dictionary["category"] as? String {
             self.category = category
         }
-        
+        /*
         if let price = dictionary["price"] as? Float {
             self.price = price
         }
         
         if let poppPrice = dictionary["poppPrice"] as? Float {
+            self.poppPrice = poppPrice
+        }
+        */
+        
+        if let price = dictionary["price"] as? Double {
+            self.price = price
+        }
+        
+        if let poppPrice = dictionary["poppPrice"] as? Double {
             self.poppPrice = poppPrice
         }
         

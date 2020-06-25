@@ -17,10 +17,12 @@ class MarketplaceVC: UICollectionViewController {
     
     
     
+    
+
     let shoppingCartButton: UIButton = {
      let button = UIButton(type: UIButton.ButtonType.custom)
-     //button.setImage(UIImage(named: "simpleCartLimer"), for: .normal)
-     button.setImage(UIImage(named: "trueBlueCircle"), for: .normal)
+     button.setImage(UIImage(named: "actionButton"), for: .normal)
+     //button.setImage(UIImage(named: "trueBlueCircle"), for: .normal)
      button.addTarget(self, action: #selector(handleShoppingCart), for: .touchUpInside)
      button.backgroundColor = .clear
      button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
@@ -31,9 +33,24 @@ class MarketplaceVC: UICollectionViewController {
      return button
     }()
     
-    let shoppingCartBackground: UIView = {
+    lazy var simpleCartShadowBackground: UIView = {
         let view = UIView()
-        view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        view.backgroundColor = UIColor.actionRed()
+        let menuTap = UITapGestureRecognizer(target: self, action: #selector(handleShoppingCart))
+        menuTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(menuTap)
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.alpha = 1
+        return view
+    }()
+    
+    let shoppingCartBackground: GradientActionView = {
+        let view = GradientActionView()
+        //view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
         view.layer.shadowRadius = 5.0
@@ -86,11 +103,17 @@ class MarketplaceVC: UICollectionViewController {
         
         configureNavigationaBar()
         
-        //configureTabBar()
+        configureTabBar()
             
         collectionView.register(MarketplaceCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         fetchStores()
+        
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+           
+        configureTabBar()
     }
     
     // MARK: - Selectors
@@ -163,13 +186,18 @@ class MarketplaceVC: UICollectionViewController {
         
         collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.height)!)
+        //let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.height)!)
         
-        view.addSubview(shoppingCartButton)
-        shoppingCartButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
+        view.addSubview(simpleCartShadowBackground)
+        simpleCartShadowBackground.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 60, height: 60)
+        simpleCartShadowBackground.layer.cornerRadius = 15
         
-        shoppingCartButton.addSubview(beBoppShoppingButton)
-        beBoppShoppingButton.anchor(top: shoppingCartButton.topAnchor, left: shoppingCartButton.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6.5, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        simpleCartShadowBackground.addSubview(shoppingCartBackground)
+        shoppingCartBackground.anchor(top: simpleCartShadowBackground.topAnchor, left: simpleCartShadowBackground.leftAnchor, bottom: simpleCartShadowBackground.bottomAnchor, right: simpleCartShadowBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
+        shoppingCartBackground.layer.cornerRadius = 15
+        
+        shoppingCartBackground.addSubview(beBoppShoppingButton)
+        beBoppShoppingButton.anchor(top: shoppingCartBackground.topAnchor, left: shoppingCartBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6.5, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         
         // configure search bar button
         configureSearchBarButton()
@@ -204,16 +232,9 @@ class MarketplaceVC: UICollectionViewController {
     }
     
     func configureTabBar() {
-        // adding shadow view to the tab bar
-               tabBarController?.tabBar.isTranslucent = false
-        
-                /*
-               tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-               tabBarController?.tabBar.layer.cornerRadius = 15
-               tabBarController?.tabBar.layer.masksToBounds = true
-               tabBarController?.tabBar.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
-               tabBarController?.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-                */
+        // removing shadow from tab bar
+         tabBarController?.tabBar.layer.shadowRadius = 0
+        tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
     }
     
     @objc func handleShoppingCart() {

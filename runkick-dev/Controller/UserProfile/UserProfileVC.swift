@@ -77,16 +77,20 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         extendedLayoutIncludesOpaqueBars = true
         */
         
+        /*
+    
+        // this pins the header when scrolling up. use this when you want the header to stick while the rest stays in place
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.sectionHeadersPinToVisibleBounds = true
         }
-        
+        */
+            
         self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
-        self.collectionView?.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        self.collectionView?.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
 
-        collectionView.isScrollEnabled = false
+        //collectionView.isScrollEnabled = false
 
         if Auth.auth().currentUser != nil {
             
@@ -106,7 +110,9 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 
             self.fetchPosts()
             
-            configureTableView()
+            //configureTableView()
+            
+            configureTabBar()
           
         }
     }
@@ -119,6 +125,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func viewWillAppear(_ animated: Bool) {
         //view.addSubview(navigationController!.navigationBar)
         navigationController?.navigationBar.isHidden = false
+
+        configureTabBar()
     }
                 
     // Mark: - UICollectionViewFlowLayout
@@ -159,7 +167,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 324)
+        return CGSize(width: view.frame.width, height: 344)
     }
     
     // Mark: - UICollectionView
@@ -249,6 +257,12 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
     }
     */
+    
+    func configureTabBar() {
+        // removing shadow from tab bar
+        tabBarController?.tabBar.layer.shadowRadius = 0
+        tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+    }
     
     func fetchCurrentUserData() {
             
@@ -435,7 +449,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         guard let user = header.user else { return }
         
         // looking for the label string to make the decision of whether or not the user is the current user. Will need this for later functions!
-        if header.editProfileFollowButton.titleLabel?.text == "Edit Profile" {
+        if header.editProfileFollowButton.titleLabel?.text == "Edit profile" {
             
             let editProfileController = EditProfileController()
             editProfileController.user = user
@@ -507,15 +521,15 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         print("Handle grid view and show media view")
     
         // hide table view
-        tableView.isHidden = true
-        collectionView.isScrollEnabled = true
+        //tableView.isHidden = true
+        //collectionView.isScrollEnabled = true
     }
     
     func handleActivityTapped(for header: UserProfileHeader) {
         print("Handle activity view")
         
-        tableView.isHidden = false
-        collectionView.isScrollEnabled = false
+       // tableView.isHidden = false
+        //collectionView.isScrollEnabled = false
     }
     func setUserStats(for header: UserProfileHeader) {
         
@@ -534,8 +548,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 numberOfFollwers = 0
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfFollwers!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
-            attributedText.append(NSAttributedString(string: "Followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]))
+            let attributedText = NSMutableAttributedString(string: "\(numberOfFollwers!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
+            attributedText.append(NSAttributedString(string: "Followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)]))
             
             header.followersLabel.attributedText = attributedText
         }
@@ -549,8 +563,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 numberOfFollowing = 0
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
-            attributedText.append(NSAttributedString(string: "Following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]))
+            let attributedText = NSMutableAttributedString(string: "\(numberOfFollowing!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
+            attributedText.append(NSAttributedString(string: "Following", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)]))
             
             header.followingLabel.attributedText = attributedText
         }
@@ -564,15 +578,11 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 numberOfPosts = 0
             }
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfPosts!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
-            attributedText.append(NSAttributedString(string: "Posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]))
+            let attributedText = NSMutableAttributedString(string: "\(numberOfPosts!)\n ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
+            attributedText.append(NSAttributedString(string: "Posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)]))
             
             header.postLabel.attributedText = attributedText
         }
-        
-        
-        
-        
     }
     
     // MARK: - Handlers
@@ -711,7 +721,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         tableView.dataSource = self
         
         tableView.register(ActivityHistoryCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = true
@@ -722,7 +732,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 325, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 345, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
     }
 }
@@ -756,7 +766,7 @@ extension UserProfileVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

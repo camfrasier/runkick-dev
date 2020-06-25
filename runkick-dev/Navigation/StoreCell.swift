@@ -30,17 +30,7 @@ class StoreCell: UITableViewCell {
         }
     }
     
-    lazy var saveSegmentButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "plusSignInCircle"), for: .normal)
-        //button.addTarget(self, action: #selector(handleSaveSegment), for: .touchUpInside)
-        button.addTarget(self, action: #selector(handleSaveSegment), for: .touchUpInside)
-        button.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-        //button.tintColor = UIColor(red: 9/255, green: 171/255, blue: 231/255, alpha: 1)
-        button.alpha = 1
-        button.backgroundColor = .clear
-        return button
-    } ()
+    
     
     lazy var saveSegmentLabel: UILabel = {
         let label = UILabel()
@@ -59,7 +49,17 @@ class StoreCell: UITableViewCell {
         return label
     } ()
     
-     
+     lazy var saveSegmentButton: UIButton = {
+         let button = UIButton(type: .system)
+         button.setImage(UIImage(named: "plusSignInCircle"), for: .normal)
+         //button.addTarget(self, action: #selector(handleSaveSegment), for: .touchUpInside)
+         button.addTarget(self, action: #selector(handleSaveSegment), for: .touchUpInside)
+         button.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+         //button.tintColor = UIColor(red: 9/255, green: 171/255, blue: 231/255, alpha: 1)
+         button.alpha = 1
+         button.backgroundColor = .clear
+         return button
+     } ()
     
     lazy var removeSegmentButton: UIButton = {
         let button = UIButton(type: .system)
@@ -145,8 +145,8 @@ class StoreCell: UITableViewCell {
     
     let locationTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        label.font = UIFont.boldSystemFont(ofSize: 22)
+        label.textColor = UIColor.rgb(red: 20, green: 20, blue: 20)
         return label
     } ()
     
@@ -162,15 +162,15 @@ class StoreCell: UITableViewCell {
     
     let locationAddressLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = UIColor.rgb(red: 60, green: 60, blue: 60)
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.textColor = UIColor.rgb(red: 45, green: 45, blue: 45)
         return label
     } ()
     
     let storeHoursLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 15)
         label.text = "Hours: 8am-9pm"
         return label
     }()
@@ -178,22 +178,34 @@ class StoreCell: UITableViewCell {
     let categoryLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 15)
         label.text = "All American"
         return label
     }()
     
     let locationPointsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         return label
     } ()
     
+    lazy var priceBlock: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.30).cgColor
+        view.layer.shadowRadius = 3.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        return view
+    }()
+
+    
+    
     let locationDistanceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
         return label
     } ()
     
@@ -204,38 +216,41 @@ class StoreCell: UITableViewCell {
         
         selectionStyle = .none
 
-        addSubview(imageContainerView)
-        //let dimension: CGFloat = 140
-        imageContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
-        imageContainerView.layer.cornerRadius = 7
-        
-        imageContainerView.addSubview(storeImageView)
-        storeImageView.anchor(top: imageContainerView.topAnchor, left: imageContainerView.leftAnchor, bottom: imageContainerView.bottomAnchor, right: imageContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        storeImageView.layer.cornerRadius = 7
         
         addSubview(locationTitleLabel)
-        locationTitleLabel.anchor(top: topAnchor, left: imageContainerView.rightAnchor, bottom: nil, right: nil
-            , paddingTop: 17, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationTitleLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil
+            , paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationDistanceLabel)
-        locationDistanceLabel.anchor(top: locationTitleLabel.topAnchor, left: locationTitleLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 3.5, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationDistanceLabel.anchor(top: locationTitleLabel.topAnchor, left: locationTitleLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 4.5, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationAddressLabel)
-        locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil
-            , paddingTop: 1, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil
+            , paddingTop: 2, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(categoryLabel)
         categoryLabel.anchor(top: locationAddressLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(storeHoursLabel)
         storeHoursLabel.anchor(top: categoryLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
+        addSubview(imageContainerView)
+        //let dimension: CGFloat = 140
+        imageContainerView.anchor(top: storeHoursLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 31, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 260, height: 160)
+        imageContainerView.layer.cornerRadius = 0
         
+        imageContainerView.addSubview(storeImageView)
+        storeImageView.anchor(top: imageContainerView.topAnchor, left: imageContainerView.leftAnchor, bottom: imageContainerView.bottomAnchor, right: imageContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeImageView.layer.cornerRadius = 0
         
-        addSubview(locationPointsLabel)
-        locationPointsLabel.anchor(top: storeHoursLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeImageView.addSubview(priceBlock)
+        priceBlock.anchor(top: storeImageView.topAnchor, left: storeImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 25)
+        priceBlock.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         
-        
-        
+        priceBlock.addSubview(locationPointsLabel)
+        locationPointsLabel.anchor(top: nil, left: priceBlock.leftAnchor, bottom: nil, right: priceBlock.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationPointsLabel.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        locationPointsLabel.centerYAnchor.constraint(equalTo: priceBlock.centerYAnchor).isActive = true
     
         /*
         
@@ -451,7 +466,7 @@ class StoreCell: UITableViewCell {
                         guard let dbStorePoints = store.points else { return }
                         //print("here are your coin \(dbStorePoints)")
                         
-                        self.locationPointsLabel.text = String("\(dbStorePoints) points")
+                        self.locationPointsLabel.text = String(" \(dbStorePoints) points  ")
                         
                     }
                     

@@ -32,10 +32,12 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
         
         print("THE UID VALUE SHOULD BE THAT OF THE USER I AM VISITING\(uid)")
         
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
-
+        */
+        
         //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         collectionView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
         

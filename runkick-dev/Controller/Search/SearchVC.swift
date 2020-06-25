@@ -32,8 +32,10 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         // register cell classes
         tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier)
@@ -63,6 +65,12 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.setHidesBackButton(true, animated: true)
+    }
+    
+    // this function ensures the navigation bar is filled after transitioning to a regular nav bar
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.view.layoutSubviews()
     }
 
     // MARK: - Table view data source

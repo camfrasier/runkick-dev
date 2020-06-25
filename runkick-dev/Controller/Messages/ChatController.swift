@@ -65,7 +65,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Send", for: .normal)
-        button.tintColor = UIColor.rgb(red: 26, green: 172, blue: 249)
+        button.tintColor = UIColor.actionRed()
         button.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return button
@@ -76,13 +76,14 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
             super.viewDidLoad()
-        
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
+        */
         
         //collectionView?.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)  // launch screen color
-        collectionView?.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        collectionView?.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         collectionView?.register(ChatCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -185,7 +186,7 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
             //cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
-            cell.bubbleView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
             cell.textView.textColor = .black
             cell.profileImageView.isHidden = false
         }

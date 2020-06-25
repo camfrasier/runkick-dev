@@ -67,7 +67,8 @@ class AdminProfileHeader: UICollectionViewCell {
     
     let usernameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        //label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: "HelveticaNeue", size: 16)
         label.textAlignment = .center
         label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         return label
@@ -146,7 +147,7 @@ class AdminProfileHeader: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
-        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        label.textColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)
         label.text = "followers"
         return label
     } ()
@@ -155,7 +156,7 @@ class AdminProfileHeader: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
-        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        label.textColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)
         label.text = "following"
         return label
     } ()

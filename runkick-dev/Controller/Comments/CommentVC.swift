@@ -50,6 +50,7 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
         
         // fetch comments
         fetchComments()
+        configureNavigationBar()
     }
     
     // showing and hiding the navigation bar everytime the screen loads
@@ -161,6 +162,12 @@ class CommentVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
         if uid != currentUid {
             DataService.instance.REF_NOTIFICATIONS.child(uid).childByAutoId().updateChildValues(values)
         }
+    }
+    
+    func configureNavigationBar() {
+        
+        // if you want subsequent views to never user large titles automatically
+        navigationItem.largeTitleDisplayMode = .never
     }
 }
 

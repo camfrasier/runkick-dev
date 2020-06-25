@@ -54,8 +54,8 @@ class UserProfileHeader: UICollectionViewCell {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.layer.borderWidth = 1
-        iv.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        iv.layer.borderWidth = 2
+        iv.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         iv.image = UIImage(named: "userProfileSilhouetteWhite")
         return iv
     } ()
@@ -94,7 +94,7 @@ class UserProfileHeader: UICollectionViewCell {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textAlignment = .center
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+        label.font = UIFont(name: "HelveticaNeue", size: 17)
         label.textColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1)
         return label
     } ()
@@ -116,7 +116,8 @@ class UserProfileHeader: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
         
         /*
         let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
@@ -137,7 +138,8 @@ class UserProfileHeader: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
         
         /*
         let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
@@ -157,10 +159,11 @@ class UserProfileHeader: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
-        let attributedText = NSMutableAttributedString(string: "5\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15)])
-        attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)]))
-        label.attributedText = attributedText
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+        let attributedText = NSMutableAttributedString(string: "5\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
+        //attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)]))
+        //label.attributedText = attributedText
         
         let postTap = UITapGestureRecognizer(target: self, action: #selector(handlePostTapped))
         postTap.numberOfTapsRequired = 1
@@ -203,7 +206,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         button.layer.borderColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
         button.layer.borderWidth = 0.25
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         //button.titleLabel?.font =  UIFont(name: "HelveticaNeue-CondensedBold", size: 14)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(handleEditProfileFollow), for: .touchUpInside)
@@ -344,12 +347,26 @@ class UserProfileHeader: UICollectionViewCell {
     
     let separatorView: UIView = {
         let view = UIView()
-        view.layer.backgroundColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1).cgColor
+        //view.layer.backgroundColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1).cgColor
+        view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        return view
+    }()
+    let separatorViewLower: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1).cgColor
+        //view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
         return view
     }()
     
+    /*
     let separatorViewGradient: GradientView = {
         let view = GradientView()
+        return view
+    }()
+    */
+    let separatorViewGradient: GradientActionView = {
+        let view = GradientActionView()
+        //view.layer.backgroundColor = UIColor.actionRed().cgColor
         return view
     }()
     
@@ -425,12 +442,32 @@ class UserProfileHeader: UICollectionViewCell {
         return label
     }()
     
+    lazy var gridBackgroundOne: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        let gridTapped = UITapGestureRecognizer(target: self, action: #selector(handleGridViewTapped))
+        gridTapped.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(gridTapped)
+        return view
+    }()
+    
     lazy var gridViewButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.system)
         button.setImage(UIImage(named: "grid"), for: .normal)
         button.addTarget(self, action: #selector(handleGridViewTapped), for: .touchUpInside)
         button.alpha = 1
         return button
+    }()
+    
+    lazy var activityBackgroundOne: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clear
+        let activityTapped = UITapGestureRecognizer(target: self, action: #selector(handleActivityTapped))
+        activityTapped.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(activityTapped)
+        return view
     }()
     
     lazy var activityHistoryView: UIButton = {  // when clicked make color turn gradient action blue to action red
@@ -441,21 +478,33 @@ class UserProfileHeader: UICollectionViewCell {
         return button
     }()
     
-    lazy var messageBackgroundButton: UIButton = {
-        let button = UIButton(type: .system)
-        //button.setImage(UIImage(named: "trueBlueCirclePlus"), for: .normal)
-        button.addTarget(self, action: #selector(handleMessagesTapped), for: .touchUpInside)
-        //button.backgroundColor = UIColor.rgb(red: 122, green: 206, blue: 53)
-        button.backgroundColor = UIColor.rgb(red: 26, green: 172, blue: 239)
-        button.layer.cornerRadius = 50 / 2
-        button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
-        button.layer.shadowRadius = 5.0
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
-        button.alpha = 1
-        return button
+    
+    lazy var messageLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        // add gesture recognizer
+        label.text = "Message"
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        let messageTap = UITapGestureRecognizer(target: self, action: #selector(handleMessagesTapped))
+        messageTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(messageTap)
+        return label
     }()
     
+    
+    lazy var messageButtonBackground: GradientActionView = {
+        let view = GradientActionView()
+        let messageTapped = UITapGestureRecognizer(target: self, action: #selector(handleMessagesTapped))
+        messageTapped.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(messageTapped)
+        return view
+    }()
+    
+    /*
     lazy var beBoppMessageButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "beBoppSendMessage"), for: .normal)
@@ -468,7 +517,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.alpha = 1
         return button
        }()
-    
+    */
     lazy var addPhotoBackgroundButton: UIButton = {
         let button = UIButton(type: .system)
         //button.setImage(UIImage(named: "trueBlueCirclePlus"), for: .normal)
@@ -630,7 +679,7 @@ class UserProfileHeader: UICollectionViewCell {
 
     func configureViewComponents() {
         
-        let profileCircleDimension: CGFloat = 96
+        let profileCircleDimension: CGFloat = 95
         addSubview(gradientProfileView)
         gradientProfileView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileCircleDimension, height: profileCircleDimension)
         gradientProfileView.layer.cornerRadius = profileCircleDimension / 2
@@ -638,9 +687,9 @@ class UserProfileHeader: UICollectionViewCell {
         
         let profileDimension: CGFloat = 90
         gradientProfileView.addSubview(profileImageView)
-        profileImageView.anchor(top: gradientProfileView.topAnchor, left: gradientProfileView.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: profileDimension, height: profileDimension)
+        profileImageView.anchor(top: gradientProfileView.topAnchor, left: gradientProfileView.leftAnchor, bottom: nil, right: nil, paddingTop: 2.5, paddingLeft: 2.5, paddingBottom: 0, paddingRight: 0, width: profileDimension, height: profileDimension)
         profileImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        profileImageView.layer.borderWidth = 3
+        profileImageView.layer.borderWidth = 2
         profileImageView.layer.cornerRadius = profileDimension / 2
         
         addSubview(usernameLabel)
@@ -660,79 +709,38 @@ class UserProfileHeader: UICollectionViewCell {
         stackView.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         addSubview(editProfileFollowButton)
-        editProfileFollowButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 35)
-        editProfileFollowButton.layer.cornerRadius = 0
+        editProfileFollowButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 35)
         editProfileFollowButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         addSubview(userBioLabel)
-         userBioLabel.anchor(top: editProfileFollowButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+         userBioLabel.anchor(top: editProfileFollowButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         userBioLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         addSubview(separatorView)
-        separatorView.anchor(top: userBioLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 17, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        separatorView.anchor(top: userBioLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
         
-         addSubview(activityHistoryView)
-         activityHistoryView.anchor(top: separatorView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 95, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
+        addSubview(separatorViewLower)
+        separatorViewLower.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.30)
+        
+        addSubview(activityBackgroundOne)
+        activityBackgroundOne.anchor(top: separatorView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
+        
+        activityBackgroundOne.addSubview(activityHistoryView)
+        activityHistoryView.anchor(top: activityBackgroundOne.topAnchor, left: activityBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
          activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
          
-         addSubview(gridViewButton)
-         gridViewButton.anchor(top: separatorView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 7, paddingLeft: 95, paddingBottom: 0, paddingRight: 95, width: 16, height: 16)
+        addSubview(gridBackgroundOne)
+        gridBackgroundOne.anchor(top: separatorView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
+        
+        gridBackgroundOne.addSubview(gridViewButton)
+        gridViewButton.anchor(top: gridBackgroundOne.topAnchor, left: gridBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
          gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
         
          addSubview(separatorViewGradient)
-        separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (frame.width / 2), height: 3)
-        
-        
-        
-        /*
-        addSubview(firstnameLabel)
-        firstnameLabel.anchor(top: gradientProfileView.topAnchor, left: gradientProfileView.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 27, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        addSubview(lastnameLabel)
-        lastnameLabel.anchor(top: firstnameLabel.topAnchor, left: firstnameLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        addSubview(separatorView)
-        separatorView.anchor(top: gradientProfileView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
-        
-        let stackView = UIStackView(arrangedSubviews: [postLabel, followersLabel, followingLabel])
-        
-        stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
-        stackView.alignment = .center
-        stackView.spacing = 20
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stackView)
-        stackView.anchor(top: firstnameLabel.bottomAnchor, left: firstnameLabel.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 9, paddingLeft: -11, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
-        
-        addSubview(editProfileFollowButton)
-        editProfileFollowButton.anchor(top: firstnameLabel.topAnchor, left: lastnameLabel.rightAnchor, bottom: nil, right: nil, paddingTop: -1, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 80, height: 23)
-        editProfileFollowButton.layer.cornerRadius = 4
-        
-        addSubview(userBioLabel)
-        userBioLabel.anchor(top: stackView.bottomAnchor, left: firstnameLabel.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
-        
-        addSubview(activityHistoryView)
-        activityHistoryView.anchor(top: separatorView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 95, paddingBottom: 0, paddingRight: 0, width: 22, height: 22)
-        activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
-        
-        addSubview(gridViewButton)
-        gridViewButton.anchor(top: separatorView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 95, paddingBottom: 0, paddingRight: 95, width: 22, height: 22)
-        gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
-       
-        addSubview(separatorView2)
-        separatorView2.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
-        */
-        
-        /*
-        
-        
-        
-
-        
-        */
-        
+        separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (frame.width / 2), height: 2)
 
     }
+    
  
     func configureSendMessageButton() {
         
@@ -768,13 +776,53 @@ class UserProfileHeader: UICollectionViewCell {
                     // the current user is NOT the user in question but is an admin so we don't need to add the send message button
                     print("when we are not accessing the current users page, and the user is an admin.. allow user to send a message following or not")
                     
-                    let backgroundDimension: CGFloat = 50
-                    self.addSubview(self.messageBackgroundButton)
-                    self.messageBackgroundButton.anchor(top: self.profileImageView.topAnchor, left: self.profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: -25, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
-                    self.messageBackgroundButton.layer.cornerRadius = backgroundDimension / 2
+                    //let backgroundDimension: CGFloat = 50
                     
-                    self.messageBackgroundButton.addSubview(self.beBoppMessageButton)
-                    self.beBoppMessageButton.anchor(top: self.messageBackgroundButton.topAnchor, left: self.messageBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 41, height: 41)
+                    self.addSubview(self.messageButtonBackground)
+                    self.messageButtonBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 35)
+                    
+                    self.messageButtonBackground.addSubview(self.messageLabel)
+                    self.messageLabel.anchor(top: self.messageButtonBackground.topAnchor, left: self.messageButtonBackground.leftAnchor, bottom: self.messageButtonBackground.bottomAnchor, right: self.messageButtonBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    
+                    let stackView = UIStackView(arrangedSubviews: [self.editProfileFollowButton, self.messageButtonBackground])
+                    
+                    stackView.axis = .horizontal
+                    stackView.distribution = .equalSpacing
+                    stackView.alignment = .center
+                    stackView.spacing = 4
+                    stackView.translatesAutoresizingMaskIntoConstraints = false
+                    self.addSubview(stackView)
+                    stackView.anchor(top: self.followersLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    stackView.centerXAnchor.constraint(equalTo: self.profileImageView.centerXAnchor).isActive = true
+                    
+                    //self.messageButton.layer.cornerRadius = backgroundDimension / 2
+                    
+                    //self.messageBackgroundButton.addSubview(self.beBoppMessageButton)
+                    //self.beBoppMessageButton.anchor(top: self.messageBackgroundButton.topAnchor, left: self.messageBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 41, height: 41)
+                    
+                    self.addSubview(self.userBioLabel)
+                     self.userBioLabel.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    self.userBioLabel.centerXAnchor.constraint(equalTo: self.profileImageView.centerXAnchor).isActive = true
+                    
+                    self.addSubview(self.separatorView)
+                    self.separatorView.anchor(top: self.userBioLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
+                    
+                    self.addSubview(self.activityBackgroundOne)
+                    self.activityBackgroundOne.anchor(top: self.separatorView.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
+                    
+                    self.activityBackgroundOne.addSubview(self.activityHistoryView)
+                    self.activityHistoryView.anchor(top: self.activityBackgroundOne.topAnchor, left: self.activityBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
+                    self.activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
+                     
+                    self.addSubview(self.gridBackgroundOne)
+                    self.gridBackgroundOne.anchor(top: self.separatorView.topAnchor, left: nil, bottom: nil, right: self.rightAnchor, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
+                    
+                    self.gridBackgroundOne.addSubview(self.gridViewButton)
+                    self.gridViewButton.anchor(top: self.gridBackgroundOne.topAnchor, left: self.gridBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
+                    self.gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
+                    
+                    self.addSubview(self.separatorViewGradient)
+                    self.separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 2.5)
 
                 } else {
                     
@@ -785,13 +833,52 @@ class UserProfileHeader: UICollectionViewCell {
                             // show the  send message button ONLY if the user is a user you are following
                             print("User is followed so we can show the send message button")
                             
-                            let backgroundDimension: CGFloat = 60
-                            self.addSubview(self.messageBackgroundButton)
-                            self.messageBackgroundButton.anchor(top: self.profileImageView.topAnchor, left: self.profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: -20, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
-                            self.messageBackgroundButton.layer.cornerRadius = backgroundDimension / 2
+                            self.addSubview(self.messageButtonBackground)
+                            self.messageButtonBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 35)
+                            
+                            self.messageButtonBackground.addSubview(self.messageLabel)
+                            self.messageLabel.anchor(top: self.messageButtonBackground.topAnchor, left: self.messageButtonBackground.leftAnchor, bottom: self.messageButtonBackground.bottomAnchor, right: self.messageButtonBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                            
+                            let stackView = UIStackView(arrangedSubviews: [self.editProfileFollowButton, self.messageButtonBackground])
+                            
+                            stackView.axis = .horizontal
+                            stackView.distribution = .equalSpacing
+                            stackView.alignment = .center
+                            stackView.spacing = 4
+                            stackView.translatesAutoresizingMaskIntoConstraints = false
+                            self.addSubview(stackView)
+                            stackView.anchor(top: self.followersLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                            stackView.centerXAnchor.constraint(equalTo: self.profileImageView.centerXAnchor).isActive = true
+                            
+                            
+                            //self.messageButton.layer.cornerRadius = backgroundDimension / 2
                                    
-                            self.messageBackgroundButton.addSubview(self.beBoppMessageButton)
-                            self.beBoppMessageButton.anchor(top: self.messageBackgroundButton.topAnchor, left: self.messageBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
+                            //self.messageBackgroundButton.addSubview(self.beBoppMessageButton)
+                            //self.beBoppMessageButton.anchor(top: self.messageBackgroundButton.topAnchor, left: self.messageBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
+                            
+                            self.addSubview(self.userBioLabel)
+                             self.userBioLabel.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                            self.userBioLabel.centerXAnchor.constraint(equalTo: self.profileImageView.centerXAnchor).isActive = true
+                            
+                            self.addSubview(self.separatorView)
+                            self.separatorView.anchor(top: self.userBioLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
+                            
+                            self.addSubview(self.activityBackgroundOne)
+                            self.activityBackgroundOne.anchor(top: self.separatorView.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
+                            
+                            self.activityBackgroundOne.addSubview(self.activityHistoryView)
+                            self.activityHistoryView.anchor(top: self.activityBackgroundOne.topAnchor, left: self.activityBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
+                            self.activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
+                             
+                            self.addSubview(self.gridBackgroundOne)
+                            self.gridBackgroundOne.anchor(top: self.separatorView.topAnchor, left: nil, bottom: nil, right: self.rightAnchor, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
+                            
+                            self.gridBackgroundOne.addSubview(self.gridViewButton)
+                            self.gridViewButton.anchor(top: self.gridBackgroundOne.topAnchor, left: self.gridBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
+                            self.gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
+                            
+                            self.addSubview(self.separatorViewGradient)
+                            self.separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 2)
                             
                         } else {
                             // don't show the send message button because the current user is not following the other user
@@ -1166,8 +1253,8 @@ class UserProfileHeader: UICollectionViewCell {
         beBoppAddPhotoButton.anchor(top: addPhotoBackgroundButton.topAnchor, left: addPhotoBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 43, height: 43)
         
         addSubview(refreshCategories)
-        refreshCategories.anchor(top: editProfileFollowButton.topAnchor, left: editProfileFollowButton.rightAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 70, height: 20)
-        refreshCategories.layer.cornerRadius = 2
+        refreshCategories.anchor(top: editProfileFollowButton.topAnchor, left: editProfileFollowButton.rightAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 70, height: 25)
+        refreshCategories.layer.cornerRadius = 1
         
     }
     
@@ -1270,7 +1357,7 @@ class UserProfileHeader: UICollectionViewCell {
         if currentUid == user.uid {
             
             // Configure button as edit profile
-            editProfileFollowButton.setTitle("Edit Profile", for: .normal)
+            editProfileFollowButton.setTitle("Edit profile", for: .normal)
             editProfileFollowButton.setTitleColor(UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1), for: .normal)
             
         } else {
@@ -1278,8 +1365,8 @@ class UserProfileHeader: UICollectionViewCell {
             // Configure button as follow button
             editProfileFollowButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
             //editProfileFollowButton.backgroundColor = UIColor.trueBlue()
-            editProfileFollowButton.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
-            editProfileFollowButton.layer.borderWidth = 0
+            editProfileFollowButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            editProfileFollowButton.layer.borderWidth = 0.25
            
             user.checkIfUserIsFollowed(completion: { (followed) in
                 

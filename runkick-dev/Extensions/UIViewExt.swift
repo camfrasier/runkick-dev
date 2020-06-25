@@ -21,6 +21,16 @@ extension UIColor {
         return UIColor.rgb(red: 221, green: 94, blue: 86)
     }
     
+    static func airBnBRed() -> UIColor {
+        return UIColor.rgb(red: 255, green: 110, blue: 125)
+    }
+    
+    
+    static func airBnBDeepRed() -> UIColor {
+        return UIColor.rgb(red: 255, green: 55, blue: 100)
+    }
+    
+    
     static func actionRed() -> UIColor {
         return UIColor.rgb(red: 236, green: 38, blue: 125)
     }

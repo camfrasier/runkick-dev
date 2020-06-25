@@ -28,6 +28,7 @@ class MarketplaceCell: UICollectionViewCell {
     let imageView: CustomImageView = {
         let iv = CustomImageView()
         iv.backgroundColor = .groupTableViewBackground
+        //iv.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         //iv.contentMode = .scaleAspectFit
         iv.contentMode = .scaleAspectFill
         return iv
@@ -35,12 +36,13 @@ class MarketplaceCell: UICollectionViewCell {
     
     let blackView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.30)
+        view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.20)
         return view
     }()
     
     let categoryNameLabel: UILabel = {
         let label = UILabel()
+        //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.font = UIFont.boldSystemFont(ofSize: 19)
         label.text = "Sweet Green"

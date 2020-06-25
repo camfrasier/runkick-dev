@@ -47,6 +47,11 @@ protocol FollowLikeCellDelegate {
     func handleFollowTapped(for cell: FollowLikeCell)
 }
 
+protocol StoreItemSelectionCellDelegate {
+    func handleItemTapped(for cell: StoreItemSelectionCell)
+}
+
+
 protocol FeedCellDelegate {
     func handleUsernameTapped(for cell: FeedCell)
     func handleOptionTapped(for cell: FeedCell)
@@ -56,6 +61,7 @@ protocol FeedCellDelegate {
     func handleConfigureLikeButton(for cell: FeedCell)
     func handleShowLikes(for cell: FeedCell)
 }
+
 
 protocol CategoryFeedCellDelegate {
     func handlePhotoTapped(for cell: CategoryFeedCell)

@@ -34,11 +34,13 @@ class AdminStorePostVC: UICollectionViewController, UICollectionViewDelegateFlow
        
        override func viewDidLoad() {
            super.viewDidLoad()
-
+        
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
-
+        */
+        
         // uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -250,6 +252,11 @@ class AdminStorePostVC: UICollectionViewController, UICollectionViewDelegateFlow
     
     func configureTabBar() {
         
+        // removing shadow from tab bar
+        tabBarController?.tabBar.layer.shadowRadius = 0
+        tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        
+        /*
         // adding shadow view to the tab bar
         tabBarController?.tabBar.isTranslucent = true
         tabBarController?.tabBar.barTintColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
@@ -262,6 +269,7 @@ class AdminStorePostVC: UICollectionViewController, UICollectionViewDelegateFlow
         
         collectionView.addSubview(tabGradientView)
         tabGradientView.anchor(top: nil, left: collectionView.leftAnchor, bottom: collectionView.bottomAnchor, right: collectionView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
+        */
     }
     
     

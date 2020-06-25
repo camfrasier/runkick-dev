@@ -24,7 +24,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         
         // Tab bar tint color
-        tabBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        tabBar.tintColor = UIColor.rgb(red: 243, green: 78, blue: 92)
+        tabBar.unselectedItemTintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+                
         
         /*
         self.tabBar.isTranslucent = false
@@ -44,9 +46,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        //tabBar.frame.size.height = 80
-        //tabBar.frame.origin.y = view.frame.height + 50
-        //tabBar.layer.cornerRadius = 15
+        tabBar.frame.size.height = 60
+        tabBar.frame.origin.y = view.frame.height - 60
     }
 
     // Function to create view controllers that exist within tab bar controller
@@ -61,24 +62,24 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // maybe have the below images get smaller when they are unselected.. and can change the tint color
         
         // Mark: - Main feed controller
-        let feedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Feed", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let feedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "EXPLORE", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - marketplace controller placeholder
-        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Martket", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "MARKET", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Notification controller
         let notificationsVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Updates", rootViewController: NotificationsVC())
         
         // Mark: - Profile controller
-        let userProfileVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), title: "Profile", rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let userProfileVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), title: "PROFILE", rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Search feed controller
         let searchVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Find", rootViewController: SearchVC())
         
         // Mark: - home feed controller
-        let homeVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Home", rootViewController: HomeVC())
+        let homeVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "HOME", rootViewController: HomeVC())
         
         let categoryFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         

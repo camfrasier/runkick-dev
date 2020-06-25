@@ -43,6 +43,7 @@ class StoreDetailView: UIView {
     
     enum ExpansionState {
     case NotExpanded
+    case SubPartiallyExpanded
     case PartiallyExpanded
     case FullyExpanded
     }
@@ -55,10 +56,19 @@ class StoreDetailView: UIView {
         return view
     }()
     
+    let saveSegment: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .center
+        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        label.text = "Save"
+        return label
+    } ()
+    
     let cancelViewButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "simpleCancelIcon"), for: .normal)
-        //button.addTarget(self, action: #selector(handleDismissView), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleDismissView), for: .touchUpInside)
         button.tintColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 1)
         button.alpha = 1
         return button
@@ -68,10 +78,10 @@ class StoreDetailView: UIView {
         let view = UIView()
         view.backgroundColor = .clear
         view.layer.cornerRadius = 4.0
-        //let cancelTapped = UITapGestureRecognizer(target: self, action: #selector(handleDismissView))
-        //cancelTapped.numberOfTapsRequired = 1
+        let cancelTapped = UITapGestureRecognizer(target: self, action: #selector(handleDismissView))
+        cancelTapped.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
-        //view.addGestureRecognizer(cancelTapped)
+        view.addGestureRecognizer(cancelTapped)
         return view
     }()
     
@@ -84,6 +94,8 @@ class StoreDetailView: UIView {
     configureGestureRecognizers()
         
     expansionState = .PartiallyExpanded
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,23 +104,19 @@ class StoreDetailView: UIView {
     
     // Mark - Helper functions
     
-    
     func animateInputView(targetPosition: CGFloat, completion: @escaping(Bool) -> ()) {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.frame.origin.y = targetPosition
         }, completion: completion)
     }
 
     func configureViewComponents() {
         
-        //self.isHidden = false
         
-        //layer.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215).cgColor
         
-        layer.shadowOpacity = 30 // Shadow is 30 percent opaque.
-        layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.35).cgColor
-        layer.shadowRadius = 4
-        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215).cgColor
+        
+        
         
         /*
         layer.borderColor = UIColor.darkGray.cgColor
@@ -127,9 +135,7 @@ class StoreDetailView: UIView {
         }, completion: nil)
         */
 
-       // addSubview(indicatorView)
-        //indicatorView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 35, height: 5)
-        //indicatorView.centerX(inView: self)
+        
         
         configureTableView()
         //blurTableView()
@@ -153,16 +159,16 @@ class StoreDetailView: UIView {
     func configureTableView() {
         
         tableView = UITableView()
-        //tableView.rowHeight = 400
-        tableView.rowHeight = 220
+        tableView.rowHeight = 600
+        //tableView.rowHeight = 220
         tableView.delegate = self
         tableView.dataSource = self
-        //tableView.layer.cornerRadius = 13
-        tableView.layer.cornerRadius = 0
+        tableView.clipsToBounds = true
+        tableView.layer.cornerRadius = 15
         tableView.separatorColor = .none
         //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        
+        tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
+                
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = false
         
@@ -174,13 +180,16 @@ class StoreDetailView: UIView {
         addSubview(tableView)
         tableView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
         
-        /*
+        tableView.addSubview(indicatorView)
+        indicatorView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 30, height: 5)
+        indicatorView.centerX(inView: self)
+        
         addSubview(backgroundCancelViewBtn)
         backgroundCancelViewBtn.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 35, height: 35)
         
         backgroundCancelViewBtn.addSubview(cancelViewButton)
         cancelViewButton.anchor(top: backgroundCancelViewBtn.topAnchor, left: nil, bottom: nil, right: backgroundCancelViewBtn.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 15, height: 15)
-        */
+        
     }
     
     // this is a function that will definitely need to be implemented later
@@ -220,61 +229,66 @@ class StoreDetailView: UIView {
             
             print("do nothing")
             
-            /*
-            if expansionState == .NotExpanded {
-                
-                homeVC?.hideTabBar()
-                animateInputView(targetPosition: self.frame.origin.y - 160) { (_) in
+            
+            if expansionState == .SubPartiallyExpanded {
+
+                animateInputView(targetPosition: self.frame.origin.y - 148) { (_) in
                     self.expansionState = .PartiallyExpanded
-                    print("not expanded to partially expanded")
+                    print("sub partially expanded to partially expanded")
                     
-                    UIView.animate(withDuration: 0.5, animations:  {
-                        self.cancelViewButton.alpha = 1
-                    })
                 }
             }
             
-            */
             
-            /*
+            
+            
             if expansionState == .PartiallyExpanded {
-
-                animateInputView(targetPosition: self.frame.origin.y - 450) { (_) in
+                /*
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.homeVC?.storeDetailBV.backgroundColor = UIColor(white: 0, alpha: 0.5)
+                    self.homeVC?.storeDetailBV.alpha = 1
+                })
+                */
+                
+                self.homeVC?.configureStoreDetailBV()
+                
+                animateInputView(targetPosition: self.frame.origin.y - 350) { (_) in
                     self.expansionState = .FullyExpanded
                     print("partially expanded to fully expanded")
-                    self.cancelViewButton.alpha = 1
-                    
                 }
             }
-            */
+            
         } else {
             
-            /*
+            
             if expansionState == .FullyExpanded {
-
-                animateInputView(targetPosition: self.frame.origin.y + 450) { (_) in
+                
+                self.homeVC?.handleDismissStoreBV()
+                
+                animateInputView(targetPosition: self.frame.origin.y + 350) { (_) in
                     self.expansionState = .PartiallyExpanded
                     print("fully expanded to partially expanded")
-                    self.cancelViewButton.alpha = 1
-
-                 
                 }
             }
-            */
+            
             // this is the swipe down segment
             
             if expansionState == .PartiallyExpanded {
+
+                animateInputView(targetPosition: self.frame.origin.y + 148) { (_) in
+                    self.expansionState = .SubPartiallyExpanded
+                    print("partially expanded tp sub partially expanded")
+                    
+                }
+            }
+            
+            if expansionState == .SubPartiallyExpanded {
                 
-                animateInputView(targetPosition: self.frame.origin.y + 300) { (_) in
+                animateInputView(targetPosition: self.frame.origin.y + 152) { (_) in
                     self.expansionState = .NotExpanded
                     print("partially expanded to not expanded")
-                    UIView.animate(withDuration: 0.5, animations:  {
-                        self.cancelViewButton.alpha = 1
-                        self.isHidden = true
-                        self.homeVC?.storeViewSetToDismissed()
-                        
-                        //self.homeVC?.hideTabBar()
-                    })
+                    self.isHidden = true
+                    self.homeVC?.storeViewSetToDismissed()
                 }
             }
             
@@ -285,10 +299,11 @@ class StoreDetailView: UIView {
         
         //self.isHidden = true
         
-        /*
+        
         if expansionState == .FullyExpanded {
-
-            animateInputView(targetPosition: self.frame.origin.y + 750) { (_) in
+                
+            self.homeVC?.handleDismissStoreBV()
+            animateInputView(targetPosition: self.frame.origin.y + 650) { (_) in
                 self.expansionState = .NotExpanded
                 print("fully expanded to partially expanded")
                 
@@ -300,7 +315,7 @@ class StoreDetailView: UIView {
                 self.homeVC?.isStoreDetailViewVisible = false
             }
         }
-        */
+        
         
         if expansionState == .PartiallyExpanded {
             
@@ -308,7 +323,7 @@ class StoreDetailView: UIView {
             animateInputView(targetPosition: self.frame.origin.y + 300) { (_) in
                 self.expansionState = .NotExpanded
                 print("partially expanded to not expanded")
-                UIView.animate(withDuration: 0.5, animations:  {
+                UIView.animate(withDuration: 0.25, animations:  {
                     self.cancelViewButton.alpha = 1
                     self.isHidden = true
                     
@@ -318,20 +333,17 @@ class StoreDetailView: UIView {
 
         }
         
-        /*
-        if expansionState == .NotExpanded {
+
+        if expansionState == .SubPartiallyExpanded {
 
             homeVC?.showTabBar()
-            animateInputView(targetPosition: self.frame.origin.y + 140) { (_) in
-                //self.expansionState = .NotExpanded
+            animateInputView(targetPosition: self.frame.origin.y + 152) { (_) in
+                self.expansionState = .NotExpanded
                 print("Not expanded to not expanded")
-                UIView.animate(withDuration: 0.5, animations:  {
-                    self.cancelViewButton.alpha = 1
-                    self.isHidden = true
-                })
+                self.isHidden = true
             }
         }
-         */
+         
         homeVC?.storeViewSetToDismissed()
         
         //homeVC?.tabBarController?.tabBar.isHidden = true
@@ -369,12 +381,13 @@ class StoreDetailView: UIView {
         print("this view did load was called")
         //self.isHidden = false
     }
-    
+    */
+
     @objc func handleDismissView() {
         dismissDetailView()
         
     }
- */
+ 
  
  
 }
