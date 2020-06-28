@@ -15,18 +15,28 @@ import Firebase
 var userEmail: String?
 var imageSelected = false
 
-class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, Alertable {
     
     let plusPhotoBtn: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleSelectProfilePhoto), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(handleSelectProfilePhoto), for: .touchUpInside)
         return button
     } ()
     
     let firstNameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "First Name"
+        tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
+        tf.borderStyle = .roundedRect
+        tf.font = UIFont.systemFont(ofSize: 14)
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        return tf
+    } ()
+    
+    let emailTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Email"
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
@@ -60,7 +70,16 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         button.setTitle("Save Profile", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
-        button.addTarget(self, action: #selector(handleSaveProfile), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(handleSaveProfile), for: .touchUpInside)
+        return button
+    } ()
+    
+    let registerProfileButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Save!", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+        button.addTarget(self, action: #selector(handleRegisterProfile), for: .touchUpInside)
         return button
     } ()
     
@@ -78,6 +97,20 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
+    } ()
+    
+    let passwordTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "  Password"
+        //tf.backgroundColor = UIColor(white: 0, alpha: 0.25)
+        tf.backgroundColor = UIColor(red: 250/255, green: 170/255, blue: 120/255, alpha: 1)
+        //tf.borderStyle = .roundedRect
+        tf.font = UIFont.systemFont(ofSize: 19)
+        tf.layer.cornerRadius = 5
+        tf.textColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
+        tf.autocapitalizationType = .none
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        return tf
     } ()
     
     override func viewDidLoad() {
@@ -110,7 +143,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
 
     func configureViewComponents() {
         
-        let stackView = UIStackView(arrangedSubviews: [firstNameTextField, lastNameTextField, usernameTextField, saveProfileButton])
+        let stackView = UIStackView(arrangedSubviews: [firstNameTextField, lastNameTextField, usernameTextField, emailTextField, passwordTextField, registerProfileButton])
         
         stackView.axis = .vertical
         stackView.spacing = 10
@@ -154,16 +187,102 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         self.dismiss(animated:true, completion: nil)
     }
     
+    
+    @objc func handleRegisterProfile() {
+    
+          guard
+              let email = emailTextField.text,
+            let firstName = firstNameTextField.text,
+            let lastName =  lastNameTextField.text,
+            let username = usernameTextField.text,
+              let password = passwordTextField.text else { return }
+        
+        
+          
+          Auth.auth().fetchSignInMethods(forEmail: email, completion: ({ (providers, error) in
+              print("here are the providers \(providers as Any)")
+              
+              if providers == nil {
+                  
+                  Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
+                      if error == nil {
+                          // create a new user account.. and suggest user finish updating profile basics
+             
+                          if let user = user {
+
+                              let userData = ["provider": user.user.providerID,"email": email, "firstname": firstName, "lastname": lastName, "username": username, "profileCompleted": false, "isStoreadmin": false] as [String: Any]
+                            
+                              
+                              DataService.instance.createFirebaseDBUser(uid: user.user.uid, userData: userData, isStoreadmin: false)
+                              
+
+                              //this function is important because it allows the root navigation controller to REBOOT and login again
+                              guard let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return }
+                              guard let controller = navController.viewControllers[0] as? MainTabVC else { return }
+                              controller.configureViewControllers()
+                              
+                              self.dismiss(animated: true, completion: nil)
+                          }
+                          
+                          
+                      }  else {
+                          if let errorCode = AuthErrorCode(rawValue: error!._code) {
+                              switch errorCode {
+                              case .invalidEmail:
+                                  self.showAlert("That is an invalid email! Please try again")
+                              default: break
+                              }
+                          }
+                      }
+                  })
+      
+              } else {
+                  
+                  Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
+                      if error == nil {
+                          print("User authenticated successfully with Firebase.")
+                          
+                          guard let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return }
+                          guard let controller = navController.viewControllers[0] as? MainTabVC else { return }
+                          controller.configureViewControllers()
+                           
+                          self.dismiss(animated: true, completion: nil)
+
+                          
+                      } else {
+                          
+                          if let errorCode = AuthErrorCode(rawValue: error!._code) {
+                              switch errorCode {
+                              case .wrongPassword:
+                                  self.showAlert("Whoops! That was the wrong password!")
+                              case .invalidEmail:
+                                  self.showAlert("That is an invalid email! Please try again")
+                              default:
+                                  self.showAlert("Have you signed up for an account?")
+                              }
+                          }
+                      }
+                  })
+              }
+          }))
+          
+      }
+
+    
+    /*
     @objc func handleSaveProfile() {
+        
+        print("HERE WE SHOULD SAVE THE PROFILE")
         guard let firstName = firstNameTextField.text else { return }
         guard let lastName =  lastNameTextField.text else { return }
+        guard let email =  emailTextField.text else { return }
         guard let username = usernameTextField.text else { return }
         
         DataService.instance.REF_USERS.observeSingleEvent(of: .value, with: { (snapshot) in
             if let userSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for user in userSnapshot {
                     if user.key == Auth.auth().currentUser?.uid {
-                        DataService.instance.REF_USERS.child(user.key).updateChildValues(["email": userEmail as Any, "firstname": firstName, "lastname": lastName, "username": username])
+                        DataService.instance.REF_USERS.child(user.key).updateChildValues(["email": email as Any, "firstname": firstName, "lastname": lastName, "username": username])
                     }
                 }
             }
@@ -193,6 +312,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                     
                     let dictionaryValues = ["firstname": firstName,
                                             "lastname": lastName,
+                                            "email": email,
                                             "fcmToken": fcmToken, // automatically upload in database right away
                                             "username": username,
                                             "profileImageURL": profileImageURL]
@@ -209,7 +329,9 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                 }
             })
         }
+        
     }
+    */
     
     @objc func handleSelectProfilePhoto () {
         
@@ -224,19 +346,20 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     
     @objc func formValidation () {
         guard
+            //imageSelected,
             firstNameTextField.hasText,
             lastNameTextField.hasText,
-            usernameTextField.hasText,
-            imageSelected == true else {
+            emailTextField.hasText,
+            usernameTextField.hasText == true else {
         
-                saveProfileButton.isEnabled = false
-                saveProfileButton.backgroundColor = UIColor(red: 250/255, green: 150/255, blue: 90/255, alpha: 1)
+                registerProfileButton.isEnabled = false
+                registerProfileButton.backgroundColor = UIColor(red: 250/255, green: 150/255, blue: 90/255, alpha: 1)
                 
                 return
         }
         
-        saveProfileButton.isEnabled = true
-        saveProfileButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+        registerProfileButton.isEnabled = true
+        registerProfileButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
     }
 }
 

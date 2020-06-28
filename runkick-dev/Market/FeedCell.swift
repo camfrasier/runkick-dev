@@ -29,11 +29,14 @@ class FeedCell: UICollectionViewCell {
             
             Database.fetchUser(with: ownerUid) { (user) in  // In order to grab the photo of the correct post owner.
                 
-                self.profileImageView.loadImage(with: user.profileImageURL)
+                //self.profileImageView.loadImage(with: user.profileImageURL)
                 self.usernameButton.setTitle("@\(user.username ?? "")", for: .normal)
                 self.firstnameButton.setTitle(user.firstname, for: .normal)
                 self.lastnameButton.setTitle(user.lastname, for: .normal)
                 self.configurePostCaption(user: user)
+                
+                guard let userProfileImage = user.profileImageURL else { return }
+                self.profileImageView.loadImage(with: userProfileImage)
             }
             
             postImageView.loadImage(with: imageUrl)
@@ -177,11 +180,11 @@ class FeedCell: UICollectionViewCell {
         let label = UILabel()
         //label.layer.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
         //label.layer.cornerRadius = 20 / 2
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.text = "3 likes"
         label.textAlignment = .center
         label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        label.layer.shadowOpacity = 30 // Shadow is 30 percent opaque.
         label.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.90).cgColor
         label.layer.shadowRadius = 1.0
         label.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -199,11 +202,11 @@ class FeedCell: UICollectionViewCell {
         let label = UILabel()
         //label.layer.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
         //label.layer.cornerRadius = 20 / 2
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.text = "0"
         label.textAlignment = .center
         label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        label.layer.shadowOpacity = 30 // Shadow is 30 percent opaque.
         label.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.90).cgColor
         label.layer.shadowRadius = 1.0
         label.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -599,7 +602,7 @@ class FeedCell: UICollectionViewCell {
         
         
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-200-[profile(50)]-40-[heartLike(30)]-40-[newComment(30)]", options: [], metrics: nil, views: ["profile": profileImageView, "heartLike": newLikeButton, "newComment": newComment]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-200-[profile(50)]-45-[heartLike(30)]-45-[newComment(30)]", options: [], metrics: nil, views: ["profile": profileImageView, "heartLike": newLikeButton, "newComment": newComment]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[heartLike(35)]-18-|", options: [], metrics: nil, views: ["heartLike": newLikeButton]))
         
@@ -615,10 +618,10 @@ class FeedCell: UICollectionViewCell {
          
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[optionsButton(8)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
         
-        likesLabel.anchor(top: newLikeButton.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        likesLabel.anchor(top: newLikeButton.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         likesLabel.centerXAnchor.constraint(equalTo: newLikeButton.centerXAnchor).isActive = true
         
-        commentLabel.anchor(top: newComment.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        commentLabel.anchor(top: newComment.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         commentLabel.centerXAnchor.constraint(equalTo: newLikeButton.centerXAnchor).isActive = true
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[actionCaption]-200-|", options: [], metrics: nil, views: ["actionCaption": actionCaption]))

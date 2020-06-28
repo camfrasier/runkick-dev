@@ -24,6 +24,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         
         // Tab bar tint color
+        //tabBar.tintColor = UIColor.rgb(red: 242, green: 96, blue: 98)
         tabBar.tintColor = UIColor.rgb(red: 243, green: 78, blue: 92)
         tabBar.unselectedItemTintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
                 
@@ -67,19 +68,19 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - marketplace controller placeholder
-        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "MARKET", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "MENU", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Notification controller
         let notificationsVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Updates", rootViewController: NotificationsVC())
         
         // Mark: - Profile controller
-        let userProfileVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), title: "PROFILE", rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let userProfileVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), title: "ME", rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Search feed controller
         let searchVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Find", rootViewController: SearchVC())
         
         // Mark: - home feed controller
-        let homeVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "HOME", rootViewController: HomeVC())
+        let homeVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "MAP", rootViewController: HomeVC())
         
         let categoryFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         

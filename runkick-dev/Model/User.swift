@@ -19,6 +19,7 @@ class User {
     var isStoreadmin: Bool!
     var profileCompleted: Bool!
     var uid: String!
+    var stripeId: String!
     var isFollowed = false
     var isAdmin = false
     var isProfileCompleted = false
@@ -31,6 +32,10 @@ class User {
         
         if let username = dictionary["username"] as? String {
             self.username = username
+        }
+        
+        if let stripeId = dictionary["stripeId"] as? String {
+            self.stripeId = stripeId
         }
         
         if let firstname = dictionary["firstname"] as? String {

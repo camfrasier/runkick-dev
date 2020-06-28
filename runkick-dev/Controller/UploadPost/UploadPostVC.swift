@@ -191,7 +191,8 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
             let currentUid = Auth.auth().currentUser?.uid else { return }
         
         // Get image upload data.
-        guard let uploadData = postImg.jpegData(compressionQuality: 0.3) else { return }
+        //guard let uploadData = postImg.jpegData(compressionQuality: 0.3) else { return }
+        guard let uploadData = postImg.jpegData(compressionQuality: 0.2) else { return }
         
         // Update storage
         let filename = NSUUID().uuidString

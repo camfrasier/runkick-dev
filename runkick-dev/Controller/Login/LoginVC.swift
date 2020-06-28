@@ -136,7 +136,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
         view.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         
         
-        let switchElement = MainSwitch()
+        //let switchElement = MainSwitch()
         
         stackView.axis = .vertical
         stackView.spacing = 10

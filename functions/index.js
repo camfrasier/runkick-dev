@@ -3,9 +3,58 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
+// stripe sdk for cloud functions with test key
+const stripe = require('stripe')(functions.config().stripe.secret_test_key);
+
+// Create and Deploy Your First Cloud Functions
+// https://firebase.google.com/docs/functions/write-firebase-functions
+
+// stripe cloud functions
+
+/*
+exports.createStripeCustomer = functions.firestore.document('users/{uid}').onCreate(async (snap, context) => {
+    const data = snap.data();
+    const email = snap.email;
+
+    // await removes the need for a completion handlers
+    const customer = await stripe.customers.create({ email: email })
+
+    // the update returns a promise so there are no errors that occur.
+    return admin.firestore().collection('users').doc(data.id).update({stripeId : customer.id})
+
+});
+*/
+
+/*
+exports.createStripeCustomer = functions.database.ref('users/{uid}').onCreate(async (snapshot, context) => {
+    //const data = snap.data();
+    const uid = context.params.uid;
+    const email = snapshot.email;
+
+    // await removes the need for a completion handlers
+    const customer = await stripe.customers.create({ email: email })
+
+    // the update returns a promise so there are no errors that occur.
+    return admin.database().ref('users/' + uid).update({stripeId : customer.id})
+
+});
+*/
+
+exports.createStripeCustomer = functions.database.ref('users/{uid}').onCreate((snapshot, context) => {
+    //const data = snap.data();
+    const uid = context.params.uid;
+
+    return admin.database().ref('/users/' + uid + '/email/').once('value', async (snapshot) => {
+    var email = snapshot.val();
+    //var uid = email.uid;
+
+    // await removes the need for a completion handlers
+    const customer = await stripe.customers.create({ email: email })
+
+    // the update returns a promise so there are no errors that occur.
+    return admin.database().ref('users/' + uid).update({stripeId : customer.id})
+  })
+});
 
 exports.observeComments = functions.database.ref('/user-comments/{postId}/{commentId}').onCreate((snapshot, context) => {
   // variables that we will need in order to reach into the proper variables within a structure
@@ -129,7 +178,7 @@ exports.observeFollow = functions.database.ref ('/user-following/{uid}/{followed
 
 // from udemy session #77
 exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello from Firebase!");
+ response.send("Hello from Firebase Cam Frasier!");
 });
 
 exports.sendPushNotification = functions.https.onRequest((req, res) => {

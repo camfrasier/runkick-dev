@@ -260,6 +260,7 @@ class EditProfileController: UIViewController {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard usernameChanged == true else { return }
         
+        
         DataService.instance.REF_USERS.child(currentUid).child("username").setValue(updatedUsername) { (err, ref) in
             
             guard let userProfileController = self.userProfileController else { return }
@@ -273,16 +274,18 @@ class EditProfileController: UIViewController {
     func updateProfileImage() {
         
         guard imageChanged == true else { return }
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }    // Auth.auth singleton
         guard let user = self.user else { return }
         
-        Storage.storage().reference(forURL: user.profileImageURL).delete(completion: nil)
+// need to lookup the update profile tutorial. i may be missing something.
+Storage.storage().reference(forURL: user.profileImageURL).delete(completion: nil)
         
         let filename = NSUUID().uuidString
         
         guard let updatedProfileImage = profileImageView.image else { return }
         
-        guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.3) else { return }
+       // guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.3) else { return }
+        guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.2) else { return }
         
         let storageRef = DataService.instance.REF_STORAGE_PROFILE_IMAGES.child(filename)
         

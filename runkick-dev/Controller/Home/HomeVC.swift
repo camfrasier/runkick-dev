@@ -141,7 +141,7 @@ class HomeVC: UIViewController, Alertable {
     lazy var destinationTextField: UITextField = {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
-        tf.attributedPlaceholder = NSAttributedString(string:"Find a location..", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
+        tf.attributedPlaceholder = NSAttributedString(string:"Where to?..", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
         tf.font = UIFont.systemFont(ofSize: 22)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
@@ -2462,33 +2462,33 @@ extension HomeVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
-        /*
+        
         let lineRenderer = MKPolylineRenderer(overlay: self.route.polyline)
 
         //lineRenderer.strokeColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
-        lineRenderer.strokeColor = UIColor.rgb(red: 26, green: 172, blue: 249)
+        lineRenderer.strokeColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
         //lineRenderer.strokeColor = UIColor(red: 236/255, green: 38/255, blue: 125/255, alpha: 1)
         //lineRenderer.strokeColor = UIColor(red: 253/255, green: 145/255, blue: 20/255, alpha: 1) // orange
         //lineRenderer.strokeColor = UIColor(red: 122/255, green: 206/255, blue: 33/255, alpha: 1) // limer
         //lineRenderer.strokeColor = UIColor(red: 252/255, green: 180/255, blue: 16/255, alpha: 1) // gold coin
-        lineRenderer.lineWidth = 8.5
+        lineRenderer.lineWidth = 4.5
         lineRenderer.lineCap = .round
         lineRenderer.lineJoin = .bevel
         //lineRenderer.lineJoin = .miter
-        lineRenderer.fillColor = UIColor(red: 160/255, green: 170/255, blue: 250/255, alpha: 1)
+        //lineRenderer.fillColor = UIColor(red: 160/255, green: 170/255, blue: 250/255, alpha: 1)
         lineRenderer.lineDashPattern = [NSNumber(value: 0.1), NSNumber(value: 10)]
         
         
         return lineRenderer
- */
-        
+ 
+        /*
         let overlay = overlay as? MKPolyline
                 // define a list of colors you want in your gradient
         //let gradientColors = [UIColor.rgb(red: 0, green: 0, blue: 255), UIColor.rgb(red: 236, green: 38, blue: 125), UIColor.rgb(red: 253, green: 145, blue: 20), UIColor.rgb(red: 253, green: 190, blue: 60)]
         
-        //let gradientColors = [UIColor.airBnBRed(), UIColor.airBnBDeepRed()]
-        let gradientColors = [UIColor.rgb(red: 255, green: 99, blue: 117), UIColor.airBnBDeepRed()]
+        //let gradientColors = [UIColor.rgb(red: 242, green: 137, blue: 140), UIColor.airBnBRed(), UIColor.airBnBDeepRed()]
+        let gradientColors = [UIColor.rgb(red: 242, green: 116, blue: 118), UIColor.airBnBDeepRed()]
         
         //UIColor.rgb(red: 122, green: 206, blue: 33)
         
@@ -2502,10 +2502,11 @@ extension HomeVC: MKMapViewDelegate {
         polylineRenderer.lineDashPattern = [NSNumber(value: 0.1), NSNumber(value: 10)]
         
         polylineRenderer.showsBorder = true
-        polylineRenderer.borderColor = UIColor.rgb(red: 252, green: 132, blue: 187) /* defaults to white if not specified*/
-        //polylineRenderer.borderColor = .white
+        //polylineRenderer.borderColor = UIColor.rgb(red: 252, green: 132, blue: 187) /* defaults to white if not specified*/
+        polylineRenderer.borderColor = .white
         return polylineRenderer
        // }
+    */
     }
 
     func dropPinFor(mapItem: MKMapItem) {

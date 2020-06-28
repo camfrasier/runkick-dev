@@ -50,6 +50,7 @@ class DataService {
     private var _REF_MESSAGES = DB_BASE.child("messages")
     private var _REF_USER_MESSAGES = DB_BASE.child("user-messages")
     private var _REF_HASHTAG_POST = DB_BASE.child("hashtag-post")
+    private var _REF_SHOPPING_CART = DB_BASE.child("shopping-cart")
     
     // Prevents the above variables from being modified directly.
     var REF_BASE: DatabaseReference {
@@ -72,6 +73,10 @@ class DataService {
     
     var REF_MARKETPLACE: DatabaseReference {
         return _REF_MARKETPLACE
+    }
+    
+    var REF_SHOPPING_CART: DatabaseReference {
+        return _REF_SHOPPING_CART
     }
     
     var REF_CATEGORIES: DatabaseReference { // may not need category section because we have the feed

@@ -15,7 +15,7 @@ private let headerIdentifier = "UserProfileHeader"
 class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UserProfileHeaderDelegate {
      
     // Mark: - Properties
-    
+
     // here we are using the class photo feed view in order to pull up the photo we need from the subclass PhotoProfileView
     let photoProfileView: PhotoProfileView = {
         let view = PhotoProfileView()

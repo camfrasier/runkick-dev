@@ -429,7 +429,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         }
         
-        navigationItem.title = "Feed"
+        navigationItem.title = "Explore"
             
         /*
             profileImageView.frame = CGRect(x: 0, y: 0, width: 32, height: 32)

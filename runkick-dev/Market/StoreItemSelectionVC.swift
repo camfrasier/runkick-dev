@@ -83,6 +83,8 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
         
         configureViewComponents()
         
+        configureTabBar()
+        
         // Do any additional setup after loading the view.
     }
 
@@ -208,11 +210,26 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
         addToCartLabel.anchor(top: addToCarButtonBackground.topAnchor, left: addToCarButtonBackground.leftAnchor, bottom: addToCarButtonBackground.bottomAnchor, right: addToCarButtonBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
+    func configureTabBar() {
+        
+        // removing shadow from tab bar
+        tabBarController?.tabBar.layer.shadowRadius = 0
+        tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+    }
+    
     @objc func handleAddToCart() {
         print("Handle add to cart here")
+        
     }
     
     @objc func handleShoppingCartView() {
         print("Handle shopping cart view")
+        
+             //guard let post = cell.categoryPost else { return }
+             let checkoutVC = CheckoutVC()
+             
+             // sending this postId over to the comment view controller
+        //checkoutVC.categoryPost = post
+             navigationController?.pushViewController(checkoutVC, animated: true)
     }
 }
