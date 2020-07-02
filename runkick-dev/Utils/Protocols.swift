@@ -64,7 +64,13 @@ protocol FeedCellDelegate {
 
 
 protocol CategoryFeedCellDelegate {
+
     func handlePhotoTapped(for cell: CategoryFeedCell)
+    func handleRedeemAddToCart(for cell: CategoryFeedCell, category: Category?)
+}
+
+protocol CheckoutCellDelegate : class {
+    func removeItemFromCart(for cell: CheckoutCell, category: Category?)
 }
 
 protocol AdminStorePostCellDelegate {

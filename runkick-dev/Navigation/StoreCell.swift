@@ -183,14 +183,13 @@ class StoreCell: UITableViewCell {
         return label
     }()
     
-    let locationPointsLabel: UILabel = {
+    let pointsLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         return label
     } ()
     
-    lazy var priceBlock: UIView = {
+    lazy var pointsBlock: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
@@ -243,14 +242,16 @@ class StoreCell: UITableViewCell {
         storeImageView.anchor(top: imageContainerView.topAnchor, left: imageContainerView.leftAnchor, bottom: imageContainerView.bottomAnchor, right: imageContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         storeImageView.layer.cornerRadius = 0
         
-        storeImageView.addSubview(priceBlock)
-        priceBlock.anchor(top: storeImageView.topAnchor, left: storeImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 25)
-        priceBlock.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        storeImageView.addSubview(pointsBlock)
+        pointsBlock.anchor(top: storeImageView.topAnchor, left: storeImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 110, height: 28)
+        pointsBlock.backgroundColor = UIColor.statusBarGreen()
+        pointsBlock.layer.cornerRadius = 13
         
-        priceBlock.addSubview(locationPointsLabel)
-        locationPointsLabel.anchor(top: nil, left: priceBlock.leftAnchor, bottom: nil, right: priceBlock.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        locationPointsLabel.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        locationPointsLabel.centerYAnchor.constraint(equalTo: priceBlock.centerYAnchor).isActive = true
+        pointsBlock.addSubview(pointsLabel)
+        pointsLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        pointsLabel.centerYAnchor.constraint(equalTo: pointsBlock.centerYAnchor).isActive = true
+        pointsLabel.centerX(inView: pointsBlock)
+        pointsLabel.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
     
         /*
         
@@ -466,7 +467,7 @@ class StoreCell: UITableViewCell {
                         guard let dbStorePoints = store.points else { return }
                         //print("here are your coin \(dbStorePoints)")
                         
-                        self.locationPointsLabel.text = String(" \(dbStorePoints) points  ")
+                        self.pointsLabel.text = String("+\(dbStorePoints) Points")
                         
                     }
                     

@@ -55,7 +55,8 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
     
     
     var posts = [Category]() 
-    var categoryPost: Category?
+    //var categoryPost: Category?
+        var categoryPost: Category!
     {
         
         didSet {  // Did set here means we are going to be setting the user for our header in the controller file UserProfileVC.
@@ -86,6 +87,10 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
         configureTabBar()
         
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        configureTabBar()
     }
 
     // MARK: UICollectionViewDataSource
@@ -178,16 +183,16 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
         // custom notifications button
                 
         //let customNotificationsButton = UIButton(type: UIButton.ButtonType.system)
-        shoppingCartButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        shoppingCartButton.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
             
         //using this code to show the true image without rendering color
-        shoppingCartButton.setImage(UIImage(named:"simpleShoppingCart")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        shoppingCartButton.setImage(UIImage(named:"shoppingCart")?.withRenderingMode(.alwaysOriginal), for: .normal)
             
         //let shoppingCartButton = UIButton(type: UIButton.ButtonType.custom)
 
-        shoppingCartButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 25 )
+        shoppingCartButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 27, height: 27 )
         shoppingCartButton.addTarget(self, action: #selector(handleShoppingCartView), for: .touchUpInside)
-        shoppingCartButton.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        shoppingCartButton.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         shoppingCartButton.backgroundColor = .clear
 
         let shoppingCart = UIBarButtonItem(customView: shoppingCartButton)
@@ -197,7 +202,7 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
     func configureViewComponents() {
         
         view.addSubview(shadowBackground)
-        shadowBackground.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 40, paddingRight: 0, width: 150, height: 45)
+        shadowBackground.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 150, height: 45)
         shadowBackground.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         shadowBackground.layer.cornerRadius = 23
         
@@ -219,6 +224,9 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
     
     @objc func handleAddToCart() {
         print("Handle add to cart here")
+        
+        // instead of using categoryPost I may have to use product struct and then go on..
+        StripeCart.addItemToCart(item: categoryPost)
         
     }
     

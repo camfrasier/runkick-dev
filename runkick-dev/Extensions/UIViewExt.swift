@@ -32,6 +32,15 @@ extension UIColor {
     }
     
     
+    static func airBnBNew() -> UIColor {
+        return UIColor.rgb(red: 236, green: 84, blue: 95)
+    }
+    
+    static func statusBarGreen() -> UIColor {
+        return UIColor.rgb(red: 49, green: 213, blue: 56)
+    }
+    
+    
     static func actionRed() -> UIColor {
         return UIColor.rgb(red: 236, green: 38, blue: 125)
     }
@@ -118,8 +127,27 @@ extension Date {
     }
 }
 
+extension Int {
+    
+    // pennies to formatted currency function returns a string of some sort
+    func penniesToFormatttedCurrency() -> String {
+        
+        // if the int this function is being called on is 1234 the dollars = 1234 / 100 = $12.34
+        let dollars = Double(self) / 100
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale(identifier: "es_US")
+        
+        if let dollarString = formatter.string(from: dollars as NSNumber) {
+            return dollarString
+        }
+        return "$0.00"
+    }
+}
+
 
 // MARK: - UIView Extensions
+
 
 extension UIView {
     

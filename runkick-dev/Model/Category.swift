@@ -25,6 +25,7 @@ class Category {
     var address: String!
     var storeId: String!
     var user: User?
+    var points: Int!
     
     init(postId: String!, dictionary: Dictionary<String, AnyObject>) {
         
@@ -48,6 +49,10 @@ class Category {
         
         if let address = dictionary["address"] as? String {
             self.address = address
+        }
+        
+        if let points = dictionary["points"] as? Int {
+            self.points = points
         }
         
         if let category = dictionary["category"] as? String {
@@ -77,3 +82,12 @@ class Category {
     }
 }
 
+// may need to add items to this equitable extension below
+extension Category: Equatable {}
+
+func ==(lhs: Category, rhs: Category) -> Bool {
+    let areEqual = lhs.postId == rhs.postId &&
+        lhs.price == rhs.price
+
+    return areEqual
+}

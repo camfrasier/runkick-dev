@@ -114,6 +114,7 @@ class MarketplaceVC: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
+        configureNavigationaBar()
     }
     
     // MARK: - Selectors

@@ -46,8 +46,6 @@ exports.createStripeCustomer = functions.database.ref('users/{uid}').onCreate((s
 
     return admin.database().ref('/users/' + uid + '/email/').once('value', async (snapshot) => {
     var email = snapshot.val();
-    //var uid = email.uid;
-
     // await removes the need for a completion handlers
     const customer = await stripe.customers.create({ email: email })
 
@@ -55,6 +53,33 @@ exports.createStripeCustomer = functions.database.ref('users/{uid}').onCreate((s
     return admin.database().ref('users/' + uid).update({stripeId : customer.id})
   })
 });
+
+// callable function - see google firebase callable function docs, so we don't need Alamo Fire etc.
+
+exports.createEphemeralKey = functions.https.onCall(async (data, context) => {
+
+  const customerId = data.customer_id;
+  const stripeVersion = data.stripe_version; // the key from the value we pass from the client initializeApp
+  const uid = context.auth.uid;
+
+  if (uid === null) {
+    console.log('Illegal access attempt due to unauthenticated user');
+    throw new functions.https.HttpsError('permission-denied', 'Illegal access attempt.')
+  }
+  // request that we create the ephemeral key
+  return stripe.ephemeralKeys.create(
+    {customer: customerId},
+    {stripe_version: stripeVersion}
+  ).then((key) => {
+
+    return key // return the key to the client app
+
+  }).catch((err) => {
+    throw new functions.https.HttpsError('internal', 'Unable to create ephemeral key')
+  })
+})
+
+
 
 exports.observeComments = functions.database.ref('/user-comments/{postId}/{commentId}').onCreate((snapshot, context) => {
   // variables that we will need in order to reach into the proper variables within a structure

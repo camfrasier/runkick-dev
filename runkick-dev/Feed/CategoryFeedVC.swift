@@ -12,8 +12,7 @@ import Firebase
 private let reuseIdentifier = "Cell"
 
 class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, CategoryFeedCellDelegate {
-    
-    
+
     //var categories = [MarketCategory]() // This need to be a variable so we can mutate it.
     //var category: MarketCategory?
     var currentKey: String?
@@ -21,6 +20,9 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
     var posts = [Category]() // This need to be a variable so we can mutate it.
     var post: MarketCategory?
     
+    var shoppingCartButton = UIButton(type: UIButton.ButtonType.custom)
+    
+    /*
     let shoppingCartButton: UIButton = {
      let button = UIButton(type: UIButton.ButtonType.custom)
      //button.setImage(UIImage(named: "simpleCartLimer"), for: .normal)
@@ -47,6 +49,7 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         button.alpha = 1
         return button
     }()
+    */
     
     let tabGradientView: UIView = {
         let view = UIView()
@@ -168,11 +171,13 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
              // sending this postId over to the comment view controller
         storeItemSelectionVC.categoryPost = post
              navigationController?.pushViewController(storeItemSelectionVC, animated: true)
-
     }
     
- 
-    
+    func handleRedeemAddToCart(for cell: CategoryFeedCell, category: Category?) {
+        print("handle redeem cart")
+        StripeCart.addItemToCart(item: category!)
+    }
+     
     func configureNavigationBar() {
         
         navigationController?.navigationBar.isTranslucent = false
@@ -189,6 +194,27 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.title = post?.category
         
         navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        
+        
+        
+        // configure shopping cart button.. need to clean up code
+        
+        //let customNotificationsButton = UIButton(type: UIButton.ButtonType.system)
+        shoppingCartButton.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+            
+        //using this code to show the true image without rendering color
+        shoppingCartButton.setImage(UIImage(named:"shoppingCart")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            
+        //let shoppingCartButton = UIButton(type: UIButton.ButtonType.custom)
+
+        shoppingCartButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 27, height: 27 )
+        shoppingCartButton.addTarget(self, action: #selector(handleShoppingCartView), for: .touchUpInside)
+        shoppingCartButton.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        shoppingCartButton.backgroundColor = .clear
+
+        let shoppingCart = UIBarButtonItem(customView: shoppingCartButton)
+        self.navigationItem.rightBarButtonItems = [shoppingCart]
+        
     }
     
     /*
@@ -364,17 +390,27 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
         
+        /*
         view.addSubview(shoppingCartButton)
         shoppingCartButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
         
         shoppingCartButton.addSubview(beBoppShoppingButton)
         beBoppShoppingButton.anchor(top: shoppingCartButton.topAnchor, left: shoppingCartButton.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6.5, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        */
         
     }
     
-    @objc func handleShoppingCart() {
-        print("handle shopping cart")
+    @objc func handleShoppingCartView() {
+        print("Handle shopping cart view")
+        
+             //guard let post = cell.categoryPost else { return }
+             let checkoutVC = CheckoutVC()
+             
+             // sending this postId over to the comment view controller
+        //checkoutVC.categoryPost = post
+             navigationController?.pushViewController(checkoutVC, animated: true)
     }
+
     
 
     

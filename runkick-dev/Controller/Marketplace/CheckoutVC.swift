@@ -8,13 +8,18 @@
 
 import UIKit
 import Firebase
+import Stripe
 
 private let reuseIdentifier = "Cell"
 
-class CheckoutVC: UIViewController {
+class CheckoutVC: UIViewController, CheckoutCellDelegate {
+    
+    // Mark: - Variables
+    
+    var tableView: UITableView!
+    var paymentContext: STPPaymentContext!
     
     // Mark: - Properties
-    var tableView: UITableView!
     
     let separatorView: UIView = {
            let view = UIView()
@@ -32,12 +37,17 @@ class CheckoutVC: UIViewController {
         return label
     }()
     
-    let paymentMethodOption: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.text = "Payment Option"
-        return label
+    lazy var paymentMethodOption: UIButton = {
+        let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(handlePaymentMethodTapped), for: .touchUpInside)
+        button.setTitle("Payment Option", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 255), for: .normal)
+        button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
+        button.layer.borderWidth = 0.25
+        button.alpha = 1
+        button.backgroundColor = .clear
+        return button
     }()
     
     let redeemedPointsLabel: UILabel = {
@@ -176,12 +186,18 @@ class CheckoutVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         configureTableView()
         
         configureViewComponents()
         
+        configureTabBar()
+        
+        setupStripeConfig()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {    
         configureTabBar()
     }
     
@@ -197,21 +213,33 @@ class CheckoutVC: UIViewController {
         
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = true
-        //tableView.separatorStyle = .none
+        tableView.separatorStyle = .none
         //tableView.rowHeight = 100
 
         self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 200)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 5, paddingBottom: 0, paddingRight: 5, width: 0, height: 260)
+        
+        setupPaymentInfo()
+    }
+    
+    func setupPaymentInfo() {
+        
+        // calling pennies to formatted currency to get a properly formatted string
+        subtotalCostLabel.text = StripeCart.subtotal.penniesToFormatttedCurrency()
+        processingCostLabel.text = StripeCart.processingFees.penniesToFormatttedCurrency()
+        totalAmountCostLabel.text = StripeCart.total.penniesToFormatttedCurrency()
         
     }
     
     func configureViewComponents() {
         
         view.addSubview(separatorView)
-        separatorView.anchor(top: tableView.bottomAnchor, left: tableView.leftAnchor, bottom: nil, right: tableView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.30)
+        separatorView.anchor(top: tableView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 5, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0.30)
+        
+
         
         let stackView = UIStackView(arrangedSubviews: [paymentMethodLabel, redeemedPointsLabel])
         
@@ -222,24 +250,24 @@ class CheckoutVC: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(stackView)
-        stackView.anchor(top: separatorView.bottomAnchor, left: tableView.leftAnchor, bottom: nil, right: tableView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 150, width: 0, height: 0)
+        stackView.anchor(top: separatorView.bottomAnchor, left: separatorView.leftAnchor, bottom: nil, right: separatorView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 150, width: 0, height: 0)
+        
+        paymentMethodOption.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 130, height: 30)
+        paymentMethodOption.layer.cornerRadius = 15
         
         let stackViewCost = UIStackView(arrangedSubviews: [paymentMethodOption, redeemedTotalLabel])
         
         stackViewCost.axis = .vertical
         stackViewCost.distribution = .equalSpacing
         stackViewCost.alignment = .trailing
-        stackViewCost.spacing = 15
+        stackViewCost.spacing = 8
         stackViewCost.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(stackViewCost)
-        stackViewCost.anchor(top: stackView.topAnchor, left: stackView.rightAnchor, bottom: nil, right: tableView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
+        stackViewCost.anchor(top: stackView.topAnchor, left: stackView.rightAnchor, bottom: nil, right: separatorView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(separatorView2)
-        separatorView2.anchor(top: stackView.bottomAnchor, left: tableView.leftAnchor, bottom: nil, right: tableView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.30)
-        
-
+        separatorView2.anchor(top: stackView.bottomAnchor, left: separatorView.leftAnchor, bottom: nil, right: separatorView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.30)
         
         let stackView2 = UIStackView(arrangedSubviews: [subtotalLabel, processingFeeLabel, totalSavedLabel])
         
@@ -250,7 +278,7 @@ class CheckoutVC: UIViewController {
         stackView2.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(stackView2)
-        stackView2.anchor(top: separatorView2.bottomAnchor, left: tableView.leftAnchor, bottom: nil, right: tableView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 100, width: 0, height: 0)
+        stackView2.anchor(top: separatorView2.bottomAnchor, left: separatorView.leftAnchor, bottom: nil, right: separatorView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 100, width: 0, height: 0)
         
         let stackView2Cost = UIStackView(arrangedSubviews: [subtotalCostLabel, processingCostLabel, savedCostLabel])
         
@@ -261,16 +289,16 @@ class CheckoutVC: UIViewController {
         stackView2Cost.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(stackView2Cost)
-        stackView2Cost.anchor(top: stackView2.topAnchor, left: stackView2.rightAnchor, bottom: nil, right: tableView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stackView2Cost.anchor(top: stackView2.topAnchor, left: stackView2.rightAnchor, bottom: nil, right: separatorView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(separatorView3)
-        separatorView3.anchor(top: stackView2.bottomAnchor, left: tableView.leftAnchor, bottom: nil, right: tableView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.30)
+        separatorView3.anchor(top: stackView2.bottomAnchor, left: separatorView.leftAnchor, bottom: nil, right: separatorView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.30)
         
         view.addSubview(totalAmountLabel)
         totalAmountLabel.anchor(top: separatorView3.bottomAnchor, left: separatorView.leftAnchor, bottom: nil, right: separatorView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height:0)
         
         view.addSubview(totalAmountCostLabel)
-        totalAmountCostLabel.anchor(top: totalAmountLabel.topAnchor, left: nil, bottom: nil, right: tableView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        totalAmountCostLabel.anchor(top: totalAmountLabel.topAnchor, left: nil, bottom: nil, right: separatorView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
         
@@ -278,7 +306,7 @@ class CheckoutVC: UIViewController {
         // place order button
         
         view.addSubview(shadowBackground)
-        shadowBackground.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 40, paddingRight: 0, width: 150, height: 45)
+        shadowBackground.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 150, height: 45)
         shadowBackground.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         shadowBackground.layer.cornerRadius = 23
         
@@ -303,21 +331,86 @@ class CheckoutVC: UIViewController {
         print("Place order now")
     }
     
+    @objc func handlePaymentMethodTapped() {
+        print("Handle payment method tapped")
+        paymentContext.pushPaymentOptionsViewController()
+    }
+    
+    func removeItemFromCart(for cell: CheckoutCell, category: Category?) {
+        
+        print("reload function selected")
+        
+        // calling our Stripe singleton
+        StripeCart.removeItemFromCart(item: category!)
+        tableView.reloadData()
+        // re-calling setup payment info
+        setupPaymentInfo()
+        paymentContext.paymentAmount = StripeCart.total
+    }
+    
+    func setupStripeConfig() {
+        
+        // the stripe configurations holds the customer context, which works directly with the StripeApi class and subsequently the Stripe SDK.
+        
+        let config = STPPaymentConfiguration.shared()
+        //config.createCardSource = true // if the value of the property is true when a user adds a card in our UI, then a card source will be created and added to our Stripe customer. We want it to be true so when user enters in their card information then it gets saved to their card object. set to false by default.
+        
+        config.requiredBillingAddressFields = .none
+        config.requiredShippingAddressFields = [.postalAddress] //may not need this at all
+        //config.requiredShippingAddressFields = [.emailAddress]
+        
+        // this class will pre fetch all of the customer information shipping info, etc.
+        let customerContext = STPCustomerContext(keyProvider: StripeApi)
+        paymentContext = STPPaymentContext(customerContext: customerContext, configuration: config, theme: .default())
+        
+        paymentContext.paymentAmount = StripeCart.total
+        paymentContext.delegate = self
+        paymentContext.hostViewController = self
+    }
+}
+
+extension CheckoutVC: STPPaymentContextDelegate {
+    func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
+        
+        // updating the selected payment method on the UI
+        if let paymentMethod = paymentContext.selectedPaymentOption {
+            paymentMethodOption.setTitle(paymentMethod.label, for: .normal)
+            paymentMethodOption.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
+        } else {
+            paymentMethodOption.setTitle("Select Method", for: .normal)
+        }
+        
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
+
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPPaymentStatusBlock) {
+        
+    }
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
+        
+    }
 }
 
 extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return StripeCart.cartItems.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 90
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! CheckoutCell
-
+        
+        let product = StripeCart.cartItems[indexPath.row]
+        cell.configureCell(product: product, delegate: self)
+        
         return cell
     }
     

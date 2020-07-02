@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import CoreLocation
 import UserNotifications
+import Stripe
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
@@ -21,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
+        
+        STPPaymentConfiguration.shared().publishableKey = "pk_test_51GvbBAEPbWJjd5AT4ikoZcPtHbOg26QJG9CXU10ajmPwFKUW0bdkCmZNDNNpBjfzlaAuY1KdJjdFcvkbjCUlhFbq009jHYILSb"
+        //Stripe.setDefaultPublishableKey("pk_test_51GvbBAEPbWJjd5AT4ikoZcPtHbOg26QJG9CXU10ajmPwFKUW0bdkCmZNDNNpBjfzlaAuY1KdJjdFcvkbjCUlhFbq009jHYILSb")
         
         window = UIWindow()
         window?.makeKeyAndVisible()

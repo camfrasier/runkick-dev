@@ -65,12 +65,15 @@ class AdminStorePostVC: UICollectionViewController, UICollectionViewDelegateFlow
        }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        /*
         // adding shadow view to the tab bar
         tabBarController?.tabBar.isTranslucent = false
         tabBarController?.tabBar.layer.cornerRadius = 15
         tabBarController?.tabBar.layer.masksToBounds = true
         tabBarController?.tabBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         tabBarController?.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        */
 
     }
     

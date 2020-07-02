@@ -17,6 +17,9 @@ PODS:
   - Firebase/Database (6.24.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (~> 6.2.1)
+  - Firebase/Functions (6.24.0):
+    - Firebase/CoreOnly
+    - FirebaseFunctions (~> 2.5.1)
   - Firebase/Messaging (6.24.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 4.4.0)
@@ -56,6 +59,10 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - leveldb-library (~> 1.22)
+  - FirebaseFunctions (2.5.1):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseInstallations (1.2.0):
     - FirebaseCore (~> 6.6)
     - GoogleUtilities/Environment (~> 6.6)
@@ -132,7 +139,7 @@ PODS:
   - PromisesObjC (1.2.8)
   - Protobuf (3.12.0)
   - RevealingSplashView (0.6.0)
-  - Stripe (19.2.0)
+  - Stripe (19.3.0)
 
 DEPENDENCIES:
   - ActiveLabel
@@ -143,6 +150,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - Firebase/Functions
   - Firebase/Messaging
   - Firebase/Storage
   - Gallery
@@ -171,6 +179,7 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseCoreDiagnosticsInterop
     - FirebaseDatabase
+    - FirebaseFunctions
     - FirebaseInstallations
     - FirebaseInstanceID
     - FirebaseMessaging
@@ -209,6 +218,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 4a773a47bd83bbd5a9b1ccf1ce7caa8b2d535e67
   FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
   FirebaseDatabase: 4e99c0c475d1ee0aa64ae2b53c93f80b7b60d7d9
+  FirebaseFunctions: 5af7c35d1c5e41608fecbb667eb6c4e672e318d0
   FirebaseInstallations: 2119fb3e46b0a88bfdbf12562f855ee3252462fa
   FirebaseInstanceID: cef67c4967c7cecb56ea65d8acbb4834825c587b
   FirebaseMessaging: 58cb17277641a0084d98d4951ba1f1fb0588c8c6
@@ -230,8 +240,8 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
   RevealingSplashView: 40c5a770894459736acdc95655eeba0dd30ce91c
-  Stripe: d481c2dab9a892fd923f097f854661217f70dc7f
+  Stripe: dd5bfdd5f1daed4f9ddbfb47e9449ec302f9f708
 
-PODFILE CHECKSUM: 12872264dfd3b2f8e5ad8ec6ed244ebeb86a107e
+PODFILE CHECKSUM: dc2990d8bacdfc066775dbf22c54a26cc04815b9
 
 COCOAPODS: 1.9.1

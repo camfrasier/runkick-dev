@@ -948,7 +948,10 @@ class UserProfileHeader: UICollectionViewCell {
                                 guard let sendPoppPrice = market.poppPrice else { return }
                                 //guard let creationDate = market.creationDate as? String else { return }// not the correct way to store
                                 guard let sendAddress = market.address else { return }
+                                guard let sendPoints = market.points else { return }
                                 let creationDate = Int(NSDate().timeIntervalSince1970)
+                                
+                                
                         
                                 DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
                                                                                                                        "caption" : sendCaption,
@@ -957,6 +960,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "creationDate": creationDate,
                                                                                                                        "price": Float(sendPrice),// need to be float value to load with precision
                                                                                                                        "poppPrice": Float(sendPoppPrice),
+                                                                                                                       "points": sendPoints,
                                                                                                                        "address": sendAddress,
                                                                                                                        "category": "Salad"])
    
@@ -987,6 +991,7 @@ class UserProfileHeader: UICollectionViewCell {
                                 guard let sendPrice = market.price else { return }
                                 guard let sendPoppPrice = market.poppPrice else { return }
                                 guard let sendAddress = market.address else { return }
+                                guard let sendPoints = market.points else { return }
                                 let creationDate = Int(NSDate().timeIntervalSince1970)
                                 
                                 print("THIS IS THE POP PRICE \(sendPrice)")
@@ -999,6 +1004,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "price": Float(sendPrice),
                                                                                                                        "poppPrice": Float(sendPoppPrice),
                                                                                                                        "address": sendAddress,
+                                                                                                                       "points": sendPoints,
                                                                                                                        "category": "Seafood"])
                             }
                           }
@@ -1024,6 +1030,7 @@ class UserProfileHeader: UICollectionViewCell {
                                 guard let sendPrice = market.price else { return }
                                 guard let sendPoppPrice = market.poppPrice else { return }
                                 guard let sendAddress = market.address else { return }
+                                guard let sendPoints = market.points else { return }
                                 let creationDate = Int(NSDate().timeIntervalSince1970)
                                 
                                 DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
@@ -1034,6 +1041,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "price": Float(sendPrice),
                                                                                                                        "poppPrice": Float(sendPoppPrice),
                                                                                                                        "address": sendAddress,
+                                                                                                                       "points": sendPoints,
                                                                                                                        "category": "Vegetarian"])
                             }
                           }
@@ -1059,6 +1067,7 @@ class UserProfileHeader: UICollectionViewCell {
                                 guard let sendPrice = market.price else { return }   // may not have to convert because they are ocming from the admin post as ints already
                                 guard let sendPoppPrice = market.poppPrice else { return }
                                 guard let sendAddress = market.address else { return }
+                                guard let sendPoints = market.points else { return }
                                 let creationDate = Int(NSDate().timeIntervalSince1970)
                                 
                                 DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
@@ -1069,6 +1078,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "price": Float(sendPrice),
                                                                                                                        "poppPrice": Float(sendPoppPrice),
                                                                                                                        "address": sendAddress,
+                                                                                                                       "points": sendPoints,
                                                                                                                        "category": "Mexican"])
                             }
                           }
@@ -1093,6 +1103,7 @@ class UserProfileHeader: UICollectionViewCell {
                               //guard let creationDate = market.creationDate else { return }
                               guard let sendPrice = market.price else { return }
                               guard let sendPoppPrice = market.poppPrice else { return }
+                            guard let sendPoints = market.points else { return }
                               guard let sendAddress = market.address else { return }
                               let creationDate = Int(NSDate().timeIntervalSince1970)
                               
@@ -1104,6 +1115,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                      "price": Float(sendPrice),
                                                                                                                      "poppPrice": Float(sendPoppPrice),
                                                                                                                      "address": sendAddress,
+                                                                                                                     "points": sendPoints,
                                                                                                                      "category": "All American"])
                           }
                         }
@@ -1128,6 +1140,7 @@ class UserProfileHeader: UICollectionViewCell {
                               //guard let creationDate = market.creationDate else { return }
                               guard let sendPrice = market.price else { return }
                               guard let sendPoppPrice = market.poppPrice else { return }
+                            guard let sendPoints = market.points else { return }
                               guard let sendAddress = market.address else { return }
                               let creationDate = Int(NSDate().timeIntervalSince1970)
                               
@@ -1138,6 +1151,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                      "creationDate": creationDate,
                                                                                                                      "price": Float(sendPrice),
                                                                                                                      "poppPrice": Float(sendPoppPrice),
+                                                                                                                     "points": sendPoints,
                                                                                                                      "address": sendAddress,
                                                                                                                      "category": "Mediterranean"])
                           }
@@ -1163,6 +1177,7 @@ class UserProfileHeader: UICollectionViewCell {
                               //guard let creationDate = market.creationDate else { return }
                               guard let sendPrice = market.price else { return }
                               guard let sendPoppPrice = market.poppPrice else { return }
+                            guard let sendPoints = market.points else { return }
                               guard let sendAddress = market.address else { return }
                               let creationDate = Int(NSDate().timeIntervalSince1970)
                               
@@ -1173,6 +1188,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                      "creationDate": creationDate,
                                                                                                                      "price": Float(sendPrice),
                                                                                                                      "poppPrice": Float(sendPoppPrice),
+                                                                                                                     "points": sendPoints,
                                                                                                                      "address": sendAddress,
                                                                                                                      "category": "Protein"])
                           }
@@ -1207,7 +1223,7 @@ class UserProfileHeader: UICollectionViewCell {
                     guard let sendAddress = store.location else { return }
                     guard let sendLong = store.long else { return }
                     guard let sendLat = store.lat else { return }
-                    guard let sendPoints = store.points else { return }
+                    //guard let sendPoints = store.points else { return }
                     
                     DataService.instance.REF_ADMIN_STORE_POSTS.observeSingleEvent(of: .value) { (snapshot) in
                         guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
@@ -1225,8 +1241,8 @@ class UserProfileHeader: UICollectionViewCell {
                                     
                                     DataService.instance.REF_ADMIN_STORE_POSTS.child(key).updateChildValues(["lat" : sendLat,
                                     "long" : sendLong,
-                                    "address" : sendAddress,
-                                    "points" : sendPoints])
+                                   //"points" : sendPoints,
+                                    "address" : sendAddress])
                                     
                                 }
 

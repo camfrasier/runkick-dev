@@ -163,7 +163,6 @@ class HomeVC: UIViewController, Alertable {
         view.layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.25).cgColor
         view.layer.shadowRadius = 4.0
         view.layer.shadowOffset = CGSize(width: 1, height: 2)
-        view.layer.cornerRadius = 25
         view.isUserInteractionEnabled = true
         view.alpha = 1
         return view

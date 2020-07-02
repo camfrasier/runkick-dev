@@ -1,12 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "poppwalkSweat.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "red_trash.png",
+      "filename" : "redTrashCan.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
