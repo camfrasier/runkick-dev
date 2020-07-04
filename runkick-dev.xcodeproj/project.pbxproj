@@ -79,6 +79,7 @@
 		69D8CCCB24A8591F001432FD /* CheckoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D8CCCA24A8591F001432FD /* CheckoutCell.swift */; };
 		69D8CCCD24A99BD9001432FD /* StripeCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D8CCCC24A99BD9001432FD /* StripeCart.swift */; };
 		69D8CCCF24AD75CB001432FD /* StripeApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D8CCCE24AD75CA001432FD /* StripeApi.swift */; };
+		69D8CCD124AEA24A001432FD /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D8CCD024AEA24A001432FD /* UserService.swift */; };
 		69E0FAF3247831CF00608CCF /* GradientPathRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E0FAF2247831CF00608CCF /* GradientPathRenderer.swift */; };
 		69E20BEB22D01AC50054BCEE /* UIViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E20BEA22D01AC50054BCEE /* UIViewControllerExt.swift */; };
 		69E20BEF22D43D200054BCEE /* RunnerTrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E20BEE22D43D200054BCEE /* RunnerTrip.swift */; };
@@ -200,6 +201,7 @@
 		69D8CCCA24A8591F001432FD /* CheckoutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutCell.swift; sourceTree = "<group>"; };
 		69D8CCCC24A99BD9001432FD /* StripeCart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeCart.swift; sourceTree = "<group>"; };
 		69D8CCCE24AD75CA001432FD /* StripeApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeApi.swift; sourceTree = "<group>"; };
+		69D8CCD024AEA24A001432FD /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		69E0FAF2247831CF00608CCF /* GradientPathRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientPathRenderer.swift; sourceTree = "<group>"; };
 		69E20BEA22D01AC50054BCEE /* UIViewControllerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExt.swift; sourceTree = "<group>"; };
 		69E20BEE22D43D200054BCEE /* RunnerTrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTrip.swift; sourceTree = "<group>"; };
@@ -488,6 +490,7 @@
 				6923673F23039257002FCA4D /* CLService.swift */,
 				69236741230396FB002FCA4D /* AlertService.swift */,
 				696A6BE0240B3CDD00C2138F /* MainSwitch.swift */,
+				69D8CCD024AEA24A001432FD /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -794,6 +797,7 @@
 				6999CE3C244BBA6C00FB8FFC /* RightMenuVC.swift in Sources */,
 				69977C4B2398929A0057D0A3 /* MenuVC.swift in Sources */,
 				696A5216249EB4EC00289C33 /* HelperFunctions.swift in Sources */,
+				69D8CCD124AEA24A001432FD /* UserService.swift in Sources */,
 				6937B43522A6CFED00446926 /* AppDelegate.swift in Sources */,
 				69FBDCF02443A43D00709E21 /* UserSpecificFeedCell.swift in Sources */,
 				69FBDCF424467D1600709E21 /* AdminProfileVC.swift in Sources */,

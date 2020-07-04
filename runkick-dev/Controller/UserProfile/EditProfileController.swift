@@ -277,41 +277,66 @@ class EditProfileController: UIViewController {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }    // Auth.auth singleton
         guard let user = self.user else { return }
         
-// need to lookup the update profile tutorial. i may be missing something.
-Storage.storage().reference(forURL: user.profileImageURL).delete(completion: nil)
         
-        let filename = NSUUID().uuidString
-        
-        guard let updatedProfileImage = profileImageView.image else { return }
-        
-       // guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.3) else { return }
-        guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.2) else { return }
-        
-        let storageRef = DataService.instance.REF_STORAGE_PROFILE_IMAGES.child(filename)
-        
-        storageRef.putData(imageData, metadata: nil) { (metadata, error) in
-            if let error = error {
-                print("Failed to upload image to storage with error: ", error.localizedDescription)
-            }
-            
-            storageRef.downloadURL(completion: { (url, error) in
-                if error != nil {
-                    print("Failed to download url:", error!)
-                    return
-                } else {
-                    let updatedProfileImageURL = (url?.absoluteString)!
-                    print(updatedProfileImageURL)
-
-                    DataService.instance.REF_USERS.child(currentUid).child("profileImageURL").setValue(updatedProfileImageURL, withCompletionBlock: { (err, ref) in
+        DataService.instance.REF_USERS.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.hasChild("profileImageURL") {
                 
-                        guard let userProfileController = self.userProfileController else { return }
-                        userProfileController.fetchCurrentUserData()
+                DataService.instance.REF_USERS.child(currentUid).child("profileImageURL").observe(.value) { (snapshot) in
+                let url = snapshot.value as! String
                 
-                        self.dismiss(animated: true, completion: nil)
-                    })
+                    if url != "" {
+                        
+                        print("THE URL VALUE IS NOT EMPTY SO WE SHOULD ERASE")
+                        
+                        // here we need to check for images that already exist.. and also we need to ensure if one does exist it is deleted accordingly
+                        Storage.storage().reference(forURL: user.profileImageURL).delete(completion: nil)
+        
+                    }
                 }
-            })
+                         let filename = NSUUID().uuidString
+                         
+                        guard let updatedProfileImage = self.profileImageView.image else { return }
+                         
+                        // guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.3) else { return }
+                         guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.2) else { return }
+                         
+                         let storageRef = DataService.instance.REF_STORAGE_PROFILE_IMAGES.child(filename)
+                         
+                         storageRef.putData(imageData, metadata: nil) { (metadata, error) in
+                             if let error = error {
+                                 print("Failed to upload image to storage with error: ", error.localizedDescription)
+                             }
+                             
+                             storageRef.downloadURL(completion: { (url, error) in
+                                 if error != nil {
+                                     print("Failed to download url:", error!)
+                                     return
+                                 } else {
+                                     let updatedProfileImageURL = (url?.absoluteString)!
+                                     print(updatedProfileImageURL)
+
+                                     DataService.instance.REF_USERS.child(currentUid).child("profileImageURL").setValue(updatedProfileImageURL, withCompletionBlock: { (err, ref) in
+                                 
+                                         guard let userProfileController = self.userProfileController else { return }
+                                         userProfileController.fetchCurrentUserData()
+                                 
+                                         self.dismiss(animated: true, completion: nil)
+                                     })
+                                 }
+                             })
+                         }
+
+                
+                
+            }
         }
+        
+
+        
+        
+        
+        
+
     }
 }
 

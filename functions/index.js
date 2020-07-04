@@ -54,6 +54,63 @@ exports.createStripeCustomer = functions.database.ref('users/{uid}').onCreate((s
   })
 });
 
+exports.createCharge = functions.https.onCall(async (data, context) => {
+
+    const customerId = data.customer_id;
+    const paymentMethodId = data.payment_method_id;
+    const totalAmount = data.total_amount;
+    const idempotency = data.idempotency;
+
+    return stripe.paymentIntents.create({
+        payment_method: paymentMethodId,
+        customer: customerId,
+        amount: totalAmount,
+        currency: 'usd',
+        confirm: true,
+        payment_method_types: ['card']
+    }, {
+            idempotency_key: idempotency
+        }).then(intent => {
+            console.log('Charge Success: ', intent)
+            return
+        }).catch(err => {
+            console.log(err);
+            throw new functions.https.HttpsError('internal', ' Unable to create charge: ' + err);
+        });
+});
+
+
+/*
+exports.createCharge = functions.https.onCall(async (data, context) => {
+
+  const customerId = data.customerId;
+  const totalAmount = data.total;
+  const idempotency = data.idempotency;
+  const uid = context.auth.uid
+
+  if (uid === null) {
+    console.log('Illegal access attempt due to unauthenticated user');
+    throw new functions.https.HttpsError('permission-denied', 'Illegal access attempt.')
+  }
+
+  return stripe.charges.create({
+    amount: totalAmount,
+    currency: 'usd',
+    customer: customerId
+  }, {
+    idempotency_key: idempotency  // protects against any repeat charges
+  }).then( _ => {
+     return // return if a successful stripe charge
+  }).catch( err => {
+     console.log(err);
+     throw new functions.https.HttpsError('internal', 'Unable to create charge')
+  });
+
+
+})
+
+*/
+
 // callable function - see google firebase callable function docs, so we don't need Alamo Fire etc.
 
 exports.createEphemeralKey = functions.https.onCall(async (data, context) => {
@@ -78,7 +135,6 @@ exports.createEphemeralKey = functions.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError('internal', 'Unable to create ephemeral key')
   })
 })
-
 
 
 exports.observeComments = functions.database.ref('/user-comments/{postId}/{commentId}').onCreate((snapshot, context) => {

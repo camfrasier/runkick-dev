@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFunctions
 import Stripe
 
 private let reuseIdentifier = "Cell"
@@ -17,7 +18,7 @@ class CheckoutVC: UIViewController, CheckoutCellDelegate {
     // Mark: - Variables
     
     var tableView: UITableView!
-    var paymentContext: STPPaymentContext!
+    var paymentContext: STPPaymentContext!  // implicitlly unwrapped
     
     // Mark: - Properties
     
@@ -42,7 +43,7 @@ class CheckoutVC: UIViewController, CheckoutCellDelegate {
         button.addTarget(self, action: #selector(handlePaymentMethodTapped), for: .touchUpInside)
         button.setTitle("Payment Option", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 255), for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 90, green: 90, blue: 90), for: .normal)
         button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
         button.layer.borderWidth = 0.25
         button.alpha = 1
@@ -328,7 +329,10 @@ class CheckoutVC: UIViewController, CheckoutCellDelegate {
     }
     
     @objc func handlePlaceOrder() {
-        print("Place order now")
+        paymentContext.requestPayment()
+        
+        print("ORDER SHOULD BE PLACED HERE")
+        //shouldPresentLoadingView(true)
     }
     
     @objc func handlePaymentMethodTapped() {
@@ -356,20 +360,24 @@ class CheckoutVC: UIViewController, CheckoutCellDelegate {
         //config.createCardSource = true // if the value of the property is true when a user adds a card in our UI, then a card source will be created and added to our Stripe customer. We want it to be true so when user enters in their card information then it gets saved to their card object. set to false by default.
         
         config.requiredBillingAddressFields = .none
-        config.requiredShippingAddressFields = [.postalAddress] //may not need this at all
-        //config.requiredShippingAddressFields = [.emailAddress]
+        config.requiredShippingAddressFields = .none
+        //config.requiredShippingAddressFields = [.postalAddress]//may not need this at all
+        
         
         // this class will pre fetch all of the customer information shipping info, etc.
         let customerContext = STPCustomerContext(keyProvider: StripeApi)
         paymentContext = STPPaymentContext(customerContext: customerContext, configuration: config, theme: .default())
         
         paymentContext.paymentAmount = StripeCart.total
+        
         paymentContext.delegate = self
         paymentContext.hostViewController = self
     }
 }
 
 extension CheckoutVC: STPPaymentContextDelegate {
+
+    
     func paymentContextDidChange(_ paymentContext: STPPaymentContext) {
         
         // updating the selected payment method on the UI
@@ -383,16 +391,93 @@ extension CheckoutVC: STPPaymentContextDelegate {
     }
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFailToLoadWithError error: Error) {
-
-    }
-    
-    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPPaymentStatusBlock) {
+        
+        //activityIndicator.stopAnimating()
+        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        let retry = UIAlertAction(title: "Retry", style: .default) { (action) in
+            self.paymentContext.retryLoading()
+        }
+        
+        alertController.addAction(cancel)
+        alertController.addAction(retry)
+        present(alertController, animated: true, completion: nil)
         
     }
+    
+    
+    func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPPaymentStatusBlock) {
+    
+        print("DEBUG: WE GET HERE AFTER PRESSING PLACE ORDER")
+               
+               // STEP 1 - send up the total, customer id etc. then go to STEP 2 - Cloud function
+               
+               guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+               DataService.instance.REF_USERS.child(currentUid).child("stripeId").observeSingleEvent(of: .value) { (snapshot) in
+                       let stripeId = snapshot.value as! String
+               
+                        
+                           // replacing string dashes with nothing below
+                           let idempotency = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+                            
+                        // we send up the total stripeId and idempotency
+                           let data : [String: Any] = [
+                           "total_amount" : StripeCart.total,
+                           "customer_id" : stripeId,
+                           "payment_method_id" : paymentResult.paymentMethod?.stripeId ?? "",
+                           "idempotency" : idempotency
+                           ]
+               
+                   Functions.functions().httpsCallable("createCharge").call(data) { (result, error) in
+                    
+                           if let error = error {
+                            debugPrint(error.localizedDescription)
+                            //self.simpleAlert(title: "Error", msg: "Unable to make charge")
+                            completion(STPPaymentStatus.error, error)
+                               return
+                           }
+                
+                           StripeCart.clearCart()
+                           self.tableView.reloadData()
+                           self.setupPaymentInfo()
+                        completion(.success, nil)
+                       }
+               }
+    }
+    
     
     func paymentContext(_ paymentContext: STPPaymentContext, didFinishWith status: STPPaymentStatus, error: Error?) {
         
-    }
+        // STEP 3 - after cloud function this should tell us good or no.
+        
+        let title: String
+        let message: String
+        
+        switch status {
+        case .error:
+            title = "Error"
+            message = error?.localizedDescription ?? ""
+        case .success:
+            title = "Success!"
+            message = "Thank you for your purchase."
+        case .userCancellation:
+            return
+        }
+        
+        let alertController  = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+        }
 }
 
 extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {

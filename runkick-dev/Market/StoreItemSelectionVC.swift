@@ -233,6 +233,8 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
     @objc func handleShoppingCartView() {
         print("Handle shopping cart view")
         
+        //shouldPresentLoadingView(true)
+        
              //guard let post = cell.categoryPost else { return }
              let checkoutVC = CheckoutVC()
              

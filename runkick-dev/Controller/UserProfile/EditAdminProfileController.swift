@@ -238,6 +238,7 @@ class EditAdminProfileController: UIViewController {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let user = self.user else { return }
         
+        
         Storage.storage().reference(forURL: user.profileImageURL).delete(completion: nil)
         
         let filename = NSUUID().uuidString
