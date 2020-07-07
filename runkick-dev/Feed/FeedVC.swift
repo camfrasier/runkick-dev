@@ -258,9 +258,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
                            
                            // the height of all the variables in the cell
-                           let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
+                          // let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
                            
-                           return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
+                          // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
+                
+                    return CGSize(width: view.frame.width - 0, height: view.frame.height)
             }
             
         }
@@ -272,13 +274,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
                 
                 // the height of all the variables in the cell
-                let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
+               // let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
                 
-                return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
+                //return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
+                
+                return CGSize(width: view.frame.width - 0, height: view.frame.height)
             }
             
         }
-        return CGSize(width: view.frame.width - 0, height: 200)
+        // return CGSize(width: view.frame.width - 0, height: 200)
+        return CGSize(width: view.frame.width - 0, height: view.frame.height)
         
     }
 
@@ -322,7 +327,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     // calling function to give space and insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

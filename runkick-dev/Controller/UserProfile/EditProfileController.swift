@@ -16,8 +16,12 @@ class EditProfileController: UIViewController {
     var user: User?
     var imageChanged = false
     var usernameChanged = false
+    var firstnameChanged = false
+    var lastnameChanged = false
     var userProfileController: UserProfileVC?
     var updatedUsername: String?
+    var updatedFirstname: String?
+    var updatedLastname: String?
 
     
     let profileImageView: CustomImageView = {
@@ -46,33 +50,36 @@ class EditProfileController: UIViewController {
         let tf = UITextField()
         tf.textAlignment = .left
         tf.borderStyle = .none
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
     
-    let firstNameTextField: UITextField = {
+    let firstnameTextField: UITextField = {
         let tf = UITextField()
         tf.textAlignment = .left
         tf.borderStyle = .none
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         //tf.isUserInteractionEnabled = false // we are making this not editable
         return tf
     }()
     
-    let lastNameTextField: UITextField = {
+    let lastnameTextField: UITextField = {
         let tf = UITextField()
         tf.textAlignment = .left
         tf.borderStyle = .none
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         //tf.isUserInteractionEnabled = false // we are making this not editable
         return tf
     }()
     
-    let firstNameLabel: UILabel = {
+    let firstnameLabel: UILabel = {
         let label = UILabel()
         label.text = "First Name"
         label.font = UIFont.systemFont(ofSize: 16)
         return label
     }()
     
-    let lastNameLabel: UILabel = {
+    let lastnameLabel: UILabel = {
         let label = UILabel()
         label.text = "Last Name"
         label.font = UIFont.systemFont(ofSize: 16)
@@ -86,13 +93,13 @@ class EditProfileController: UIViewController {
         return label
     }()
     
-    let firstNameSeparatorView: UIView = {
+    let firstnameSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray
         return view
     }()
     
-    let lastNameSeparatorView: UIView = {
+    let lastnameSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray
         return view
@@ -121,6 +128,8 @@ class EditProfileController: UIViewController {
         configureViewComponents()
         
         usernameTextField.delegate = self
+        firstnameTextField.delegate = self
+        lastnameTextField.delegate = self
         
         loadUserData()
     }
@@ -139,7 +148,7 @@ class EditProfileController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @objc func handleDone() {
+    @objc func handleSaved() {
         
         view.endEditing(true)
         
@@ -149,9 +158,20 @@ class EditProfileController: UIViewController {
             updateUsername()
         }
         
+        if firstnameChanged {
+            updateFirstname()
+        }
+        
+        if lastnameChanged {
+            updateLastname()
+        }
+        
         if imageChanged {
+            print("AFTER SAVING IF THE IMAGE HAS CHANGE THIS VALUE IS TRUE \(imageChanged as Bool?)")
             updateProfileImage()
         }
+        
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func loadUserData() {
@@ -160,8 +180,8 @@ class EditProfileController: UIViewController {
         guard let profileImageUrl = user.profileImageURL else { return }
         
         profileImageView.loadImage(with: profileImageUrl)
-        firstNameTextField.text = user.firstname
-        lastNameTextField.text = user.lastname
+        firstnameTextField.text = user.firstname
+        lastnameTextField.text = user.lastname
         usernameTextField.text = user.username
     }
     
@@ -186,29 +206,29 @@ class EditProfileController: UIViewController {
         containerView.addSubview(separatorView)
         separatorView.anchor(top: nil, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
-        view.addSubview(firstNameLabel)
-        firstNameLabel.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        view.addSubview(firstnameLabel)
+        firstnameLabel.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        view.addSubview(lastNameLabel)
-        lastNameLabel.anchor(top: firstNameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        view.addSubview(lastnameLabel)
+        lastnameLabel.anchor(top: firstnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(usernameLabel)
-        usernameLabel.anchor(top: lastNameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        usernameLabel.anchor(top: lastnameLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        view.addSubview(firstNameTextField)
-        firstNameTextField.anchor(top: containerView.bottomAnchor, left: firstNameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 18, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
+        view.addSubview(firstnameTextField)
+        firstnameTextField.anchor(top: containerView.bottomAnchor, left: firstnameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 18, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
         
-        view.addSubview(lastNameTextField)
-        lastNameTextField.anchor(top: firstNameTextField.bottomAnchor, left: lastNameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 18, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
+        view.addSubview(lastnameTextField)
+        lastnameTextField.anchor(top: firstnameTextField.bottomAnchor, left: lastnameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 18, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
         
         view.addSubview(usernameTextField)
-        usernameTextField.anchor(top: lastNameTextField.bottomAnchor, left: usernameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 18, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
+        usernameTextField.anchor(top: lastnameTextField.bottomAnchor, left: usernameLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 18, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: (view.frame.width / 1.6), height: 0)
         
-        view.addSubview(firstNameSeparatorView)
-        firstNameSeparatorView.anchor(top: nil, left: firstNameTextField.leftAnchor, bottom: firstNameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
+        view.addSubview(firstnameSeparatorView)
+        firstnameSeparatorView.anchor(top: nil, left: firstnameTextField.leftAnchor, bottom: firstnameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
         
-        view.addSubview(lastNameSeparatorView)
-        lastNameSeparatorView.anchor(top: nil, left: lastNameTextField.leftAnchor, bottom: lastNameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
+        view.addSubview(lastnameSeparatorView)
+        lastnameSeparatorView.anchor(top: nil, left: lastnameTextField.leftAnchor, bottom: lastnameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
         
         view.addSubview(usernameSeparatorView)
         usernameSeparatorView.anchor(top: nil, left: usernameTextField.leftAnchor, bottom: usernameTextField.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -8, paddingRight: 12, width: 0, height: 0.5)
@@ -228,7 +248,7 @@ class EditProfileController: UIViewController {
         
         navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(handleDone))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(handleSaved))
         
         
         // custom back button
@@ -260,6 +280,7 @@ class EditProfileController: UIViewController {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard usernameChanged == true else { return }
         
+        print("This IS THE USERNAME STRING \(updatedUsername)")
         
         DataService.instance.REF_USERS.child(currentUid).child("username").setValue(updatedUsername) { (err, ref) in
             
@@ -271,8 +292,44 @@ class EditProfileController: UIViewController {
     }
     
     
-    func updateProfileImage() {
+    
+    func updateFirstname() {
         
+        guard let updatedFirstname = self.updatedFirstname else { return }
+        guard firstnameChanged == true else { return }
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+    
+        print("This IS THE FIRSTNAME STRING \(updatedFirstname)")
+
+        DataService.instance.REF_USERS.child(currentUid).child("firstname").setValue(updatedFirstname) { (err, ref) in
+            
+            guard let userProfileController = self.userProfileController else { return }
+            userProfileController.fetchCurrentUserData()
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func updateLastname() {
+        
+        guard let updatedLastname = self.updatedLastname else { return }
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard lastnameChanged == true else { return }
+        
+        
+        DataService.instance.REF_USERS.child(currentUid).child("lastname").setValue(updatedLastname) { (err, ref) in
+            
+            guard let userProfileController = self.userProfileController else { return }
+            userProfileController.fetchCurrentUserData()
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    
+    func updateProfileImage() {
+ 
+        print("HERE WE UPDATE PROFILE IMAGE")
         guard imageChanged == true else { return }
         guard let currentUid = Auth.auth().currentUser?.uid else { return }    // Auth.auth singleton
         guard let user = self.user else { return }
@@ -297,8 +354,7 @@ class EditProfileController: UIViewController {
                          
                         guard let updatedProfileImage = self.profileImageView.image else { return }
                          
-                        // guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.3) else { return }
-                         guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.2) else { return }
+                         guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.3) else { return }
                          
                          let storageRef = DataService.instance.REF_STORAGE_PROFILE_IMAGES.child(filename)
                          
@@ -325,18 +381,45 @@ class EditProfileController: UIViewController {
                                  }
                              })
                          }
+            } else {
+                // create an entirely new post
+                print("User photo never existed therefore we need to create a entirely new one")
+                //self.handleUploadPost()
+                
+                
+                 let filename = NSUUID().uuidString
+                 
+                guard let updatedProfileImage = self.profileImageView.image else { return }
+                 
+                 guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.3) else { return }
+                 
+                 let storageRef = DataService.instance.REF_STORAGE_PROFILE_IMAGES.child(filename)
+                 
+                 storageRef.putData(imageData, metadata: nil) { (metadata, error) in
+                     if let error = error {
+                         print("Failed to upload image to storage with error: ", error.localizedDescription)
+                     }
+                     
+                     storageRef.downloadURL(completion: { (url, error) in
+                         if error != nil {
+                             print("Failed to download url:", error!)
+                             return
+                         } else {
+                             let updatedProfileImageURL = (url?.absoluteString)!
+                             print(updatedProfileImageURL)
 
-                
-                
+                             DataService.instance.REF_USERS.child(currentUid).child("profileImageURL").setValue(updatedProfileImageURL, withCompletionBlock: { (err, ref) in
+                         
+                                 guard let userProfileController = self.userProfileController else { return }
+                                 userProfileController.fetchCurrentUserData()
+                         
+                                 self.dismiss(animated: true, completion: nil)
+                             })
+                         }
+                     })
+                 }
             }
         }
-        
-
-        
-        
-        
-        
-
     }
 }
 
@@ -348,7 +431,6 @@ extension EditProfileController: UIImagePickerControllerDelegate, UINavigationCo
             profileImageView.image = selectedImage
             self.imageChanged = true
         }
-        
         dismiss(animated: true, completion: nil)
     }
 }
@@ -356,7 +438,52 @@ extension EditProfileController: UIImagePickerControllerDelegate, UINavigationCo
 extension EditProfileController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+    
+        guard let user = self.user else { return }
         
+        let firstnameString = firstnameTextField.text?.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
+        let lastnameString = lastnameTextField.text?.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
+        let usernameString = usernameTextField.text?.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
+        
+        if user.firstname == firstnameString {
+            
+            firstnameChanged = false
+        }
+        
+        if user.lastname == lastnameString {
+            
+            lastnameChanged = false
+        }
+        
+        if user.username == usernameString {
+            
+            usernameChanged = false
+        }
+        
+        /*
+        guard user.firstname != trimmedString else {
+            print("ERROR: You did not change you username")
+            firstnameChanged = false
+            return
+        }
+        
+        guard trimmedString != "" else {
+            print("ERROR: Please enter a valid username")
+            firstnameChanged = false
+            return
+        }
+        */
+        
+        updatedFirstname = firstnameString
+        firstnameChanged = true
+        
+        updatedLastname = lastnameString
+        lastnameChanged = true
+        
+        updatedUsername = usernameString?.lowercased()
+        usernameChanged = true
+        
+        /*
         guard let user = self.user else { return }
         
         let trimmedString = usernameTextField.text?.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
@@ -372,8 +499,34 @@ extension EditProfileController: UITextFieldDelegate {
             usernameChanged = false
             return
         }
-        
+
         updatedUsername = trimmedString?.lowercased()
         usernameChanged = true
+        */
     }
+    
+    @objc func formValidation () {
+        guard
+            firstnameTextField.hasText,
+        lastnameTextField.hasText,
+           usernameTextField.hasText == true else {
+                
+            navigationItem.rightBarButtonItem?.isEnabled = false
+            navigationController?.navigationBar.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+            
+            guard let currentUid = Auth.auth().currentUser?.uid else { return }
+            DataService.instance.REF_USERS.child(currentUid).updateChildValues(["profileCompleted": false])
+            
+            return
+        }
+        
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        DataService.instance.REF_USERS.child(currentUid).updateChildValues(["profileCompleted": true])
+    }
+    
+    
+    
 }

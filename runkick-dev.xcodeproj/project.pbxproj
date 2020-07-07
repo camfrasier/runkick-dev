@@ -279,7 +279,6 @@
 			children = (
 				6937B45D22AA087400446926 /* LoginVC.swift */,
 				692367462305CBB6002FCA4D /* SignUpVC.swift */,
-				69D7C7A323664C9D00AF2736 /* AdminLoginVC.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -293,6 +292,7 @@
 				69FBDCF324467D1600709E21 /* AdminProfileVC.swift */,
 				69D7C7A82366ABC900AF2736 /* EditAdminProfileController.swift */,
 				691A870E231AFC6400EBB64A /* EditProfileController.swift */,
+				69D7C7A323664C9D00AF2736 /* AdminLoginVC.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";

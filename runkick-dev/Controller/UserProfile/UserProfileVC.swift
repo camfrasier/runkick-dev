@@ -13,7 +13,7 @@ private let reuseIdentifier = "Cell"
 private let headerIdentifier = "UserProfileHeader"
 
 class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UserProfileHeaderDelegate {
-     
+
     // Mark: - Properties
 
     // here we are using the class photo feed view in order to pull up the photo we need from the subclass PhotoProfileView
@@ -84,6 +84,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             layout.sectionHeadersPinToVisibleBounds = true
         }
         */
+        
+
             
         self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
@@ -93,6 +95,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         //collectionView.isScrollEnabled = false
 
         if Auth.auth().currentUser != nil {
+            
+            //user?.profileCompleted = false
             
             guard let currentUid = Auth.auth().currentUser?.uid else { return }
             
@@ -194,7 +198,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         //navigationItem.title = user?.username
         navigationItem.title = user?.firstname
         //navigationItem.title = "Hi \(String(describing: user?.firstname))"
-        
+
         return header
     }
     
@@ -253,7 +257,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             */
 
             }
-            
         }
     }
     */
@@ -262,6 +265,24 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // removing shadow from tab bar
         tabBarController?.tabBar.layer.shadowRadius = 0
         tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+    }
+    
+    func handleProfileComplete(for header: UserProfileHeader) {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_USERS.child(currentUid).child("profileCompleted").observeSingleEvent(of: .value) { (snapshot) in
+        guard let profileComplete = snapshot.value as? Bool else { return }
+            if profileComplete != true {
+             
+                let editProfileController = EditProfileController()
+                editProfileController.user = self.user
+                editProfileController.userProfileController = self
+                self.navigationController?.pushViewController(editProfileController, animated: true)
+                
+            }
+        }
+        
     }
     
     func fetchCurrentUserData() {

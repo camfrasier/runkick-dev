@@ -16,6 +16,7 @@ class UserProfileHeader: UICollectionViewCell {
     // Mark: - Properties
     
     var delegate: UserProfileHeaderDelegate?
+    var didSetProfileCalled = false
     
     var user: User? {
         didSet {  // Did set here means we are going to be setting the user for our header in the controller file UserProfileVC.
@@ -26,8 +27,12 @@ class UserProfileHeader: UICollectionViewCell {
             // configure either a send message button or photo button
             configureSendMessageButton()
             
-            // Set user status
+            // Set user status   THIS MAY BE ABLE TO MOVE DOWN TO THE INIT SECTION
             setUserStats(for: user)
+            
+            handleProfileComplete(for: user)
+            
+            // we may be able to get rid of the admin section here
             setAdminNavigationBar(for: user)
             
             let firstname = user?.firstname
@@ -41,7 +46,9 @@ class UserProfileHeader: UICollectionViewCell {
             
             guard let profileImageUrl = user?.profileImageURL else { return }  // Unwrapping this safely. Use in other functions as well.
             profileImageView.loadImage(with: profileImageUrl)
+
         }
+  
     }
     
     let gradientProfileView: GradientView = {
@@ -709,8 +716,9 @@ class UserProfileHeader: UICollectionViewCell {
         stackView.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         addSubview(editProfileFollowButton)
-        editProfileFollowButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 35)
+        editProfileFollowButton.anchor(top: stackView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 40)
         editProfileFollowButton.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
+        editProfileFollowButton.layer.cornerRadius = 20
         
         addSubview(userBioLabel)
          userBioLabel.anchor(top: editProfileFollowButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -779,7 +787,8 @@ class UserProfileHeader: UICollectionViewCell {
                     //let backgroundDimension: CGFloat = 50
                     
                     self.addSubview(self.messageButtonBackground)
-                    self.messageButtonBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 35)
+                    self.messageButtonBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
+                    self.messageButtonBackground.layer.cornerRadius = 20
                     
                     self.messageButtonBackground.addSubview(self.messageLabel)
                     self.messageLabel.anchor(top: self.messageButtonBackground.topAnchor, left: self.messageButtonBackground.leftAnchor, bottom: self.messageButtonBackground.bottomAnchor, right: self.messageButtonBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -834,7 +843,8 @@ class UserProfileHeader: UICollectionViewCell {
                             print("User is followed so we can show the send message button")
                             
                             self.addSubview(self.messageButtonBackground)
-                            self.messageButtonBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 35)
+                            self.messageButtonBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
+                            self.messageButtonBackground.layer.cornerRadius = 20
                             
                             self.messageButtonBackground.addSubview(self.messageLabel)
                             self.messageLabel.anchor(top: self.messageButtonBackground.topAnchor, left: self.messageButtonBackground.leftAnchor, bottom: self.messageButtonBackground.bottomAnchor, right: self.messageButtonBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -1358,7 +1368,54 @@ class UserProfileHeader: UICollectionViewCell {
     
     
     func setUserStats(for user: User?) {
+        
         delegate?.setUserStats(for: self)
+        
+    }
+    
+    func handleProfileComplete(for user: User?) {
+        
+    guard let currentUid = Auth.auth().currentUser?.uid else { return }
+    guard let user = self.user else { return }
+           
+        print("WHERE DOES THIS REPEAT!!!! current UID\(currentUid) and user\(user)")
+        // ensuring the current user is also the user id we are bringing in
+        
+        
+        if currentUid == user.uid && didSetProfileCalled == false {
+               
+          DataService.instance.REF_USERS.child(currentUid).child("profileCompleted").observeSingleEvent(of: .value) { (snapshot) in
+                    
+                        guard let profileComplete = snapshot.value as? Bool else { return }
+                        if profileComplete != true {
+    
+                        self.delegate?.handleProfileComplete(for: self)
+                            self.didSetProfileCalled = true
+                            print("did set value \(self.didSetProfileCalled)")
+                        }
+                    }
+           } else {
+            didSetProfileCalled = false
+            print("did set value \(self.didSetProfileCalled)")
+        }
+        
+        
+        
+        
+  /*
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_USERS.child(currentUid).child("profileCompleted").observeSingleEvent(of: .value) { (snapshot) in
+        
+            guard let profileComplete = snapshot.value as? Bool else { return }
+            if profileComplete != true {
+             
+                print("WHERE DOES THIS REPEAT!!!!")
+                self.delegate?.handleProfileComplete(for: self)
+   
+            }
+        }
+ */
     }
     
     func setAdminNavigationBar(for user: User?) {

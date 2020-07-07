@@ -172,7 +172,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return options
         
     }
-    
+
     func fetchPhotos () {
         
         let allPhotos = PHAsset.fetchAssets(with: .image, options: getAssetFetchOptions())
@@ -191,6 +191,8 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 let targetSize = CGSize(width: 200, height: 200)
                 let options = PHImageRequestOptions()
                 options.isSynchronous = true
+                options.deliveryMode = .highQualityFormat
+                
                 
                 // Request image representation for specified asset.
                 imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options, resultHandler: { (image, info) in
@@ -222,3 +224,4 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
     }
 }
+

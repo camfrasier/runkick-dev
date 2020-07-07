@@ -252,7 +252,7 @@ class HomeVC: UIViewController, Alertable {
         view.alpha = 1
         return view
     }()
-    
+    /*
     lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Login!", for: .normal)
@@ -276,7 +276,7 @@ class HomeVC: UIViewController, Alertable {
         button.addTarget(self, action: #selector(handleUserSignUp), for: .touchUpInside)
         return button
     } ()
-    
+    */
     let separatorShadowView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 230/255, green: 0/255, blue: 0/255, alpha: 1)
@@ -840,7 +840,7 @@ class HomeVC: UIViewController, Alertable {
                 
                 print("DEBUG: WE should present the loging if the there is no current user")
                 
-                self.configureLogInView()
+                //self.configureLogInView()
                 self.presentLoginView()  //black view should go dark under configure black view
                 
                 /*
@@ -895,6 +895,7 @@ class HomeVC: UIViewController, Alertable {
         fetchStores()
     }
     
+    /*
     func configureLogInView() {
         
         if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
@@ -934,8 +935,12 @@ class HomeVC: UIViewController, Alertable {
             }
         }
     }
-    
+    */
     func presentLoginView() {
+        
+        handleLoginVC()
+        
+        /*
                 let height: CGFloat = 600
         let collectionViewY = -(view.frame.height) - height
                 
@@ -957,8 +962,11 @@ class HomeVC: UIViewController, Alertable {
 
                                                  
                 }, completion: nil)
+ 
+        */
     }
     
+    /*
     @objc func handleUserLogin() {
         print("login view dismiss")
         
@@ -981,7 +989,8 @@ class HomeVC: UIViewController, Alertable {
         }
         
     }
-    
+    */
+    /*
     @objc func handleUserSignUp() {
         print("login view dismiss")
         
@@ -1004,7 +1013,7 @@ class HomeVC: UIViewController, Alertable {
         }
         
     }
-    
+    */
     func handleLoginVC() {
         
         
@@ -1017,6 +1026,7 @@ class HomeVC: UIViewController, Alertable {
         
     }
     
+    /*
     func handleSignUpVC() {
         
         //userSettingsVC.delegate = self
@@ -1026,6 +1036,7 @@ class HomeVC: UIViewController, Alertable {
         
         print("DEBUG: Signup view presented")
     }
+    */
     
     @objc func handleQRCode() {
         

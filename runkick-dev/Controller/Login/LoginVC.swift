@@ -66,6 +66,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
         return label
     } ()
     
+    /*
     lazy var userSignUpLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -77,6 +78,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
         label.addGestureRecognizer(followTap)
         return label
     } ()
+    */
     
     let userLoginButton: UIButton = {
         let button = UIButton(type: .system)
@@ -85,6 +87,17 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
         button.titleLabel?.font = UIFont(name: "Avenir Next", size: 20)
         button.backgroundColor = UIColor(red: 250/255, green: 170/255, blue: 120/255, alpha: 1)
         button.addTarget(self, action: #selector(handleUserLogin), for: .touchUpInside)
+        button.layer.cornerRadius = 25
+        return button
+    } ()
+    
+    let userSignUpButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Sign Up!", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Avenir Next", size: 20)
+        button.backgroundColor = UIColor(red: 250/255, green: 170/255, blue: 120/255, alpha: 1)
+        button.addTarget(self, action: #selector(handleRegisterProfile), for: .touchUpInside)
         button.layer.cornerRadius = 25
         return button
     } ()
@@ -169,9 +182,13 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
         
         view.addSubview(cancelLoginButton)
         cancelLoginButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-
+        
+        view.addSubview(userSignUpButton)
+        userSignUpButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 40, paddingBottom: 30, paddingRight: 40, width: 0, height: 50)
+        
         view.addSubview(userLoginButton)
-        userLoginButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 40, paddingBottom: 30, paddingRight: 40, width: 0, height: 50)
+        userLoginButton.anchor(top: nil, left: view.leftAnchor, bottom: userSignUpButton.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 40, paddingBottom: 20, paddingRight: 40, width: 0, height: 50)
+        
     }
     
     @objc func formValidation () {
@@ -180,10 +197,10 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
             passwordTextField.hasText == true else {
                 
                 userLoginButton.isEnabled = false
-                userSignUpLabel.isEnabled = false
+                userSignUpButton.isEnabled = false
                 
                 userLoginButton.backgroundColor = UIColor(red: 250/255, green: 170/255, blue: 120/255, alpha: 1)
-                userSignUpLabel.textColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+                userSignUpButton.setTitleColor(UIColor.rgb(red: 149, green: 204, blue: 244), for: .normal)
                 return
         }
         
@@ -193,9 +210,9 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
         userLoginButton.setTitleColor(UIColor(red: 250/255, green: 150/255, blue: 90/255, alpha: 1), for: .normal)
 
         
-        userSignUpLabel.isEnabled = true
-        userSignUpLabel.isUserInteractionEnabled = true
-        userSignUpLabel.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        userSignUpButton.isEnabled = true
+        userSignUpButton.isUserInteractionEnabled = true
+        userSignUpButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
     }
     
     @objc func handleScreenTap(sender: UITapGestureRecognizer) {
@@ -224,84 +241,82 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
         //present(adminLoginVC, animated: true, completion:nil)
     }
     
-    @objc func handleUserSignIn() {
-  
-        guard
-            let email = emailTextField.text,
-            let password = passwordTextField.text else { return }
-        
-        Auth.auth().fetchSignInMethods(forEmail: email, completion: ({ (providers, error) in
-            print("here are the providers \(providers as Any)")
-            
-            if providers == nil {
-                
-                Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
-                    if error == nil {
-                        // create a new user account.. and suggest user finish updating profile basics
+    @objc func handleRegisterProfile() {
+       
+             guard
+                 let email = emailTextField.text,
+                 let password = passwordTextField.text else { return }
            
-                        if let user = user {
-
-                            let userData = ["provider": user.user.providerID, "email": email, "username": email, "profileCompleted": false, "isStoreadmin": false] as [String: Any]
-                            
-                            DataService.instance.createFirebaseDBUser(uid: user.user.uid, userData: userData, isStoreadmin: false)
-                            
-                            //leftSidePanelVC?.fetchCurrentUserData()
-                            
-                            
-                            //this function is important because it allows the root navigation controller to REBOOT and login again
-                            guard let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return }
-                            guard let controller = navController.viewControllers[0] as? MainTabVC else { return }
-                            controller.configureViewControllers()
-                            
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                        
-                        
-                    }  else {
-                        if let errorCode = AuthErrorCode(rawValue: error!._code) {
-                            switch errorCode {
-                            case .invalidEmail:
-                                self.showAlert("That is an invalid email! Please try again")
-                            default: break
-                            }
-                        }
-                    }
-                })
-    
-            } else {
+           
+             
+             Auth.auth().fetchSignInMethods(forEmail: email, completion: ({ (providers, error) in
+                 print("here are the providers \(providers as Any)")
+                 
+                 if providers == nil {
+                     
+                     Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
+                         if error == nil {
+                             // create a new user account.. and suggest user finish updating profile basics
                 
-                Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
-                    if error == nil {
-                        print("User authenticated successfully with Firebase.")
-                        
-                        guard let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return }
-                        guard let controller = navController.viewControllers[0] as? MainTabVC else { return }
-                        controller.configureViewControllers()
-                         
-                        self.dismiss(animated: true, completion: nil)
-                        //leftSidePanelVC?.fetchCurrentUserData()
-                        
-                        // hopefully this reloads the tableview data
-                        self.homeVC?.configureMenuView()  //will try to fetch data if this doesn't work on view did appear.
-                        
-                    } else {
-                        
-                        if let errorCode = AuthErrorCode(rawValue: error!._code) {
-                            switch errorCode {
-                            case .wrongPassword:
-                                self.showAlert("Whoops! That was the wrong password!")
-                            case .invalidEmail:
-                                self.showAlert("That is an invalid email! Please try again")
-                            default:
-                                self.showAlert("Have you signed up for an account?")
-                            }
-                        }
-                    }
-                })
-            }
-        }))
-        
-    }
+                             if let user = user {
+
+                                 let userData = ["provider": user.user.providerID,"email": email, "profileCompleted": false, "isStoreadmin": false] as [String: Any]
+                               
+                                 
+                                 DataService.instance.createFirebaseDBUser(uid: user.user.uid, userData: userData, isStoreadmin: false)
+                                 
+
+                                 //this function is important because it allows the root navigation controller to REBOOT and login again
+                                 guard let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return }
+                                 guard let controller = navController.viewControllers[0] as? MainTabVC else { return }
+                                 controller.configureViewControllers()
+                                 
+                                 self.dismiss(animated: true, completion: nil)
+                             }
+                             
+                             
+                         }  else {
+                             if let errorCode = AuthErrorCode(rawValue: error!._code) {
+                                 switch errorCode {
+                                 case .invalidEmail:
+                                     self.showAlert("That is an invalid email! Please try again")
+                                 default: break
+                                 }
+                             }
+                         }
+                     })
+         
+                 } else {
+                     
+                     Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
+                         if error == nil {
+                             print("User authenticated successfully with Firebase.")
+                             
+                             guard let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return }
+                             guard let controller = navController.viewControllers[0] as? MainTabVC else { return }
+                             controller.configureViewControllers()
+                              
+                             self.dismiss(animated: true, completion: nil)
+
+                             
+                         } else {
+                             
+                             if let errorCode = AuthErrorCode(rawValue: error!._code) {
+                                 switch errorCode {
+                                 case .wrongPassword:
+                                     self.showAlert("Whoops! That was the wrong password!")
+                                 case .invalidEmail:
+                                     self.showAlert("That is an invalid email! Please try again")
+                                 default:
+                                     self.showAlert("Have you signed up for an account?")
+                                 }
+                             }
+                         }
+                     })
+                 }
+             }))
+             
+         }
 
     @objc func handleUserLogin() {
         
