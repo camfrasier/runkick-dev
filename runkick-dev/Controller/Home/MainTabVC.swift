@@ -25,7 +25,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
         // Tab bar tint color
         //tabBar.tintColor = UIColor.rgb(red: 242, green: 96, blue: 98)
-        tabBar.tintColor = UIColor.rgb(red: 243, green: 78, blue: 92)
+        //tabBar.tintColor = UIColor.rgb(red: 243, green: 78, blue: 92)
+        tabBar.tintColor = UIColor.rgb(red: 236, green: 84, blue: 95)
         tabBar.unselectedItemTintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
                 
         
@@ -49,6 +50,24 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLayoutSubviews()
         tabBar.frame.size.height = 60
         tabBar.frame.origin.y = view.frame.height - 60
+        
+        
+        
+        
+        if UIScreen.main.nativeBounds.height == 2436 {
+            // configure dot for iphone x
+            //dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
+        
+        } else if UIScreen.main.nativeBounds.height == 1792 {
+            
+            //dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)
+
+        } else {
+            // configure dot for other phone models
+            //dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - 16, width: 6, height: 6)
+            
+        }
+        
     }
 
     // Function to create view controllers that exist within tab bar controller
@@ -85,10 +104,10 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let categoryFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Upload image controller
-        //let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Photo")
+        let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Photo")
         
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
-        viewControllers = [homeVC, marketplaceVC, feedVC, userProfileVC]
+        viewControllers = [homeVC, marketplaceVC, selectImageVC, feedVC, userProfileVC]
         
     
         // configure notification dot
@@ -153,7 +172,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let index = viewControllers?.firstIndex(of: viewController)
         
         // will need to go back and clean this up for another index value later.
-        if index == 10 {
+        if index == 2 {
             
             let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
             let navController = UINavigationController(rootViewController: selectImageVC)

@@ -640,6 +640,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 
             } else {
                 
+                // this was the code to show photo comment, button but adding to tab bar now.
+                
+                /*
                 let tabBarHeight = CGFloat((self.tabBarController?.tabBar.frame.size.height)!)
                 
                 self.view.addSubview(self.photoCommentShadowBackground)
@@ -653,13 +656,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 self.photoCommentBackground.addSubview(self.beBoppActionButton)
                 self.beBoppActionButton.anchor(top: self.photoCommentBackground.topAnchor, left: self.photoCommentBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
                 
-                /*
-                view.addSubview(photoCommentBackground)
-                photoCommentBackground.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
-                photoCommentBackground.layer.cornerRadius = 60 / 2
-                
-                photoCommentBackground.addSubview(photoCommentButton)
-                photoCommentButton.anchor(top: photoCommentBackground.topAnchor, left: photoCommentBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 6, paddingBottom: 0, paddingRight: 0, width: 48, height: 48)
                 */
                 
             }

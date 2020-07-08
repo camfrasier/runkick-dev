@@ -145,7 +145,7 @@ class StoreCell: UITableViewCell {
     
     let locationTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 22)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textColor = UIColor.rgb(red: 20, green: 20, blue: 20)
         return label
     } ()
@@ -203,7 +203,7 @@ class StoreCell: UITableViewCell {
     
     let locationDistanceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 17)
+        label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
         return label
     } ()
@@ -218,24 +218,24 @@ class StoreCell: UITableViewCell {
         
         addSubview(locationTitleLabel)
         locationTitleLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil
-            , paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            , paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationDistanceLabel)
-        locationDistanceLabel.anchor(top: locationTitleLabel.topAnchor, left: locationTitleLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 4.5, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 1, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationAddressLabel)
-        locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil
-            , paddingTop: 2, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil
+            , paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(categoryLabel)
-        categoryLabel.anchor(top: locationAddressLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        categoryLabel.anchor(top: locationAddressLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(storeHoursLabel)
-        storeHoursLabel.anchor(top: categoryLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeHoursLabel.anchor(top: categoryLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
         addSubview(imageContainerView)
         //let dimension: CGFloat = 140
-        imageContainerView.anchor(top: storeHoursLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 31, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 260, height: 160)
+        imageContainerView.anchor(top: storeHoursLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 260, height: 160)
         imageContainerView.layer.cornerRadius = 0
         
         imageContainerView.addSubview(storeImageView)

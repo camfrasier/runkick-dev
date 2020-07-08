@@ -745,7 +745,7 @@ class UserProfileHeader: UICollectionViewCell {
          gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
         
          addSubview(separatorViewGradient)
-        separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (frame.width / 2), height: 2)
+        separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (frame.width / 2), height: 2.5)
 
     }
     
@@ -888,7 +888,7 @@ class UserProfileHeader: UICollectionViewCell {
                             self.gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
                             
                             self.addSubview(self.separatorViewGradient)
-                            self.separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 2)
+                            self.separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 2.5)
                             
                         } else {
                             // don't show the send message button because the current user is not following the other user

@@ -29,7 +29,7 @@ class GradientActionView: UIView {
         gradient.frame = bounds
         //gradient.colors = [UIColor.black.withAlphaComponent(0.75).cgColor, UIColor.black.withAlphaComponent(0.0).cgColor]
         //gradient.colors = [UIColor.rgb(red: 255, green: 110, blue: 126).cgColor, UIColor.airBnBRed().cgColor]
-        gradient.colors = [UIColor.rgb(red: 255, green: 110, blue: 126).cgColor, UIColor.rgb(red: 236, green: 84, blue: 95).cgColor]
+        gradient.colors = [UIColor.rgb(red: 255, green: 115, blue: 131).cgColor, UIColor.rgb(red: 236, green: 84, blue: 95).cgColor]
         //gradient.colors = [UIColor.rgb(red: 243, green: 78, blue: 92).cgColor, UIColor.rgb(red: 255, green: 99, blue: 117).cgColor]
         //UIColor.rgb(red: 252, green: 112, blue: 167)
         

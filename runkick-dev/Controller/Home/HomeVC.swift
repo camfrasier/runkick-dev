@@ -141,7 +141,7 @@ class HomeVC: UIViewController, Alertable {
     lazy var destinationTextField: UITextField = {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
-        tf.attributedPlaceholder = NSAttributedString(string:"Where to?..", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
+        tf.attributedPlaceholder = NSAttributedString(string:"Where to?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
         tf.font = UIFont.systemFont(ofSize: 22)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
@@ -331,13 +331,16 @@ class HomeVC: UIViewController, Alertable {
     
     let beBoppActionButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "beBoppAction2"), for: .normal)
+        //button.setImage(UIImage(named: "beBoppAction2"), for: .normal)
+        button.setImage(UIImage(named: "lightbulbOutline"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
         button.backgroundColor = .clear
+        /*
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
         button.layer.shadowRadius = 5.0
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        */
         button.alpha = 1
         return button
     }()
@@ -390,18 +393,29 @@ class HomeVC: UIViewController, Alertable {
         return view
     }()
     
-    /*
-    let qrButton: UIButton = {
+    lazy var rewardsBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleHomeRewards))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    
+    let homeRewardsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "simpleQRCode"), for: .normal)
+        button.setImage(UIImage(named: "rewardsGiftsIcon"), for: .normal)
         //button.addTarget(self, action: #selector(handleMenuSlider), for: .touchUpInside)
-        button.addTarget(self, action: #selector(handleQRCode), for: .touchUpInside)
-        button.tintColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
+        button.addTarget(self, action: #selector(handleHomeRewards), for: .touchUpInside)
+        button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         button.alpha = 1
         button.backgroundColor = .clear
         return button
     }()
-     */
+     
     
     let centerMapButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
@@ -777,17 +791,17 @@ class HomeVC: UIViewController, Alertable {
         
         mapView.addSubview(simpleActionShadowBackground)
         simpleActionShadowBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 60, height: 60)
-        simpleActionShadowBackground.layer.cornerRadius = 15
+        simpleActionShadowBackground.layer.cornerRadius = 60 / 2
         
         simpleActionShadowBackground.addSubview(simpleRightMenuBackground)
         simpleRightMenuBackground.anchor(top: simpleActionShadowBackground.topAnchor, left: simpleActionShadowBackground.leftAnchor, bottom:  simpleActionShadowBackground.bottomAnchor, right: simpleActionShadowBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
-        simpleRightMenuBackground.layer.cornerRadius = 15
+        simpleRightMenuBackground.layer.cornerRadius = 60 / 2
 
        //simpleRightMenuBackground.addSubview(simpleRightMenuButton)
        //simpleRightMenuButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
         simpleRightMenuBackground.addSubview(beBoppActionButton)
-        beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 5.5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+        beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 17, paddingBottom: 0, paddingRight: 0, width: 26, height: 39)
 
         
         //configureNavigationSubView()
@@ -1038,9 +1052,9 @@ class HomeVC: UIViewController, Alertable {
     }
     */
     
-    @objc func handleQRCode() {
+    @objc func handleHomeRewards() {
         
-        print("handle qr code")
+        print("handle home rewards")
     }
     
     @objc func handleAnalytics() {
@@ -1446,7 +1460,12 @@ class HomeVC: UIViewController, Alertable {
         //mapView.addSubview(analyticsButton)
         //analyticsButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
         
+        mapView.addSubview(rewardsBackground)
+        rewardsBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 50, height: 50)
+        rewardsBackground.layer.cornerRadius = 50 / 2
         
+        rewardsBackground.addSubview(homeRewardsButton)
+        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 14, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
         
         
         /*
@@ -2466,8 +2485,13 @@ extension HomeVC: MKMapViewDelegate {
    
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
         
+        if isStoreDetailViewVisible == true {
+            // don't anitmate center map button in
+            print("DEBUG: Store detail view set to true")
+        } else {
         centerMapButton.fadeTo(alphaValue: 1, withDuration: 0.75)
         centerMapBackground.fadeTo(alphaValue: 0.75, withDuration: 0.75)
+        }
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -2678,6 +2702,34 @@ extension HomeVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         mapView.removeOverlays(mapView.overlays)
+        
+        
+        centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+        centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        simpleActionShadowBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            self.centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            self.simpleActionShadowBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            
+            self.centerMapBackground.alpha = 0
+            self.centerMapButton.alpha = 0
+            self.simpleActionShadowBackground.alpha = 0
+            self.centerMapBackground.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0).cgColor
+            self.centerMapButton.isHidden = true
+            
+            
+        }) { (_) in
+            self.centerMapButton.transform = .identity
+            self.centerMapBackground.transform = .identity
+            self.simpleActionShadowBackground.transform = .identity
+        }
+
+        
+        
+        
         
         //searchTableView.isHidden = true
         //isSearchTableViewVisible = false
@@ -2909,9 +2961,32 @@ extension HomeVC: MKMapViewDelegate {
         isStoreDetailViewVisible = false
         
         //searchTableView.isHidden = false
-        
+    
         print("Store view origin is set to false")
         print("Store detail view visable set to false")
+        
+        centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        simpleActionShadowBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            self.centerMapButton.isHidden = false
+            self.centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.simpleActionShadowBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            
+             self.centerMapButton.alpha = 1
+            self.centerMapBackground.alpha = 0.75
+            self.simpleActionShadowBackground.alpha = 1
+            self.centerMapBackground.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.75).cgColor
+            
+            
+            
+        }) { (_) in
+            self.centerMapButton.transform = .identity
+            self.centerMapBackground.transform = .identity
+            self.simpleActionShadowBackground.transform = .identity
+        }
     }
  
     func removeStartTripButton() {
@@ -3755,10 +3830,12 @@ extension HomeVC: AdminLoginControllerDelegate {
 
 
 extension HomeVC: UITextFieldDelegate {
+    
 
     func textFieldDidBeginEditing(_ sender: UITextField) {
         
-        
+
+            
         //reconfigures search table view
         configureSearchTableView()
         
@@ -3871,6 +3948,7 @@ extension HomeVC: UITextFieldDelegate {
             searchBarSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             simpleMenuBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             simpleRightMenuButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            rewardsBackground.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             
             UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 
@@ -3885,10 +3963,21 @@ extension HomeVC: UITextFieldDelegate {
                 
                 self.simpleRightMenuButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
                 self.simpleRightMenuButton.alpha = 0
+                
+                self.rewardsBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.rewardsBackground.alpha = 0
+                
             }) { (_) in
                 self.cancelSearchButton.transform = .identity
                 self.simpleMenuBackground.transform = .identity
                 self.simpleRightMenuButton.transform = .identity
+                self.rewardsBackground.transform = .identity
+            }
+            
+            if isStoreDetailViewVisible == true {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    self.storeDetailView.dismissDetailView()
+                }
             }
            
         }
@@ -3949,6 +4038,8 @@ extension HomeVC: UITextFieldDelegate {
         searchBarSubView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         simpleMenuBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         simpleRightMenuButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        rewardsBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
@@ -3965,10 +4056,14 @@ extension HomeVC: UITextFieldDelegate {
             self.simpleRightMenuButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.simpleRightMenuButton.alpha = 1
             
+            self.rewardsBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.rewardsBackground.alpha = 1
+            
         }) { (_) in
             self.cancelSearchButton.transform = .identity
             self.simpleMenuBackground.transform = .identity
             self.simpleRightMenuButton.transform = .identity
+            self.rewardsBackground.transform = .identity
         }
         
         dismissOnSearch()

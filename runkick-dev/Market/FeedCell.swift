@@ -115,13 +115,14 @@ class FeedCell: UICollectionViewCell {
     
     lazy var optionsButton: UIButton = {
         let button = UIButton(type: .custom)
-        let image = UIImage(named: "simpleDownArrow")?.withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "optionDotsHorizantal")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(handleOptionTapped), for: .touchUpInside)
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.70).cgColor
         button.layer.shadowRadius = 1.0
         button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.alpha = 0.75
         return button
     } ()
     
@@ -568,11 +569,11 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-1-[image]-1-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[caption]-65-|", options: [], metrics: nil, views: ["caption": captionLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[caption]-65-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-15-[commentButton(30)]-15-|", options: [], metrics: nil, views: ["caption": captionLabel, "commentButton": commentButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-20-|", options: [], metrics: nil, views: ["caption": captionLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-30-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[caption]-12-[likeButton(30)]-15-|", options: [], metrics: nil, views: ["caption": captionLabel, "likeButton": likeButton]))
         
@@ -580,7 +581,7 @@ class FeedCell: UICollectionViewCell {
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[likeButton(60)]", options: [], metrics: nil, views: ["likeButton": likeButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[username]-3-[circle(3)]-3-[date]", options: [], metrics: nil, views: ["username": usernameButton, "circle": circleDotView, "date": postTimeLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-24-[username]-3-[circle(3)]-3-[date]", options: [], metrics: nil, views: ["username": usernameButton, "circle": circleDotView, "date": postTimeLabel]))
         
          addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username(18)]-4-[caption]", options: [], metrics: nil, views: ["username": usernameButton, "caption": captionLabel]))
         
@@ -610,13 +611,13 @@ class FeedCell: UICollectionViewCell {
 
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[firstname]", options: [], metrics: nil, views: ["firstname": firstnameButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[backgroundOption(35)]-15-|", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[backgroundOption(35)]-12-|", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[backgroundOption(35)]", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[backgroundOption(35)]", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[optionsButton(16)]-10-|", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[optionsButton(28)]-10-|", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
          
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[optionsButton(8)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[optionsButton(28)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
         
         likesLabel.anchor(top: newLikeButton.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         likesLabel.centerXAnchor.constraint(equalTo: newLikeButton.centerXAnchor).isActive = true

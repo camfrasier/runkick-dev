@@ -186,9 +186,11 @@ class MarketplaceVC: UICollectionViewController {
         //collectionView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
         collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        
+
         //let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.height)!)
         
+        
+        /*
         view.addSubview(simpleCartShadowBackground)
         simpleCartShadowBackground.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 60, height: 60)
         simpleCartShadowBackground.layer.cornerRadius = 15
@@ -199,6 +201,8 @@ class MarketplaceVC: UICollectionViewController {
         
         shoppingCartBackground.addSubview(beBoppShoppingButton)
         beBoppShoppingButton.anchor(top: shoppingCartBackground.topAnchor, left: shoppingCartBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6.5, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+ 
+         */
         
         // configure search bar button
         configureSearchBarButton()
@@ -209,6 +213,32 @@ class MarketplaceVC: UICollectionViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
+        
+        /*
+        // curving the edges of the window view
+        
+        if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+                   if let window:UIWindow = applicationDelegate.window {
+               
+                          // window.addSubview(revealingSplashView)
+                    
+                    window.layer.cornerRadius = 10
+                    window.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                    window.clipsToBounds = true
+                            
+                   }
+        }
+        */
+            
+        
+        
+        /*
+        // add corner radius to nav bar
+        navigationController?.navigationBar.layer.cornerRadius = 8
+        navigationController?.navigationBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        navigationController?.navigationBar.clipsToBounds = true
+        */
+        
         //navigationController?.navigationBar.barTintColor = UIColor(red: 187/255, green: 216/255, blue: 224/255, alpha: 1)
         //navigationController?.navigationBar.barTintColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
         

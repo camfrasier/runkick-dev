@@ -232,7 +232,7 @@ class StoreDetailView: UIView {
             
             if expansionState == .SubPartiallyExpanded {
 
-                animateInputView(targetPosition: self.frame.origin.y - 148) { (_) in
+                animateInputView(targetPosition: self.frame.origin.y - 180) { (_) in
                     self.expansionState = .PartiallyExpanded
                     print("sub partially expanded to partially expanded")
                     
@@ -275,7 +275,7 @@ class StoreDetailView: UIView {
             
             if expansionState == .PartiallyExpanded {
 
-                animateInputView(targetPosition: self.frame.origin.y + 148) { (_) in
+                animateInputView(targetPosition: self.frame.origin.y + 180) { (_) in
                     self.expansionState = .SubPartiallyExpanded
                     print("partially expanded tp sub partially expanded")
                     
@@ -284,7 +284,7 @@ class StoreDetailView: UIView {
             
             if expansionState == .SubPartiallyExpanded {
                 
-                animateInputView(targetPosition: self.frame.origin.y + 152) { (_) in
+                animateInputView(targetPosition: self.frame.origin.y + 120) { (_) in
                     self.expansionState = .NotExpanded
                     print("partially expanded to not expanded")
                     self.isHidden = true
@@ -337,7 +337,7 @@ class StoreDetailView: UIView {
         if expansionState == .SubPartiallyExpanded {
 
             homeVC?.showTabBar()
-            animateInputView(targetPosition: self.frame.origin.y + 152) { (_) in
+            animateInputView(targetPosition: self.frame.origin.y + 120) { (_) in
                 self.expansionState = .NotExpanded
                 print("Not expanded to not expanded")
                 self.isHidden = true
