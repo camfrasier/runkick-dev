@@ -11,7 +11,7 @@ import Firebase
 
 // MARK: - Init
 
-class UploadStorePostVC: UIViewController, UITextViewDelegate {
+class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     
     // MARK: - Properties
@@ -37,49 +37,81 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
     
     let photoImageView: CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
     } ()
     
-    let captionTextView: UITextView = {
-        let tv = UITextView()
+    let captionTextView: UITextField = {
+        let tv = UITextField()
         tv.backgroundColor = UIColor.groupTableViewBackground
         tv.text = "Enter store caption here.."
         tv.textColor = UIColor.lightGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
         return tv
     } ()
     
-    let storeIdTextView: UITextView = {
-        let tv = UITextView()
+    let storeTitleTextView: UITextField = {
+        let tv = UITextField()
         tv.backgroundColor = UIColor.groupTableViewBackground
         tv.textColor = UIColor.lightGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
         return tv
     } ()
     
-    let categoryTextView: UITextView = {
-        let tv = UITextView()
+    let storeIdTextView: UITextField = {
+        let tv = UITextField()
         tv.backgroundColor = UIColor.groupTableViewBackground
-        tv.textColor = UIColor.darkGray
+        tv.textColor = UIColor.lightGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
         return tv
     } ()
     
-    let priceTextView: UITextView = {
-        let tv = UITextView()
+    let categoryTextView: UITextField = {
+        let tv = UITextField()
         tv.backgroundColor = UIColor.groupTableViewBackground
         tv.textColor = UIColor.darkGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
         return tv
     } ()
     
-    let poppPriceTextView: UITextView = {
-        let tv = UITextView()
+    let priceTextView: UITextField = {
+        let tv = UITextField()
         tv.backgroundColor = UIColor.groupTableViewBackground
         tv.textColor = UIColor.darkGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        tv.font = UIFont.systemFont(ofSize: 15)
+        return tv
+    } ()
+    
+    let poppPriceTextView: UITextField = {
+        let tv = UITextField()
+        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.textColor = UIColor.darkGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        tv.font = UIFont.systemFont(ofSize: 15)
+        return tv
+    } ()
+    
+    let pointsTextView: UITextField = {
+        let tv = UITextField()
+        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.textColor = UIColor.darkGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        tv.font = UIFont.systemFont(ofSize: 15)
+        return tv
+    } ()
+    
+    let caloriesTextView: UITextField = {
+        let tv = UITextField()
+        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.textColor = UIColor.darkGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
         return tv
     } ()
@@ -87,6 +119,14 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
     let categoryLabel: UILabel = {
         let label = UILabel()
         label.text = "Category"
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        return label
+    } ()
+    
+    let storeTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Store Name"
         label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
         return label
@@ -108,9 +148,25 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
         return label
     } ()
     
+    let caloriesLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Calories"
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        return label
+    } ()
+    
     let poppPriceLabel: UILabel = {
         let label = UILabel()
         label.text = "PoppPrice"
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        return label
+    } ()
+    
+    let pointsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Points Required"
         label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
         return label
@@ -146,7 +202,13 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
         loadImage()
         
         captionTextView.delegate = self // Just telling our program that this view controller will be the delegate for handling all the data.
+        storeTitleTextView.delegate = self
         storeIdTextView.delegate = self
+        categoryTextView.delegate = self
+        priceTextView.delegate = self
+        poppPriceTextView.delegate = self
+        pointsTextView.delegate = self
+        caloriesTextView.delegate = self
         
         view.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
     }
@@ -162,10 +224,20 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
             navigationController?.navigationBar.tintColor = .black
             
+
+            
             photoImageView.loadImage(with: post.imageUrl)
             captionTextView.text = post.caption
+            storeTitleTextView.text = post.title
             storeIdTextView.text = post.storeId
             categoryTextView.text = post.category
+            priceTextView.text = String(post.price)
+            poppPriceTextView.text = String(post.poppPrice)
+            pointsTextView.text = String(post.points)
+            caloriesTextView.text = String(post.calories)
+            
+            
+            
             //priceTextView.text = String(post.price)
             //poppPriceTextView.text = String(post.poppPrice)
             
@@ -191,12 +263,17 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
         view.addSubview(captionTextView)
         captionTextView.anchor(top: view.topAnchor, left: photoImageView.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 92, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 100)
         
+        view.addSubview(storeTitleLabel)
+        storeTitleLabel.anchor(top: captionTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        view.addSubview(storeTitleTextView)
+        storeTitleTextView.anchor(top: captionTextView.bottomAnchor, left: storeTitleLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
         
         view.addSubview(storeIdLabel)
-        storeIdLabel.anchor(top: captionTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeIdLabel.anchor(top: storeTitleTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(storeIdTextView)
-        storeIdTextView.anchor(top: captionTextView.bottomAnchor, left: storeIdLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
+        storeIdTextView.anchor(top: storeTitleTextView.bottomAnchor, left: storeIdLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
         
         view.addSubview(categoryLabel)
         categoryLabel.anchor(top: storeIdTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -216,8 +293,21 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
         view.addSubview(poppPriceTextView)
         poppPriceTextView.anchor(top: priceTextView.bottomAnchor, left: poppPriceLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
         
+        
+        view.addSubview(pointsLabel)
+        pointsLabel.anchor(top: poppPriceTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        view.addSubview(pointsTextView)
+        pointsTextView.anchor(top: poppPriceTextView.bottomAnchor, left: pointsLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
+        
+        view.addSubview(caloriesLabel)
+        caloriesLabel.anchor(top: pointsTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        view.addSubview(caloriesTextView)
+        caloriesTextView.anchor(top: pointsTextView.bottomAnchor, left: caloriesLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
+        
         view.addSubview(actionButton)
-        actionButton.anchor(top: poppPriceTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 24, paddingBottom: 0, paddingRight: 24, width: 0, height: 40)
+        actionButton.anchor(top: caloriesTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 24, paddingBottom: 0, paddingRight: 24, width: 0, height: 40)
     }
     
     func loadImage() {
@@ -245,12 +335,14 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
         }
     }
     
+    /*
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
             textView.text = nil
             textView.textColor = UIColor.black
         }
     }
+    */
     
     
     func handleUploadPost() {
@@ -259,11 +351,14 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
         guard
             let caption = captionTextView.text,
             let postImg = photoImageView.image,
+            let storeTitle = storeTitleTextView.text,
             let storeId = storeIdTextView.text,
             //let price = Int(priceTextView.text),
             //let poppPrice = Int(poppPriceTextView.text),
-            let price = Float(priceTextView.text),
-            let poppPrice = Float(poppPriceTextView.text),
+            let price = Int(priceTextView.text ?? ""),
+            let poppPrice = Int(priceTextView.text ?? ""),
+            let points = Int(pointsTextView.text ?? ""),
+            let calories = Int(caloriesTextView.text ?? ""),
             let category = categoryTextView.text,
             let currentUid = Auth.auth().currentUser?.uid else { return }
         
@@ -298,10 +393,13 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
                     
                     let values = ["caption": caption,
                                   "creationDate": creationDate,
+                                  "title": storeTitle,
                                   "storeId": storeId,
                                   "category": category,
                                   "price": price,
+                                  "points": points,
                                   "poppPrice": poppPrice,  // here i need to upload as an int
+                                    "calories": calories,
                                   "imageUrl": postImageUrl,
                                   "ownerUid": currentUid] as [String: Any]
                     
@@ -336,6 +434,7 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
         }
     }
     
+    /*
     // Use this if you have a UITextView
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         // get the current text, or use an empty string if that failed
@@ -350,19 +449,29 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
         // make sure the result is under 16 characters
         return updatedText.count <= 120
     }
-    
+    */
     
     func handleSavePostChanges() {
         guard let post = self.postToEdit else { return }
         let updatedCaption = captionTextView.text
+        let updatedStoreTitle = storeTitleTextView.text
         let updatedStoreId = storeIdTextView.text
         let updatedCategory = categoryTextView.text
         let updatedPrice = priceTextView.text
         let updatedPoppPrice = poppPriceTextView.text
+        let updatedPointsRequired = pointsTextView.text
+        let updatedCalories = caloriesTextView.text
         
         //uploadHastagToServer(withPostId: post.postId)
         
+
         DataService.instance.REF_ADMIN_STORE_POSTS.child(post.postId).child("caption").setValue(updatedCaption) { (err, ref) in
+            
+            // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        DataService.instance.REF_ADMIN_STORE_POSTS.child(post.postId).child("title").setValue(updatedStoreTitle) { (err, ref) in
             
             // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
             self.dismiss(animated: true, completion: nil)
@@ -392,9 +501,22 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
             // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
             self.dismiss(animated: true, completion: nil)
         }
+        
+        DataService.instance.REF_ADMIN_STORE_POSTS.child(post.postId).child("pointsRequired").setValue(updatedPointsRequired) { (err, ref) in
+            
+            // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        DataService.instance.REF_ADMIN_STORE_POSTS.child(post.postId).child("calories").setValue(updatedCalories) { (err, ref) in
+            
+            // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        
         
         guard !textView.text.isEmpty else {
         
@@ -402,6 +524,27 @@ class UploadStorePostVC: UIViewController, UITextViewDelegate {
             actionButton.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
         return
         }
+        actionButton.isEnabled = true
+        actionButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+    }
+    
+    @objc func formValidation () {
+        guard
+            captionTextView.hasText,
+        storeTitleTextView.hasText,
+                storeIdTextView.hasText,
+            categoryTextView.hasText,
+                priceTextView.hasText,
+            poppPriceTextView.hasText,
+            caloriesTextView.hasText,
+           pointsTextView.hasText == true else {
+                
+            actionButton.isEnabled = false
+            actionButton.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+            
+            return
+        }
+        
         actionButton.isEnabled = true
         actionButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
     }

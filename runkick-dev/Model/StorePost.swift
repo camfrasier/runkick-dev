@@ -15,13 +15,16 @@ class StorePost {
     var imageUrl: String!
     var ownerUid: String!
     var creationDate: Date!
+    var title: String!
     var postId: String!
+    var points: Int!
     var category: String!
     var storeId: String!
+    var calories: Int!
     //var price: Int!    // may need to change this value to an integer
     //var poppPrice: Int!
-    var price: Float!    // may need to change this value to an integer
-    var poppPrice: Float!
+    var price: Int!    // may need to change this value to an integer
+    var poppPrice: Int!
     
     var user: User?
     
@@ -51,17 +54,29 @@ class StorePost {
             self.category = category
         }
         
-        if let price = dictionary["price"] as? Float {
+        if let price = dictionary["price"] as? Int {
             self.price = price
         }
         
-        if let poppPrice = dictionary["poppPrice"] as? Float {
+        if let calories = dictionary["calories"] as? Int {
+            self.calories = calories
+        }
+        
+        if let poppPrice = dictionary["poppPrice"] as? Int {
             self.poppPrice = poppPrice
         }
         
         if let creationDate = dictionary["creationDate"] as? Double {
             self.creationDate = Date(timeIntervalSince1970: creationDate)
         }
+        
+        if let title = dictionary["title"] as? String {
+            self.title = title
+        }
+        
+        if let points = dictionary["points"] as? Int {
+                  self.points = points
+              }
     }
     
     

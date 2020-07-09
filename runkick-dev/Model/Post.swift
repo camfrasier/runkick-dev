@@ -17,6 +17,9 @@ class Post {
     var ownerUid: String!
     var creationDate: Date!
     var postId: String!
+    var category: String!
+    var price: Int!
+    var poppPrice: Int!
     var storeId: String!
     var user: User?
     var didLike = false
@@ -29,6 +32,18 @@ class Post {
         
         if let caption = dictionary["caption"] as? String {
             self.caption = caption
+        }
+        
+        if let category = dictionary["category"] as? String {
+            self.category = category
+        }
+        
+        if let price = dictionary["price"] as? Int {
+            self.price = price
+        }
+        
+        if let poppPrice = dictionary["poppPrice"] as? Int {
+            self.poppPrice = poppPrice
         }
         
         if let likes = dictionary["likes"] as? Int {
@@ -50,6 +65,8 @@ class Post {
         if let creationDate = dictionary["creationDate"] as? Double {
             self.creationDate = Date(timeIntervalSince1970: creationDate)
         }
+        
+
     }
     
     func adjustLikes(addLike: Bool, completion: @escaping(Int) -> ()) {

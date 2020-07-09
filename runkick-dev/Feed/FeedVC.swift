@@ -33,7 +33,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     let photoFeedView: PhotoFeedView = {
         let view = PhotoFeedView()
         //view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
-        //view.layer.cornerRadius = 5
+        view.layer.cornerRadius = 10
         return view
     }()
     
@@ -1037,9 +1037,9 @@ extension FeedVC: AltFeedCellDelegate {
             if let window:UIWindow = applicationDelegate.window {
 
                 window.addSubview(photoFeedView)
-                
                 // need this to be able to dismiss the photo feed view
                 photoFeedView.delegate = self
+                
                 
                 // this is saying which ever feed post you passed into this feed cell, we will display that same post and it's post elements here
                 photoFeedView.post = post
@@ -1047,19 +1047,25 @@ extension FeedVC: AltFeedCellDelegate {
                 
                 //photoFeedView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: window.frame.width - 50, height: 525)
                 
-                photoFeedView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: window.frame.width, height: 525)
-                photoFeedView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+                //window.anchor(top: window.topAnchor, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 10, paddingRight: 10, width: 0, height: 0)
+                //window.layer.cornerRadius = 15
+                
+                photoFeedView.anchor(top: window.topAnchor, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: window.frame.width, height: window.frame.width)
+                //photoFeedView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
                 photoFeedView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+                //photoFeedView.layer.cornerRadius = 0
+                photoFeedView.clipsToBounds = true
                 //photoFeedView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -14).isActive = true
                 
                 // should start with a zoomed out and animate into a zoomed in effect
-                photoFeedView.transform = CGAffineTransform(scaleX: 0.50, y: 0.50)
+                photoFeedView.transform = CGAffineTransform(scaleX: 0.15, y: 0.15)
                 photoFeedView.alpha = 0
                 
-                UIView.animate(withDuration: 0.25) {
+                UIView.animate(withDuration: 0.5) {
                     self.visualEffectView.alpha = 1
                     self.photoFeedView.alpha = 1
                     self.photoFeedView.transform = .identity
+                    
                 }
                 
             }
@@ -1073,10 +1079,10 @@ extension FeedVC: AltFeedCellDelegate {
 extension FeedVC: PhotoFeedViewDelegate {
     func dismissPhotoFeedView(withFeed post: Post?) {
         
-        UIView.animate(withDuration: 0.25, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             self.visualEffectView.alpha = 0
             self.photoFeedView.alpha = 0
-            self.photoFeedView.transform = CGAffineTransform(scaleX: 1.75, y: 1.75)
+            self.photoFeedView.transform = CGAffineTransform(scaleX: 5, y: 5)
         }) { (_) in
             self.photoFeedView.removeFromSuperview()
         }

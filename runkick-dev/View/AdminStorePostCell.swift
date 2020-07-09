@@ -34,7 +34,7 @@ class AdminStorePostCell: UICollectionViewCell {
     
     let profileImageView: CustomImageView = {  // Using the Custom image view class.
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
@@ -48,6 +48,14 @@ class AdminStorePostCell: UICollectionViewCell {
     let captionLabel: ActiveLabel = { // Will replace later with an action label.
         let label = ActiveLabel()
         label.text = "Caption Placeholder"
+        label.numberOfLines = 0
+        return label
+    } ()
+    
+    let storeTitleLabel: UILabel = { // Will replace later with an action label.
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.text = "Store Title"
         label.numberOfLines = 0
         return label
     } ()
@@ -80,6 +88,24 @@ class AdminStorePostCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.text = "5.00"
+        label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
+        label.numberOfLines = 0
+        return label
+    } ()
+    
+    let pointsRequiredLabel: UILabel = { // Will replace later with an action label.
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.text = "1500"
+        label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
+        label.numberOfLines = 0
+        return label
+    } ()
+    
+    let caloriesLabel: UILabel = { // Will replace later with an action label.
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.text = "350"
         label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         label.numberOfLines = 0
         return label
@@ -159,6 +185,12 @@ class AdminStorePostCell: UICollectionViewCell {
         captionBlock.addSubview(captionLabel)
         captionLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        // store title label attributes and constraints
+        addSubview(storeTitleLabel)
+        storeTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        storeTitleLabel.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        storeTitleLabel.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        
         // store id label attributes and constraints
         addSubview(storeIdLabel)
         storeIdLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -183,19 +215,29 @@ class AdminStorePostCell: UICollectionViewCell {
         // date and time attributes and constraints
         addSubview(postTimeLabel)
         postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
-        postTimeLabel.textColor = UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)
+        postTimeLabel.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         
         // price attributes and constraints
         addSubview(priceLabel)
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
-        priceLabel.textColor = UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)
+        priceLabel.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         
         // poppPrice attributes and constraints
         addSubview(poppPriceLabel)
         poppPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        poppPriceLabel.textColor = UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)
+        poppPriceLabel.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         
-
+        // poppPrice attributes and constraints
+        addSubview(pointsRequiredLabel)
+        pointsRequiredLabel.translatesAutoresizingMaskIntoConstraints = false
+        pointsRequiredLabel.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        
+        // poppPrice attributes and constraints
+        addSubview(caloriesLabel)
+        caloriesLabel.translatesAutoresizingMaskIntoConstraints = false
+        caloriesLabel.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        
+        
         // separator view constraints
         //addSubview(separatorView)
         //separatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -207,11 +249,13 @@ class AdminStorePostCell: UICollectionViewCell {
   
         postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 400, height: 400)
         
-        captionBlock.anchor(top: postImageView.bottomAnchor, left: postImageView.leftAnchor, bottom: nil, right: postImageView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 30)
+        captionBlock.anchor(top: postImageView.bottomAnchor, left: postImageView.leftAnchor, bottom: nil, right: postImageView.rightAnchor, paddingTop: 8, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 28)
         
-        captionLabel.anchor(top: captionBlock.topAnchor, left: captionBlock.leftAnchor, bottom: captionBlock.bottomAnchor, right: captionBlock.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 30)
+        captionLabel.anchor(top: captionBlock.topAnchor, left: captionBlock.leftAnchor, bottom: captionBlock.bottomAnchor, right: captionBlock.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 28)
         
-        storeIdLabel.anchor(top: captionBlock.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeTitleLabel.anchor(top: captionBlock.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        storeIdLabel.anchor(top: storeTitleLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
           
         categoryLabel.anchor(top: storeIdLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
         
@@ -223,16 +267,15 @@ class AdminStorePostCell: UICollectionViewCell {
         
         poppPriceLabel.anchor(top: priceLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
         
-        postTimeLabel.anchor(top: poppPriceLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        pointsRequiredLabel.anchor(top: poppPriceLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        caloriesLabel.anchor(top: pointsRequiredLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+
+        postTimeLabel.anchor(top: caloriesLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
           
         /*
-        
-        
-        
-  
-        
-        
         
         */
         /*
@@ -249,21 +292,23 @@ class AdminStorePostCell: UICollectionViewCell {
         delegate?.handleOptionTapped(for: self)
     }
 
-    
     func configurePostCaption(user: User) {
         
         guard let post = self.storePost else { return }
         guard let caption = post.caption else { return }  // Safely unwrap so we don't get this as an optional anymore.
+        guard let title = post.title else { return }
         guard let storeId = post.storeId else { return }
         guard let category = post.category else { return }
         guard let price = post.price else { return }
         guard let poppPrice = post.poppPrice else { return }
+        guard let pointsRequired = post.points else { return }
+        guard let calories = post.calories else { return }
 
         print("DEBUG: CAPTION IS THIS\(caption)")
         // setting max number of lines shown under the caption
         // to adjust the number of characters go to UpoloadPostVC
         captionLabel.customize { (label) in
-            label.text = "\(caption)"
+            label.text = "Caption: \(caption)"
             //label.customColor[customType] = .black
             label.font = UIFont.systemFont(ofSize: 18)
             label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
@@ -271,16 +316,19 @@ class AdminStorePostCell: UICollectionViewCell {
             
             print("DEBUG: CAPTION IS THIS\(caption)")
         }
+        // i can always use a the dollar converter below
         
         postTimeLabel.text = post.creationDate.timeAgoToDisplay()
+        storeTitleLabel.text = "Store Title: \(title)"
         storeIdLabel.text = "Store Id: \(storeId)"
         categoryLabel.text = "Category: \(category)"
         //priceLabel.text = String(format: "%.2f", "Price: $\(price)")
-        priceLabel.text = String(format: "%.2f", price)
-        poppPriceLabel.text = String(format: "%.2f", poppPrice)
+        //priceLabel.text = String(format: "%.2f", price)
+        //poppPriceLabel.text = String(format: "%.2f", poppPrice)
+        priceLabel.text = String("Price: \(convertToCurrency(Double(price)))")
+        poppPriceLabel.text = String("PoppPrice: \(convertToCurrency(Double(price)))")
+        pointsRequiredLabel.text = String("Points: \(pointsRequired)")
+        caloriesLabel.text = String("Calories: \(calories)")
     }
-    
-    
-    
     
 }

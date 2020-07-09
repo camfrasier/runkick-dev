@@ -26,6 +26,12 @@ class PhotoProfileView: UIView {
         return iv
     }()
     
+    lazy var containerView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 10
+        return view
+    } ()
+    
     let distanceLabel: UILabel = {
         let label = UILabel()
         return label
@@ -86,11 +92,14 @@ class PhotoProfileView: UIView {
         
         self.layer.masksToBounds = true
         
+        addSubview(containerView)
+        containerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        containerView.layer.cornerRadius = 10
         
-        addSubview(imageView)
-        imageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        containerView.addSubview(imageView)
+        imageView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         //imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        imageView.clipsToBounds = true
         
         addSubview(feedCommentButton)
         feedCommentButton.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)

@@ -563,11 +563,11 @@ class FeedCell: UICollectionViewCell {
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0.65)-[image]-(0.65)-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(1.75)-[image]-(1.75)-|", options: [], metrics: nil, views: ["image": postImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[image]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
 
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(0.40)-[image]-(0.40)-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-1-[image]-1-|", options: [], metrics: nil, views: ["image": postImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[image]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[caption]-65-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
