@@ -37,7 +37,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     let photoImageView: CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
@@ -45,18 +45,18 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     let captionTextView: UITextField = {
         let tv = UITextField()
-        tv.backgroundColor = UIColor.groupTableViewBackground
-        tv.text = "Enter store caption here.."
-        tv.textColor = UIColor.lightGray
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tv.placeholder = "  Item caption here.."
+        tv.textColor = UIColor.darkGray
         tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
-        tv.font = UIFont.systemFont(ofSize: 15)
+        tv.font = UIFont.systemFont(ofSize: 18)
         return tv
     } ()
     
     let storeTitleTextView: UITextField = {
         let tv = UITextField()
-        tv.backgroundColor = UIColor.groupTableViewBackground
-        tv.textColor = UIColor.lightGray
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tv.textColor = UIColor.darkGray
         tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
         return tv
@@ -64,8 +64,8 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     let storeIdTextView: UITextField = {
         let tv = UITextField()
-        tv.backgroundColor = UIColor.groupTableViewBackground
-        tv.textColor = UIColor.lightGray
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tv.textColor = UIColor.darkGray
         tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
         return tv
@@ -73,7 +73,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     let categoryTextView: UITextField = {
         let tv = UITextField()
-        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tv.textColor = UIColor.darkGray
         tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
@@ -82,7 +82,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     let priceTextView: UITextField = {
         let tv = UITextField()
-        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tv.textColor = UIColor.darkGray
         tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
@@ -91,7 +91,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     let poppPriceTextView: UITextField = {
         let tv = UITextField()
-        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tv.textColor = UIColor.darkGray
         tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
@@ -100,7 +100,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     let pointsTextView: UITextField = {
         let tv = UITextField()
-        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tv.textColor = UIColor.darkGray
         tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
@@ -109,7 +109,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     
     let caloriesTextView: UITextField = {
         let tv = UITextField()
-        tv.backgroundColor = UIColor.groupTableViewBackground
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tv.textColor = UIColor.darkGray
         tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         tv.font = UIFont.systemFont(ofSize: 15)
@@ -120,7 +120,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "Category"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
@@ -128,7 +128,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "Store Name"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
@@ -136,7 +136,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "Store ID"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
@@ -144,7 +144,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "Price"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
@@ -152,7 +152,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "Calories"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
@@ -160,7 +160,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "PoppPrice"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
@@ -168,7 +168,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "Points Required"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
@@ -176,7 +176,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "5.5mi"
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
 
@@ -210,7 +210,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         pointsTextView.delegate = self
         caloriesTextView.delegate = self
         
-        view.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        view.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
     }
     
     // using view will appear because view did load actually only calls once, which is not the case in view did appear
@@ -364,7 +364,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         
         // Get image upload data.
         //guard let uploadData = postImg.jpegData(compressionQuality: 0.3) else { return }
-        guard let uploadData = postImg.jpegData(compressionQuality: 0.9) else { return }
+        guard let uploadData = postImg.jpegData(compressionQuality: 1) else { return }
         
         // Update storage
         let filename = NSUUID().uuidString

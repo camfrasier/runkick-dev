@@ -427,9 +427,9 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 adminStorePostButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
                 
                 //using this code to show the true image without rendering color
-                adminStorePostButton.setImage(UIImage(named:"simpleYellowCircleWhitePlus")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                adminStorePostButton.setImage(UIImage(named:"photoFeed")?.withRenderingMode(.alwaysOriginal), for: .normal)
  
-                adminStorePostButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
+                adminStorePostButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 21 )
                 adminStorePostButton.addTarget(self, action: #selector(handleAdminStorePost), for: .touchUpInside)
                 adminStorePostButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                 adminStorePostButton.backgroundColor = .clear
@@ -530,9 +530,13 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     func handleAddPhotoTapped(for header: UserProfileHeader) {
         print("Admin add phot tapped here")
-        
+ 
         let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
         let navController = UINavigationController(rootViewController: selectImageVC)
+        
+        selectImageVC.isUserAdminUpload = true
+        print("after hitting photo button the is user admin upload should be set to true")
+        
         navController.modalPresentationStyle = .fullScreen
         
         present(navController, animated: true, completion: nil)
@@ -617,8 +621,9 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     @objc func handlePhotoButton() {
         print("handle photo and caption button")
-        
+            
         let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
         let navController = UINavigationController(rootViewController: selectImageVC)
         navController.modalPresentationStyle = .fullScreen
         navController.navigationBar.tintColor = .black

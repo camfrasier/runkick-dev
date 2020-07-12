@@ -245,7 +245,7 @@ class EditAdminProfileController: UIViewController {
         
         guard let updatedProfileImage = profileImageView.image else { return }
         
-        guard let imageData = updatedProfileImage.jpegData(compressionQuality: 0.3) else { return }
+        guard let imageData = updatedProfileImage.jpegData(compressionQuality: 1) else { return }
         
         let storageRef = DataService.instance.REF_STORAGE_PROFILE_IMAGES.child(filename)
         

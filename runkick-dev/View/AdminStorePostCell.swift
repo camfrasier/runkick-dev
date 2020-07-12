@@ -34,7 +34,7 @@ class AdminStorePostCell: UICollectionViewCell {
     
     let profileImageView: CustomImageView = {  // Using the Custom image view class.
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
@@ -71,13 +71,14 @@ class AdminStorePostCell: UICollectionViewCell {
     let categoryLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17)
+        label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         label.numberOfLines = 0
         return label
     } ()
     
     let priceLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         label.text = "9.00"
         label.numberOfLines = 0
@@ -86,7 +87,7 @@ class AdminStorePostCell: UICollectionViewCell {
     
     let poppPriceLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.text = "5.00"
         label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         label.numberOfLines = 0
@@ -95,7 +96,7 @@ class AdminStorePostCell: UICollectionViewCell {
     
     let pointsRequiredLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.text = "1500"
         label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         label.numberOfLines = 0
@@ -104,7 +105,7 @@ class AdminStorePostCell: UICollectionViewCell {
     
     let caloriesLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.text = "350"
         label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         label.numberOfLines = 0
@@ -139,14 +140,14 @@ class AdminStorePostCell: UICollectionViewCell {
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
         //iv.layer.cornerRadius = 12
-        
         return iv
     } ()
 
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         label.text = "2 days ago"
         return label
     } ()
@@ -247,7 +248,7 @@ class AdminStorePostCell: UICollectionViewCell {
         // building constraints
           //separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
   
-        postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 400, height: 400)
+        postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 400, height: 250)
         
         captionBlock.anchor(top: postImageView.bottomAnchor, left: postImageView.leftAnchor, bottom: nil, right: postImageView.rightAnchor, paddingTop: 8, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 28)
         
@@ -257,23 +258,22 @@ class AdminStorePostCell: UICollectionViewCell {
         
         storeIdLabel.anchor(top: storeTitleLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
           
-        categoryLabel.anchor(top: storeIdLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        categoryLabel.anchor(top: storeIdLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
-        backgroundOptionsButton.anchor(top: categoryLabel.bottomAnchor, left: nil, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 25, height: 25)
+        priceLabel.anchor(top: categoryLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
-        optionsButton.anchor(top: backgroundOptionsButton.topAnchor, left: backgroundOptionsButton.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        poppPriceLabel.anchor(top: priceLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
-        priceLabel.anchor(top: categoryLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        pointsRequiredLabel.anchor(top: poppPriceLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        poppPriceLabel.anchor(top: priceLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
-        
-        pointsRequiredLabel.anchor(top: poppPriceLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        caloriesLabel.anchor(top: pointsRequiredLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        caloriesLabel.anchor(top: pointsRequiredLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
 
-        postTimeLabel.anchor(top: caloriesLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        postTimeLabel.anchor(top: caloriesLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        backgroundOptionsButton.anchor(top: postTimeLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 25, height: 25)
+        
+        optionsButton.anchor(top: backgroundOptionsButton.topAnchor, left: backgroundOptionsButton.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
           
         /*
         
@@ -318,7 +318,8 @@ class AdminStorePostCell: UICollectionViewCell {
         }
         // i can always use a the dollar converter below
         
-        postTimeLabel.text = post.creationDate.timeAgoToDisplay()
+        //postTimeLabel.text = post.creationDate.timeAgoToDisplay()
+        postTimeLabel.text = post.creationDate.description(with: .current)
         storeTitleLabel.text = "Store Title: \(title)"
         storeIdLabel.text = "Store Id: \(storeId)"
         categoryLabel.text = "Category: \(category)"

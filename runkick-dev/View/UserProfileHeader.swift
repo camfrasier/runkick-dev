@@ -182,9 +182,9 @@ class UserProfileHeader: UICollectionViewCell {
     lazy var refreshCategories: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Refresh", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.setTitleColor(.init(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), for: .normal)
-        button.backgroundColor = UIColor.actionRed()
+        button.backgroundColor = UIColor.airBnBNew()
         button.addTarget(self, action: #selector(handleUpdateCategory), for: .touchUpInside)
         return button
     } ()
@@ -529,25 +529,32 @@ class UserProfileHeader: UICollectionViewCell {
         let button = UIButton(type: .system)
         //button.setImage(UIImage(named: "trueBlueCirclePlus"), for: .normal)
         button.addTarget(self, action: #selector(handleAddPhotoTapped), for: .touchUpInside)
-        button.backgroundColor = UIColor.rgb(red: 252, green: 180, blue: 16)
+        button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
+        button.layer.borderWidth = 0.25
+        /*
         button.layer.cornerRadius = 50 / 2
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
         button.layer.shadowRadius = 5.0
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        */
         button.alpha = 1
         return button
     }()
     
-    lazy var beBoppAddPhotoButton: UIButton = {
+    lazy var cameraButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "beBoppAddPhotoIcon"), for: .normal)
+        button.setImage(UIImage(named: "retroCameraIcon"), for: .normal)
         button.addTarget(self, action: #selector(handleAddPhotoTapped), for: .touchUpInside)
         button.backgroundColor = .clear
+        button.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            /*
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
         button.layer.shadowRadius = 3.0
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        */
         button.alpha = 1
         return button
        }()
@@ -1270,18 +1277,57 @@ class UserProfileHeader: UICollectionViewCell {
     
     func configureAddPhotoButton() {
         
-        let backgroundDimension: CGFloat = 50
+        let backgroundDimension: CGFloat = 40
         addSubview(addPhotoBackgroundButton)
-        addPhotoBackgroundButton.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: -25, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
+        addPhotoBackgroundButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
         addPhotoBackgroundButton.layer.cornerRadius = backgroundDimension / 2
                
-        addPhotoBackgroundButton.addSubview(beBoppAddPhotoButton)
-        beBoppAddPhotoButton.anchor(top: addPhotoBackgroundButton.topAnchor, left: addPhotoBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 43, height: 43)
+        addPhotoBackgroundButton.addSubview(cameraButton)
+        cameraButton.anchor(top: addPhotoBackgroundButton.topAnchor, left: addPhotoBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 20, height: 18)
         
         addSubview(refreshCategories)
-        refreshCategories.anchor(top: editProfileFollowButton.topAnchor, left: editProfileFollowButton.rightAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 70, height: 25)
-        refreshCategories.layer.cornerRadius = 1
+        //refreshCategories.anchor(top: editProfileFollowButton.topAnchor, left: editProfileFollowButton.rightAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 70, height: 25)
+        //refreshCategories.layer.cornerRadius = 1
         
+        refreshCategories.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 70, height: 40)
+        refreshCategories.layer.cornerRadius = 20
+        
+        
+        let stackView = UIStackView(arrangedSubviews: [self.addPhotoBackgroundButton ,self.editProfileFollowButton, self.refreshCategories])
+        
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(stackView)
+        stackView.anchor(top: self.followersLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stackView.centerXAnchor.constraint(equalTo: self.profileImageView.centerXAnchor).isActive = true
+        
+        
+        addSubview(userBioLabel)
+         userBioLabel.anchor(top: editProfileFollowButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        userBioLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
+        
+        addSubview(separatorView)
+        separatorView.anchor(top: userBioLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
+        
+        addSubview(separatorViewLower)
+        separatorViewLower.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.30)
+        
+        addSubview(activityBackgroundOne)
+        activityBackgroundOne.anchor(top: separatorView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
+        
+        activityBackgroundOne.addSubview(activityHistoryView)
+        activityHistoryView.anchor(top: activityBackgroundOne.topAnchor, left: activityBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
+         activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
+         
+        addSubview(gridBackgroundOne)
+        gridBackgroundOne.anchor(top: separatorView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
+        
+        gridBackgroundOne.addSubview(gridViewButton)
+        gridViewButton.anchor(top: gridBackgroundOne.topAnchor, left: gridBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
+         gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
     }
     
     func configureUserAnalytics() {

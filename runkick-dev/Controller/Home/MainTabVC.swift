@@ -176,11 +176,13 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             
             let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
             let navController = UINavigationController(rootViewController: selectImageVC)
+            selectImageVC.isUserAdminUpload = false
+            print("THe user is an admin or user BUT we should always present the normal upload view.. set to false")
             navController.modalPresentationStyle = .fullScreen
             navController.navigationBar.tintColor = UIColor(red: 60/255, green: 124/255, blue: 222/255, alpha: 1)
-            
             present(navController, animated: true, completion: nil)
             
+   
             return false
             
         } else if index == 3 {

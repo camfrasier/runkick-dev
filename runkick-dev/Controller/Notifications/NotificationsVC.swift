@@ -239,7 +239,7 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
         navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         
-        
+        /*
         let returnNavButton = UIButton(type: UIButton.ButtonType.custom)
          
          returnNavButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
@@ -253,8 +253,10 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
              
          let notificationBarBackButton = UIBarButtonItem(customView: returnNavButton)
          self.navigationItem.leftBarButtonItems = [notificationBarBackButton]
+        */
     }
     
+    // may not need this function in the future
     @objc func handleBackButton() {
         _ = self.navigationController?.popViewController(animated: true)
     }

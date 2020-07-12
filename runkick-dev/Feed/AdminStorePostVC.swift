@@ -44,7 +44,7 @@ class AdminStorePostVC: UICollectionViewController, UICollectionViewDelegateFlow
         // uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        collectionView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        collectionView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         
         // register cell classes
         self.collectionView!.register(AdminStorePostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -84,10 +84,10 @@ class AdminStorePostVC: UICollectionViewController, UICollectionViewDelegateFlow
            
            let width = view.frame.width
            //var height = width
-            var height =  width + 85
+            var height =  width + 45
            
-           height += 85
-           height += 105
+           height += 45
+           height += 55
          
            return CGSize(width: width, height: height)
        }

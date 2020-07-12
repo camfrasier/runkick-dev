@@ -262,7 +262,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                            
                           // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                    return CGSize(width: view.frame.width - 0, height: view.frame.height)
+                    return CGSize(width: view.frame.width - 0, height: view.frame.height - 120)
             }
             
         }
@@ -278,12 +278,12 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 
                 //return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                return CGSize(width: view.frame.width - 0, height: view.frame.height)
+                return CGSize(width: view.frame.width - 0, height: view.frame.height - 120)
             }
             
         }
         // return CGSize(width: view.frame.width - 0, height: 200)
-        return CGSize(width: view.frame.width - 0, height: view.frame.height)
+        return CGSize(width: view.frame.width - 0, height: view.frame.height - 120)
         
     }
 
@@ -530,40 +530,24 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         //self.navigationItem.leftBarButtonItems = [barFeedButton]
 
         
-        
+        */
         
         // custom notifications button
             
-        //let customNotificationsButton = UIButton(type: UIButton.ButtonType.system)
+                   let adminStorePostButton = UIButton(type: UIButton.ButtonType.system)
+                       
+                       adminStorePostButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
+                       
+                       //using this code to show the true image without rendering color
+                       adminStorePostButton.setImage(UIImage(named:"roundedSqaureThin")?.withRenderingMode(.alwaysOriginal), for: .normal)
         
-        
-        customNotificationsButton.frame = CGRect(x: 0, y: 0, width: 28, height: 28)
-        
-        //using this code to show the true image without rendering color
-        customNotificationsButton.setImage(UIImage(named:"whiteCircleRightArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
-       
-         
-         let customNotificationsButton = UIButton(type: UIButton.ButtonType.custom)
-         
-        //using this code to be able to adjust tint
-    //customNotificationsButton.setImage(UIImage(named:"simpleRoundedEnvelope")!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate), for: .normal)
-        
-        //customSearchFriendsIconButton.setTitleColor(UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1), for: .normal)
-        customNotificationsButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
-        customNotificationsButton.addTarget(self, action: #selector(handleNotificationView), for: .touchUpInside)
-        customNotificationsButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
-        customNotificationsButton.backgroundColor = .clear
-        //customNotificationsButton.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        //customNotificationsButton.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
-        //customNotificationsButton.layer.shadowRadius = 2.5
-        //customNotificationsButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-            
-        
-        
-        //let barSearchTitle = UIBarButtonItem(customView: customSearchTitle)
-        let barNotificationButton = UIBarButtonItem(customView: customNotificationsButton)
-        self.navigationItem.rightBarButtonItems = [barNotificationButton]
-        
+        adminStorePostButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 23, height: 23 )
+        adminStorePostButton.addTarget(self, action: #selector(handleNotificationView), for: .touchUpInside)
+                       adminStorePostButton.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+                       adminStorePostButton.backgroundColor = .clear
+               
+               let adminFeedButton = UIBarButtonItem(customView: adminStorePostButton)
+               self.navigationItem.rightBarButtonItems = [adminFeedButton]
         
         
         // custom back button
@@ -584,7 +568,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         */
  
  
-        */
+        
     }
     
     @objc func handleBackButton() {
@@ -879,13 +863,27 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     func handleLikeTapped(for cell: FeedCell, isDoubleTap: Bool) {
         
         guard let post = cell.post else { return }
+        
+        
+        cell.newLikeButton.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
+                   
+                   UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                       
+                    cell.newLikeButton.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                       
+                   }) { (_) in
+                    cell.newLikeButton.transform = .identity
+        }
     
         if post.didLike {
             // handle unlike post
             if !isDoubleTap {
                 post.adjustLikes(addLike: false, completion: { (likes) in
                     cell.likesLabel.text = "\(likes)"
-                    cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
+                    //cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
+                      //cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
+                    cell.newLikeButton.backgroundColor = UIColor.clear
+                    cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
                     cell.newLikeButton.alpha = 1
                 })
             }
@@ -894,8 +892,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             // handle like post
             post.adjustLikes(addLike: true, completion: { (likes) in
                 cell.likesLabel.text = "\(likes)"
-                cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
-                cell.newLikeButton.alpha = 0.80
+                //cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
+                cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
+                cell.newLikeButton.alpha = 1
                 
             })
         }
@@ -924,11 +924,15 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             // check if post id exists in user-like structure
                        if snapshot.hasChild(postId) {
                            post.didLike = true
-                           cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
-                            cell.newLikeButton.alpha = 0.80
+                           //cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
+                        cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                        cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
+                            cell.newLikeButton.alpha = 1
                        } else {
                            post.didLike = false
-                           cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
+                           //cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
+                        cell.newLikeButton.backgroundColor = UIColor.clear
+                        cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
                         cell.newLikeButton.alpha = 1
                        }
             
@@ -947,6 +951,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func handleCommentTapped(for cell: FeedCell) {
+        
+        cell.newComment.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
+                   
+                   UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                       
+                    cell.newComment.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                       
+                   }) { (_) in
+                    cell.newComment.transform = .identity
+        }
         
         print("comment button tapped")
         guard let post = cell.post else { return }

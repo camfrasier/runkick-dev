@@ -332,14 +332,14 @@ class HomeVC: UIViewController, Alertable {
     let beBoppActionButton: UIButton = {
         let button = UIButton(type: .custom)
         //button.setImage(UIImage(named: "beBoppAction2"), for: .normal)
-        button.setImage(UIImage(named: "lightbulbOutline"), for: .normal)
+        button.setImage(UIImage(named: "roundedWhitePlus"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
         button.backgroundColor = .clear
         /*
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
-        button.layer.shadowRadius = 5.0
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.65).cgColor
+        button.layer.shadowRadius = 8.0
+        button.layer.shadowOffset = CGSize(width: 5, height: -5)
         */
         button.alpha = 1
         return button
@@ -801,7 +801,7 @@ class HomeVC: UIViewController, Alertable {
        //simpleRightMenuButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
         simpleRightMenuBackground.addSubview(beBoppActionButton)
-        beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 17, paddingBottom: 0, paddingRight: 0, width: 26, height: 39)
+        beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 19, paddingLeft: 19, paddingBottom: 0, paddingRight: 0, width: 39, height: 39)
 
         
         //configureNavigationSubView()
@@ -1465,7 +1465,7 @@ class HomeVC: UIViewController, Alertable {
         rewardsBackground.layer.cornerRadius = 50 / 2
         
         rewardsBackground.addSubview(homeRewardsButton)
-        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 14, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 13, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 23, height: 23)
         
         
         /*

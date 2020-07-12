@@ -21,6 +21,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var assets = [PHAsset]()
     var selectedImage: UIImage?
     var header: SelectPhotoHeader?
+    var isUserAdminUpload = true
     
     override func viewDidLoad() {
     super.viewDidLoad()
@@ -124,7 +125,6 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     @objc func handleNext() {
         
-        
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
 
         DataService.instance.REF_USERS.child(currentUid).child("isStoreadmin").observe(.value) { (snapshot) in
@@ -133,11 +133,18 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             print(snapshot.value as! Bool)
                     
             if isStoreadmin == true {
-                
+                if self.isUserAdminUpload == true {
+                    print("User is store admin and this should go to the upload store view ")
                 let uploadStorePostVC = UploadStorePostVC()
                 uploadStorePostVC.selectedImage = self.header?.photoImageView.image // Using this to pull the instance of our header and use it for the share page.
                 uploadStorePostVC.uploadAction = UploadStorePostVC.UploadAction(index: 0)
                 self.navigationController?.pushViewController(uploadStorePostVC, animated: true)
+                } else {
+                    let uploadPostVC = UploadPostVC()
+                    uploadPostVC.selectedImage = self.header?.photoImageView.image // Using this to pull the instance of our header and use it for the share page.
+                    uploadPostVC.uploadAction = UploadPostVC.UploadAction(index: 0)
+                    self.navigationController?.pushViewController(uploadPostVC, animated: true)
+                }
                 
             } else {
                 
