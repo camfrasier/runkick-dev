@@ -218,7 +218,7 @@ class StoreCell: UITableViewCell {
         
         addSubview(locationTitleLabel)
         locationTitleLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil
-            , paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            , paddingTop: 20, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationDistanceLabel)
         locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 1, paddingRight: 0, width: 0, height: 0)
@@ -235,7 +235,7 @@ class StoreCell: UITableViewCell {
 
         addSubview(imageContainerView)
         //let dimension: CGFloat = 140
-        imageContainerView.anchor(top: storeHoursLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 260, height: 160)
+        imageContainerView.anchor(top: storeHoursLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 260, height: 160)
         imageContainerView.layer.cornerRadius = 0
         
         imageContainerView.addSubview(storeImageView)

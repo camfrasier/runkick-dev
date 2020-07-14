@@ -28,11 +28,16 @@ class MenuOptionCell: UITableViewCell {
     
     let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 70/255, green: 70/255, blue: 70/255, alpha: 1)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         //label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        label.font = UIFont.systemFont(ofSize: 20)
+        //label.font = UIFont(name: "HelveticaNeue-Light", size: 20)
+        label.font = UIFont(name: "PingFangTC-Regular", size: 20)
         label.text = "Sample Text"
         return label
+        
+        //PingFangTC-Medium
+        //PingFangTC-Semibold
+        //PingFangTC-Regular
     }()
 
     // MARK: - Init

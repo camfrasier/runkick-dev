@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSMotionUsageDescription</key>
+	<string>Walkology would like to enable a step counter before we begin.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -46,12 +48,12 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Waywalk needs your location before we begin.</string>
+	<string>Walkology needs your location before we begin.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Waywalk needs your location before we begin.</string>
+	<string>Walkology needs your location before we begin.</string>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Waywalk would like access to your media.</string>
+	<string>Walkology would like access to your media.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Waywalk would like access to your media.</string>
+	<string>Walkology would like access to your media.</string>
 </dict>
 </plist>

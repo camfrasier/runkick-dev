@@ -32,7 +32,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
         configurNavigationButtons()
-        collectionView?.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        collectionView?.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         
         fetchPhotos()
 
@@ -84,7 +84,7 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             
             // Adjusting the resolution of the photos to good.
             let imageManager = PHImageManager.default()
-            let targetSize = CGSize(width: 650, height: 650)  // originally this was set to 600. may need to change back
+            let targetSize = CGSize(width: 600, height: 600)  // originally this was set to 600. may need to change back
             
                 // Request image.
                 imageManager.requestImage(for: selectedAssets, targetSize: targetSize, contentMode: .default, options: nil, resultHandler: { (image, info) in
@@ -157,7 +157,13 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func configurNavigationButtons() {
-
+        
+        let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]
+        
+        navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        navigationItem.title = "Photo View"
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNext))
     }
@@ -199,12 +205,14 @@ class SelectImageVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 let options = PHImageRequestOptions()
                 options.isSynchronous = true
                 options.deliveryMode = .highQualityFormat
-                
+          
                 
                 // Request image representation for specified asset.
                 imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options, resultHandler: { (image, info) in
                     
                     if let image = image { // If image exists do this.
+                        
+                        //UIGraphicsBeginImageContextWithOptions(image.size,false,0.0)
                         
                         // Append image to data source.
                         self.images.append(image)

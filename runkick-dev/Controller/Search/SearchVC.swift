@@ -44,7 +44,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
         
         //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        tableView.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
 
         
         // configure search bar

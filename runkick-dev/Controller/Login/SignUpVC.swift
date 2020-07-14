@@ -124,7 +124,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
             userEmail = ""
         }
         
-        view.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+        view.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         
         view.addSubview(plusPhotoBtn)
         plusPhotoBtn.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)

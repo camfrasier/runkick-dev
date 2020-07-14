@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import CoreMotion
 import RevealingSplashView
 import Firebase
 import Contacts
@@ -95,6 +96,26 @@ class HomeVC: UIViewController, Alertable {
     let loginVC = LoginVC()
     //var user: User?
     
+    
+    
+    let stopColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+    let startColor = UIColor.rgb(red: 0, green: 255, blue: 0)
+    
+    // values for the pedometer data.. will probably create a class for these values
+    var numberOfSteps: Int!
+    
+    var distance: Double!
+    var averagePace: Double!
+    var pace: Double!
+    // pedometer object
+    var pedometer = CMPedometer()
+    
+    // these two properties will allow you to compute elapsed time
+    var timer = Timer()
+    let timerInterval = 1.0
+    var timeElapsed: TimeInterval = 0.0
+    
+    
     enum ExpansionState {
         case NotExpanded
         case PartiallyExpanded
@@ -108,17 +129,66 @@ class HomeVC: UIViewController, Alertable {
         return cv
     }()
     
-    /*
-    let titleLabel: UILabel = {
+    let statusTitle: UILabel = {
         let label = UILabel()
-        //label.text = "waywalk"
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 25)
-        label.textColor = UIColor(red: 30/255, green: 110/255, blue: 255/255, alpha: 1)
-        label.font = UIFont.boldSystemFont(ofSize: 25)
-        label.textAlignment = .center
+        label.text = "Status: None"
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.backgroundColor = .white
         return label
     }()
-    */
+    
+    let stepsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Steps: None"
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.backgroundColor = .white
+        return label
+    }()
+    
+    let paceLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Pace: None"
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        label.backgroundColor = .white
+        label.textAlignment = .left
+        return label
+    }()
+    
+    let averagePaceLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Avg Pace: None"
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.backgroundColor = .white
+        return label
+    }()
+    
+    let pedoDistanceLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Distance: None"
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.backgroundColor = .white
+        return label
+    }()
+    
     
     let pointsBackgroundView: UIView = {
         let view = UIView()
@@ -408,11 +478,24 @@ class HomeVC: UIViewController, Alertable {
     let homeRewardsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "rewardsGiftsIcon"), for: .normal)
-        //button.addTarget(self, action: #selector(handleMenuSlider), for: .touchUpInside)
+        //button.setImage(UIImage(named: "rewardsBox"), for: .normal)
         button.addTarget(self, action: #selector(handleHomeRewards), for: .touchUpInside)
         button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         button.alpha = 1
         button.backgroundColor = .clear
+        return button
+    }()
+    
+    
+    lazy var startStopPedometerButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Start Pedometer", for: .normal)
+        button.addTarget(self, action: #selector(handleStartStopPedometer), for: .touchUpInside)
+        button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        button.alpha = 1
+        button.backgroundColor = .white
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
         return button
     }()
      
@@ -438,22 +521,26 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var saveSegmentButton: UIButton = {
             let button = UIButton(type: .system)
-            button.setImage(UIImage(named: "plusSignInCircle"), for: .normal)
+            button.setTitle("Save Path", for: .normal)
             button.addTarget(self, action: #selector(handleSaveSegment), for: .touchUpInside)
-            //button.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+            button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
+            button.layer.borderWidth = 1
+            button.backgroundColor = .green
             button.alpha = 1
-            button.backgroundColor = .clear
             return button
         } ()
        
        lazy var removeSegmentButton: UIButton = {
-           let button = UIButton(type: .system)
-           button.setImage(UIImage(named: "minusSignInCircle"), for: .normal)
-           button.addTarget(self, action: #selector(handleRemovedSaveSegment), for: .touchUpInside)
-           //button.tintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-           button.alpha = 1
-           button.backgroundColor = .clear
-           return button
+        let button = UIButton(type: .system)
+        button.setTitle("Remove Path", for: .normal)
+        button.addTarget(self, action: #selector(handleRemovedSaveSegment), for: .touchUpInside)
+        button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
+        button.layer.borderWidth = 1
+        button.backgroundColor = .red
+        button.alpha = 1
+        return button
        } ()
     
     /*
@@ -589,6 +676,8 @@ class HomeVC: UIViewController, Alertable {
         button.alpha = 0
         return button
     }()
+    
+
     
     lazy var cancelTripButton: UIButton = {
         let button = UIButton(type: .system)
@@ -802,6 +891,30 @@ class HomeVC: UIViewController, Alertable {
         
         simpleRightMenuBackground.addSubview(beBoppActionButton)
         beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 19, paddingLeft: 19, paddingBottom: 0, paddingRight: 0, width: 39, height: 39)
+        
+        
+        mapView.addSubview(saveSegmentButton)
+        saveSegmentButton.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 100, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 120, height: 40)
+        saveSegmentButton.layer.cornerRadius = 20
+        
+        mapView.addSubview(removeSegmentButton)
+        removeSegmentButton.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 150, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 120, height: 40)
+        removeSegmentButton.layer.cornerRadius = 20
+        
+        mapView.addSubview(startStopPedometerButton)
+        startStopPedometerButton.anchor(top: removeSegmentButton.bottomAnchor, left: removeSegmentButton.leftAnchor, bottom: nil, right: removeSegmentButton.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 40)
+        startStopPedometerButton.layer.cornerRadius = 20
+        
+        let stackView = UIStackView(arrangedSubviews: [ statusTitle, stepsLabel, paceLabel, averagePaceLabel, pedoDistanceLabel])
+        
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.spacing = 4
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        mapView.addSubview(stackView)
+        stackView.anchor(top: startStopPedometerButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stackView.centerXAnchor.constraint(equalTo: self.mapView.centerXAnchor).isActive = true
 
         
         //configureNavigationSubView()
@@ -1468,6 +1581,9 @@ class HomeVC: UIViewController, Alertable {
         homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 13, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 23, height: 23)
         
         
+
+        
+        
         /*
          
          mapView.addSubview(analyticsButton)
@@ -1837,6 +1953,7 @@ class HomeVC: UIViewController, Alertable {
                    
                    rightMenuBV.backgroundColor = UIColor(white: 0, alpha: 0.5)
                    rightMenuBV.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRightMenuDismiss)))
+                
                
                    window.addSubview(rightMenuBV)
                    rightMenuBV.frame = window.frame
@@ -2264,6 +2381,98 @@ class HomeVC: UIViewController, Alertable {
     }
     
     
+    @objc func handleStartStopPedometer() {
+        print("Pedometer started")
+        
+        if startStopPedometerButton.titleLabel?.text == "Start Pedometer" {
+            //Start the pedometer
+            pedometer = CMPedometer()
+            startTimer() // start the timer
+            pedometer.startUpdates(from: Date(), withHandler: { (pedometerData, error) in
+                if let pedData = pedometerData {
+                    self.numberOfSteps = Int(truncating: pedData.numberOfSteps)
+                    //self.stepsLabel.text = "Steps:\(pedData.numberOfSteps)"
+                    if let distance = pedData.distance {
+                        self.distance = Double(truncating: distance)
+                    }
+                    if let averageActivePace = pedData.averageActivePace {
+                        self.averagePace = Double(truncating: averageActivePace)
+                    }
+                    if let currentPace = pedData.currentPace {
+                        self.pace = Double(truncating: currentPace)
+                    }
+                } else {
+                    //self.stepsLabel.text = "Steps: Not Available"
+                    self.numberOfSteps = nil
+                }
+            })
+                        
+           //Toggle the UI to on state
+            statusTitle.text = "Pedometer On"
+           startStopPedometerButton.setTitle("Stop Pedometer", for: .normal)
+           startStopPedometerButton.backgroundColor = stopColor
+        } else {
+           //Stop the pedometer
+            pedometer.stopUpdates()
+            stopTimer() // stop the timer
+            
+           //Toggle the UI to off state
+            statusTitle.text = "Pedometer Off: " + timeIntervalFormat(interval: timeElapsed)
+            
+           startStopPedometerButton.backgroundColor = startColor
+           startStopPedometerButton.setTitle("Start Pedometer", for: .normal)
+        }
+    }
+    
+    // timer functions
+    func startTimer() {
+        if timer.isValid { timer.invalidate() }
+        timer = Timer.scheduledTimer(timeInterval: timerInterval,target: self, selector: #selector(timerAction(timer:)) , userInfo: nil, repeats: true)
+    }
+     
+    func stopTimer(){
+        timer.invalidate()
+        displayPedometerData()
+    }
+     
+    @objc func timerAction(timer:Timer){
+        displayPedometerData()
+    }
+    
+    func displayPedometerData(){
+        //time Elapsed
+        timeElapsed += self.timerInterval
+        //timeElapsed += 1.0
+        statusTitle.text = "On: " + timeIntervalFormat(interval: timeElapsed)
+        
+        //Number of steps
+        if let numberOfSteps = self.numberOfSteps {
+            stepsLabel.text = String(format:"Steps: %i", numberOfSteps)
+         }
+        
+        // distance
+        
+        if let distance = self.distance{
+            pedoDistanceLabel.text = String(format:"Distance: %02.02f meters,\n %02.02f mi", distance, miles(meters: distance))
+        } else {
+            pedoDistanceLabel.text = "Distance: N/A"
+        }
+         
+        //average pace
+        if let averagePace = self.averagePace{
+            averagePaceLabel.text = paceString(title: "Avg Pace", pace: averagePace)
+        } else {
+            averagePaceLabel.text =  paceString(title: "Avg Comp Pace", pace: computedAvgPace())
+        }
+         
+        //pace
+        if let pace = self.pace {
+            paceLabel.text = paceString(title: "Pace", pace: pace)
+        } else {
+            paceLabel.text =  paceString(title: "Avg Comp Pace", pace: computedAvgPace())
+        }
+        
+    }
     
     
     @objc func handleSaveSegment() {
@@ -3302,29 +3511,37 @@ extension HomeVC: MKMapViewDelegate {
         
         switch menuOption {
         
-        
-        case .Home:
+        case .Activity:
+            print("show activity")
+            
+        case .Groups:
 
-            print("show home")
+            print("show groups")
+            
+        case .Search:
+            
+            print("show search")
+            let searchVC = SearchVC()
+            navigationController?.pushViewController(searchVC, animated: true)
     
-        case .Payment:
-            print("show payment")
+        case .Messages:
+            print("show messages")
             
-        case .Trips:
-            print("show trips")
+            let messageVC = MessagesController()
+            navigationController?.pushViewController(messageVC, animated: true)
             
-        case .Favorites:
-            print("show favorites")
+        case .Notifications:
+            print(" show notifications")
+            
+            let notificationsVC = NotificationsVC()
+            navigationController?.pushViewController(notificationsVC, animated: true)
             
         case .Rewards:
             print("show rewards")
             
-        case .Cart:
-            print("show cart")
-            
-        case .Help:
-            print("show help")
-            
+        case .Trips:
+            print("show trips")
+
         case .Settings:
             
             /*
@@ -3337,6 +3554,9 @@ extension HomeVC: MKMapViewDelegate {
             //let userSettingsVC = UserSettingsVC()
             userSettingsVC.modalPresentationStyle = .fullScreen
             present(userSettingsVC, animated: true, completion:nil)
+            
+            case .Help:
+                       print("show help")
             
         }
     }
@@ -3465,6 +3685,43 @@ extension HomeVC: MKMapViewDelegate {
         }
     }
     
+    // pedometer values
+    
+    // convert seconds to hh:mm:ss as a string
+    func timeIntervalFormat(interval: TimeInterval)-> String {
+        var seconds = Int(interval + 0.5) // round up seconds
+        let hours = seconds / 3600
+        let minutes = (seconds / 60) % 60
+        seconds = seconds % 60
+        
+        return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+    }
+    
+    // convert a pace in meters per second to a string with the metric m/s and imperial minutes per mile
+    func paceString(title: String, pace: Double)-> String {
+        var minPerMile = 0.0
+        let factor = 26.8224 // conversion factor
+        if pace != 0 {
+            minPerMile = factor / pace
+        }
+        let minutes = Int(minPerMile)
+        let seconds = Int(minPerMile * 60) % 60
+        return String(format: "%@: %02.2f m/s \n\t %02i:%02i min/mi", title, pace, minutes, seconds)
+    }
+    
+    func computedAvgPace()-> Double {
+        if let distance = self.distance {
+            pace = distance / timeElapsed
+            return pace
+        } else {
+            return 0.0
+        }
+    }
+    
+    func miles(meters: Double)-> Double {
+        let mile = 0.000621371192
+        return meters * mile
+    }
     
 }
 

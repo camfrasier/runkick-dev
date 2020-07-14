@@ -111,6 +111,13 @@ class MarketplaceVC: UICollectionViewController {
         
         
     }
+    
+    // this function ensures the navigation bar is filled after transitioning to a regular nav bar
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.view.layoutSubviews()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
@@ -178,8 +185,24 @@ class MarketplaceVC: UICollectionViewController {
     }
     
     func configureSearchBarButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
-        navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
+        //navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        
+                   let searchBarButton = UIButton(type: UIButton.ButtonType.custom)
+                       
+                       searchBarButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
+                       
+                       //using this code to show the true image without rendering color
+                       searchBarButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 23 )
+                       searchBarButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+                       searchBarButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+                       searchBarButton.backgroundColor = .clear
+               
+               let searchButton = UIBarButtonItem(customView: searchBarButton)
+               self.navigationItem.rightBarButtonItems = [searchButton]
+        
     }
     
     func configureViewComponents() {

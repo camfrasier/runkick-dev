@@ -34,10 +34,17 @@ class MenuVC: UIViewController {
     let greetingLabel: UILabel = {
         let label = UILabel()
         label.text = "Hi"
-        label.textColor = UIColor(red: 160/255, green: 160/255, blue: 160/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
         //label.textColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 24)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 24)
+        //label.font = UIFont.boldSystemFont(ofSize: 24)
         return label
+    }()
+    
+    let gradientProfileView: GradientActionView = {
+        let view = GradientActionView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     let usernameLabel: UILabel = {
@@ -50,9 +57,10 @@ class MenuVC: UIViewController {
     
     let firstnameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Poppstar"
-        label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textColor = UIColor(red: 90/255, green: 90/255, blue: 90/255, alpha: 1)
+        label.text = "Walkology"
+        //label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 24)
+        label.textColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 1)
         //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.textAlignment = .center
         return label
@@ -207,23 +215,23 @@ class MenuVC: UIViewController {
         tableView.dataSource = self
         
         tableView.register(MenuOptionCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = true
         tableView.separatorStyle = .none
-        tableView.rowHeight = 60
+        tableView.rowHeight = 50
 
-        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
+        self.tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
+        /*
         view.addSubview(menuSubView)
         menuSubView.translatesAutoresizingMaskIntoConstraints = false
         menuSubView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 170, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        menuSubView.addSubview(tableView)
+        */
+        view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: menuSubView.topAnchor, left: menuSubView.leftAnchor, bottom: menuSubView.bottomAnchor, right: menuSubView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 160, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
     @objc func handleViewProfile() {
@@ -239,7 +247,7 @@ class MenuVC: UIViewController {
     func configureViewComponents() {
         
         view.addSubview(titleView)
-        titleView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 170)
+        titleView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 160)
 
         //titleView.layer.shadowColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 0.50).cgColor
         //titleView.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -248,24 +256,31 @@ class MenuVC: UIViewController {
         
         titleView.addSubview(separatorView)
         separatorView.anchor(top: nil, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: titleView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
-    
+            /*
+        let profileCircleDimension: CGFloat = 55
+        titleView.addSubview(gradientProfileView)
+        gradientProfileView.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 175, paddingBottom: 0, paddingRight: 0, width: profileCircleDimension, height: profileCircleDimension)
+        gradientProfileView.layer.cornerRadius = profileCircleDimension / 2
+            */
         let profileDimension: CGFloat = 65
         titleView.addSubview(profileImageView)
-        profileImageView.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 180, paddingBottom: 0, paddingRight: 0, width: profileDimension, height: profileDimension)
+        profileImageView.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 175, paddingBottom: 0, paddingRight: 0, width: profileDimension, height: profileDimension)
         profileImageView.layer.cornerRadius = profileDimension / 2
+        profileImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        profileImageView.layer.borderWidth = 1
         
         titleView.addSubview(greetingLabel)
-        greetingLabel.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        greetingLabel.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         titleView.addSubview(firstnameLabel)
         firstnameLabel.anchor(top: greetingLabel.topAnchor, left: greetingLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        let avatarDimension: CGFloat = 45
-        titleView.addSubview(avatarBackgroundButton)
-        avatarBackgroundButton.anchor(top: profileImageView.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: -30, paddingLeft: -20, paddingBottom: 0, paddingRight: 0, width: avatarDimension, height: avatarDimension)
+       // let avatarDimension: CGFloat = 45
+        //titleView.addSubview(avatarBackgroundButton)
+        //avatarBackgroundButton.anchor(top: profileImageView.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: -30, paddingLeft: -20, paddingBottom: 0, paddingRight: 0, width: avatarDimension, height: avatarDimension)
         
-        avatarBackgroundButton.addSubview(beBoppAvatarButton)
-        beBoppAvatarButton.anchor(top: avatarBackgroundButton.topAnchor, left: avatarBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 43, height: 43)
+        //avatarBackgroundButton.addSubview(beBoppAvatarButton)
+        //beBoppAvatarButton.anchor(top: avatarBackgroundButton.topAnchor, left: avatarBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 43, height: 43)
         
         /*
         titleView.addSubview(sleepButton)
@@ -282,8 +297,8 @@ class MenuVC: UIViewController {
         */
         
         titleView.addSubview(userAccountTypeLabel)
-        userAccountTypeLabel.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        userAccountTypeLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
+        userAccountTypeLabel.anchor(top: greetingLabel.bottomAnchor, left: greetingLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //userAccountTypeLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         let stackView = UIStackView(arrangedSubviews: [checkInLabel, distanceLabel, pointsLabel])
         stackView.axis = .horizontal
@@ -348,7 +363,7 @@ class MenuVC: UIViewController {
                 if isStoreadmin == true {    // this is the profile screen for users
                     
                         print("This user has an admin profile")
-                        self.userAccountTypeLabel.text = "Admin"
+                        self.userAccountTypeLabel.text = "Administrator"
                     // do something
                     
                     
@@ -420,8 +435,8 @@ extension MenuVC: UITableViewDelegate, UITableViewDataSource {
         // the below will allow us to bring back a value based on the option pressed
         let menuOption = MenuOption(rawValue: indexPath.row)
         cell.descriptionLabel.text = menuOption?.description
-        cell.iconImageView.image = menuOption?.image
-        cell.iconImageView2.image = menuOption?.image2
+        //cell.iconImageView.image = menuOption?.image
+        //cell.iconImageView2.image = menuOption?.image2
         
         return cell
     }

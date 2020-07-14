@@ -869,7 +869,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                    
                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                        
-                    cell.newLikeButton.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                    cell.newLikeButton.transform = CGAffineTransform(scaleX: 1, y: 1)
                        
                    }) { (_) in
                     cell.newLikeButton.transform = .identity
@@ -956,7 +956,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                    
                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                        
-                    cell.newComment.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                    cell.newComment.transform = CGAffineTransform(scaleX: 1, y: 1)
                        
                    }) { (_) in
                     cell.newComment.transform = .identity

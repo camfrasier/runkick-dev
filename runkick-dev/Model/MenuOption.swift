@@ -10,30 +10,32 @@ import UIKit
 
 enum MenuOption: Int, CustomStringConvertible {
     
-    //case Profile
-    case Home
-    case Payment
-    case Trips
-    case Favorites
+    case Activity
+    case Groups
+    case Search
+    case Messages
+    case Notifications
     case Rewards
-    case Cart
+    case Trips
     case Settings
     case Help
     
     var description: String {
         switch self {
-        case .Home: return "Home"
-        case .Payment: return "Payment"
-        case .Trips: return "Trip History"
-        case .Favorites: return "Favorites"
+        case .Activity: return "Activity"
+        case .Groups: return "Groups"
+        case .Search: return "Search"
+        case .Messages: return "Messages"
+        case .Notifications: return "Notifications"
         case .Rewards: return "Rewards"
-        case .Cart: return "Your Cart" // Cam remove cart probably - replace it with something else
-        case .Settings: return "Settings"
+        case .Trips: return "Trips"
+        case .Settings: return "Settings" // Cam remove cart probably - replace it with something else"
         case .Help: return "Help"
             
         }
     }
     
+    /*
     var image: UIImage {
         switch self {
         //case .Profile: return UIImage(named: "simpleProfileCircleIcon") ?? UIImage()
@@ -60,4 +62,5 @@ enum MenuOption: Int, CustomStringConvertible {
             case .Help: return UIImage(named: "simpleMenuArrowBlueRight") ?? UIImage()
         }
     }
+    */
 }

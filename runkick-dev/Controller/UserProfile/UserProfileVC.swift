@@ -429,13 +429,38 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 //using this code to show the true image without rendering color
                 adminStorePostButton.setImage(UIImage(named:"photoFeed")?.withRenderingMode(.alwaysOriginal), for: .normal)
  
-                adminStorePostButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 21 )
+                adminStorePostButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 23 )
                 adminStorePostButton.addTarget(self, action: #selector(handleAdminStorePost), for: .touchUpInside)
                 adminStorePostButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                 adminStorePostButton.backgroundColor = .clear
         
         let adminFeedButton = UIBarButtonItem(customView: adminStorePostButton)
-        self.navigationItem.rightBarButtonItems = [adminFeedButton]
+        self.navigationItem.leftBarButtonItems = [adminFeedButton]
+        
+        
+        // searh bar button
+        
+        /*
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearchFriends))
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        */
+        
+        
+                   let searchBarButton = UIButton(type: UIButton.ButtonType.custom)
+                       
+                       searchBarButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
+                       
+                       //using this code to show the true image without rendering color
+                       searchBarButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 23 )
+                       searchBarButton.addTarget(self, action: #selector(handleSearchFriends), for: .touchUpInside)
+                       searchBarButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+                       searchBarButton.backgroundColor = .clear
+               
+               let searchButton = UIBarButtonItem(customView: searchBarButton)
+               self.navigationItem.rightBarButtonItems = [searchButton]
+    
     }
     
     @objc func handleAdminStorePost() {

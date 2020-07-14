@@ -264,8 +264,8 @@ class CategoryFeedCell: UICollectionViewCell {
         
         poppPriceBlock.anchor(top: topAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 25)
         
-        pointsBlock.anchor(top: postImageView.topAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 0, paddingRight: 2, width: 85, height: 22)
-        pointsBlock.layer.cornerRadius = 9
+        pointsBlock.anchor(top: postImageView.topAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 6.5, paddingLeft: 0, paddingBottom: 0, paddingRight: 2, width: 85, height: 25)
+        pointsBlock.layer.cornerRadius = 11
         
         
            

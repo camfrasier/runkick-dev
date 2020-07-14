@@ -29,6 +29,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         tabBar.tintColor = UIColor.rgb(red: 236, green: 84, blue: 95)
         tabBar.unselectedItemTintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
                 
+        // adjusting the tiele Placement after movign the tab bar position
+        UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -5)
         
         /*
         self.tabBar.isTranslucent = false
@@ -50,9 +52,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLayoutSubviews()
         tabBar.frame.size.height = 60
         tabBar.frame.origin.y = view.frame.height - 60
-        
-        
-        
+
         
         if UIScreen.main.nativeBounds.height == 2436 {
             // configure dot for iphone x
@@ -104,7 +104,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let categoryFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Upload image controller
-        let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Photo")
+        let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "PHOTO")
         
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
         viewControllers = [homeVC, marketplaceVC, selectImageVC, feedVC, userProfileVC]
