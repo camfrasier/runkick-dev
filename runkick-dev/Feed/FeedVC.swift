@@ -173,7 +173,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // self.clearsSelectionOnViewWillAppear = false
         
         // adjust view background color
-        collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        collectionView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
         //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         
         
@@ -549,24 +549,24 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                let adminFeedButton = UIBarButtonItem(customView: adminStorePostButton)
                self.navigationItem.rightBarButtonItems = [adminFeedButton]
         
-        
+        /*
         // custom back button
-         /*
-         let returnNavButton = UIButton(type: UIButton.ButtonType.custom)
          
-         returnNavButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
+         let profileViewButton = UIButton(type: UIButton.ButtonType.custom)
+         
+         profileViewButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
          
          //using this code to show the true image without rendering color
-         returnNavButton.setImage(UIImage(named:"whiteCircleLeftArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
-         returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
-        returnNavButton.addTarget(self, action: #selector(FeedVC.handleBackButton), for: .touchUpInside)
-         returnNavButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
-         returnNavButton.backgroundColor = .clear
+         profileViewButton.setImage(UIImage(named:"profileImageIcon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+         profileViewButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 24, height: 25 )
+        profileViewButton.addTarget(self, action: #selector(handleProfileSelected), for: .touchUpInside)
+         profileViewButton.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+         profileViewButton.backgroundColor = .clear
              
-         let notificationBarBackButton = UIBarButtonItem(customView: returnNavButton)
-         self.navigationItem.leftBarButtonItems = [notificationBarBackButton]
+         let profileButton = UIBarButtonItem(customView: profileViewButton)
+         self.navigationItem.leftBarButtonItems = [profileButton]
+        
         */
- 
  
         
     }

@@ -12,6 +12,8 @@ import MapKit
 import Firebase
 
 var key = String ()
+var currentTripId = String ()
+var tripIdConfigured = false
 
 class UpdateService {
     static var instance = UpdateService()
@@ -58,6 +60,7 @@ class UpdateService {
         })
     }
     
+    // after save segment this should get updated.. and we need to create a trip level under the UID
     
     func updateTripsWithCoordinatesUponSelect() {
         DataService.instance.REF_USERS.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -70,7 +73,22 @@ class UpdateService {
                                 let destinationArray = userDict["tripCoordinate"] as! NSArray
                                 
                                 /* DataService.instance.REF_TRIPS.child(user.key).childByAutoId().updateChildValues(["originationCoordinate": [originationArray[0],originationArray[1]], "destinationCoordinate": [destinationArray[0], destinationArray[1]], "runnerKey": user.key]) */
-                                DataService.instance.REF_TRIPS.child(user.key).childByAutoId().updateChildValues(["destinationCoordinate": [destinationArray[0], destinationArray[1]], "runnerKey": user.key, "timestamp": ServerValue.timestamp()])
+                                
+                                // Trips > user id > trip id > path id > destination coordinate id / timestamp
+                                // We can use the coordinates here to determine the store name and additional info
+                                
+                                if tripIdConfigured == false {
+                               // if tripId exists
+                                DataService.instance.REF_TRIPS.child(user.key).childByAutoId().childByAutoId().updateChildValues(["destinationCoordinate": [destinationArray[0], destinationArray[1]], "runnerKey": user.key, "timestamp": ServerValue.timestamp()])
+                                
+                                tripIdConfigured = true
+                                } else {
+                                    
+                                    print("The tripId has been configured")
+                                    DataService.instance.REF_TRIPS.child(user.key).child(currentTripId).childByAutoId().updateChildValues(["destinationCoordinate": [destinationArray[0], destinationArray[1]], "runnerKey": user.key, "timestamp": ServerValue.timestamp()])
+                                    
+                                }
+                                
                             }
                         }
                     }
@@ -80,15 +98,28 @@ class UpdateService {
     }
     
     func saveTripSegment(forRunnerKey runnerKey: String) {
+        // may not need to save runner key here. will need to come back to determine
         DataService.instance.REF_USERS.child(runnerKey).updateChildValues(["runnerKey": runnerKey, "segmentIsSaved": true])
+        
+        // observe the last trip within trip history
         DataService.instance.REF_TRIPS.child(runnerKey).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
-            key = snapshot.key
+            let tripId = snapshot.key
+            print("DEBUG: TRIP ID \(tripId)")
+            
+            currentTripId = tripId
+            
+            // then observe the last segment entry within the trip
+            DataService.instance.REF_TRIPS.child(runnerKey).child(tripId).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
+                key = snapshot.key
+                
+                print("DEBUG: LAST SEGMENT KEY VALUE \(key)" )
+            }
         }
     }
     
     func cancelTripSegment(forRunnerKey runnerKey: String) {
         //print(key)
-        DataService.instance.REF_TRIPS.child(runnerKey).child(key).removeValue()
+        DataService.instance.REF_TRIPS.child(runnerKey).child(currentTripId).child(key).removeValue()
         DataService.instance.REF_USERS.child(runnerKey).child("tripCoordinate").removeValue()
         DataService.instance.REF_USERS.child(runnerKey).updateChildValues(["segmentIsSaved": false])
     }

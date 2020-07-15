@@ -48,7 +48,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
 
         
         // configure search bar
-        configureSearchBar()
+        //configureSearchBar()
         
         // configure collection view
         configureCollectionView()
@@ -235,23 +235,25 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     func configureSearchBar() {
         
         //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
-        
+
         searchBar.sizeToFit()
         searchBar.delegate = self
-        searchBar.placeholder = "Search"
+        searchBar.sizeToFit()
+        searchBar.showsCancelButton = true
+        searchBar.placeholder = "Search.."
+        searchBar.becomeFirstResponder()
         searchBar.autocapitalizationType = .none
-        searchBar.showsCancelButton = false
         
         // SearchBar text
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.textColor = UIColor.red
         textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
     
-        navigationItem.titleView = searchBar
+        //navigationItem.titleView = searchBar
         //searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         searchBar.isTranslucent = false
         searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0) // changes the text
-        searchBar.alpha = 0.90
+        searchBar.alpha = 1
         
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
@@ -265,6 +267,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //searchBar.searchTextField.layer.borderColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1).cgColor
         //searchBar.searchTextField.layer.borderWidth = 0.25
         
+        navigationItem.rightBarButtonItem = nil
+        navigationItem.titleView = searchBar
     }
     
     func configureNavigationBar() {
@@ -275,17 +279,20 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
+        /*
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
         
         let font = UIFont(name: "HelveticaNeue", size: 17)!
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)]
         navigationItem.title = "Search"
+        */
         
-        navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
-        
-        
-        configureLeftBarButton()
+        navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+ 
+        configureSearchBarButton()
+        //configureLeftBarButton()
     }
+    
     
     func configureLeftBarButton() {
         // custom back button
@@ -330,10 +337,10 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     // MARK: - UISearchBar
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
+        //searchBar.showsCancelButton = true
         
-        self.navigationItem.leftBarButtonItems = nil
-        
+        //self.navigationItem.leftBarButtonItems = nil
+
         
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
@@ -342,13 +349,13 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         }
         
         
-        fetchUsers()
+        //fetchUsers()
         
         // hide collection view when we run this function
-        collectionView.isHidden = true
-        collectionViewEnabled = false
+        //collectionView.isHidden = true
+        //collectionViewEnabled = false
         
-        tableView.separatorColor = .clear
+        //tableView.separatorColor = .clear
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -381,7 +388,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
         
-        configureLeftBarButton()
+        //configureLeftBarButton()
         
         searchBar.showsCancelButton = false
         if #available(iOS 13.0, *) {
@@ -396,6 +403,10 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         collectionViewEnabled = true
         collectionView.isHidden = false
+        
+        // added stuff
+        navigationItem.titleView = nil
+        configureSearchBarButton()
         
         tableView.separatorColor = .clear
         
@@ -457,7 +468,51 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                 self.userCurrentKey = first.key
             })
         }
-    } 
+    }
+    
+    func configureSearchBarButton() {
+        // configuring titile button
+        let button =  UIButton(type: .custom)
+        button.frame = CGRect(x: 0, y: 0, width: 320, height: 35)
+        button.backgroundColor = .clear
+        button.setTitle("Search", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+        navigationItem.titleView = button
+        
+        
+        
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
+        //navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        
+                   let searchBarButton = UIButton(type: UIButton.ButtonType.custom)
+                       
+                       searchBarButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
+                       
+                       //using this code to show the true image without rendering color
+                       searchBarButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 23 )
+                       searchBarButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+                       searchBarButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+                       searchBarButton.backgroundColor = .clear
+               
+               let searchButton = UIBarButtonItem(customView: searchBarButton)
+               self.navigationItem.rightBarButtonItems = [searchButton]
+        
+    }
+    
+    @objc func showSearchBar() {
+        // hide collectionView will in search mode
+        
+        fetchUsers()
+        collectionView.isHidden = true
+        collectionViewEnabled = false
+        //self.navigationItem.rightBarButtonItems = nil
+    
+        configureSearchBar()
+    }
     
     func fetchPosts() {
         // function to fetch our images and place them in the collection view

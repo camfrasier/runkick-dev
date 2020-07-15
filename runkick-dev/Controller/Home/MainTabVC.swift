@@ -87,7 +87,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - marketplace controller placeholder
-        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "MENU", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "MARKET", rootViewController: MarketplaceVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Notification controller
         let notificationsVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Updates", rootViewController: NotificationsVC())
@@ -96,7 +96,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let userProfileVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), title: "ME", rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Search feed controller
-        let searchVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Find", rootViewController: SearchVC())
+        let searchVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "SEARCH", rootViewController: SearchVC())
         
         // Mark: - home feed controller
         let homeVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "MAP", rootViewController: HomeVC())
@@ -107,7 +107,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "PHOTO")
         
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
-        viewControllers = [homeVC, marketplaceVC, selectImageVC, feedVC, userProfileVC]
+        viewControllers = [homeVC, marketplaceVC, selectImageVC, feedVC, searchVC]
         
     
         // configure notification dot

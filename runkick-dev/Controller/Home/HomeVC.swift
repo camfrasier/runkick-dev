@@ -1736,6 +1736,7 @@ class HomeVC: UIViewController, Alertable {
         removeSource = oldSource
         oldSource = mapItem
         
+        // initiate variable i with a value of 1
         i = 1
         getTripKey()
         
@@ -3343,15 +3344,22 @@ extension HomeVC: MKMapViewDelegate {
         
         //print( "I is equal to \(i)")
         
-        DataService.instance.REF_TRIPS.child(runnerKey).queryLimited(toFirst: UInt(i)).observe(.childAdded) {(snapshot: DataSnapshot) in
+        
+        DataService.instance.REF_TRIPS.child(runnerKey).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
+            let tripId = snapshot.key
+        
+            DataService.instance.REF_TRIPS.child(runnerKey).child(tripId).queryLimited(toFirst: UInt(self.i)).observe(.childAdded) {(snapshot: DataSnapshot) in
             
             key = snapshot.key
-            //print(key)
-            
-            //print("Key saved!")
-            self.saveInitCoordinates(key)
+            print("Print path id as they are saved \(key)")
+
+            //self.saveInitCoordinates(key)
+                
+            self.saveInitCoordinates(tripId)
             self.keyHolder = key
+            }
         }
+    
     }
     
     func saveInitCoordinates (_ value: String) {
@@ -3359,15 +3367,15 @@ extension HomeVC: MKMapViewDelegate {
         let runnerKey = (Auth.auth().currentUser?.uid)!
         print(key)
         
-        DataService.instance.REF_TRIPS.child(runnerKey).child(key).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (snapshot) in
+        DataService.instance.REF_TRIPS.child(runnerKey).child(value).child(key).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (snapshot) in
             let destinCoordinatesArray = snapshot.value as! NSArray
             let lat2 = destinCoordinatesArray[0] as! Double
             let long2 = destinCoordinatesArray[1] as! Double
             
             self.destinCoordinate = CLLocationCoordinate2D(latitude: lat2, longitude: long2)
+            
+            print("Initial Coordinates Saved.. the value is \(value) and the key is \(key)")
         })
-        
-        print("Initial Coordinates Saved")
     }
     
     func navigateRunner() {
@@ -3517,6 +3525,7 @@ extension HomeVC: MKMapViewDelegate {
         case .Groups:
 
             print("show groups")
+        
             
         case .Search:
             
@@ -3537,26 +3546,34 @@ extension HomeVC: MKMapViewDelegate {
             navigationController?.pushViewController(notificationsVC, animated: true)
             
         case .Rewards:
-            print("show rewards")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                print("show rewards")
+            }
+            
             
         case .Trips:
-            print("show trips")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                print("show trips")
+            }
 
         case .Settings:
             
-            /*
-            let settingsVC = SettingsVC()
-            settingsVC.modalPresentationStyle = .fullScreen
-            present(settingsVC, animated: true, completion:nil)
-            */
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                print("show Settings")
+                
+                self.userSettingsVC.delegate = self
+                //let userSettingsVC = UserSettingsVC()
+                self.userSettingsVC.modalPresentationStyle = .fullScreen
+                self.present(self.userSettingsVC, animated: true, completion:nil)
+            }
             
-            userSettingsVC.delegate = self
-            //let userSettingsVC = UserSettingsVC()
-            userSettingsVC.modalPresentationStyle = .fullScreen
-            present(userSettingsVC, animated: true, completion:nil)
+
             
             case .Help:
-                       print("show help")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                print("show help - email me!")
+            }
             
         }
     }
@@ -3997,10 +4014,14 @@ extension HomeVC: HomeControllerDelegate {
                     
                         self.isMenuExpanded = false
                         self.handleBlackViewOnDismiss()
-                        //must first complete using this completions block below
+                        
+                    
+                    guard let menuOption = menuOption else { return }
+                    self.handleMenuToggle(menuOption: menuOption)
                     }) { (_) in
-                        guard let menuOption = menuOption else { return }
-                        self.handleMenuToggle(menuOption: menuOption)
+                        //must first complete using this completions block before peforming action
+                        //guard let menuOption = menuOption else { return }
+                        //self.handleMenuToggle(menuOption: menuOption)
                 }
                 }
             }

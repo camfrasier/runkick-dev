@@ -161,7 +161,7 @@ class MarketplaceVC: UICollectionViewController {
         searchBar.delegate = self
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
-        searchBar.placeholder = "Search"
+        //searchBar.placeholder = "Search"
         searchBar.autocapitalizationType = .none
         searchBar.becomeFirstResponder()
         searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
@@ -185,6 +185,19 @@ class MarketplaceVC: UICollectionViewController {
     }
     
     func configureSearchBarButton() {
+        
+        // configuring titile button
+        let button =  UIButton(type: .custom)
+        button.frame = CGRect(x: 0, y: 0, width: 320, height: 35)
+        button.backgroundColor = .clear
+        button.setTitle("Market", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+        navigationItem.titleView = button
+        
+        
+        
         //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
         //navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
@@ -267,7 +280,9 @@ class MarketplaceVC: UICollectionViewController {
         
         
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-
+navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        
+            /*
               //UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
         
               let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
@@ -276,12 +291,15 @@ class MarketplaceVC: UICollectionViewController {
         
         navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         navigationItem.title = "Marketplace"
-
+        */
+        
+        
         //let font = UIFont(name: "Helvetica", size: 17)!
         //self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font]
-        
+        /*
         navigationController?.navigationBar.addSubview(timelineBarView)
         timelineBarView.anchor(top: navigationController?.navigationBar.bottomAnchor, left: navigationController?.navigationBar.leftAnchor, bottom: nil, right: navigationController?.navigationBar.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        */
   
     }
     
@@ -302,11 +320,16 @@ extension MarketplaceVC: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
-        navigationItem.titleView = nil
+        
         configureSearchBarButton()
         inSearchMode = false
+        
+        searchBar.text = nil
+        navigationItem.titleView = nil
+        
         collectionView.reloadData()
     }
+    
      
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // text printing out the text real time
