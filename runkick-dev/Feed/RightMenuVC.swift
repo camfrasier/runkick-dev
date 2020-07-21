@@ -13,8 +13,13 @@ private let reuseIdentifier = "RightMenuOptionCell"
 
 class RightMenuVC: UIViewController {
     
+    var activities = [Activity]()
+    var activity: Activity?
+    var currentKey: String?
+    
     var tableView: UITableView!
     var delegate: HomeControllerDelegate?
+     
 
     let titleView: UIView = {
         let view = UIView()
@@ -43,6 +48,15 @@ class RightMenuVC: UIViewController {
         return view
     }()
     
+    let activityLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 26)
+        label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.text = "Recent Activity"
+        return label
+    } ()
+    
+    /*
     lazy var followersLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -56,7 +70,7 @@ class RightMenuVC: UIViewController {
         */
         
         // add gesture recognizer
-        let followTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowersTapped))
+        //let followTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowersTapped))
         followTap.numberOfTapsRequired = 1
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(followTap)
@@ -77,7 +91,7 @@ class RightMenuVC: UIViewController {
         */
         
         // add gesture recognizer
-        let followTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTapped))
+        //let followTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTapped))
         followTap.numberOfTapsRequired = 1
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(followTap)
@@ -94,17 +108,18 @@ class RightMenuVC: UIViewController {
         //attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)]))
         //label.attributedText = attributedText
         
-        let postTap = UITapGestureRecognizer(target: self, action: #selector(handlePostTapped))
+        //let postTap = UITapGestureRecognizer(target: self, action: #selector(handlePostTapped))
         postTap.numberOfTapsRequired = 1
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(postTap)
         return label
     } ()
+    */
     
     let avatarBackgroundButton: UIButton = {
         let button = UIButton(type: .system)
         //button.setImage(UIImage(named: "trueBlueCirclePlus"), for: .normal)
-        button.addTarget(self, action: #selector(handleAnalyticsTapped), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(handleAnalyticsTapped), for: .touchUpInside)
         button.backgroundColor = UIColor.rgb(red: 122, green: 206, blue: 53)
         button.layer.cornerRadius = 50 / 2
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
@@ -118,7 +133,7 @@ class RightMenuVC: UIViewController {
     let beBoppAvatarButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "beBoppIconHeadBand"), for: .normal)
-        button.addTarget(self, action: #selector(handleAnalyticsTapped), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(handleAnalyticsTapped), for: .touchUpInside)
         button.backgroundColor = .clear
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
@@ -133,18 +148,89 @@ class RightMenuVC: UIViewController {
         
         view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
-        fetchCurrentUserData()
+        fetchActivityPosts()
         
-        setUserStats()
+        //fetchCurrentUserData()
+        
+        //setUserStats()
         
         configureTableView()
         
-        configureViewComponents()
+        //configureViewComponents()
 
         // adjust the corner radius of the slide menu view
         let myControlLayer: CALayer = self.view.layer
         myControlLayer.masksToBounds = true
         myControlLayer.cornerRadius = 15
+        
+        // configure refresh control
+        let refreshFeedControl = UIRefreshControl()
+        refreshFeedControl.addTarget(self, action: #selector(handleFeedRefresh), for: .valueChanged)
+        tableView?.refreshControl = refreshFeedControl
+    }
+    
+    
+    func fetchActivityPosts() {
+        
+        print("fetch activity function called")
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+
+        // fetching posts with pagination and only observing x amount of post at a time
+        
+        if currentKey == nil {
+            DataService.instance.REF_ACTIVITY.child(currentUid).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.tableView?.refreshControl?.endRefreshing()
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let tripId = snapshot.key
+                    self.fetchActivity(withTripId: tripId)
+                    print("DEBUG: SNAPSHOT \(snapshot)")
+                    })
+                self.currentKey = first.key
+            
+        })
+        }else {
+            DataService.instance.REF_ACTIVITY.child(currentUid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 6).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let tripId = snapshot.key
+                    if tripId != self.currentKey {
+                        self.fetchActivity(withTripId: tripId)
+                    }
+                })
+                self.currentKey = first.key
+                })
+        }
+    }
+    
+    func fetchActivity(withTripId tripId: String) {
+          
+        Database.fetchActivity(with: tripId) { (post) in
+            
+            self.activities.append(post)
+            
+            self.activities.sort(by: { (activity1, activity2) -> Bool in
+                return activity1.creationDate > activity2.creationDate
+            })
+            self.tableView?.reloadData()
+        }
+    }
+    
+    @objc func handleFeedRefresh() {
+        // this is a screen pull down function to refresh you feed
+        activities.removeAll(keepingCapacity: false)
+        self.currentKey = nil
+        fetchActivityPosts()
+        
+        tableView?.reloadData()
     }
     
     func configureTableView() {
@@ -156,26 +242,24 @@ class RightMenuVC: UIViewController {
         tableView.register(RightMenuOptionCell.self, forCellReuseIdentifier: reuseIdentifier)
         //tableView.backgroundColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
         tableView.separatorColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1)
-        tableView.rowHeight = 55
+        tableView.rowHeight = 85
         
         // disables the scrolling feature for the table view
-        tableView.isScrollEnabled = false
+        tableView.isScrollEnabled = true
 
-        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         
-        
-        
-        view.addSubview(menuSubView)
-        menuSubView.translatesAutoresizingMaskIntoConstraints = false
-        menuSubView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        menuSubView.addSubview(tableView)
+  
+        view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: menuSubView.topAnchor, left: menuSubView.leftAnchor, bottom: menuSubView.bottomAnchor, right: menuSubView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        view.addSubview(activityLabel)
+        activityLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        /*
         //view.addSubview(tableSuperView)
         tableView.addSubview(tableSuperView)
         
@@ -189,9 +273,11 @@ class RightMenuVC: UIViewController {
         
         tableSuperView.addSubview(followingLabel)
         followingLabel.anchor(top: followersLabel.topAnchor, left: followersLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 55, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
+        */
         
     }
+    
+    /*
     
     func fetchCurrentUserData() {
         
@@ -274,7 +360,7 @@ class RightMenuVC: UIViewController {
     func configureViewComponents() {
            
            view.addSubview(titleView)
-           titleView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 110)
+           titleView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 60)
 
            //titleView.layer.shadowColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 0.50).cgColor
            //titleView.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -284,13 +370,15 @@ class RightMenuVC: UIViewController {
            titleView.addSubview(separatorView)
            separatorView.anchor(top: nil, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: titleView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
            
+        /*
         let backgroundDimension: CGFloat = 60
         titleView.addSubview(avatarBackgroundButton)
         avatarBackgroundButton.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
         avatarBackgroundButton.layer.cornerRadius = backgroundDimension / 2
+        */
         
-        avatarBackgroundButton.addSubview(beBoppAvatarButton)
-        beBoppAvatarButton.anchor(top: avatarBackgroundButton.topAnchor, left: avatarBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 5.5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+        //avatarBackgroundButton.addSubview(beBoppAvatarButton)
+        //beBoppAvatarButton.anchor(top: avatarBackgroundButton.topAnchor, left: avatarBackgroundButton.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 5.5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
         
         
         //tableView.addSubview(tableSuperView)
@@ -324,30 +412,48 @@ class RightMenuVC: UIViewController {
     @objc func handleAnalyticsTapped() {
         print("handle analytics tapped")
     }
+ */
 }
 
+    
 extension RightMenuVC: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
+        //return 1
+        activities.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RightMenuOptionCell
         
+        //cell.delegate = self
+        cell.activity = activities[indexPath.row]
+          
+   
+        /*
         // the below will allow us to bring back a value based on the option pressed
         let rightMenuOption = RightMenuOption(rawValue: indexPath.row)
         cell.descriptionLabel.text = rightMenuOption?.description
         cell.iconImageView.image = rightMenuOption?.image
         cell.iconImageView2.image = rightMenuOption?.image2
-        
+        */
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let rightMenuOption = RightMenuOption(rawValue: indexPath.row)
-
-        delegate?.handleRightMenuToggle(shouldDismiss: true, rightMenuOption: rightMenuOption)
+        //let rightMenuOption = RightMenuOption(rawValue: indexPath.row)
+        //delegate?.handleRightMenuToggle(shouldDismiss: true, rightMenuOption: rightMenuOption)
         
+        print("THIS IS SELECTED")
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+            if activities.count > 4 {
+            if indexPath.item == activities.count - 1 {
+                fetchActivityPosts()
+            }
+        }
+    }
+
 }

@@ -30,11 +30,14 @@ class HomeVC: UIViewController, Alertable {
     var tempCustomAnnotation: CKAnnotationView?
     
     var oldSource: MKMapItem?
+    var savedSource: MKMapItem?
+    var savedDestination: MKMapItem?
     var removeSource: MKMapItem?
     var coordinate: CLLocationCoordinate2D?
     var matchingItems: [MKMapItem] = [MKMapItem]()
     var originCoordinate = CLLocationCoordinate2D()
     var destinCoordinate = CLLocationCoordinate2D()
+    var pathDestination = CLLocationCoordinate2D()
     var selectedMapAnnotation: MKMapItem?
     
     // ui view properties
@@ -51,18 +54,22 @@ class HomeVC: UIViewController, Alertable {
     //var user: User?
     
     // boolean properties
+    
+    var saveSegmentVisible = Bool()
     var hasCompletedLoading = false
     var inSearchMode = false
     var directionsEnabled = false
     //var splashViewRevealed = false
     var isStoreDetailViewVisible = Bool()
     var isSearchTableViewVisible = Bool()
+    var initialCheckpointSelected = false
     var isMenuExpanded = Bool()
     var isRightMenuExpanded = Bool()
     //var isLoginViewExpanded = Bool()
     var loginPopUpExpanded = Bool()
     var isNotificationsExpanded = Bool()
     var didSetUserOrigin = Bool()
+    var didSetPolylineOrigin = false
     var secondSegmentSelected = Bool()
     
     
@@ -71,6 +78,7 @@ class HomeVC: UIViewController, Alertable {
     
     // placeholder properties
     var i = Int( )
+    var count = Int()
     var keyHolder = String()
     var compareKey = String()
     var searchBar = UISearchBar()
@@ -112,7 +120,7 @@ class HomeVC: UIViewController, Alertable {
     
     // these two properties will allow you to compute elapsed time
     var timer = Timer()
-    let timerInterval = 1.0
+    let timerInterval = 1.0 // could make this even shorter
     var timeElapsed: TimeInterval = 0.0
     
     
@@ -132,7 +140,7 @@ class HomeVC: UIViewController, Alertable {
     let statusTitle: UILabel = {
         let label = UILabel()
         label.text = "Status: None"
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 17)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.numberOfLines = 0
@@ -144,7 +152,7 @@ class HomeVC: UIViewController, Alertable {
     let stepsLabel: UILabel = {
         let label = UILabel()
         label.text = "Steps: None"
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 17)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.numberOfLines = 0
@@ -156,7 +164,7 @@ class HomeVC: UIViewController, Alertable {
     let paceLabel: UILabel = {
         let label = UILabel()
         label.text = "Pace: None"
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 17)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.numberOfLines = 0
@@ -168,7 +176,7 @@ class HomeVC: UIViewController, Alertable {
     let averagePaceLabel: UILabel = {
         let label = UILabel()
         label.text = "Avg Pace: None"
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        label.font = UIFont(name: "Arial Rounded MT Bold", size: 17)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.numberOfLines = 0
@@ -179,13 +187,27 @@ class HomeVC: UIViewController, Alertable {
     
     let pedoDistanceLabel: UILabel = {
         let label = UILabel()
-        label.text = "Distance: None"
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        //label.text = "Distance: None"
+        label.text = "0.00"
+        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 130)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        label.font = UIFont.boldSystemFont(ofSize: 18)
         label.numberOfLines = 0
-        label.textAlignment = .left
-        label.backgroundColor = .white
+        label.textAlignment = .center
+        label.backgroundColor = .clear
+        label.alpha = 0
+        return label
+    }()
+    
+    let milesLabel: UILabel = {
+        let label = UILabel()
+        //label.text = "Distance: None"
+        label.text = "MILES"
+        label.font = UIFont(name: "AvenirNextCondensed-BoldItalic", size: 24)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.backgroundColor = .clear
+        label.alpha = 0
         return label
     }()
     
@@ -518,19 +540,64 @@ class HomeVC: UIViewController, Alertable {
         view.alpha = 0
         return view
     }()
-    
-    lazy var saveSegmentButton: UIButton = {
+    /*
+    lazy var toggleSaveRemoveSegmentView: UIButton = {
             let button = UIButton(type: .system)
-            button.setTitle("Save Path", for: .normal)
-            button.addTarget(self, action: #selector(handleSaveSegment), for: .touchUpInside)
-            button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-            button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
-            button.layer.borderWidth = 1
-            button.backgroundColor = .green
+            button.setTitle("Save Segment", for: .normal)
+            button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+            button.titleLabel?.textAlignment = .center
+            button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
+            button.addTarget(self, action: #selector(handleSaveRemoveSegment), for: .touchUpInside)
+            //button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        button.backgroundColor = UIColor.rgb(red: 240, green: 92, blue: 103)
             button.alpha = 1
             return button
         } ()
-       
+    */
+    lazy var saveRemovePathLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        // add gesture recognizer
+        label.text = "SAVE PATH"
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
+        buttonTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(buttonTap)
+        return label
+    }()
+    
+    lazy var toggleSaveRemoveSegmentView: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
+        buttonTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(buttonTap)
+        view.alpha = 0
+        return view
+    }()
+    
+    lazy var saveRemoveSegmentBackground: GradientActionView = {
+        let view = GradientActionView()
+        let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        buttonTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(buttonTap)
+        view.alpha = 1
+        return view
+    }()
+    
+       /*
        lazy var removeSegmentButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Remove Path", for: .normal)
@@ -542,7 +609,7 @@ class HomeVC: UIViewController, Alertable {
         button.alpha = 1
         return button
        } ()
-    
+    */
     /*
     let analyticsButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
@@ -672,12 +739,43 @@ class HomeVC: UIViewController, Alertable {
         //button.layer.borderColor = UIColor.lightGray.cgColor
         //button.layer.borderWidth = 0.25
         button.setTitleColor(.white, for: .normal)
-        button.addTarget(self, action: #selector(handleStartTrip), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(handleStartTrip), for: .touchUpInside)
+        button.alpha = 1
+        return button
+    }()
+    
+    lazy var stopTripButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+        button.titleLabel?.textAlignment = .center
+        button.setTitle("Stop Trip", for: .normal)
+        button.backgroundColor = UIColor(red: 250/255, green: 150/255, blue: 90/255, alpha: 1)
+        //button.layer.borderColor = UIColor.lightGray.cgColor
+        //button.layer.borderWidth = 0.25
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(handleStopTrip), for: .touchUpInside)
+        button.alpha = 1
+        return button
+    }()
+    
+    
+    lazy var startStopButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.textAlignment = .center
+        button.setTitle("START", for: .normal)
+        //button.titleLabel?.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 24)
+        button.titleLabel?.font = UIFont(name: "AvenirNextCondensed-BoldItalic", size: 24)
+        button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        button.setTitleColor(UIColor.airBnBNew(), for: .normal)
+        button.addTarget(self, action: #selector(handleStartStopTrip), for: .touchUpInside)
+        button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
+        button.layer.shadowRadius = 5.0
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.alpha = 0
         return button
     }()
     
-
     
     lazy var cancelTripButton: UIButton = {
         let button = UIButton(type: .system)
@@ -769,6 +867,7 @@ class HomeVC: UIViewController, Alertable {
         isMenuExpanded = false
         isRightMenuExpanded = false
         isSearchTableViewVisible = false
+   
         //searchTableView.isHidden = false
         //isStoreViewAtOrigin = true
         
@@ -892,7 +991,7 @@ class HomeVC: UIViewController, Alertable {
         simpleRightMenuBackground.addSubview(beBoppActionButton)
         beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 19, paddingLeft: 19, paddingBottom: 0, paddingRight: 0, width: 39, height: 39)
         
-        
+        /*
         mapView.addSubview(saveSegmentButton)
         saveSegmentButton.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 100, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 120, height: 40)
         saveSegmentButton.layer.cornerRadius = 20
@@ -900,21 +999,54 @@ class HomeVC: UIViewController, Alertable {
         mapView.addSubview(removeSegmentButton)
         removeSegmentButton.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 150, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 120, height: 40)
         removeSegmentButton.layer.cornerRadius = 20
+        */
         
+        mapView.addSubview(pedoDistanceLabel)
+        pedoDistanceLabel.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 170, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 110)
+       pedoDistanceLabel.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+        
+         mapView.addSubview(milesLabel)
+         milesLabel.anchor(top: pedoDistanceLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        milesLabel.centerXAnchor.constraint(equalTo: pedoDistanceLabel.centerXAnchor).isActive = true
+        
+        
+        //mapView.addSubview(stepsLabel)
+        //stepsLabel.anchor(top: milesLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //stepsLabel.centerXAnchor.constraint(equalTo: pedoDistanceLabel.centerXAnchor).isActive = true
+
+        
+        mapView.addSubview(toggleSaveRemoveSegmentView)
+        toggleSaveRemoveSegmentView.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 150, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 175, height: 50)
+        toggleSaveRemoveSegmentView.layer.cornerRadius = 23
+        toggleSaveRemoveSegmentView.centerXAnchor.constraint(equalTo: self.mapView.centerXAnchor).isActive = true
+        
+        toggleSaveRemoveSegmentView.addSubview(saveRemoveSegmentBackground)
+        saveRemoveSegmentBackground.anchor(top: toggleSaveRemoveSegmentView.topAnchor, left: toggleSaveRemoveSegmentView.leftAnchor, bottom: toggleSaveRemoveSegmentView.bottomAnchor, right: toggleSaveRemoveSegmentView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        saveRemoveSegmentBackground.layer.cornerRadius = 23
+        
+        saveRemoveSegmentBackground.addSubview(saveRemovePathLabel)
+        saveRemovePathLabel.anchor(top: saveRemoveSegmentBackground.topAnchor, left: saveRemoveSegmentBackground.leftAnchor, bottom: saveRemoveSegmentBackground.bottomAnchor, right: saveRemoveSegmentBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        saveRemovePathLabel.clipsToBounds = true
+        saveRemovePathLabel.centerXAnchor.constraint(equalTo: self.saveRemoveSegmentBackground.centerXAnchor).isActive = true
+        saveRemovePathLabel.centerYAnchor.constraint(equalTo: self.saveRemoveSegmentBackground.centerYAnchor).isActive = true
+        
+        /*
         mapView.addSubview(startStopPedometerButton)
         startStopPedometerButton.anchor(top: removeSegmentButton.bottomAnchor, left: removeSegmentButton.leftAnchor, bottom: nil, right: removeSegmentButton.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 40)
         startStopPedometerButton.layer.cornerRadius = 20
+        */
         
+        /*
         let stackView = UIStackView(arrangedSubviews: [ statusTitle, stepsLabel, paceLabel, averagePaceLabel, pedoDistanceLabel])
         
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
-        stackView.alignment = .center
+        stackView.alignment = .leading
         stackView.spacing = 4
         stackView.translatesAutoresizingMaskIntoConstraints = false
         mapView.addSubview(stackView)
-        stackView.anchor(top: startStopPedometerButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        stackView.centerXAnchor.constraint(equalTo: self.mapView.centerXAnchor).isActive = true
+        stackView.anchor(top: toggleSaveRemoveSegmentView.bottomAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        */
 
         
         //configureNavigationSubView()
@@ -1581,7 +1713,23 @@ class HomeVC: UIViewController, Alertable {
         homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 13, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 23, height: 23)
         
         
+        /*
+        mapView.addSubview(startTripButton)
+        startTripButton.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 300, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 100, height: 30)
+        startTripButton.layer.cornerRadius = 10
 
+        mapView.addSubview(stopTripButton)
+        stopTripButton.anchor(top: startTripButton.bottomAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 100, height: 30)
+        stopTripButton.layer.cornerRadius = 10
+
+        */
+        
+        
+        mapView.addSubview(startStopButton)
+        startStopButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: nil, paddingTop: 300, paddingLeft: 0, paddingBottom: tabBarHeight + 40, paddingRight: 0, width: 120, height: 120)
+        startStopButton.layer.cornerRadius = 120 / 2
+        startStopButton.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+        
         
         
         /*
@@ -1740,8 +1888,8 @@ class HomeVC: UIViewController, Alertable {
         i = 1
         getTripKey()
         
-        reanimateStartTripButton()
-        reanimateCancelTripButton()
+        //reanimateStartTripButton()
+        //reanimateCancelTripButton()
         
         /*
          removeStartTripButton()
@@ -1771,10 +1919,11 @@ class HomeVC: UIViewController, Alertable {
         // Perhaps this can be a function that centers, remove all overlays, and resets the trip itself.
         mapView.removeOverlays(mapView.overlays)
         
-        removeCancelTripButton()
+        //removeCancelTripButton()
         dismissStoreDetailView()
         centerMapOnUserLocation()
         
+        // we don't need to remove the trip at all. just stop the pedometer and replot the route
         let currentUserID = Auth.auth().currentUser?.uid
         DataService.instance.REF_TRIPS.child(currentUserID!).removeValue()
     }
@@ -1831,6 +1980,7 @@ class HomeVC: UIViewController, Alertable {
     
     
     @objc func expansionStateCheck() {
+    
         
         if expansionState == .FullyExpanded {
             
@@ -2363,23 +2513,289 @@ class HomeVC: UIViewController, Alertable {
         }
     }
     
-    @objc func handleStartTrip() {
+    @objc func handleStartStopTrip() {
         
-        print("start the checking location status agian.")
-        checkLocationAuthStatus()
-        
-        navigateRunner()
 
-        storeDetailView.dismissDetailView()
-        //isStoreDetailViewVisible = false
+            
+        if startStopButton.titleLabel?.text == "START" {
+            
+            
+            startStopButton.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
+                           
+                           UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                               
+                            self.startStopButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                               
+                           }) { (_) in
+                            self.startStopButton.transform = .identity
+                }
+            
+            
+            pedoDistanceLabel.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+            milesLabel.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+            toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                           
+                           UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                            
+                            self.pedoDistanceLabel.alpha = 1
+                            self.milesLabel.alpha = 1
+                            self.toggleSaveRemoveSegmentView.alpha = 1
+                            
+                            self.pedoDistanceLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+                            self.milesLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+                            self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                               
+                           }) { (_) in
+                            self.pedoDistanceLabel.transform = .identity
+                            self.milesLabel.transform = .identity
+                            self.toggleSaveRemoveSegmentView.transform = .identity
+                }
+                
+                print("start trip pressed")
+        
+               startStopButton.setTitle("STOP", for: .normal)
+            startStopButton.setTitleColor(UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1), for: .normal)
+                startStopButton.backgroundColor = .white
+                
+                saveSegmentVisible = false
+            
+              
+                
+                print("start the checking location status agian.")
+                checkLocationAuthStatus()
+                
+                navigateRunner()
+
+                storeDetailView.dismissDetailView()
+
+                startPedometer()
+                
+                plotProposedTrip()
+                
+                // if we have the select path button showing , remove it before starting
+                if initialCheckpointSelected == true {
+                    self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
+
+                
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                    
+                    self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+                        self.toggleSaveRemoveSegmentView.alpha = 0
+
+
+                }) { (_) in
+                    self.toggleSaveRemoveSegmentView.transform = .identity
+
+                }
+
+                }
+                
+            
+            } else {
+            
+            startStopButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            pedoDistanceLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+            milesLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
+            
+            
+            
+                           
+                           UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                               
+                            
+                            self.startStopButton.alpha = 0
+                            self.pedoDistanceLabel.alpha = 0
+                            self.milesLabel.alpha = 0
+                            
+                            self.startStopButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                            self.pedoDistanceLabel.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                            self.milesLabel.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                            
+                           }) { (_) in
+                            self.startStopButton.transform = .identity
+                            self.pedoDistanceLabel.transform = .identity
+                            self.milesLabel.transform = .identity
+                }
+
+                  print("stop trip and upload all final activity.")
+                  
+                  // setting this to false
+                  initialCheckpointSelected = false
+                  
+                  // if the pedometer has started then we need to stop it
+                  stopPedometer()
+                  
+                  // when your trip is over the checkpoints you actually reach are
+                  //plotActualTrip()
+              
+
+               startStopButton.setTitle("START", for: .normal)
+            startStopButton.setTitleColor(UIColor.airBnBNew(), for: .normal)
+                 startStopButton.backgroundColor = .white
+            }
+        }
+
+    
+    @objc func handleStopTrip() {
+        
+        print("stop trip and upload all final activity.")
+        
+        // setting this to false
+        initialCheckpointSelected = false
+        
+        // if the pedometer has started then we need to stop it
+        stopPedometer()
+        
+        // when your trip is over the checkpoints you actually reach are
+        //plotActualTrip()
+    
+    }
+    
+    func plotProposedTrip() {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        //count = 1
+        
+        // initial source of user saved here in preparation to plot complete route
+        let currentLocation: CLLocation = (manager?.location)!
+        let placeMark = MKPlacemark(coordinate: currentLocation.coordinate)
+        let placeHolder = MKMapItem(placemark: placeMark)
+        savedSource = placeHolder
         
         
-        let runnerKey = (Auth.auth().currentUser?.uid)!
-        DataService.instance.REF_TRIPS.child(runnerKey).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
-            self.compareKey = snapshot.key
+        // observe the last trip within trip history
+        DataService.instance.REF_TRIPS.child(currentUid).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
+            let tripId = snapshot.key
+                print("DEBUG: TRIP ID \(tripId)")
+            
+            if let segmentSnap = snapshot.children.allObjects as? [DataSnapshot] {
+                for segment in segmentSnap {
+                    
+                    let segmentId = segment.key
+                    print("DEBUG: SEGMENT ID \(segmentId)")
+                    
+                    //currentTripId = tripId
+                    
+                   
+                    DataService.instance.REF_TRIPS.child(currentUid).child(tripId).child(segmentId).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (snapshot) in
+                        
+                        let destinCoordinatesArray = snapshot.value as! NSArray
+                        let latitude = destinCoordinatesArray[0] as! Double
+                        let longitude = destinCoordinatesArray[1] as! Double
+                    
+                    self.pathDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                    
+                    let placemark = MKPlacemark(coordinate: self.pathDestination )
+                    let mapItem = MKMapItem(placemark: placemark)
+                    
+                        self.plotSegment(forMapItem: mapItem)
+                        
+                    })
+               
+            /*
+            // then observe the last segment entry within the trip
+            DataService.instance.REF_TRIPS.child(currentUid).child(tripId).queryLimited(toFirst: UInt(self.count)).observe(.childAdded) {(snapshot: DataSnapshot) in
+                key = snapshot.key
+                
+                print("DEBUG: SNAPSHOT VALUE \(snapshot)" )
+                
+                DataService.instance.REF_TRIPS.child(currentUid).child(tripId).child(key).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    let destinCoordinatesArray = snapshot.value as! NSArray
+                    let latitude = destinCoordinatesArray[0] as! Double
+                    let longitude = destinCoordinatesArray[1] as! Double
+                
+                self.pathDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                
+                let placemark = MKPlacemark(coordinate: self.pathDestination )
+                let mapItem = MKMapItem(placemark: placemark)
+                
+                    if destinCoordinatesArray != [] {
+                        
+                        print("DESTINATION IS NOT EMPTY")
+                self.plotSegment(forMapItem: mapItem)
+                
+                // incrementing the count value
+                self.count += 1
+                
+                /*
+                monitorRegionLocation(center: destinCoord, identifier: "placeholder")
+                addUserTripPolyline(forMapItem: mapItem)
+                
+                let placeMark = MKPlacemark(coordinate: userLocation.coordinate)
+                let placeHolder = MKMapItem(placemark: placeMark)
+                */
+                    }
+                    
+                })
+            }
+            */
+                    
+                    
+                }
+            }
+            
             
         }
     }
+    
+    func plotSegment(forMapItem mapItem: MKMapItem) {
+
+        
+        // i want to plot the segment show the user route via a zoom out, then... zoom in when the user is read to go...
+        
+         let request = MKDirections.Request()
+         request.source = savedSource
+         request.destination = mapItem
+         request.transportType = MKDirectionsTransportType.walking
+        
+        let directions = MKDirections(request: request)
+         directions.calculate { (response, error) in
+             guard let response = response else {
+                 self.showAlert(error.debugDescription)
+                 return
+             }
+             self.route = response.routes[0] // The int 0 is the first fastest route. This will need to be changed to a route with a specific distance.
+             self.mapView.addOverlay(self.route.polyline)
+             //self.shouldPresentLoadingView(false)
+        }
+        
+        print("DEBUG: SAVED SOURCE \(savedSource)")
+        print("DEBUG: DESTINATION \(mapItem)")
+        
+        savedSource = mapItem
+        
+         
+            
+             /*
+             let annotation = MKPointAnnotation()
+             annotation.coordinate = mapItem.placemark.coordinate
+             self.oldSource = userStartLocation
+             self.zoomToFit(selectedAnnotation: annotation)
+             
+             
+             
+             
+             
+             
+             if didSetUserOrigin == false {
+                 
+                 let placeMark = MKPlacemark(coordinate: userLocation.coordinate)
+                 let placeHolder = MKMapItem(placemark: placeMark)
+                 
+                 oldSource = placeHolder
+                 
+                 didSetUserOrigin = true
+                 
+             } else {
+                 
+                 return
+             }
+             
+             
+            */
+        
+     }
     
     
     @objc func handleStartStopPedometer() {
@@ -2425,6 +2841,52 @@ class HomeVC: UIViewController, Alertable {
         }
     }
     
+    func startPedometer() {
+        
+         //Start the pedometer
+         pedometer = CMPedometer()
+         startTimer() // start the timer
+        
+         pedometer.startUpdates(from: Date(), withHandler: { (pedometerData, error) in
+             if let pedData = pedometerData {
+                 self.numberOfSteps = Int(truncating: pedData.numberOfSteps)
+                 //self.stepsLabel.text = "Steps:\(pedData.numberOfSteps)"
+                 if let distance = pedData.distance {
+                     self.distance = Double(truncating: distance)
+                 }
+                 if let averageActivePace = pedData.averageActivePace {
+                     self.averagePace = Double(truncating: averageActivePace)
+                 }
+                 if let currentPace = pedData.currentPace {
+                     self.pace = Double(truncating: currentPace)
+                 }
+             } else {
+                 //self.stepsLabel.text = "Steps: Not Available"
+                 self.numberOfSteps = nil
+             }
+         })
+                     
+        //Toggle the UI to on state
+         statusTitle.text = "Pedometer On"
+        startStopPedometerButton.setTitle("Stop Pedometer", for: .normal)
+        startStopPedometerButton.backgroundColor = stopColor
+        
+    }
+    
+    func stopPedometer() {
+        //Stop the pedometer
+                 pedometer.stopUpdates()
+                 stopTimer() // stop the timer
+                 
+                //Toggle the UI to off state
+                 statusTitle.text = "Pedometer Off: " + timeIntervalFormat(interval: timeElapsed)
+                 
+                startStopPedometerButton.backgroundColor = startColor
+                startStopPedometerButton.setTitle("Start Pedometer", for: .normal)
+
+
+    }
+    
     // timer functions
     func startTimer() {
         if timer.isValid { timer.invalidate() }
@@ -2434,12 +2896,45 @@ class HomeVC: UIViewController, Alertable {
     func stopTimer(){
         timer.invalidate()
         displayPedometerData()
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        // observe the last trip within trip history
+        DataService.instance.REF_TRIPS.child(currentUid).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
+            let tripId = snapshot.key
+                print("DEBUG: TRIP ID \(tripId)")
+            
+            guard let stepCount = self.numberOfSteps else { return }
+            guard let averagePace = self.averagePace else { return }
+            guard let pace = self.pace else { return }
+            guard let distance = self.distance else { return }
+            self.timeElapsed += self.timerInterval
+            let duration = self.timeIntervalFormat(interval: self.timeElapsed)
+            
+            print("DEBUG: This step count is equal to \(stepCount)")
+            print("DEBUG: This average pace is equal to \(averagePace)")
+            print("DEBUG: This pace is equal to \(pace)")
+            print("DEBUG: This distance equal to \(distance)")
+            print("DEBUG: This time elapsed is equal to \(duration)")
+            
+            
+            let values = ["points": 0,
+                          "stepCount": stepCount,
+                          "averagePace": averagePace,
+                          "pace": pace,
+                          "duration": duration,
+                          "distance": distance] as [String: Any]
+            
+            
+            DataService.instance.REF_ACTIVITY.child(currentUid).child(tripId).updateChildValues(values)
+             
+        }
     }
      
     @objc func timerAction(timer:Timer){
         displayPedometerData()
     }
-    
+
     func displayPedometerData(){
         //time Elapsed
         timeElapsed += self.timerInterval
@@ -2454,9 +2949,11 @@ class HomeVC: UIViewController, Alertable {
         // distance
         
         if let distance = self.distance{
-            pedoDistanceLabel.text = String(format:"Distance: %02.02f meters,\n %02.02f mi", distance, miles(meters: distance))
+            //pedoDistanceLabel.text = String(format:"Distance: %02.02f meters,\n %02.02f mi", distance, miles(meters: distance))
+            pedoDistanceLabel.text = String(format:"%02.02f", miles(meters: distance))
         } else {
-            pedoDistanceLabel.text = "Distance: N/A"
+            //pedoDistanceLabel.text = "Distance: N/A"
+            pedoDistanceLabel.text = "0.00"
         }
          
         //average pace
@@ -2472,7 +2969,7 @@ class HomeVC: UIViewController, Alertable {
         } else {
             paceLabel.text =  paceString(title: "Avg Comp Pace", pace: computedAvgPace())
         }
-        
+
     }
     
     
@@ -2489,8 +2986,7 @@ class HomeVC: UIViewController, Alertable {
         UpdateService.instance.saveTripSegment(forRunnerKey: currentUserID!)
         UpdateService.instance.updateDestinationToNewOrigin(withCoordinate: mapItem.placemark.coordinate)
         
-        //animateSaveSegmentButtonOut()
-        //animateRemoveSegmentButtonIn()
+        dismissStoreDetailView()
     }
     
     @objc func handleRemovedSaveSegment() {
@@ -2504,8 +3000,64 @@ class HomeVC: UIViewController, Alertable {
         //animateSaveSegmentButtonOut()
         
     }
+    
+    @objc func handleSaveRemoveSegment() {
+        
+    toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
+                   
+                   UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                       
+                    self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                       
+                   }) { (_) in
+                    self.toggleSaveRemoveSegmentView.transform = .identity
+        }
+        
+        if saveRemovePathLabel.text == "SAVE PATH" {
+            
+            print("Save segment pressed")
+                   let currentUserID = Auth.auth().currentUser?.uid
+            
+            guard let mapItem = selectedMapAnnotation else { return }
+            saveSelectedPath(forMapItem: mapItem)
+
+            DataService.instance.REF_USERS.child(currentUserID!).updateChildValues(["tripCoordinate": [mapItem.placemark.coordinate.latitude, mapItem.placemark.coordinate.longitude]])
+            
+            UpdateService.instance.updateTripsWithCoordinatesUponSelect()
+            UpdateService.instance.saveTripSegment(forRunnerKey: currentUserID!)
+            UpdateService.instance.updateDestinationToNewOrigin(withCoordinate: mapItem.placemark.coordinate)
+            
+            dismissStoreDetailView()
+            
+            // now setting to remove segment
+           saveRemovePathLabel.text = "REMOVE PATH"
+            saveRemovePathLabel.textColor = .black
+            saveRemovePathLabel.backgroundColor = .white
+           //toggleSaveRemoveSegmentView.backgroundColor = stopColor
+            
+            saveSegmentVisible = false
+            
+        } else {
+
+            let currentUserID = Auth.auth().currentUser?.uid
+            
+            guard let mapItem = selectedMapAnnotation else { return }
+            removeSelectedPath(forMapItem: mapItem)
+            
+            UpdateService.instance.cancelTripSegment(forRunnerKey: currentUserID!)
+            
+
+           //toggleSaveRemoveSegmentView.backgroundColor = startColor
+            
+           saveRemovePathLabel.text = "SAVE PATH"
+            saveRemovePathLabel.textColor = .white
+             saveRemovePathLabel.backgroundColor = .clear
+            saveSegmentVisible = true
+        }
+    }
  
 }
+
 
 extension HomeVC: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -2905,7 +3457,12 @@ extension HomeVC: MKMapViewDelegate {
             let annotation = MKPointAnnotation()
             annotation.coordinate = mapItem.placemark.coordinate
             self.oldSource = userStartLocation
-            self.zoomToFit(selectedAnnotation: annotation)
+            
+            
+            let zoomRadius: CLLocationDistance = 500
+            let coordinateRegion = MKCoordinateRegion.init(center: self.mapView.userLocation.coordinate, latitudinalMeters: zoomRadius, longitudinalMeters: zoomRadius)
+            self.mapView.setRegion(coordinateRegion, animated: true)
+           // self.zoomToFit(selectedAnnotation: annotation)
         }
     }
     
@@ -2913,6 +3470,41 @@ extension HomeVC: MKMapViewDelegate {
         
         mapView.removeOverlays(mapView.overlays)
         
+        
+        if initialCheckpointSelected == false {
+            self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+            self.startStopButton.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+        
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                self.startStopButton.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+            
+            self.toggleSaveRemoveSegmentView.alpha = 1
+                self.startStopButton.alpha = 1
+            self.initialCheckpointSelected = true
+        }) { (_) in
+            self.toggleSaveRemoveSegmentView.transform = .identity
+            self.startStopButton.transform = .identity
+        }
+
+        }
+        
+        
+        
+        
+        
+        
+        // when selecting another annotation i need for the startstop button is pressed
+        if saveSegmentVisible == false {
+            
+            // toggle back to saved segment
+            //toggleSaveRemoveSegmentView.backgroundColor = startColor
+            
+            saveRemovePathLabel.text = "SAVE PATH"
+            saveRemovePathLabel.textColor = .white
+             saveRemovePathLabel.backgroundColor = .clear
+        }
         
         centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -3223,10 +3815,6 @@ extension HomeVC: MKMapViewDelegate {
         })
     }
     
-    func handleStopTrip() {
-        print("Your trip has been completed! Excellent job!")
-    }
-    
     func dismissStoreDetailView() {
         
         storeDetailView.dismissDetailView()
@@ -3240,8 +3828,10 @@ extension HomeVC: MKMapViewDelegate {
             //storeDetailView.removeFromSuperview()
         
         
-        removeStartTripButton()
-        removeCancelTripButton()
+        //removeStartTripButton()
+        
+        //removeCancelTripButton()
+        
         //isStoreDetailViewVisible = false
     }
     
@@ -3356,11 +3946,23 @@ extension HomeVC: MKMapViewDelegate {
             //self.saveInitCoordinates(key)
                 
             self.saveInitCoordinates(tripId)
+     
             self.keyHolder = key
             }
         }
     
     }
+   
+    // may not need the below function
+    
+    /*
+    func configureInitTripData(_ tripId: String) {
+        
+        guard let currentUid = (Auth.auth().currentUser?.uid) else { return }
+        
+        DataService.instance.REF_TRIPS.child(currentUid).child(tripId).updateChildValues(["creationDate": creationDate, "points": 0, "stepCount": 0, "averagePace": 0, "distance": 0])
+    }
+    */
     
     func saveInitCoordinates (_ value: String) {
        
@@ -3375,7 +3977,21 @@ extension HomeVC: MKMapViewDelegate {
             self.destinCoordinate = CLLocationCoordinate2D(latitude: lat2, longitude: long2)
             
             print("Initial Coordinates Saved.. the value is \(value) and the key is \(key)")
+            
+            
         })
+        
+        saveActivityMetrics(value)
+    }
+    
+    func saveActivityMetrics(_ value: String) {
+        
+        guard let currentUid = (Auth.auth().currentUser?.uid) else { return }
+        
+        // activity database will contain the TRIP ID in order to reference accordingly
+        
+        DataService.instance.REF_ACTIVITY.child(currentUid).child(value).updateChildValues(["creationDate": creationDate, "points": 0, "stepCount": 0, "duration": 0, "averagePace": 0, "distance": 0])
+        
     }
     
     func navigateRunner() {
@@ -3386,8 +4002,22 @@ extension HomeVC: MKMapViewDelegate {
         let placemark = MKPlacemark(coordinate: destinCoord)
         let mapItem = MKMapItem(placemark: placemark)
         
-        monitorRegionLocation(center: destinCoord, identifier: "placeholder")
-        addUserTripPolyline(forMapItem: mapItem)
+        let zoomRadius: CLLocationDistance = 1850
+        let coordinateRegion = MKCoordinateRegion.init(center: mapView.userLocation.coordinate, latitudinalMeters: zoomRadius, longitudinalMeters: zoomRadius)
+        mapView.setRegion(coordinateRegion, animated: true)
+        
+        /*
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = mapItem.placemark.coordinate
+        zoomToFit(selectedAnnotation: annotation)
+        */
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.monitorRegionLocation(center: destinCoord, identifier: "placeholder")
+            self.addUserTripPolyline(forMapItem: mapItem)
+         }
+        
+
         
         
         /*let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking]
@@ -3425,6 +4055,8 @@ extension HomeVC: MKMapViewDelegate {
                 
                 CLService.shared.updateLocation()
                 UNService.shared.finishTripRequest()
+                
+                // make sure this applies to the last check in region
                 self.handleStopTrip()
                 
                 return
@@ -3438,7 +4070,7 @@ extension HomeVC: MKMapViewDelegate {
                 
                 CLService.shared.updateLocation()
                 UNService.shared.locationRequest()
-                self.handleStartTrip()
+                //self.handleStartTrip()
             }
     }
     
@@ -3740,6 +4372,8 @@ extension HomeVC: MKMapViewDelegate {
         return meters * mile
     }
     
+// calculate calories
+    
 }
 
 // searchbar and store results tableview
@@ -3854,6 +4488,36 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         annotation.coordinate = newMapItem.placemark.coordinate
    
          
+        
+        if initialCheckpointSelected == false {
+                self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+            self.startStopButton.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                
+                self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                self.startStopButton.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                
+                self.toggleSaveRemoveSegmentView.alpha = 1
+                self.startStopButton.alpha = 1
+
+            }) { (_) in
+                self.toggleSaveRemoveSegmentView.transform = .identity
+                self.startStopButton.transform = .identity
+            }
+        }
+        
+        // when selecting another annotation i need for the startstop button is pressed
+        if saveSegmentVisible == false {
+            
+            // toggle back to saved segment
+            //toggleSaveRemoveSegmentView.backgroundColor = startColor
+            
+            saveRemovePathLabel.text = "SAVE PATH"
+            saveRemovePathLabel.textColor = .white
+             saveRemovePathLabel.backgroundColor = .clear
+        }
+        
          /*
         guard let pointsLabel = selectedSearchStore.points else {return}
         annotation.title = String(pointsLabel)

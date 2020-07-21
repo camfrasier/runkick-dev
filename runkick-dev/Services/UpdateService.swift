@@ -14,6 +14,7 @@ import Firebase
 var key = String ()
 var currentTripId = String ()
 var tripIdConfigured = false
+let creationDate = Int(NSDate().timeIntervalSince1970)
 
 class UpdateService {
     static var instance = UpdateService()
@@ -79,13 +80,13 @@ class UpdateService {
                                 
                                 if tripIdConfigured == false {
                                // if tripId exists
-                                DataService.instance.REF_TRIPS.child(user.key).childByAutoId().childByAutoId().updateChildValues(["destinationCoordinate": [destinationArray[0], destinationArray[1]], "runnerKey": user.key, "timestamp": ServerValue.timestamp()])
-                                
+                                DataService.instance.REF_TRIPS.child(user.key).childByAutoId().childByAutoId().updateChildValues(["destinationCoordinate": [destinationArray[0], destinationArray[1]], "runnerKey": user.key, "creationDate": creationDate])
+                                    
                                 tripIdConfigured = true
                                 } else {
                                     
                                     print("The tripId has been configured")
-                                    DataService.instance.REF_TRIPS.child(user.key).child(currentTripId).childByAutoId().updateChildValues(["destinationCoordinate": [destinationArray[0], destinationArray[1]], "runnerKey": user.key, "timestamp": ServerValue.timestamp()])
+                                    DataService.instance.REF_TRIPS.child(user.key).child(currentTripId).childByAutoId().updateChildValues(["destinationCoordinate": [destinationArray[0], destinationArray[1]], "runnerKey": user.key, "creationDate": creationDate])
                                     
                                 }
                                 

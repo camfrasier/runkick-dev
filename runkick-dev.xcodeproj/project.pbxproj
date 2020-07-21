@@ -69,6 +69,7 @@
 		6999CE3C244BBA6C00FB8FFC /* RightMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6999CE3B244BBA6C00FB8FFC /* RightMenuVC.swift */; };
 		6999CE3E244BC22900FB8FFC /* RightMenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6999CE3D244BC22900FB8FFC /* RightMenuOptionCell.swift */; };
 		6999CE40244BC4D500FB8FFC /* RightMenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6999CE3F244BC4D500FB8FFC /* RightMenuOption.swift */; };
+		69A1603724C2722900926A3B /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1603624C2722400926A3B /* Activity.swift */; };
 		69A1D56823480CA9003276B1 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1D56723480CA9003276B1 /* CommentInputAccessoryView.swift */; };
 		69A1D56A23480CD9003276B1 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1D56923480CD9003276B1 /* CommentInputTextView.swift */; };
 		69BC7EE023EA527E009F8AD3 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BC7EDF23EA527E009F8AD3 /* HomeVC.swift */; };
@@ -191,6 +192,7 @@
 		6999CE3B244BBA6C00FB8FFC /* RightMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightMenuVC.swift; sourceTree = "<group>"; };
 		6999CE3D244BC22900FB8FFC /* RightMenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightMenuOptionCell.swift; sourceTree = "<group>"; };
 		6999CE3F244BC4D500FB8FFC /* RightMenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightMenuOption.swift; sourceTree = "<group>"; };
+		69A1603624C2722400926A3B /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		69A1D56723480CA9003276B1 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		69A1D56923480CD9003276B1 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		69BC7EDF23EA527E009F8AD3 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				6923674B230B7ECE002FCA4D /* FeedVC.swift */,
+				6999CE3B244BBA6C00FB8FFC /* RightMenuVC.swift */,
 				69FBDCED2443A1F700709E21 /* UserSpecificFeedVC.swift */,
 				69E8EEB3246A2CEC006D4AF6 /* CategoryFeedVC.swift */,
 				69FB5F20245E319D00A02FA1 /* AdminStorePostVC.swift */,
@@ -350,6 +353,7 @@
 				69E8EEB1246771B4006D4AF6 /* MarketCategory.swift */,
 				6919B12D246CB5FF00FDAFE9 /* Category.swift */,
 				69FE5BBC232490E400039BF5 /* Post.swift */,
+				69A1603624C2722400926A3B /* Activity.swift */,
 				691A87062318B7ED00EBB64A /* User.swift */,
 				696A70B52343E33C00CDD512 /* Store.swift */,
 				69977C4C2399B6C00057D0A3 /* MenuOption.swift */,
@@ -512,7 +516,6 @@
 				69977C482398905D0057D0A3 /* MenuOptionCell.swift */,
 				6918226323B025060009F00A /* SettingsMenuOptionCell.swift */,
 				691E4F3923C3E5C100757291 /* CKAnnotationView.swift */,
-				6999CE3D244BC22900FB8FFC /* RightMenuOptionCell.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -543,7 +546,6 @@
 				69BC7EDF23EA527E009F8AD3 /* HomeVC.swift */,
 				6937B45322A98FE700446926 /* LeftSidePanelVC.swift */,
 				69977C4A2398929A0057D0A3 /* MenuVC.swift */,
-				6999CE3B244BBA6C00FB8FFC /* RightMenuVC.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -552,6 +554,7 @@
 			isa = PBXGroup;
 			children = (
 				696A5215249EB4EB00289C33 /* HelperFunctions.swift */,
+				6999CE3D244BC22900FB8FFC /* RightMenuOptionCell.swift */,
 				69FE5BC02326D8A700039BF5 /* FeedCell.swift */,
 				69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */,
 				696A5219249EC0E500289C33 /* StoreItemSelectionCell.swift */,
@@ -723,6 +726,7 @@
 				69EDAAC223034BB10020D477 /* UNService.swift in Sources */,
 				69FE5BCC2331B18E00039BF5 /* NotificationsCell.swift in Sources */,
 				698B486423233C6F00A0F3E0 /* SelectImageVC.swift in Sources */,
+				69A1603724C2722900926A3B /* Activity.swift in Sources */,
 				6937B45222A97E1A00446926 /* RoundedShadowButton.swift in Sources */,
 				696A5218249EBDC800289C33 /* StoreItemSelectionVC.swift in Sources */,
 				696A522024A57CC400289C33 /* CheckoutVC.swift in Sources */,

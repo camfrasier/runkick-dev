@@ -34,6 +34,7 @@ class DataService {
     private var _REF_CATEGORIES = DB_BASE.child("categories")
     private var _REF_MARKETPLACE = DB_BASE.child("marketplace")
     private var _REF_TRIPS = DB_BASE.child("trips")
+    private var _REF_ACTIVITY = DB_BASE.child("activity")
     private var _REF_STORES = DB_BASE.child("stores")
     private var _REF_POSTS = DB_BASE.child("posts")
     private var _REF_ADMIN_STORE_POSTS = DB_BASE.child("admin-store-posts")
@@ -89,6 +90,10 @@ class DataService {
     
     var REF_TRIPS: DatabaseReference {
         return _REF_TRIPS
+    }
+    
+    var REF_ACTIVITY: DatabaseReference {
+        return _REF_ACTIVITY
     }
     
     var REF_STORES: DatabaseReference {

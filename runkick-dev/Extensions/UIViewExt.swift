@@ -326,6 +326,19 @@ extension Database {
         }
     }
     
+    static func fetchActivity(with tripId: String, completion: @escaping(Activity) -> ()) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_ACTIVITY.child(currentUid).child(tripId).observeSingleEvent(of: .value) { (snapshot) in
+            
+                guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+                       
+                let activityData = Activity(tripId: tripId, dictionary: dictionary)
+                       
+                       completion(activityData)
+        }
+    }
+    
     static func fetchPost(with postId: String, completion: @escaping(Post) -> ()) {
         DataService.instance.REF_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
             
