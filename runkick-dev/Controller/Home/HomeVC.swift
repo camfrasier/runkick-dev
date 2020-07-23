@@ -2932,7 +2932,8 @@ class HomeVC: UIViewController, Alertable {
                 
                 DataService.instance.REF_ACTIVITY.child(currentUid).child(tripId).updateChildValues(["creationDate": creationDate, "distance": distance, "stepCount": steps, "duration": duration, "pace": pace, "averagePace": averagePace])
                 
-          
+            }
+        
         mapView.removeOverlays(mapView.overlays)
         UpdateService.instance.resetTripId()
     }
