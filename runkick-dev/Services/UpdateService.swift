@@ -19,6 +19,10 @@ let creationDate = Int(NSDate().timeIntervalSince1970)
 class UpdateService {
     static var instance = UpdateService()
     
+    func resetTripId() {
+        tripIdConfigured = false
+    }
+    
     // Below function will allow the app to monitor the runner location.
     func updateUserLocation(withCoordinate coordinate: CLLocationCoordinate2D) {
         DataService.instance.REF_USERS.observeSingleEvent(of: .value, with: { (snapshot) in

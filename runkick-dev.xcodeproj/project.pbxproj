@@ -313,7 +313,6 @@
 			isa = PBXGroup;
 			children = (
 				6923674B230B7ECE002FCA4D /* FeedVC.swift */,
-				6999CE3B244BBA6C00FB8FFC /* RightMenuVC.swift */,
 				69FBDCED2443A1F700709E21 /* UserSpecificFeedVC.swift */,
 				69E8EEB3246A2CEC006D4AF6 /* CategoryFeedVC.swift */,
 				69FB5F20245E319D00A02FA1 /* AdminStorePostVC.swift */,
@@ -516,6 +515,7 @@
 				69977C482398905D0057D0A3 /* MenuOptionCell.swift */,
 				6918226323B025060009F00A /* SettingsMenuOptionCell.swift */,
 				691E4F3923C3E5C100757291 /* CKAnnotationView.swift */,
+				6999CE3D244BC22900FB8FFC /* RightMenuOptionCell.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -546,6 +546,7 @@
 				69BC7EDF23EA527E009F8AD3 /* HomeVC.swift */,
 				6937B45322A98FE700446926 /* LeftSidePanelVC.swift */,
 				69977C4A2398929A0057D0A3 /* MenuVC.swift */,
+				6999CE3B244BBA6C00FB8FFC /* RightMenuVC.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -554,7 +555,6 @@
 			isa = PBXGroup;
 			children = (
 				696A5215249EB4EB00289C33 /* HelperFunctions.swift */,
-				6999CE3D244BC22900FB8FFC /* RightMenuOptionCell.swift */,
 				69FE5BC02326D8A700039BF5 /* FeedCell.swift */,
 				69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */,
 				696A5219249EC0E500289C33 /* StoreItemSelectionCell.swift */,

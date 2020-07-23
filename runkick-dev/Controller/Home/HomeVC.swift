@@ -120,7 +120,7 @@ class HomeVC: UIViewController, Alertable {
     
     // these two properties will allow you to compute elapsed time
     var timer = Timer()
-    let timerInterval = 1.0 // could make this even shorter
+    let timerInterval = 1.0
     var timeElapsed: TimeInterval = 0.0
     
     
@@ -2222,6 +2222,7 @@ class HomeVC: UIViewController, Alertable {
             storeDetailView.dismissDetailView()
             
             presentRightSlideMenu()
+            
    
         } else {
             
@@ -2878,6 +2879,7 @@ class HomeVC: UIViewController, Alertable {
                  pedometer.stopUpdates()
                  stopTimer() // stop the timer
                  
+        
                 //Toggle the UI to off state
                  statusTitle.text = "Pedometer Off: " + timeIntervalFormat(interval: timeElapsed)
                  
@@ -2892,43 +2894,47 @@ class HomeVC: UIViewController, Alertable {
         if timer.isValid { timer.invalidate() }
         timer = Timer.scheduledTimer(timeInterval: timerInterval,target: self, selector: #selector(timerAction(timer:)) , userInfo: nil, repeats: true)
     }
-     
+
     func stopTimer(){
         timer.invalidate()
         displayPedometerData()
         
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        // observe the last trip within trip history
-        DataService.instance.REF_TRIPS.child(currentUid).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
-            let tripId = snapshot.key
-                print("DEBUG: TRIP ID \(tripId)")
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        self.timeElapsed += self.timerInterval
             
-            guard let stepCount = self.numberOfSteps else { return }
-            guard let averagePace = self.averagePace else { return }
-            guard let pace = self.pace else { return }
-            guard let distance = self.distance else { return }
-            self.timeElapsed += self.timerInterval
-            let duration = self.timeIntervalFormat(interval: self.timeElapsed)
+            guard let currentUid = Auth.auth().currentUser?.uid else { return }
             
-            print("DEBUG: This step count is equal to \(stepCount)")
-            print("DEBUG: This average pace is equal to \(averagePace)")
-            print("DEBUG: This pace is equal to \(pace)")
-            print("DEBUG: This distance equal to \(distance)")
-            print("DEBUG: This time elapsed is equal to \(duration)")
+            // observe the last trip within trip history
+            DataService.instance.REF_TRIPS.child(currentUid).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
+                let tripId = snapshot.key
+                    print("DEBUG: TRIP ID \(tripId)")
+                    print("CREATION DATE \(creationDate)")
+                
             
-            
-            let values = ["points": 0,
-                          "stepCount": stepCount,
-                          "averagePace": averagePace,
-                          "pace": pace,
-                          "duration": duration,
-                          "distance": distance] as [String: Any]
-            
-            
-            DataService.instance.REF_ACTIVITY.child(currentUid).child(tripId).updateChildValues(values)
-             
-        }
+                guard let distance = Double("\(self.pedoDistanceLabel.text ?? "0.00")") else { return }
+                print("DEBUG: THIS IS THE DISTANCE \(distance)")
+                
+                guard let steps = Int("\(self.stepsLabel.text ?? "0")") else { return }
+                print("DEBUG: THIS IS THE STEPS \(steps)")
+                
+                let duration = "\(self.timeIntervalFormat(interval: self.timeElapsed))"
+                print("DEBUG: THIS IS THE DURATION \(duration)")
+                
+                //guard let pace = Double("\(self.paceLabel.text ?? "0.00")") else { return }
+                //print("DEBUG: THIS IS THE PACE \(pace)")
+                
+                print("DEBUG: THIS IS THE PACE \(self.paceLabel.text ?? "0")")
+                let pace = "\(self.paceLabel.text ?? "0")"
+                
+                print("DEBUG: THIS IS THE AVERAGE \(self.averagePaceLabel.text ?? "0")")
+                let averagePace = "\(self.averagePaceLabel.text ?? "0")"
+                
+                DataService.instance.REF_ACTIVITY.child(currentUid).child(tripId).updateChildValues(["creationDate": creationDate, "distance": distance, "stepCount": steps, "duration": duration, "pace": pace, "averagePace": averagePace])
+                
+          
+        mapView.removeOverlays(mapView.overlays)
+        UpdateService.instance.resetTripId()
     }
      
     @objc func timerAction(timer:Timer){
@@ -2943,12 +2949,15 @@ class HomeVC: UIViewController, Alertable {
         
         //Number of steps
         if let numberOfSteps = self.numberOfSteps {
-            stepsLabel.text = String(format:"Steps: %i", numberOfSteps)
-         }
+            //stepsLabel.text = String(format:"Steps: %i", numberOfSteps)
+            stepsLabel.text = String(format:"%i", numberOfSteps)
+        } else {
+            stepsLabel.text = "0"
+        }
         
         // distance
         
-        if let distance = self.distance{
+        if let distance = self.distance {
             //pedoDistanceLabel.text = String(format:"Distance: %02.02f meters,\n %02.02f mi", distance, miles(meters: distance))
             pedoDistanceLabel.text = String(format:"%02.02f", miles(meters: distance))
         } else {
@@ -2957,19 +2966,23 @@ class HomeVC: UIViewController, Alertable {
         }
          
         //average pace
-        if let averagePace = self.averagePace{
+        if let averagePace = self.averagePace {
             averagePaceLabel.text = paceString(title: "Avg Pace", pace: averagePace)
+            //averagePaceLabel.text = paceString(pace: averagePace)
         } else {
             averagePaceLabel.text =  paceString(title: "Avg Comp Pace", pace: computedAvgPace())
+            //averagePaceLabel.text =  "0.00"
         }
          
         //pace
         if let pace = self.pace {
             paceLabel.text = paceString(title: "Pace", pace: pace)
+            //paceLabel.text = paceString(pace: pace)
         } else {
             paceLabel.text =  paceString(title: "Avg Comp Pace", pace: computedAvgPace())
+            //paceLabel.text =  "0.00"
         }
-
+        
     }
     
     
@@ -3981,16 +3994,17 @@ extension HomeVC: MKMapViewDelegate {
             
         })
         
-        saveActivityMetrics(value)
+        //saveActivityMetrics(value)
     }
     
     func saveActivityMetrics(_ value: String) {
         
         guard let currentUid = (Auth.auth().currentUser?.uid) else { return }
+        //let creationDate = Int(NSDate().timeIntervalSince1970)
         
         // activity database will contain the TRIP ID in order to reference accordingly
         
-        DataService.instance.REF_ACTIVITY.child(currentUid).child(value).updateChildValues(["creationDate": creationDate, "points": 0, "stepCount": 0, "duration": 0, "averagePace": 0, "distance": 0])
+        DataService.instance.REF_ACTIVITY.child(currentUid).child(value).updateChildValues(["creationDate": 0, "points": 0, "stepCount": 0, "duration": 0, "averagePace": 0, "distance": 0])
         
     }
     
@@ -4348,6 +4362,7 @@ extension HomeVC: MKMapViewDelegate {
     
     // convert a pace in meters per second to a string with the metric m/s and imperial minutes per mile
     func paceString(title: String, pace: Double)-> String {
+    //func paceString(pace: Double)-> String {
         var minPerMile = 0.0
         let factor = 26.8224 // conversion factor
         if pace != 0 {
@@ -4355,7 +4370,8 @@ extension HomeVC: MKMapViewDelegate {
         }
         let minutes = Int(minPerMile)
         let seconds = Int(minPerMile * 60) % 60
-        return String(format: "%@: %02.2f m/s \n\t %02i:%02i min/mi", title, pace, minutes, seconds)
+        //return String(format: "%@: %02.2f m/s \n\t %02i:%02i min/mi", title, pace, minutes, seconds)
+        return String(format: "%02i:%02i", minutes)
     }
     
     func computedAvgPace()-> Double {

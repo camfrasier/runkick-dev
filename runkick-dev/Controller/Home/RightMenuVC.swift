@@ -50,9 +50,9 @@ class RightMenuVC: UIViewController {
     
     let activityLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 26)
+        label.font = UIFont.systemFont(ofSize: 28)
         label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.text = "Recent Activity"
+        label.text = "Your Activity"
         return label
     } ()
     
@@ -169,6 +169,7 @@ class RightMenuVC: UIViewController {
         tableView?.refreshControl = refreshFeedControl
     }
     
+
     
     func fetchActivityPosts() {
         
@@ -231,6 +232,10 @@ class RightMenuVC: UIViewController {
         fetchActivityPosts()
         
         tableView?.reloadData()
+        
+        // would like to reload 
+        let rightMenuCell = RightMenuOptionCell()
+        rightMenuCell.animateDistanceCircle()
     }
     
     func configureTableView() {
@@ -244,20 +249,23 @@ class RightMenuVC: UIViewController {
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1)
-        tableView.rowHeight = 85
+        tableView.rowHeight = 130
         
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = true
 
-        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
   
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(activityLabel)
-        activityLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        view.addSubview(separatorView)
+        separatorView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 79, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
         
         /*
         //view.addSubview(tableSuperView)
