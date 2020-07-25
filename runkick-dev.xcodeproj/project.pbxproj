@@ -59,6 +59,7 @@
 		696A70B62343E33D00CDD512 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A70B52343E33C00CDD512 /* Store.swift */; };
 		696A70B82345296800CDD512 /* HashtagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A70B72345296800CDD512 /* HashtagController.swift */; };
 		696A70BA23452A9F00CDD512 /* HashtagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A70B923452A9F00CDD512 /* HashtagCell.swift */; };
+		69757C3D24CB59C100956D53 /* GradientDiagonalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69757C3C24CB59C000956D53 /* GradientDiagonalView.swift */; };
 		69777BA2248C1F8D005EC4E6 /* GradientClearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69777BA1248C1F8B005EC4E6 /* GradientClearView.swift */; };
 		698B486423233C6F00A0F3E0 /* SelectImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B486323233C6F00A0F3E0 /* SelectImageVC.swift */; };
 		698B486623233D7700A0F3E0 /* SelectPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698B486523233D7700A0F3E0 /* SelectPhotoCell.swift */; };
@@ -181,6 +182,7 @@
 		696A70B52343E33C00CDD512 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		696A70B72345296800CDD512 /* HashtagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagController.swift; sourceTree = "<group>"; };
 		696A70B923452A9F00CDD512 /* HashtagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagCell.swift; sourceTree = "<group>"; };
+		69757C3C24CB59C000956D53 /* GradientDiagonalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientDiagonalView.swift; sourceTree = "<group>"; };
 		69777BA1248C1F8B005EC4E6 /* GradientClearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientClearView.swift; sourceTree = "<group>"; };
 		698B486323233C6F00A0F3E0 /* SelectImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImageVC.swift; sourceTree = "<group>"; };
 		698B486523233D7700A0F3E0 /* SelectPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCell.swift; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 				69FA081F233D4C45002DC00F /* Messages */,
 				696A70B32342656F00CDD512 /* Social */,
 				6937B44922A85D9B00446926 /* GradientView.swift */,
+				69757C3C24CB59C000956D53 /* GradientDiagonalView.swift */,
 				69777BA1248C1F8B005EC4E6 /* GradientClearView.swift */,
 				696A521B24A18F5F00289C33 /* GradientActionView.swift */,
 				696A70B923452A9F00CDD512 /* HashtagCell.swift */,
@@ -722,6 +725,7 @@
 				69EB6A4A22DD69BF000C764E /* StoreCell.swift in Sources */,
 				6999CE40244BC4D500FB8FFC /* RightMenuOption.swift in Sources */,
 				69D7C7A423664C9D00AF2736 /* AdminLoginVC.swift in Sources */,
+				69757C3D24CB59C100956D53 /* GradientDiagonalView.swift in Sources */,
 				691A870F231AFC6400EBB64A /* EditProfileController.swift in Sources */,
 				69EDAAC223034BB10020D477 /* UNService.swift in Sources */,
 				69FE5BCC2331B18E00039BF5 /* NotificationsCell.swift in Sources */,

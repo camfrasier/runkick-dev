@@ -18,10 +18,10 @@ class Activity {
     var title: String!
     var points: Int!
     var tripId: String!
-    var averagePace: Double!
-    var pace: Double!
+    var averagePace: String!
+    var pace: String!
     var distance: Double!
-    var duration: Double!
+    var duration: String!
     var stepCount: Int!
     var creationDate: Date!
     
@@ -54,11 +54,11 @@ class Activity {
             self.tripId = tripId
         }
         
-        if let averagePace = dictionary["averagePace"] as? Double {
+        if let averagePace = dictionary["averagePace"] as? String {
             self.averagePace = averagePace
         }
         
-        if let pace = dictionary["pace"] as? Double {
+        if let pace = dictionary["pace"] as? String {
             self.pace = pace
         }
         
@@ -66,7 +66,7 @@ class Activity {
             self.distance = distance
         }
         
-        if let duration = dictionary["duration"] as? Double {
+        if let duration = dictionary["duration"] as? String {
             self.duration = duration
         }
         

@@ -485,9 +485,24 @@ class HomeVC: UIViewController, Alertable {
         return view
     }()
     
-    lazy var rewardsBackground: UIView = {
+    lazy var rewardsBackgroundSubView: UIView = {
         let view = UIView()
-        view.backgroundColor = .clear
+        view.backgroundColor = .airBnBRed()
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleHomeRewards))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.alpha = 1
+        return view
+    }()
+    
+    lazy var rewardsBackground: GradientDiagonalView = {
+        let view = GradientDiagonalView()
+        //view.backgroundColor = .clear
         let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleHomeRewards))
         rewardsTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
@@ -502,7 +517,7 @@ class HomeVC: UIViewController, Alertable {
         button.setImage(UIImage(named: "rewardsGiftsIcon"), for: .normal)
         //button.setImage(UIImage(named: "rewardsBox"), for: .normal)
         button.addTarget(self, action: #selector(handleHomeRewards), for: .touchUpInside)
-        button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        button.tintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         button.alpha = 1
         button.backgroundColor = .clear
         return button
@@ -583,8 +598,8 @@ class HomeVC: UIViewController, Alertable {
         return view
     }()
     
-    lazy var saveRemoveSegmentBackground: GradientActionView = {
-        let view = GradientActionView()
+    lazy var saveRemoveSegmentBackground: GradientDiagonalView = {
+        let view = GradientDiagonalView()
         let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
@@ -1705,12 +1720,18 @@ class HomeVC: UIViewController, Alertable {
         //mapView.addSubview(analyticsButton)
         //analyticsButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
         
-        mapView.addSubview(rewardsBackground)
-        rewardsBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 50, height: 50)
-        rewardsBackground.layer.cornerRadius = 50 / 2
+        
+        mapView.addSubview(rewardsBackgroundSubView)
+        rewardsBackgroundSubView.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 45, height: 45)
+        rewardsBackgroundSubView.layer.cornerRadius = 45 / 2
+        
+        
+        rewardsBackgroundSubView.addSubview(rewardsBackground)
+        rewardsBackground.anchor(top: rewardsBackgroundSubView.topAnchor, left: rewardsBackgroundSubView.leftAnchor, bottom: rewardsBackgroundSubView.bottomAnchor, right: rewardsBackgroundSubView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
+        rewardsBackground.layer.cornerRadius = 45 / 2
         
         rewardsBackground.addSubview(homeRewardsButton)
-        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 13, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 23, height: 23)
+        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 11.25, paddingBottom: 0, paddingRight: 0, width: 23, height: 23)
         
         
         /*
@@ -2086,7 +2107,7 @@ class HomeVC: UIViewController, Alertable {
                 window.addSubview(menuVC.view)
                 
                 // initial starting point of the view
-                menuVC.view.frame = CGRect(x: -(view.frame.width) - 35, y: 0, width: 450, height: window.frame.height)
+                menuVC.view.frame = CGRect(x: -(view.frame.width) - 40, y: 0, width: 450, height: window.frame.height)
 
             }
         }
@@ -4907,7 +4928,7 @@ extension HomeVC: UITextFieldDelegate {
             searchBarSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             simpleMenuBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             simpleRightMenuButton.transform = CGAffineTransform(scaleX: 1, y: 1)
-            rewardsBackground.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            rewardsBackgroundSubView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             
             UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 
@@ -4923,14 +4944,14 @@ extension HomeVC: UITextFieldDelegate {
                 self.simpleRightMenuButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
                 self.simpleRightMenuButton.alpha = 0
                 
-                self.rewardsBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                self.rewardsBackground.alpha = 0
+                self.rewardsBackgroundSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.rewardsBackgroundSubView.alpha = 0
                 
             }) { (_) in
                 self.cancelSearchButton.transform = .identity
                 self.simpleMenuBackground.transform = .identity
                 self.simpleRightMenuButton.transform = .identity
-                self.rewardsBackground.transform = .identity
+                self.rewardsBackgroundSubView.transform = .identity
             }
             
             if isStoreDetailViewVisible == true {
@@ -4997,7 +5018,7 @@ extension HomeVC: UITextFieldDelegate {
         searchBarSubView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         simpleMenuBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         simpleRightMenuButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-        rewardsBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        rewardsBackgroundSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
@@ -5015,14 +5036,14 @@ extension HomeVC: UITextFieldDelegate {
             self.simpleRightMenuButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.simpleRightMenuButton.alpha = 1
             
-            self.rewardsBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.rewardsBackground.alpha = 1
+            self.rewardsBackgroundSubView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.rewardsBackgroundSubView.alpha = 1
             
         }) { (_) in
             self.cancelSearchButton.transform = .identity
             self.simpleMenuBackground.transform = .identity
             self.simpleRightMenuButton.transform = .identity
-            self.rewardsBackground.transform = .identity
+            self.rewardsBackgroundSubView.transform = .identity
         }
         
         dismissOnSearch()

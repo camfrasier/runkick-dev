@@ -966,6 +966,8 @@ class UserProfileHeader: UICollectionViewCell {
                                 //guard let creationDate = market.creationDate as? String else { return }// not the correct way to store
                                 guard let sendAddress = market.address else { return }
                                 guard let sendPoints = market.points else { return }
+                                
+                                guard let sendDescription = market.description else { return }
                                 let creationDate = Int(NSDate().timeIntervalSince1970)
                                 
                                 
@@ -979,6 +981,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "poppPrice": Float(sendPoppPrice),
                                                                                                                        "points": sendPoints,
                                                                                                                        "address": sendAddress,
+                                                                                                                       "description": sendDescription,
                                                                                                                        "category": "Salad"])
    
                                 // also update category for the store unique feeds themselves based on the storeId
@@ -1009,6 +1012,7 @@ class UserProfileHeader: UICollectionViewCell {
                                 guard let sendPoppPrice = market.poppPrice else { return }
                                 guard let sendAddress = market.address else { return }
                                 guard let sendPoints = market.points else { return }
+                                guard let sendDescription = market.description else { return }
                                 let creationDate = Int(NSDate().timeIntervalSince1970)
                                 
                                 print("THIS IS THE POP PRICE \(sendPrice)")
@@ -1022,6 +1026,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "poppPrice": Float(sendPoppPrice),
                                                                                                                        "address": sendAddress,
                                                                                                                        "points": sendPoints,
+                                                                                                                       "description": sendDescription,
                                                                                                                        "category": "Seafood"])
                             }
                           }
@@ -1048,6 +1053,7 @@ class UserProfileHeader: UICollectionViewCell {
                                 guard let sendPoppPrice = market.poppPrice else { return }
                                 guard let sendAddress = market.address else { return }
                                 guard let sendPoints = market.points else { return }
+                                guard let sendDescription = market.description else { return }
                                 let creationDate = Int(NSDate().timeIntervalSince1970)
                                 
                                 DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
@@ -1059,6 +1065,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "poppPrice": Float(sendPoppPrice),
                                                                                                                        "address": sendAddress,
                                                                                                                        "points": sendPoints,
+                                                                                                                       "description": sendDescription,
                                                                                                                        "category": "Vegetarian"])
                             }
                           }
@@ -1085,6 +1092,7 @@ class UserProfileHeader: UICollectionViewCell {
                                 guard let sendPoppPrice = market.poppPrice else { return }
                                 guard let sendAddress = market.address else { return }
                                 guard let sendPoints = market.points else { return }
+                                guard let sendDescription = market.description else { return }
                                 let creationDate = Int(NSDate().timeIntervalSince1970)
                                 
                                 DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
@@ -1096,6 +1104,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                        "poppPrice": Float(sendPoppPrice),
                                                                                                                        "address": sendAddress,
                                                                                                                        "points": sendPoints,
+                                                                                                                       "description": sendDescription,
                                                                                                                        "category": "Mexican"])
                             }
                           }
@@ -1122,6 +1131,7 @@ class UserProfileHeader: UICollectionViewCell {
                               guard let sendPoppPrice = market.poppPrice else { return }
                             guard let sendPoints = market.points else { return }
                               guard let sendAddress = market.address else { return }
+                            guard let sendDescription = market.description else { return }
                               let creationDate = Int(NSDate().timeIntervalSince1970)
                               
                               DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
@@ -1133,6 +1143,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                      "poppPrice": Float(sendPoppPrice),
                                                                                                                      "address": sendAddress,
                                                                                                                      "points": sendPoints,
+                                                                                                                     "description": sendDescription,
                                                                                                                      "category": "All American"])
                           }
                         }
@@ -1159,6 +1170,7 @@ class UserProfileHeader: UICollectionViewCell {
                               guard let sendPoppPrice = market.poppPrice else { return }
                             guard let sendPoints = market.points else { return }
                               guard let sendAddress = market.address else { return }
+                            guard let sendDescription = market.description else { return }
                               let creationDate = Int(NSDate().timeIntervalSince1970)
                               
                               DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
@@ -1170,6 +1182,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                      "poppPrice": Float(sendPoppPrice),
                                                                                                                      "points": sendPoints,
                                                                                                                      "address": sendAddress,
+                                                                                                                     "description": sendDescription,
                                                                                                                      "category": "Mediterranean"])
                           }
                         }
@@ -1196,6 +1209,7 @@ class UserProfileHeader: UICollectionViewCell {
                               guard let sendPoppPrice = market.poppPrice else { return }
                             guard let sendPoints = market.points else { return }
                               guard let sendAddress = market.address else { return }
+                            guard let sendDescription = market.description else { return }
                               let creationDate = Int(NSDate().timeIntervalSince1970)
                               
                               DataService.instance.REF_CATEGORIES.childByAutoId().updateChildValues(["postId" : postId,
@@ -1207,6 +1221,7 @@ class UserProfileHeader: UICollectionViewCell {
                                                                                                                      "poppPrice": Float(sendPoppPrice),
                                                                                                                      "points": sendPoints,
                                                                                                                      "address": sendAddress,
+                                                                                                                     "description": sendDescription,
                                                                                                                      "category": "Protein"])
                           }
                         }

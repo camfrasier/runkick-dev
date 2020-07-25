@@ -20,11 +20,12 @@ class StorePost {
     var points: Int!
     var category: String!
     var storeId: String!
+    var description: String!
     var calories: Int!
     //var price: Int!    // may need to change this value to an integer
     //var poppPrice: Int!
-    var price: Int!    // may need to change this value to an integer
-    var poppPrice: Int!
+    var price: Double!    // may need to change this value to an integer
+    var poppPrice: Double!
     
     var user: User?
     
@@ -54,7 +55,7 @@ class StorePost {
             self.category = category
         }
         
-        if let price = dictionary["price"] as? Int {
+        if let price = dictionary["price"] as? Double {
             self.price = price
         }
         
@@ -62,7 +63,11 @@ class StorePost {
             self.calories = calories
         }
         
-        if let poppPrice = dictionary["poppPrice"] as? Int {
+        if let description = dictionary["description"] as? String {
+            self.description = description
+        }
+        
+        if let poppPrice = dictionary["poppPrice"] as? Double {
             self.poppPrice = poppPrice
         }
         

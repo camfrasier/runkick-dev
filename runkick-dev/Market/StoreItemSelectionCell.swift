@@ -202,6 +202,9 @@ class StoreItemSelectionCell: UICollectionViewCell {
             guard let price = post.price else { return }
             guard let poppPrice = post.poppPrice else { return }
         
+        print("THIS IS THE POPP PRICE: \(poppPrice)")
+        guard let description = post.description else { return }
+        print("THIS IS THE DESCRIPTION: \(post.description)")
             
             // setting max number of lines shown under the caption
             // to adjust the number of characters go to UpoloadPostVC
@@ -216,6 +219,7 @@ class StoreItemSelectionCell: UICollectionViewCell {
             postTimeLabel.text = post.creationDate.timeAgoToDisplay()
             //storeIdLabel.text = "Store Id: \(storeId)"
             categoryLabel.text = category
+        descriptionLabel.text = description
             //priceLabel.text = "$\(Int(price))"  // want price to be displayed simple no decimals
             //poppPriceLabel.text = "$\(Int(poppPrice))"
         //priceLabel.text = String(format: "%.2f", price)

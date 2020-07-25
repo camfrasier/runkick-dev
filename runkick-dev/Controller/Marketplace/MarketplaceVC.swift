@@ -101,7 +101,7 @@ class MarketplaceVC: UICollectionViewController {
         
         configureViewComponents()
         
-        configureNavigationaBar()
+        configureNavigationBar()
         
         configureTabBar()
             
@@ -121,7 +121,7 @@ class MarketplaceVC: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
-        configureNavigationaBar()
+        configureNavigationBar()
     }
     
     // MARK: - Selectors
@@ -245,7 +245,7 @@ class MarketplaceVC: UICollectionViewController {
         
     }
     
-    func configureNavigationaBar() {
+    func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -321,13 +321,15 @@ extension MarketplaceVC: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
         
-        configureSearchBarButton()
+       // configureSearchBarButton()
         inSearchMode = false
         
         searchBar.text = nil
         navigationItem.titleView = nil
         
         collectionView.reloadData()
+        
+        configureSearchBarButton()
     }
     
      

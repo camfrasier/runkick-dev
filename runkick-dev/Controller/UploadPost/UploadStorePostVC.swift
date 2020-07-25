@@ -53,6 +53,15 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         return tv
     } ()
     
+    let descriptionTextView: UITextField = {
+        let tv = UITextField()
+        tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tv.textColor = UIColor.darkGray
+        tv.addTarget(self, action: #selector(formValidation), for: .editingChanged)
+        tv.font = UIFont.systemFont(ofSize: 15)
+        return tv
+    } ()
+    
     let storeTitleTextView: UITextField = {
         let tv = UITextField()
         tv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
@@ -148,6 +157,14 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         return label
     } ()
     
+    let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Description"
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        return label
+    } ()
+    
     let caloriesLabel: UILabel = {
         let label = UILabel()
         label.text = "Calories"
@@ -206,6 +223,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         storeIdTextView.delegate = self
         categoryTextView.delegate = self
         priceTextView.delegate = self
+        descriptionTextView.delegate = self
         poppPriceTextView.delegate = self
         pointsTextView.delegate = self
         caloriesTextView.delegate = self
@@ -230,6 +248,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
             captionTextView.text = post.caption
             storeTitleTextView.text = post.title
             storeIdTextView.text = post.storeId
+            descriptionTextView.text = post.description
             categoryTextView.text = post.category
             priceTextView.text = String(post.price)
             poppPriceTextView.text = String(post.poppPrice)
@@ -306,8 +325,15 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         view.addSubview(caloriesTextView)
         caloriesTextView.anchor(top: pointsTextView.bottomAnchor, left: caloriesLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 30)
         
+        
+        view.addSubview(descriptionLabel)
+        descriptionLabel.anchor(top: caloriesTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        view.addSubview(descriptionTextView)
+        descriptionTextView.anchor(top: caloriesTextView.bottomAnchor, left: descriptionLabel.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 60)
+        
         view.addSubview(actionButton)
-        actionButton.anchor(top: caloriesTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 24, paddingBottom: 0, paddingRight: 24, width: 0, height: 40)
+        actionButton.anchor(top: descriptionTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 24, paddingBottom: 0, paddingRight: 24, width: 0, height: 40)
     }
     
     func loadImage() {
@@ -355,10 +381,11 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
             let storeId = storeIdTextView.text,
             //let price = Int(priceTextView.text),
             //let poppPrice = Int(poppPriceTextView.text),
-            let price = Int(priceTextView.text ?? ""),
-            let poppPrice = Int(priceTextView.text ?? ""),
+            let price = Double(priceTextView.text ?? ""),
+            let poppPrice = Double(poppPriceTextView.text ?? ""),
             let points = Int(pointsTextView.text ?? ""),
             let calories = Int(caloriesTextView.text ?? ""),
+            let description = descriptionTextView.text,
             let category = categoryTextView.text,
             let currentUid = Auth.auth().currentUser?.uid else { return }
         
@@ -400,6 +427,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
                                   "points": points,
                                   "poppPrice": poppPrice,  // here i need to upload as an int
                                     "calories": calories,
+                                    "description": description,
                                   "imageUrl": postImageUrl,
                                   "ownerUid": currentUid] as [String: Any]
                     
@@ -454,6 +482,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     func handleSavePostChanges() {
         guard let post = self.postToEdit else { return }
         let updatedCaption = captionTextView.text
+        let updatedDescription = descriptionTextView.text
         let updatedStoreTitle = storeTitleTextView.text
         let updatedStoreId = storeIdTextView.text
         let updatedCategory = categoryTextView.text
@@ -466,6 +495,12 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
         
 
         DataService.instance.REF_ADMIN_STORE_POSTS.child(post.postId).child("caption").setValue(updatedCaption) { (err, ref) in
+            
+            // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        DataService.instance.REF_ADMIN_STORE_POSTS.child(post.postId).child("description").setValue(updatedDescription) { (err, ref) in
             
             // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
             self.dismiss(animated: true, completion: nil)
@@ -502,7 +537,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
             self.dismiss(animated: true, completion: nil)
         }
         
-        DataService.instance.REF_ADMIN_STORE_POSTS.child(post.postId).child("pointsRequired").setValue(updatedPointsRequired) { (err, ref) in
+        DataService.instance.REF_ADMIN_STORE_POSTS.child(post.postId).child("points").setValue(updatedPointsRequired) { (err, ref) in
             
             // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
             self.dismiss(animated: true, completion: nil)
@@ -531,6 +566,7 @@ class UploadStorePostVC: UIViewController, UITextFieldDelegate {
     @objc func formValidation () {
         guard
             captionTextView.hasText,
+            descriptionTextView.hasText,
         storeTitleTextView.hasText,
                 storeIdTextView.hasText,
             categoryTextView.hasText,

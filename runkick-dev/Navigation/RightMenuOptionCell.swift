@@ -23,8 +23,8 @@ class RightMenuOptionCell: UITableViewCell {
             guard let distance = activity?.distance else { return }
             guard let creationDate = activity?.creationDate else { return }
             guard let stepCount = activity?.stepCount else { return }
-            //guard let duration = activity?.duration else { return }
-            //guard let pace = activity?.pace else { return }
+            guard let duration = activity?.duration else { return }
+            guard let pace = activity?.pace else { return }
             
             /*
             
@@ -41,12 +41,15 @@ class RightMenuOptionCell: UITableViewCell {
             
             distanceLabel.text = String(format:"%02.02f", (distance))
             postTimeLabel.text = convertDateFormater("\(creationDate)")
-            self.stepCountLabel.text = "\(Int(stepCount))"
+            stepCountLabel.text = "\(Int(stepCount))"
+            durationLabel.text = String(duration)
+            paceLabel.text = String(pace)
             
             print("DEBUG: THIS IS THE DISTANCE \(distanceLabel.text)")
             print("DEBUG: THIS IS THE TIME \(postTimeLabel.text)")
             print("DEBUG: THIS IS THE STEPS \(stepCountLabel.text)")
-            
+            print("DEBUG: THIS IS THE DURATION \(durationLabel.text)")
+            print("DEBUG: THIS IS THE PACE \(paceLabel.text)")
             /*
             
             self.averagePaceLabel.text = "\(Double(averagePace))"
@@ -62,7 +65,7 @@ class RightMenuOptionCell: UITableViewCell {
     let distanceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 40)
+        label.font = UIFont.boldSystemFont(ofSize: 25)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "0.00"
         
@@ -72,17 +75,39 @@ class RightMenuOptionCell: UITableViewCell {
     let milesLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.font = UIFont.boldSystemFont(ofSize: 11)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "Miles"
         
         return label
     }()
     
+    
+    let caloriesCountLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.boldSystemFont(ofSize: 25)
+        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.text = "2,200"
+        
+        return label
+    }()
+    
+    let caloriesLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont.boldSystemFont(ofSize: 11)
+        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.text = "Calories"
+        
+        return label
+    }()
+    
+    
     let durationLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "0.00"
         return label
@@ -92,7 +117,7 @@ class RightMenuOptionCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         //label.font = UIFont.systemFont(ofSize: 18)
-        label.font = UIFont(name: "HelveticaNeue", size: 24)
+        label.font = UIFont(name: "HelveticaNeue", size: 18)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "0"
         label.textAlignment = .center
@@ -103,7 +128,7 @@ class RightMenuOptionCell: UITableViewCell {
     let stepsLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.font = UIFont.boldSystemFont(ofSize: 12)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "Steps"
         
@@ -122,15 +147,47 @@ class RightMenuOptionCell: UITableViewCell {
     let paceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 26)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "0.00"
         return label
     }()
     
+    let milesMinuteLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont.boldSystemFont(ofSize: 11)
+        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.text = "Min/mi"
+        
+        return label
+    }()
+    
+    
+    let pointsCountlabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.text = "950"
+        return label
+    }()
+    
+    let pointsLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont.boldSystemFont(ofSize: 11)
+        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.text = "Points"
+        
+        return label
+    }()
+    
+    
+    
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 11)
         label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.text = "date"
         return label
@@ -150,21 +207,39 @@ class RightMenuOptionCell: UITableViewCell {
         configureUserAnalytics()
         
         addSubview(distanceLabel)
-        distanceLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 140, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
+        distanceLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 120, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
         
         addSubview(milesLabel)
         milesLabel.anchor(top: distanceLabel.bottomAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        addSubview(paceLabel)
+        paceLabel.anchor(top: milesLabel.bottomAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(milesMinuteLabel)
+        milesMinuteLabel.anchor(top: paceLabel.bottomAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        addSubview(caloriesCountLabel)
+        caloriesCountLabel.anchor(top: distanceLabel.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 210, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
+        
+        addSubview(caloriesLabel)
+        caloriesLabel.anchor(top: caloriesCountLabel.bottomAnchor, left: caloriesCountLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(pointsCountlabel)
+        pointsCountlabel.anchor(top: caloriesLabel.bottomAnchor, left: caloriesCountLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(pointsLabel)
+        pointsLabel.anchor(top: pointsCountlabel.bottomAnchor, left: pointsCountlabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(stepsLabel)
-        stepsLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 70, paddingLeft: 46, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stepsLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 52, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(stepCountLabel)
         stepCountLabel.anchor(top: nil, left: nil, bottom: stepsLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 24)
         stepCountLabel.centerXAnchor.constraint(equalTo: stepsLabel.centerXAnchor).isActive = true
         
         addSubview(postTimeLabel)
-        postTimeLabel.anchor(top: distanceLabel.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 25, width: 0, height: 0)
+        postTimeLabel.anchor(top: distanceLabel.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
         
         //addSubview(paceLabel)
         //paceLabel.anchor(top: topAnchor, left: milesLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 70, paddingBottom: 0, paddingRight: 0, width: 0, height: 26)
@@ -223,10 +298,13 @@ class RightMenuOptionCell: UITableViewCell {
     func convertDateFormater(_ date: String) -> String
     {
         let dateFormatter = DateFormatter()
+        //dateFormatter.dateFormat = "hh:mm a"
+        //dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
         let date = dateFormatter.date(from: date)
         //dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.dateFormat = "dd MMM"
+        // month day and time 16hr clock
+        dateFormatter.dateFormat = "dd MMM h:mm a"
         return  dateFormatter.string(from: date!)
     }
     
@@ -237,8 +315,8 @@ class RightMenuOptionCell: UITableViewCell {
         //let center = self.center
         //let center = CGPoint(x: self.center.x - 100, y: self.center.y - 90)
         
-        let center = CGPoint(x: 66, y: 65)
-        let circularPath = UIBezierPath(arcCenter: center, radius: 45, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        let center = CGPoint(x: 56, y: 48)
+        let circularPath = UIBezierPath(arcCenter: center, radius: 35, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         
         // create my track layer
         let trackLayer = CAShapeLayer()

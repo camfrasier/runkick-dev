@@ -18,8 +18,9 @@ class Post {
     var creationDate: Date!
     var postId: String!
     var category: String!
-    var price: Int!
-    var poppPrice: Int!
+    var description: String!
+    var price: Double!
+    var poppPrice: Double!
     var storeId: String!
     var user: User?
     var didLike = false
@@ -38,11 +39,15 @@ class Post {
             self.category = category
         }
         
-        if let price = dictionary["price"] as? Int {
+        if let description = dictionary["description"] as? String {
+            self.description = description
+        }
+        
+        if let price = dictionary["price"] as? Double {
             self.price = price
         }
         
-        if let poppPrice = dictionary["poppPrice"] as? Int {
+        if let poppPrice = dictionary["poppPrice"] as? Double {
             self.poppPrice = poppPrice
         }
         

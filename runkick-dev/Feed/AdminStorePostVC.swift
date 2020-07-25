@@ -84,10 +84,10 @@ class AdminStorePostVC: UICollectionViewController, UICollectionViewDelegateFlow
            
            let width = view.frame.width
            //var height = width
-            var height =  width + 45
+            var height =  width + 75
            
-           height += 45
-           height += 55
+           height += 75
+           height += 85
          
            return CGSize(width: width, height: height)
        }

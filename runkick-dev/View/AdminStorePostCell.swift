@@ -76,6 +76,14 @@ class AdminStorePostCell: UICollectionViewCell {
         return label
     } ()
     
+    let descriptionLabel: UILabel = { // Will replace later with an action label.
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
+        label.numberOfLines = 0
+        return label
+    } ()
+    
     let priceLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17)
@@ -203,6 +211,11 @@ class AdminStorePostCell: UICollectionViewCell {
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         categoryLabel.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         
+        // category label attributes and constraints
+        addSubview(descriptionLabel)
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        
         //options background
         addSubview(backgroundOptionsButton)
         backgroundOptionsButton.backgroundColor = .clear
@@ -268,8 +281,9 @@ class AdminStorePostCell: UICollectionViewCell {
         
         caloriesLabel.anchor(top: pointsRequiredLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-
-        postTimeLabel.anchor(top: caloriesLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        descriptionLabel.anchor(top: caloriesLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        postTimeLabel.anchor(top: descriptionLabel.bottomAnchor, left: captionBlock.leftAnchor, bottom: nil, right: captionBlock.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         backgroundOptionsButton.anchor(top: postTimeLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 25, height: 25)
         
@@ -299,9 +313,12 @@ class AdminStorePostCell: UICollectionViewCell {
         guard let title = post.title else { return }
         guard let storeId = post.storeId else { return }
         guard let category = post.category else { return }
+        guard let description = post.description else { return }
         guard let price = post.price else { return }
         guard let poppPrice = post.poppPrice else { return }
+        print("DEBUG: POPP PRICE HERE: \(poppPrice)")
         guard let pointsRequired = post.points else { return }
+        print("DEBUG: POINTS REQUIRED HERE: \(pointsRequired)")
         guard let calories = post.calories else { return }
 
         print("DEBUG: CAPTION IS THIS\(caption)")
@@ -323,11 +340,12 @@ class AdminStorePostCell: UICollectionViewCell {
         storeTitleLabel.text = "Store Title: \(title)"
         storeIdLabel.text = "Store Id: \(storeId)"
         categoryLabel.text = "Category: \(category)"
+        descriptionLabel.text = "Description: \(description)"
         //priceLabel.text = String(format: "%.2f", "Price: $\(price)")
         //priceLabel.text = String(format: "%.2f", price)
         //poppPriceLabel.text = String(format: "%.2f", poppPrice)
         priceLabel.text = String("Price: \(convertToCurrency(Double(price)))")
-        poppPriceLabel.text = String("PoppPrice: \(convertToCurrency(Double(price)))")
+        poppPriceLabel.text = String("PoppPrice: \(convertToCurrency(Double(poppPrice)))")
         pointsRequiredLabel.text = String("Points: \(pointsRequired)")
         caloriesLabel.text = String("Calories: \(calories)")
     }

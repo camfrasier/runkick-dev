@@ -35,10 +35,8 @@ class RightMenuVC: UIViewController {
         return view
     }()
     
-    let tableSuperView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        //view.backgroundColor = UIColor.rgb(red: 255, green: 200, blue: 200)
+    let gradientView: GradientDiagonalView = {
+        let view = GradientDiagonalView()
         return view
     }()
     
@@ -50,9 +48,9 @@ class RightMenuVC: UIViewController {
     
     let activityLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 28)
-        label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.text = "Your Activity"
+        label.font = UIFont.boldSystemFont(ofSize: 26)
+        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.text = "Recent Activity"
         return label
     } ()
     
@@ -249,7 +247,7 @@ class RightMenuVC: UIViewController {
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1)
-        tableView.rowHeight = 130
+        tableView.rowHeight = 95
         
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = true
@@ -261,8 +259,13 @@ class RightMenuVC: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        view.addSubview(activityLabel)
-        activityLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        view.addSubview(gradientView)
+        gradientView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 80)
+        
+        
+        gradientView.addSubview(activityLabel)
+        activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(separatorView)
         separatorView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 79, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)

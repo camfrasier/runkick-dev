@@ -42,8 +42,8 @@ class StoreItemSelectionVC: UICollectionViewController, UICollectionViewDelegate
         return view
     }()
     
-    lazy var addToCarButtonBackground: GradientActionView = {
-        let view = GradientActionView()
+    lazy var addToCarButtonBackground: GradientDiagonalView = {
+        let view = GradientDiagonalView()
         let messageTapped = UITapGestureRecognizer(target: self, action: #selector(handleAddToCart))
         messageTapped.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
