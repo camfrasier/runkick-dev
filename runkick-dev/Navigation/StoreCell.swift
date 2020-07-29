@@ -470,9 +470,6 @@ class StoreCell: UITableViewCell {
                         self.pointsLabel.text = String("+\(dbStorePoints) Points")
                         
                     }
-                    
-                    
- 
                 })
             })
         }
@@ -482,5 +479,47 @@ class StoreCell: UITableViewCell {
         locationDistanceLabel.text = ("\(distanceAsString)")
         
     }
+    
+    func saveStorePointValue(_ mapItem: MKMapItem, tripId: String, destId: String) {
+
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        let selectedCoordinatedLat = mapItem.placemark.coordinate.latitude
+        let selectedCoordinatedLong = mapItem.placemark.coordinate.longitude
+        
+         DataService.instance.REF_STORES.observeSingleEvent(of: .value) { (snapshot) in
+                    
+                    guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                    
+                    allObjects.forEach({ (snapshot) in
+                        let storeId = snapshot.key
+                        
+                        Database.fetchStore(with: storeId, completion: { (store) in
+                            
+                            guard let dbStoreLat = store.lat else { return }
+                            guard let dbStoreLong = store.long else { return }
+                            
+                            
+                            if dbStoreLat == selectedCoordinatedLat && dbStoreLong == selectedCoordinatedLong {
+                                //print("the store lat of we are looking for is \(dbStoreLat)")
+                                //print("the store long of we are looking for is \(dbStoreLong)")
+                                
+                                guard let storeId = store.storeId else { return }
+                                guard let storePoints = store.points else { return }
+                                
+                                print("DEBUG: store ID \(storeId)")
+                                print("DEBUG: store points \(storePoints)")
+                                print("DEBUG: trip ID \(tripId)")
+                                print("DEBUG: destination ID \(destId)")
+                                
+                                DataService.instance.REF_TRIPS.child(currentUid).child(tripId).child(destId).updateChildValues(["storeId": storeId, "pointValue": storePoints])
+                                
+                            }
+                        })
+                    })
+                }
+    
+    }
+    
+    
     
 }

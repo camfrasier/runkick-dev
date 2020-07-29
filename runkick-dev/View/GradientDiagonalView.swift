@@ -34,9 +34,9 @@ class GradientDiagonalView: UIView {
         //UIColor.rgb(red: 252, green: 112, blue: 167)
         
         gradient.locations = [0.0, 0.65]
-        gradient.startPoint = CGPoint(x: 1.0, y: 1.0)
+        gradient.startPoint = CGPoint(x: 1.0, y: 0.0)
         //gradient.endPoint = CGPoint(x: 1.0, y: 0.0)
-        gradient.endPoint = CGPoint(x: 0.0, y: 0.0)
+        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
         self.layer.addSublayer(gradient)
         self.clipsToBounds = true
     }

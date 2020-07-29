@@ -12,6 +12,7 @@ import MapKit
 import Firebase
 
 var key = String ()
+var storeCell = StoreCell()
 var currentTripId = String ()
 var tripIdConfigured = false
 let creationDate = Int(NSDate().timeIntervalSince1970)
@@ -68,6 +69,9 @@ class UpdateService {
     // after save segment this should get updated.. and we need to create a trip level under the UID
     
     func updateTripsWithCoordinatesUponSelect() {
+        // may also need to move this down into the function
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        
         DataService.instance.REF_USERS.observeSingleEvent(of: .value, with: { (snapshot) in
             if let userSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for user in userSnapshot {
@@ -117,7 +121,42 @@ class UpdateService {
             DataService.instance.REF_TRIPS.child(runnerKey).child(tripId).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
                 key = snapshot.key
                 
-                print("DEBUG: LAST SEGMENT KEY VALUE \(key)" )
+                
+                
+                print("DEBUG: LAST SNAPSHOT KEY VALUE \(snapshot)")
+                
+                
+                DataService.instance.REF_TRIPS.child(runnerKey).child(tripId).child(key).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (snapshot) in
+                                       
+                        let destinCoordinatesArray = snapshot.value as! NSArray
+                        let latitude = destinCoordinatesArray[0] as! Double
+                        let longitude = destinCoordinatesArray[1] as! Double
+                                   
+                        let destinCoord = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                                   
+                        let placemark = MKPlacemark(coordinate: destinCoord )
+                        let mapItem = MKMapItem(placemark: placemark)
+                    
+                    print("DEBUG: LAST SEGMENT KEY VALUE \(key)" )
+                    print("DEBUG: LAST SEGMENT TRIP ID \(tripId)" )
+                    print("DEBUG: Map Item \(mapItem)" )
+                    
+                    storeCell.saveStorePointValue(mapItem, tripId: tripId, destId: key)
+                })
+                
+                /*
+                let destinCoordinatesArray = snapshot.value as! NSArray
+                let lat2 = destinCoordinatesArray[0] as! Double
+                let long2 = destinCoordinatesArray[1] as! Double
+                
+                let destinCoord = CLLocationCoordinate2D(latitude: lat2, longitude: long2)
+      
+                let placemark = MKPlacemark(coordinate: destinCoord)
+                let mapItem = MKMapItem(placemark: placemark)
+                
+                storeCell.saveStorePointValue(mapItem, tripId: tripId, destId: destId)
+                */
+            
             }
         }
     }

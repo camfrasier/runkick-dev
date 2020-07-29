@@ -26,6 +26,8 @@ class RightMenuOptionCell: UITableViewCell {
             guard let duration = activity?.duration else { return }
             guard let pace = activity?.pace else { return }
             
+            calculateStepPercentage(stepCount)
+            
             /*
             
             guard let averagePace = activity?.averagePace else { return }
@@ -86,7 +88,7 @@ class RightMenuOptionCell: UITableViewCell {
     let caloriesCountLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 25)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "2,200"
         
@@ -167,7 +169,7 @@ class RightMenuOptionCell: UITableViewCell {
     let pointsCountlabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.boldSystemFont(ofSize: 25)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "950"
         return label
@@ -219,17 +221,17 @@ class RightMenuOptionCell: UITableViewCell {
         milesMinuteLabel.anchor(top: paceLabel.bottomAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
-        addSubview(caloriesCountLabel)
-        caloriesCountLabel.anchor(top: distanceLabel.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 210, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
-        
-        addSubview(caloriesLabel)
-        caloriesLabel.anchor(top: caloriesCountLabel.bottomAnchor, left: caloriesCountLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
         addSubview(pointsCountlabel)
-        pointsCountlabel.anchor(top: caloriesLabel.bottomAnchor, left: caloriesCountLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        pointsCountlabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 210, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
         
         addSubview(pointsLabel)
         pointsLabel.anchor(top: pointsCountlabel.bottomAnchor, left: pointsCountlabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(caloriesCountLabel)
+        caloriesCountLabel.anchor(top: pointsLabel.bottomAnchor, left: pointsCountlabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(caloriesLabel)
+        caloriesLabel.anchor(top: caloriesCountLabel.bottomAnchor, left: caloriesCountLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(stepsLabel)
         stepsLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 52, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -253,12 +255,12 @@ class RightMenuOptionCell: UITableViewCell {
 
     func animateDistanceCircle() {
         
-        print("attempting to animate stroke")
+        //print("attempting to animate stroke")
         
         // the key path is the thing you want to animate on the shape layer.
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
         
-        basicAnimation.toValue = 1
+       // basicAnimation.toValue = 1
         
         basicAnimation.duration = 1.5
         
@@ -273,7 +275,7 @@ class RightMenuOptionCell: UITableViewCell {
           
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
               
-              self.beginDownloadingDistance()
+              //self.beginDownloadingDistance()
               
               self.animateDistanceCircle()
     
@@ -283,7 +285,15 @@ class RightMenuOptionCell: UITableViewCell {
     private func beginDownloadingDistance() {
         print("attempting to download from firebase")
         
-        // basically in this function we want to divide the total distance covered by the total distance expected
+        
+    }
+    
+    func calculateStepPercentage(_ stepCount: Int) {
+        
+        let percentage = CGFloat(stepCount) / CGFloat(10000)
+        print("THIS IS YOUR PERCENTAGE VALUE \(percentage)")
+        
+        shapeLayer.strokeEnd = percentage
     }
     
     func timeIntervalFormat(interval: TimeInterval)-> String {
@@ -322,7 +332,7 @@ class RightMenuOptionCell: UITableViewCell {
         let trackLayer = CAShapeLayer()
         trackLayer.path = circularPath.cgPath
         trackLayer.strokeColor = UIColor.lightGray.cgColor
-        trackLayer.lineWidth = 5
+        trackLayer.lineWidth = 6
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.lineCap = CAShapeLayerLineCap.round
         
@@ -337,10 +347,10 @@ class RightMenuOptionCell: UITableViewCell {
         shapeLayer.path = circularPath.cgPath
         
         shapeLayer.strokeColor = UIColor.statusBarGreen().cgColor
-        shapeLayer.lineWidth = 5
+        shapeLayer.lineWidth = 6
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineCap = CAShapeLayerLineCap.round
-        shapeLayer.strokeEnd = 0
+        //shapeLayer.strokeEnd = 0
         
         self.layer.addSublayer(shapeLayer)
         //self.layer.insertSublayer(shapeLayer, below: self.layer)

@@ -3055,6 +3055,9 @@ class HomeVC: UIViewController, Alertable {
             
             guard let mapItem = selectedMapAnnotation else { return }
             saveSelectedPath(forMapItem: mapItem)
+            
+            //storeCell.saveStorePointValue(mapItem)
+            // take map item and then compare it in order to find the store id and save it to trips here...
 
             DataService.instance.REF_USERS.child(currentUserID!).updateChildValues(["tripCoordinate": [mapItem.placemark.coordinate.latitude, mapItem.placemark.coordinate.longitude]])
             
@@ -3969,10 +3972,12 @@ extension HomeVC: MKMapViewDelegate {
         
         //print( "I is equal to \(i)")
         
-        
+        // go down into the trips database, find the user, then find the most recently added trip (last 1), then look at the destination children added starting from the first going down sequentially with i.
         DataService.instance.REF_TRIPS.child(runnerKey).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
+            // this is the key for all of the child snapshots which in this case is the trip ID
             let tripId = snapshot.key
-        
+            
+            // when we find the trip id that we want go under this trip specifically and grab the destination
             DataService.instance.REF_TRIPS.child(runnerKey).child(tripId).queryLimited(toFirst: UInt(self.i)).observe(.childAdded) {(snapshot: DataSnapshot) in
             
             key = snapshot.key
@@ -3981,11 +3986,41 @@ extension HomeVC: MKMapViewDelegate {
             //self.saveInitCoordinates(key)
                 
             self.saveInitCoordinates(tripId)
+                
+                // preserve points for the trip id
+                //self.preservePointValue(tripId)
+            
+                // use trip id to add point value when first destination is hit
      
             self.keyHolder = key
+
             }
         }
     
+    }
+    
+    func preservePointValue(_ tripId: String) {
+        let currentUid = (Auth.auth().currentUser?.uid)!
+        // the keyy value increments as the trip region is reached maybe as we save path a new function is called
+            // saving destination coordnate and point value to trip id
+            let destinCoord = self.destinCoordinate
+            let placemark = MKPlacemark(coordinate: destinCoord)
+            let mapItem = MKMapItem(placemark: placemark)
+            
+            var val = 1
+               // when we find the trip id that we want go under this trip specifically and grab the destination
+               DataService.instance.REF_TRIPS.child(currentUid).child(tripId).queryLimited(toFirst: UInt(val)).observe(.childAdded) {(snapshot: DataSnapshot) in
+                
+                let destId = snapshot.key
+                
+                // i am attempting to send the coordinates, trip key and destination id
+                //self.storeCell.saveStorePointValue(mapItem, tripId: tripId, destId: destId)
+                
+                val += 1
+                       print("LETS PRINT THE VALUE \(val)")
+
+               }
+
     }
    
     // may not need the below function
@@ -4013,6 +4048,7 @@ extension HomeVC: MKMapViewDelegate {
             
             print("Initial Coordinates Saved.. the value is \(value) and the key is \(key)")
             
+ 
             
         })
         
@@ -4049,6 +4085,8 @@ extension HomeVC: MKMapViewDelegate {
         */
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            
+            // here is when we set the destination to be monitored
             self.monitorRegionLocation(center: destinCoord, identifier: "placeholder")
             self.addUserTripPolyline(forMapItem: mapItem)
          }
@@ -4067,7 +4105,8 @@ extension HomeVC: MKMapViewDelegate {
     
         if CLLocationManager.authorizationStatus() == .authorizedAlways  {
             if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
-                let region = CLCircularRegion(center: center, radius: 20, identifier: identifier)
+                //this sets the monitoring region with a radius of 25 meters
+                let region = CLCircularRegion(center: center, radius: 25, identifier: identifier)
                 region.notifyOnEntry = true
                 region.notifyOnExit = true
                 
@@ -4107,6 +4146,11 @@ extension HomeVC: MKMapViewDelegate {
                 CLService.shared.updateLocation()
                 UNService.shared.locationRequest()
                 //self.handleStartTrip()
+            
+                // collect points for a particular location
+            
+            
+            
             }
     }
     
