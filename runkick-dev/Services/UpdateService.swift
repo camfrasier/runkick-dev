@@ -13,6 +13,7 @@ import Firebase
 
 var key = String ()
 var storeCell = StoreCell()
+var homeVC = HomeVC()
 var currentTripId = String ()
 var tripIdConfigured = false
 let creationDate = Int(NSDate().timeIntervalSince1970)
@@ -142,6 +143,9 @@ class UpdateService {
                     print("DEBUG: Map Item \(mapItem)" )
                     
                     storeCell.saveStorePointValue(mapItem, tripId: tripId, destId: key)
+                    
+                    // update compareKey value to be overritten and saved
+                    //homeVC.setCompareKeyValue(key)
                 })
                 
                 /*

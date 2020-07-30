@@ -14,6 +14,7 @@ protocol StoreCellDelegate {
     func distanceFromUser(location: CLLocation) -> CLLocationDistance?
     func saveSelectedPath(forMapItem mapItem: MKMapItem)
     func removeSelectedPath(forMapItem mapItem: MKMapItem)
+    
 }
 
 class StoreCell: UITableViewCell {
@@ -511,7 +512,10 @@ class StoreCell: UITableViewCell {
                                 print("DEBUG: trip ID \(tripId)")
                                 print("DEBUG: destination ID \(destId)")
                                 
-                                DataService.instance.REF_TRIPS.child(currentUid).child(tripId).child(destId).updateChildValues(["storeId": storeId, "pointValue": storePoints])
+                                DataService.instance.REF_TRIPS.child(currentUid).child(tripId).child(destId).updateChildValues(["storeId": storeId, "pointValue": storePoints, "segmentCompleted": false])
+                                
+                                
+                                //print("comparekey value is \(destId)")
                                 
                             }
                         })

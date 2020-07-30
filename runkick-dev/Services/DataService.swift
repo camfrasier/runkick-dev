@@ -46,6 +46,7 @@ class DataService {
     private var _REF_FEED = DB_BASE.child("user-feed")
     private var _REF_NOTIFICATIONS = DB_BASE.child("notifications")
     private var _REF_USER_LIKES = DB_BASE.child("user-likes")
+    private var _REF_USER_REWARDS = DB_BASE.child("user_rewards")
     private var _REF_POST_LIKES = DB_BASE.child("post-likes")
     private var _REF_USER_POST_COMMENT = DB_BASE.child("user-comments")
     private var _REF_MESSAGES = DB_BASE.child("messages")
@@ -114,6 +115,10 @@ class DataService {
     
     var REF_USER_POSTS: DatabaseReference {
         return _REF_USER_POSTS
+    }
+    
+    var REF_USER_REWARDS: DatabaseReference {
+        return _REF_USER_REWARDS
     }
     
     var REF_ADMIN_USER_POSTS: DatabaseReference {

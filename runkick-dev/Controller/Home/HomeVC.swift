@@ -80,7 +80,9 @@ class HomeVC: UIViewController, Alertable {
     var i = Int( )
     var count = Int()
     var keyHolder = String()
-    var compareKey = String()
+    var tripHolder = String()
+    
+    var finalSegmentId: String!
     var searchBar = UISearchBar()
     var storeCurrentKey: String?
     
@@ -123,6 +125,7 @@ class HomeVC: UIViewController, Alertable {
     let timerInterval = 1.0
     var timeElapsed: TimeInterval = 0.0
     
+
     
     enum ExpansionState {
         case NotExpanded
@@ -1315,6 +1318,8 @@ class HomeVC: UIViewController, Alertable {
     @objc func handleHomeRewards() {
         
         print("handle home rewards")
+        print("DEBUG: key holder KEY VALUE IS SET TO THIS \(keyHolder)")
+        print("DEBUG: COMPARE KEY VALUE IS SET TO THIS \(finalSegmentId)")
     }
     
     @objc func handleAnalytics() {
@@ -2536,9 +2541,7 @@ class HomeVC: UIViewController, Alertable {
     }
     
     @objc func handleStartStopTrip() {
-        
-
-            
+    
         if startStopButton.titleLabel?.text == "START" {
             
             
@@ -2614,6 +2617,8 @@ class HomeVC: UIViewController, Alertable {
                 
             
             } else {
+            
+            // when we stop.. we may need to make sure the last key is saved as the key to compare to determine when to end route
             
             startStopButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             pedoDistanceLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -2698,6 +2703,9 @@ class HomeVC: UIViewController, Alertable {
                     
                     //currentTripId = tripId
                     
+                    // need the last known value of the trip in order to stop the trip at at the end
+                    self.finalSegmentId = segmentId
+                    print("PLOT PATH KEY VALUES \(self.finalSegmentId ?? "")")
                    
                     DataService.instance.REF_TRIPS.child(currentUid).child(tripId).child(segmentId).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (snapshot) in
                         
@@ -2711,7 +2719,7 @@ class HomeVC: UIViewController, Alertable {
                     let mapItem = MKMapItem(placemark: placemark)
                     
                         self.plotSegment(forMapItem: mapItem)
-                        
+            
                     })
                
             /*
@@ -3993,7 +4001,7 @@ extension HomeVC: MKMapViewDelegate {
                 // use trip id to add point value when first destination is hit
      
             self.keyHolder = key
-
+                self.tripHolder = tripId
             }
         }
     
@@ -4112,19 +4120,110 @@ extension HomeVC: MKMapViewDelegate {
                 
                 manager?.startMonitoring(for: region)
             
-                print("Region monitoring activated!")
             }
         }
     }
     
+    func updateCompletedPath(_ storeIdentifier: String) {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+              DataService.instance.REF_STORES.observeSingleEvent(of: .value) { (snapshot) in
+                  
+                  guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                  
+                  allObjects.forEach({ (snapshot) in
+                    if storeIdentifier == snapshot.key {
+                      
+                        Database.fetchStore(with: storeIdentifier, completion: { (store) in
+                          
+                            guard let storePoints = store.points else { return }
+                            print("DEBUG: THE STORE ID SHOULD BE \(storePoints)")
+                            
+                            // just need to note here if the segment was completed.. then we can only re-plot the segment that is complete and add the point values to the rewards as such.
+                                       DataService.instance.REF_TRIPS.child(currentUid).child(self.tripHolder).child(self.keyHolder).updateChildValues(["segmentCompleted": true])
+                          
+                            self.calculateSaveRewards(storeIdentifier, pointsAdded: storePoints)
+                                
+
+                            })
+                        }
+                  })
+        }
+              
+    }
+    
+    func calculateSaveRewards(_ storeIdentifier: String, pointsAdded: Int) {
+        
+    }
+    
+    func setRewards(_ mapItem: MKMapItem?) {
+        // setting compare key to string value globally
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        DataService.instance.REF_STORES.observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let mapItemLat = mapItem?.placemark.coordinate.latitude else { return }
+            guard let mapItemLong = mapItem?.placemark.coordinate.longitude else { return }
+            
+            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            allObjects.forEach({ (snapshot) in
+                let storeId = snapshot.key
+                
+                Database.fetchStore(with: storeId, completion: { (store) in
+                    
+                    guard let dbStoreLat = store.lat else { return }
+                    guard let dbStoreLong = store.long else { return }
+                    
+                    
+                    if dbStoreLat == mapItemLat && dbStoreLong == mapItemLong {
+    
+                        guard let storeId = store.storeId else { return }
+                        guard let storePoints = store.points else { return }
+                        
+                        print("DEBUG: store ID \(storeId)")
+                        print("DEBUG: store points \(storePoints)")
+                        
+                        // just need to note here if the segment was completed.. then we can only re-plot the segment that is complete and add the point values to the rewards as such.
+                        DataService.instance.REF_TRIPS.child(currentUid).child(self.tripHolder).child(self.keyHolder).updateChildValues(["segmentCompleted": true])
+  
+                        
+                        // here we need to send the points to be calculated and added
+                    }
+                })
+            })
+        }
+        
+        
+    }
+    
+
+    
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Did enter region \(region.identifier)")
+        print("Region monitoring activated! \(region)")
         
+        
+        // below i can use the store ID because it may be simpler
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_TRIPS.child(currentUid).child(tripHolder).child(keyHolder).child("storeId").observeSingleEvent(of: .value, with: { (snapshot) in
+
+            guard let storeIdentifier = snapshot.value as? String else { return }
+            
+            print("DEBUG: WE DEFINITELY GET TO THIS POINT AFTER ENTERING THE REGION \(storeIdentifier)")
+            self.updateCompletedPath(storeIdentifier)
+            
+            
+        })
+        
+        
+
+
         print("Normal key value is \(keyHolder)")
-        print("Compare key value is \(compareKey)")
+        print("Compare key value is \(finalSegmentId)")
         
-        if keyHolder == compareKey {
-            print("Normal Key \(key) and Compare Key\(compareKey) are equal, last trip!")
+        if keyHolder == finalSegmentId {
+            print("Normal Key \(key) and Compare Key\(finalSegmentId) are equal, last trip!")
             
             AlertService.actionSheet(in: self, title: "Last Stop, Check In!") {
                 
@@ -4132,10 +4231,11 @@ extension HomeVC: MKMapViewDelegate {
                 UNService.shared.finishTripRequest()
                 
                 // make sure this applies to the last check in region
-                self.handleStopTrip()
+                self.handleStartStopTrip()
                 
                 return
             }
+        
         }
         
         self.i += 1
@@ -4148,10 +4248,30 @@ extension HomeVC: MKMapViewDelegate {
                 //self.handleStartTrip()
             
                 // collect points for a particular location
-            
-            
-            
+      
             }
+        
+        // first grab points from trip.. by comparing the region.. then add points, add coordinates, and add storeid to actual trip to plot and to the each store rewards via the storeid
+        
+        
+
+        
+        /*
+        DataService.instance.REF_TRIPS.child(currentUid).child(tripHolder).child(keyHolder).child("destinationCoordinate").observeSingleEvent(of: .value, with: { (snapshot) in
+                 
+                 let destinCoordinatesArray = snapshot.value as! NSArray
+                 let latitude = destinCoordinatesArray[0] as! Double
+                 let longitude = destinCoordinatesArray[1] as! Double
+             
+             self.pathDestination = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+             
+             let placemark = MKPlacemark(coordinate: self.pathDestination )
+             let mapItem = MKMapItem(placemark: placemark)
+            
+            self.setRewards(mapItem)
+            
+        })
+        */
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
