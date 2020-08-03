@@ -4001,7 +4001,7 @@ extension HomeVC: MKMapViewDelegate {
                 // use trip id to add point value when first destination is hit
      
             self.keyHolder = key
-                self.tripHolder = tripId
+            self.tripHolder = tripId
             }
         }
     
@@ -4124,7 +4124,7 @@ extension HomeVC: MKMapViewDelegate {
         }
     }
     
-    func updateCompletedPath(_ storeIdentifier: String) {
+    func updateCompletedPath(_ storeIdentifier: String, keyHolder: String) {
         
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
               DataService.instance.REF_STORES.observeSingleEvent(of: .value) { (snapshot) in
@@ -4137,22 +4137,81 @@ extension HomeVC: MKMapViewDelegate {
                         Database.fetchStore(with: storeIdentifier, completion: { (store) in
                           
                             guard let storePoints = store.points else { return }
-                            print("DEBUG: THE STORE ID SHOULD BE \(storePoints)")
+                            print("DEBUG: THE STORE Points SHOULD BE \(storePoints)")
                             
                             // just need to note here if the segment was completed.. then we can only re-plot the segment that is complete and add the point values to the rewards as such.
-                                       DataService.instance.REF_TRIPS.child(currentUid).child(self.tripHolder).child(self.keyHolder).updateChildValues(["segmentCompleted": true])
+                                       DataService.instance.REF_TRIPS.child(currentUid).child(self.tripHolder).child(keyHolder).updateChildValues(["segmentCompleted": true])
                           
                             self.calculateSaveRewards(storeIdentifier, pointsAdded: storePoints)
-                                
-
-                            })
-                        }
-                  })
+                    })
+                }
+            })
         }
-              
     }
     
     func calculateSaveRewards(_ storeIdentifier: String, pointsAdded: Int) {
+        
+        // initially creating the rewards database with an imaginary user. may be able to erase this has been initially created
+        // DataService.instance.REF_USER_REWARDS.child("ReusableReference01").updateChildValues(["rewardsGenerated": 1])
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+            
+            DataService.instance.REF_USER_REWARDS.observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let uid = snapshot.key
+                    
+                    if currentUid == uid {
+                        print("DEBUG: USER HAS BEEN FOUND IN THE REWARDS SECTION")
+                        
+                        DataService.instance.REF_USER_REWARDS.child(uid).observeSingleEvent(of: .value) { (snapshot) in
+                            
+                            guard let allStoreObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                            
+                            allStoreObjects.forEach { (snapshot) in
+                                let storeId = snapshot.key
+                                
+                                if storeIdentifier == storeId {
+                                    
+                                    print("DEBUG: STORE HAS BEEN FOUND WITH THIS ID SO WE WILL UPDATE IT")
+                                    
+                                    DataService.instance.REF_USER_REWARDS.child(uid).child(storeId).child("points").observeSingleEvent(of: .value) { (snapshot) in
+                                        
+                                            let currentPointVal = snapshot.value
+                                            
+                                            print("DEBUG: THIS IS THE VALUE OF THE SNAPSHOT \(currentPointVal)")
+                                            
+                                            let totalPoints = (currentPointVal as! Int? ?? 0) + pointsAdded
+                                            
+                                            DataService.instance.REF_USER_REWARDS.child(uid).child(storeId).updateChildValues(["points": totalPoints])
+                                        
+                                        // return to stop recursive function.
+                                        return
+                                    }
+                                    
+                                } else {
+                                    
+                                    print("DEBUG: HAS NOT CREATED A STORE WITH THIS ID SO WE WILL CREATE IT")
+                                 
+                                    DataService.instance.REF_USER_REWARDS.child(uid).child(storeIdentifier).updateChildValues(["points": pointsAdded])
+                                    
+                                    // return to stop the recursive function... we need to use this in other use cases
+                                    return
+                                }
+                                    
+                            }
+                        }
+                    } else {
+                        
+                        // create user rewards section with information provided
+                        print("DEBUG: USER IS NOT FOUND IN THE REWARDS SECTION, SO LET'S CREATE USER INITIALLY")
+                        DataService.instance.REF_USER_REWARDS.child(currentUid).child(storeIdentifier).updateChildValues(["points": pointsAdded])
+                    }
+                })
+            }
+
         
     }
     
@@ -4197,27 +4256,26 @@ extension HomeVC: MKMapViewDelegate {
     }
     
 
-    
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Did enter region \(region.identifier)")
         print("Region monitoring activated! \(region)")
         
         
-        // below i can use the store ID because it may be simpler
+        // below i can use the store ID because it may be simpler and increments as the keyhold value increments
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         DataService.instance.REF_TRIPS.child(currentUid).child(tripHolder).child(keyHolder).child("storeId").observeSingleEvent(of: .value, with: { (snapshot) in
 
             guard let storeIdentifier = snapshot.value as? String else { return }
+            let currentKeyHolderKey = self.keyHolder
             
             print("DEBUG: WE DEFINITELY GET TO THIS POINT AFTER ENTERING THE REGION \(storeIdentifier)")
-            self.updateCompletedPath(storeIdentifier)
+            self.updateCompletedPath(storeIdentifier, keyHolder: currentKeyHolderKey)
             
             
         })
         
-        
-
+    
 
         print("Normal key value is \(keyHolder)")
         print("Compare key value is \(finalSegmentId)")
