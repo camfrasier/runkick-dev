@@ -100,7 +100,7 @@ class AdminStorePostVC: UICollectionViewController, UICollectionViewDelegateFlow
                 fetchPosts()
             }
         }
-    }
+    } 
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1

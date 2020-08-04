@@ -1318,8 +1318,12 @@ class HomeVC: UIViewController, Alertable {
     @objc func handleHomeRewards() {
         
         print("handle home rewards")
-        print("DEBUG: key holder KEY VALUE IS SET TO THIS \(keyHolder)")
-        print("DEBUG: COMPARE KEY VALUE IS SET TO THIS \(finalSegmentId)")
+        
+        let rewardsVC = RewardsVC()
+        navigationController?.pushViewController(rewardsVC, animated: true)
+        
+        //print("DEBUG: key holder KEY VALUE IS SET TO THIS \(keyHolder)")
+        //print("DEBUG: COMPARE KEY VALUE IS SET TO THIS \(finalSegmentId)")
     }
     
     @objc func handleAnalytics() {
@@ -4137,19 +4141,20 @@ extension HomeVC: MKMapViewDelegate {
                         Database.fetchStore(with: storeIdentifier, completion: { (store) in
                           
                             guard let storePoints = store.points else { return }
+                            guard let storeName = store.title else { return }
                             print("DEBUG: THE STORE Points SHOULD BE \(storePoints)")
                             
                             // just need to note here if the segment was completed.. then we can only re-plot the segment that is complete and add the point values to the rewards as such.
                                        DataService.instance.REF_TRIPS.child(currentUid).child(self.tripHolder).child(keyHolder).updateChildValues(["segmentCompleted": true])
                           
-                            self.calculateSaveRewards(storeIdentifier, pointsAdded: storePoints)
+                            self.calculateSaveRewards(storeIdentifier, pointsAdded: storePoints, name: storeName)
                     })
                 }
             })
         }
     }
     
-    func calculateSaveRewards(_ storeIdentifier: String, pointsAdded: Int) {
+    func calculateSaveRewards(_ storeIdentifier: String, pointsAdded: Int, name: String) {
         
         // initially creating the rewards database with an imaginary user. may be able to erase this has been initially created
         // DataService.instance.REF_USER_REWARDS.child("ReusableReference01").updateChildValues(["rewardsGenerated": 1])
@@ -4195,7 +4200,7 @@ extension HomeVC: MKMapViewDelegate {
                                     
                                     print("DEBUG: HAS NOT CREATED A STORE WITH THIS ID SO WE WILL CREATE IT")
                                  
-                                    DataService.instance.REF_USER_REWARDS.child(uid).child(storeIdentifier).updateChildValues(["points": pointsAdded])
+                                    DataService.instance.REF_USER_REWARDS.child(uid).child(storeIdentifier).updateChildValues(["points": pointsAdded, "title": name])
                                     
                                     // return to stop the recursive function... we need to use this in other use cases
                                     return
@@ -4207,7 +4212,7 @@ extension HomeVC: MKMapViewDelegate {
                         
                         // create user rewards section with information provided
                         print("DEBUG: USER IS NOT FOUND IN THE REWARDS SECTION, SO LET'S CREATE USER INITIALLY")
-                        DataService.instance.REF_USER_REWARDS.child(currentUid).child(storeIdentifier).updateChildValues(["points": pointsAdded])
+                        DataService.instance.REF_USER_REWARDS.child(currentUid).child(storeIdentifier).updateChildValues(["points": pointsAdded, "title": name])
                     }
                 })
             }

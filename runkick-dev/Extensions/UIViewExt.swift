@@ -339,6 +339,19 @@ extension Database {
         }
     }
     
+    static func fetchRewards(with storeId: String, completion: @escaping(Rewards) -> ()) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_USER_REWARDS.child(currentUid).child(storeId).observeSingleEvent(of: .value) { (snapshot) in
+            
+                guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+                       
+                let rewardsData = Rewards(storeId: storeId, dictionary: dictionary)
+                       
+                       completion(rewardsData)
+        }
+    }
+    
     static func fetchPost(with postId: String, completion: @escaping(Post) -> ()) {
         DataService.instance.REF_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
             
