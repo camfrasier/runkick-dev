@@ -34,9 +34,17 @@ class MarketplaceCell: UICollectionViewCell {
         return iv
     }()
     
+    /*
     let blackView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.20)
+        return view
+    }()
+    */
+    
+    let blackView: GradientClearView = {
+        let view = GradientClearView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -44,7 +52,8 @@ class MarketplaceCell: UICollectionViewCell {
         let label = UILabel()
         //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.font = UIFont.boldSystemFont(ofSize: 19)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 19)
+        //label.font = UIFont.boldSystemFont(ofSize: 20)
         label.text = "Sweet Green"
         return label
     }()
@@ -56,8 +65,8 @@ class MarketplaceCell: UICollectionViewCell {
         view.backgroundColor = .clear
         
         view.addSubview(categoryNameLabel)
-        categoryNameLabel.center(inView: view) // invoking our extension to center the view
-        
+        //categoryNameLabel.center(inView: view) // invoking our extension to center the view
+        categoryNameLabel.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 15, paddingRight: 0, width: 0, height: 0)
         return view
     }()
     
@@ -88,11 +97,12 @@ class MarketplaceCell: UICollectionViewCell {
         imageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0) // 32 is the space value left over at the bottom of the cell
         
         imageView.addSubview(blackView)
-        blackView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        blackView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 80)
+        blackView.alpha = 0.75
         
         imageView.addSubview(nameContainerView)
-        nameContainerView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 32) // because we gave the image view 32 units of space above
-        nameContainerView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        nameContainerView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 32) // because we gave the image view 32 units of space above
+        //nameContainerView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
         
     }
 }

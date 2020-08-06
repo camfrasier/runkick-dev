@@ -10,8 +10,9 @@ import UIKit
 import Firebase
 
 private let reuseIdentifier = "RightMenuOptionCell"
+private let reuseGroupsCellIdentifier = "GroupsCell"
 
-class RightMenuVC: UIViewController {
+class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var activities = [Activity]()
     var activity: Activity?
@@ -19,6 +20,8 @@ class RightMenuVC: UIViewController {
     
     var tableView: UITableView!
     var delegate: HomeControllerDelegate?
+    
+    var collectionView: UICollectionView!
      
 
     let titleView: UIView = {
@@ -35,24 +38,53 @@ class RightMenuVC: UIViewController {
         return view
     }()
     
-    let gradientView: GradientDiagonalView = {
-        let view = GradientDiagonalView()
+    let gradientView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         return view
     }()
     
     let separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+        view.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
         return view
     }()
     
-    let activityLabel: UILabel = {
+    let hoziontalSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
+        return view
+    }()
+    
+    lazy var groupsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 26)
-        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.text = "Recent Activity"
+        label.font = UIFont.boldSystemFont(ofSize: 22)
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        label.text = "Groups"
+        let activityTap = UITapGestureRecognizer(target: self, action: #selector(handleGroupsTapped))
+        activityTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(activityTap)
         return label
     } ()
+    
+    lazy var activityLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 22)
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        label.text = "Activity"
+        let groupTap = UITapGestureRecognizer(target: self, action: #selector(handleActivityTapped))
+        groupTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(groupTap)
+        return label
+    } ()
+    
+    let separatorViewGradient: GradientActionView = {
+        let view = GradientActionView()
+        //view.layer.backgroundColor = UIColor.actionRed().cgColor
+        return view
+    }()
     
     /*
     lazy var followersLabel: UILabel = {
@@ -140,6 +172,7 @@ class RightMenuVC: UIViewController {
         button.alpha = 1
         return button
        }()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,12 +187,15 @@ class RightMenuVC: UIViewController {
         
         configureTableView()
         
+        // configure collection view
+        configureCollectionView()
+        
         //configureViewComponents()
 
         // adjust the corner radius of the slide menu view
         let myControlLayer: CALayer = self.view.layer
         myControlLayer.masksToBounds = true
-        myControlLayer.cornerRadius = 15
+        myControlLayer.cornerRadius = 0
         
         // configure refresh control
         let refreshFeedControl = UIRefreshControl()
@@ -193,7 +229,7 @@ class RightMenuVC: UIViewController {
                 self.currentKey = first.key
             
         })
-        }else {
+        } else {
             DataService.instance.REF_ACTIVITY.child(currentUid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 6).observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
@@ -236,6 +272,29 @@ class RightMenuVC: UIViewController {
         rightMenuCell.animateDistanceCircle()
     }
     
+    @objc func handleGroupsTapped() {
+        //delegate?.handleGridViewTapped(for: self)
+        
+        //separatorViewGradient.transform = CGAffineTransform(translationX: 1, y: 1)
+        collectionView.isHidden = false
+        
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.separatorViewGradient.transform = CGAffineTransform(translationX: 210, y: 0)
+        })
+    }
+    
+    @objc func handleActivityTapped() {
+        //delegate?.handleActivityTapped(for: self)
+        
+        collectionView.isHidden = true
+        
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.separatorViewGradient.transform = CGAffineTransform(translationX: 0, y: 0)
+        })
+    }
+    
     func configureTableView() {
         tableView = UITableView()
         tableView.delegate = self
@@ -257,18 +316,30 @@ class RightMenuVC: UIViewController {
   
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 90, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
         view.addSubview(gradientView)
-        gradientView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 80)
+        gradientView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
         
         
         gradientView.addSubview(activityLabel)
-        activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 60, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        view.addSubview(separatorView)
+        gradientView.addSubview(groupsLabel)
+        groupsLabel.anchor(top: gradientView.topAnchor, left: nil, bottom: nil, right: gradientView.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 60, width: 0, height: 0)
+        
+        //gradientView.addSubview(hoziontalSeparatorView)
+        //hoziontalSeparatorView.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: view.frame.width / 2, paddingBottom: 0, paddingRight: 0, width: 0.25, height: 80)
+        //hoziontalSeparatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        gradientView.addSubview(separatorView)
         separatorView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 79, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        
+
+        
+        gradientView.addSubview(separatorViewGradient)
+        separatorViewGradient.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 77, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 2), height: 2.5)
         
         /*
         //view.addSubview(tableSuperView)
@@ -287,6 +358,95 @@ class RightMenuVC: UIViewController {
         */
         
     }
+    
+    // MARK: - UICollectionView
+       
+       func configureCollectionView() {
+           
+           // define the collection view characteristics
+           
+           let layout = UICollectionViewFlowLayout()
+           layout.scrollDirection = .vertical
+           
+           //let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - (tabBarController?.tabBar.frame.height)! - (navigationController?.navigationBar.frame.height)!)
+           let frame = CGRect(x: 0, y: 80, width: view.frame.width, height: view.frame.height)
+
+        
+           collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
+           collectionView.delegate = self
+           collectionView.dataSource = self
+           collectionView.alwaysBounceVertical = true
+           collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            collectionView.isHidden = true
+        
+           view.addSubview(collectionView)
+           collectionView.register(GroupsCell.self, forCellWithReuseIdentifier: reuseGroupsCellIdentifier)
+           
+           tableView.separatorColor = .clear
+           
+           //tableView.separatorInset = UIEdgeInsets(top: 56, left: 0, bottom: 0, right: 0)
+           
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+           return 1
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+           return 2
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+           
+           return UIEdgeInsets(top: 0, left: 2, bottom: 2, right: 2)
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+           //let width = (view.frame.width - 16) / 3
+           let width = (view.frame.width - 8) / 3
+           return CGSize(width: width, height: width)
+       }
+       
+       /*func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+           return CGSize(width: view.frame.width, height: 200)
+       }*/
+       
+       func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+           /*
+           if posts.count > 20 {
+               if indexPath.item == posts.count - 1 {
+                   fetchPosts()
+               }
+           }
+            */
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+           //return posts.count
+        return 9
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+           
+           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseGroupsCellIdentifier, for: indexPath) as! GroupsCell
+           /*
+           cell.post = posts[indexPath.item]
+           */
+           return cell
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+           /*
+           let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+           
+           feedVC.viewSinglePost = true
+           
+           feedVC.post = posts[indexPath.item]
+           
+           navigationController?.pushViewController(feedVC, animated: true)
+            */
+       }
+       
     
     /*
     

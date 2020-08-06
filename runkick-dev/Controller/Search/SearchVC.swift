@@ -59,12 +59,19 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //configureNavigationBar
         configureNavigationBar()
         
+        configureTabBar()
+        
         // fetch posts
         fetchPosts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.setHidesBackButton(true, animated: true)
+        
+        configureNavigationBar()
+        
+        configureTabBar()
+        
     }
     
     // this function ensures the navigation bar is filled after transitioning to a regular nav bar
@@ -240,7 +247,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         searchBar.delegate = self
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
-        searchBar.placeholder = "Search.."
+        searchBar.placeholder = "Search"
         searchBar.becomeFirstResponder()
         searchBar.autocapitalizationType = .none
         
@@ -248,6 +255,14 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.textColor = UIColor.red
         textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
+        
+        if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
+               let glassIconView = textFieldInsideSearchBar.leftView as? UIImageView {
+
+                   //Magnifying glass
+                   glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
+                   glassIconView.tintColor = .white
+           }
     
         //navigationItem.titleView = searchBar
         //searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
@@ -274,7 +289,9 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     func configureNavigationBar() {
         
         //view.addSubview(navigationController!.navigationBar)
-
+        
+        //navigationController?.navigationBar.prefersLargeTitles = true
+        
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
@@ -291,6 +308,22 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
  
         configureSearchBarButton()
         //configureLeftBarButton()
+    }
+    
+    func configureTabBar() {
+        // removing shadow from tab bar
+         tabBarController?.tabBar.layer.shadowRadius = 0
+        tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        
+        // use this to thin or remove tab bar top border
+        tabBarController?.tabBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: -1))
+        lineView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tabBarController?.tabBar.addSubview(lineView)
+        
+        let thinLineView = UIView(frame: CGRect(x: 0, y: -1, width: view.frame.width, height: 0.25))
+        thinLineView.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220)
+        lineView.addSubview(thinLineView)
     }
     
     

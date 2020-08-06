@@ -85,7 +85,8 @@ class MarketplaceVC: UICollectionViewController {
   
     var categories = [MarketCategory]()
     var filteredCategories = [MarketCategory]()
-    var searchBar: UISearchBar!
+    //var searchBar: UISearchBar!
+    var searchBar = UISearchBar()
     var inSearchMode = false
     
     // MARK: - Init
@@ -157,11 +158,11 @@ class MarketplaceVC: UICollectionViewController {
     func configureSearchBar() {
         
         // using the searchbar constructor
-        searchBar = UISearchBar()
+        //searchBar = UISearchBar()
         searchBar.delegate = self
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
-        //searchBar.placeholder = "Search"
+        searchBar.placeholder = "Search"
         searchBar.autocapitalizationType = .none
         searchBar.becomeFirstResponder()
         searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
@@ -171,6 +172,7 @@ class MarketplaceVC: UICollectionViewController {
         textFieldInsideUISearchBar?.textColor = UIColor.red
         textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
         
+        
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
@@ -179,6 +181,14 @@ class MarketplaceVC: UICollectionViewController {
         } else {
             // Fallback on earlier versions
         }
+        
+        if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
+               let glassIconView = textFieldInsideSearchBar.leftView as? UIImageView {
+
+                   //Magnifying glass
+                   glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
+                   glassIconView.tintColor = .white
+           }
             
         navigationItem.rightBarButtonItem = nil
         navigationItem.titleView = searchBar
@@ -221,8 +231,8 @@ class MarketplaceVC: UICollectionViewController {
     func configureViewComponents() {
         //collectionView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
-        collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-
+        collectionView.backgroundColor = UIColor.rgb(red: 254, green: 254, blue: 255)
+        
         //let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.height)!)
         
         
@@ -307,6 +317,16 @@ navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/2
         // removing shadow from tab bar
          tabBarController?.tabBar.layer.shadowRadius = 0
         tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        
+        // use this to thin or remove tab bar top border
+        tabBarController?.tabBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: -1))
+        lineView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tabBarController?.tabBar.addSubview(lineView)
+        
+        let thinLineView = UIView(frame: CGRect(x: 0, y: -1, width: view.frame.width, height: 0.25))
+        thinLineView.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220)
+        lineView.addSubview(thinLineView)
     }
     
     @objc func handleShoppingCart() {
@@ -411,7 +431,7 @@ extension MarketplaceVC: UICollectionViewDelegateFlowLayout {
     // calling function to give space and insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        return UIEdgeInsets(top: 0, left: 12, bottom: 12, right: 12)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

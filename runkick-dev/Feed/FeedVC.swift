@@ -1021,6 +1021,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // removing shadow from tab bar
         tabBarController?.tabBar.layer.shadowRadius = 0
         tabBarController?.tabBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        
+        // use this to thin or remove tab bar top border
+        tabBarController?.tabBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: -1))
+        lineView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tabBarController?.tabBar.addSubview(lineView)
+        
+        let thinLineView = UIView(frame: CGRect(x: 0, y: -1, width: view.frame.width, height: 0.25))
+        thinLineView.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220)
+        lineView.addSubview(thinLineView)
     }
     
     func handleUsernameLabelTapped(forCell cell: FeedCell) {

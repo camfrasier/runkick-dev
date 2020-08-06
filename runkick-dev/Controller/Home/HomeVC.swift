@@ -517,8 +517,9 @@ class HomeVC: UIViewController, Alertable {
     
     let homeRewardsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "rewardsGiftsIcon"), for: .normal)
+        //button.setImage(UIImage(named: "rewardsGiftsIcon"), for: .normal)
         //button.setImage(UIImage(named: "rewardsBox"), for: .normal)
+        button.setImage(UIImage(named: "whiteRewardsIcon"), for: .normal)
         button.addTarget(self, action: #selector(handleHomeRewards), for: .touchUpInside)
         button.tintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         button.alpha = 1
@@ -1007,7 +1008,7 @@ class HomeVC: UIViewController, Alertable {
        //simpleRightMenuButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
         simpleRightMenuBackground.addSubview(beBoppActionButton)
-        beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 19, paddingLeft: 19, paddingBottom: 0, paddingRight: 0, width: 39, height: 39)
+        beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 18, paddingLeft: 18, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
         
         /*
         mapView.addSubview(saveSegmentButton)
@@ -1377,7 +1378,7 @@ class HomeVC: UIViewController, Alertable {
    
     func configureTabBar() {
         // changing tab bar tint color to white
-        //tabBarController?.tabBar.barTintColor = UIColor.white
+        tabBarController?.tabBar.barTintColor = UIColor.white
         //self.homeVC?.hideTabBar(tabBarController?.tabBar.isHidden = false
         
         tabBarController?.tabBar.isTranslucent = false
@@ -1402,14 +1403,6 @@ class HomeVC: UIViewController, Alertable {
         tabGradientView.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
         */
  
-        /*
-        // remove tab bar top border
-        tabBarController?.tabBar.shadowImage = UIImage()
-        let lineView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: -1))
-        lineView.backgroundColor = UIColor.white
-        tabBarController?.tabBar.addSubview(lineView)
-        */
-        
     }
     
     func configureNavigationBar() {
@@ -1740,7 +1733,7 @@ class HomeVC: UIViewController, Alertable {
         rewardsBackground.layer.cornerRadius = 45 / 2
         
         rewardsBackground.addSubview(homeRewardsButton)
-        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 11.25, paddingBottom: 0, paddingRight: 0, width: 23, height: 23)
+        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 11.5, paddingBottom: 0, paddingRight: 0, width: 23, height: 24)
         
         
         /*
@@ -1824,9 +1817,7 @@ class HomeVC: UIViewController, Alertable {
         */
         
         tableView.anchor(top: searchTableView.topAnchor, left: searchTableView.leftAnchor, bottom: searchTableView.bottomAnchor, right: searchTableView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
-        
-        
-        
+
     }
   
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -4142,19 +4133,21 @@ extension HomeVC: MKMapViewDelegate {
                           
                             guard let storePoints = store.points else { return }
                             guard let storeName = store.title else { return }
+                            guard let storeImage = store.imageUrl else { return }
+                            
                             print("DEBUG: THE STORE Points SHOULD BE \(storePoints)")
                             
                             // just need to note here if the segment was completed.. then we can only re-plot the segment that is complete and add the point values to the rewards as such.
                                        DataService.instance.REF_TRIPS.child(currentUid).child(self.tripHolder).child(keyHolder).updateChildValues(["segmentCompleted": true])
                           
-                            self.calculateSaveRewards(storeIdentifier, pointsAdded: storePoints, name: storeName)
+                            self.calculateSaveRewards(storeIdentifier, pointsAdded: storePoints, name: storeName, image: storeImage)
                     })
                 }
             })
         }
     }
     
-    func calculateSaveRewards(_ storeIdentifier: String, pointsAdded: Int, name: String) {
+    func calculateSaveRewards(_ storeIdentifier: String, pointsAdded: Int, name: String, image: String) {
         
         // initially creating the rewards database with an imaginary user. may be able to erase this has been initially created
         // DataService.instance.REF_USER_REWARDS.child("ReusableReference01").updateChildValues(["rewardsGenerated": 1])
@@ -4200,7 +4193,7 @@ extension HomeVC: MKMapViewDelegate {
                                     
                                     print("DEBUG: HAS NOT CREATED A STORE WITH THIS ID SO WE WILL CREATE IT")
                                  
-                                    DataService.instance.REF_USER_REWARDS.child(uid).child(storeIdentifier).updateChildValues(["points": pointsAdded, "title": name])
+                                    DataService.instance.REF_USER_REWARDS.child(uid).child(storeIdentifier).updateChildValues(["points": pointsAdded, "title": name, "image": image])
                                     
                                     // return to stop the recursive function... we need to use this in other use cases
                                     return
@@ -4212,7 +4205,7 @@ extension HomeVC: MKMapViewDelegate {
                         
                         // create user rewards section with information provided
                         print("DEBUG: USER IS NOT FOUND IN THE REWARDS SECTION, SO LET'S CREATE USER INITIALLY")
-                        DataService.instance.REF_USER_REWARDS.child(currentUid).child(storeIdentifier).updateChildValues(["points": pointsAdded, "title": name])
+                        DataService.instance.REF_USER_REWARDS.child(currentUid).child(storeIdentifier).updateChildValues(["points": pointsAdded, "title": name, "image": image])
                     }
                 })
             }

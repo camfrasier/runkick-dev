@@ -164,7 +164,7 @@ class StoreDetailView: UIView {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.clipsToBounds = true
-        tableView.layer.cornerRadius = 15
+        tableView.layer.cornerRadius = 0
         tableView.separatorColor = .none
         //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)

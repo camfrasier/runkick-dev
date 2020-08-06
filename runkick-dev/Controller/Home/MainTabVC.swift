@@ -53,7 +53,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         tabBar.frame.size.height = 60
         tabBar.frame.origin.y = view.frame.height - 60
 
-        
+
         if UIScreen.main.nativeBounds.height == 2436 {
             // configure dot for iphone x
             //dot.frame = CGRect(x: view.frame.width / 5 * 3, y: view.frame.height - tabBarHeight, width: 6, height: 6)

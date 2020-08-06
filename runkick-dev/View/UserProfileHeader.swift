@@ -676,7 +676,7 @@ class UserProfileHeader: UICollectionViewCell {
         
         //separatorViewGradient.transform = CGAffineTransform(translationX: 1, y: 1)
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             self.separatorViewGradient.transform = CGAffineTransform(translationX: 210, y: 0)
         })
@@ -685,7 +685,7 @@ class UserProfileHeader: UICollectionViewCell {
     @objc func handleActivityTapped() {
         delegate?.handleActivityTapped(for: self)
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             self.separatorViewGradient.transform = CGAffineTransform(translationX: 0, y: 0)
         })
@@ -752,7 +752,7 @@ class UserProfileHeader: UICollectionViewCell {
          gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
         
          addSubview(separatorViewGradient)
-        separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (frame.width / 2), height: 2.5)
+        separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (frame.width / 2), height: 3)
 
     }
     

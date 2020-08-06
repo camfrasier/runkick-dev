@@ -16,7 +16,7 @@ class Rewards {
     var long: Double?
     var location: String!
     var title: String!
-    var profileImageURL: String!
+    var imageUrl: String!
     var points: Int!
     var storeId: String!
     var averagePace: String!
@@ -51,8 +51,8 @@ class Rewards {
             self.points = points
         }
         
-        if let profileImageURL = dictionary["profileImageURL"] as? String {
-            self.profileImageURL = profileImageURL
+        if let imageUrl = dictionary["imageUrl"] as? String {
+            self.imageUrl = imageUrl
         }
         
         if let storeId = dictionary["storeId"] as? String {
