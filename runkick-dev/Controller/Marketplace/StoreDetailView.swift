@@ -50,9 +50,9 @@ class StoreDetailView: UIView {
     
     let indicatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .white
         view.layer.cornerRadius = 3
-        view.alpha = 0.8
+        view.alpha = 1
         return view
     }()
     
@@ -180,9 +180,11 @@ class StoreDetailView: UIView {
         addSubview(tableView)
         tableView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
         
-        tableView.addSubview(indicatorView)
-        indicatorView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 30, height: 5)
+        addSubview(indicatorView)
+        indicatorView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
         indicatorView.centerX(inView: self)
+        //indicatorView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        //indicatorView.layer.borderWidth = 1
         
         addSubview(backgroundCancelViewBtn)
         backgroundCancelViewBtn.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 35, height: 35)

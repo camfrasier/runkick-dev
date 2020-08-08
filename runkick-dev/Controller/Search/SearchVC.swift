@@ -32,6 +32,9 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // configure search bar
+        configureSearchBar()
+        
         /*
         edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = true
@@ -46,10 +49,6 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
 
-        
-        // configure search bar
-        //configureSearchBar()
-        
         // configure collection view
         configureCollectionView()
         
@@ -243,19 +242,23 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
 
-        searchBar.sizeToFit()
+        
         searchBar.delegate = self
+        navigationItem.titleView = searchBar
+        
+        searchBar.placeholder = "Search"
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
-        searchBar.placeholder = "Search"
         searchBar.becomeFirstResponder()
         searchBar.autocapitalizationType = .none
+        
         
         // SearchBar text
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.textColor = UIColor.red
         textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
         
+        /*
         if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
                let glassIconView = textFieldInsideSearchBar.leftView as? UIImageView {
 
@@ -263,7 +266,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                    glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
                    glassIconView.tintColor = .white
            }
-    
+        */
+        
         //navigationItem.titleView = searchBar
         //searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         searchBar.isTranslucent = false
@@ -282,8 +286,12 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //searchBar.searchTextField.layer.borderColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1).cgColor
         //searchBar.searchTextField.layer.borderWidth = 0.25
         
+        /*
         navigationItem.rightBarButtonItem = nil
         navigationItem.titleView = searchBar
+        */
+        
+        //navigationItem.titleView = nil
     }
     
     func configureNavigationBar() {
@@ -514,7 +522,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         button.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         navigationItem.titleView = button
         
-        
+        searchBar.showsCancelButton = true
         
         //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
         //navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
@@ -538,6 +546,9 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     @objc func showSearchBar() {
         // hide collectionView will in search mode
+        
+        navigationItem.titleView = searchBar
+        navigationItem.rightBarButtonItem = nil
         
         fetchUsers()
         collectionView.isHidden = true

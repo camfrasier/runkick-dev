@@ -25,6 +25,9 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // configure search bar
+        configureSearchBar()
 
         // register cell classes
         tableView.register(RewardsCell.self, forCellReuseIdentifier: reuseIdentifier)
@@ -32,7 +35,7 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
         // seperator insets.
         //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
     
-        tableView.backgroundColor = UIColor.rgb(red: 254, green: 254, blue: 255)
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         configureNavigationBar()
         
@@ -45,7 +48,13 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
+        configureSearchBar()
         configureNavigationBar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.view.layoutSubviews()
     }
     
     // MARK: - Table view data source
@@ -270,15 +279,16 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
         
         //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
 
-        searchBar.sizeToFit()
         searchBar.delegate = self
+        navigationItem.titleView = searchBar
+        
+        searchBar.placeholder = "Search"
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
-        searchBar.placeholder = "Search"
         searchBar.becomeFirstResponder()
         searchBar.autocapitalizationType = .none
         
-        
+        /*
         if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
                let glassIconView = textFieldInsideSearchBar.leftView as? UIImageView {
 
@@ -286,7 +296,7 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
                    glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
                    glassIconView.tintColor = .white
            }
-    
+        */
         
         // SearchBar text
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
@@ -311,8 +321,8 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
         //searchBar.searchTextField.layer.borderColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1).cgColor
         //searchBar.searchTextField.layer.borderWidth = 0.25
         
-        navigationItem.rightBarButtonItem = nil
-        navigationItem.titleView = searchBar
+        //navigationItem.rightBarButtonItem = nil
+        //navigationItem.titleView = searchBar
     }
     
     func configureSearchBarButton() {
@@ -351,11 +361,13 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
     @objc func showSearchBar() {
         // hide collectionView will in search mode
         
+        configureSearchBar()
+        navigationItem.titleView = searchBar
+        navigationItem.rightBarButtonItem = nil
+        
         fetchRewards()
 
-        //self.navigationItem.rightBarButtonItems = nil
-    
-        configureSearchBar()
+        
     }
 
     

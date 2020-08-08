@@ -938,7 +938,6 @@ class HomeVC: UIViewController, Alertable {
         isUserLoggedIn()
         
         centerMapOnUserLocation() //this command i will have to verify later. may or may not need.
-        
   
     }
     

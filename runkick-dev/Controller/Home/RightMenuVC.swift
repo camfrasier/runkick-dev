@@ -324,10 +324,10 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         
         
         gradientView.addSubview(activityLabel)
-        activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 60, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 65, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         gradientView.addSubview(groupsLabel)
-        groupsLabel.anchor(top: gradientView.topAnchor, left: nil, bottom: nil, right: gradientView.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 60, width: 0, height: 0)
+        groupsLabel.anchor(top: gradientView.topAnchor, left: nil, bottom: nil, right: gradientView.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 65, width: 0, height: 0)
         
         //gradientView.addSubview(hoziontalSeparatorView)
         //hoziontalSeparatorView.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: view.frame.width / 2, paddingBottom: 0, paddingRight: 0, width: 0.25, height: 80)

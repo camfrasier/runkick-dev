@@ -627,7 +627,7 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[profile(45)]", options: [], metrics: nil, views: ["profile": profileImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[profile(45)]", options: [], metrics: nil, views: ["profile": profileImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-25-[profile(45)]", options: [], metrics: nil, views: ["profile": profileImageView]))
         
         profileImageView.layer.cornerRadius = 45 / 2
         profileImageView.layer.borderWidth = 1.5
@@ -649,7 +649,7 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[backgroundOption(35)]-12-|", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-4-[backgroundOption(35)]", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-14-[backgroundOption(35)]", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[optionsButton(28)]-10-|", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
          
@@ -673,7 +673,7 @@ class FeedCell: UICollectionViewCell {
         stackView2.spacing = 5
         stackView2.translatesAutoresizingMaskIntoConstraints = false
         postImageView.addSubview(stackView2)
-        stackView2.anchor(top: captionLabel.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        stackView2.anchor(top: captionLabel.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
         
         
         

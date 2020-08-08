@@ -151,6 +151,57 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         return view
     }()
     
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 28)
+        label.text = "Explore"
+        label.textAlignment = .left
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        return label
+    } ()
+    
+    
+    let stackIndicatorBar: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 3
+        return view
+    } ()
+    
+    lazy var notificationsLabel: UILabel = {
+        let label = UILabel()
+        //label.layer.backgroundColor = UIColor.rgb(red: 220, green: 30, blue: 30).cgColor
+        label.backgroundColor = .clear
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.text = "Notifications"
+        label.textAlignment = .center
+        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.90)
+        
+        // add gesture recognizer to label
+        let notificationsTap = UITapGestureRecognizer(target: self, action: #selector(handleNotificationView))
+        notificationsTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(notificationsTap)
+        label.alpha = 0.90
+        return label
+    } ()
+    
+    lazy var messageLabel: UILabel = {
+        let label = UILabel()
+        //label.layer.backgroundColor = UIColor.rgb(red: 220, green: 30, blue: 30).cgColor
+        label.backgroundColor = .clear
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.text = "Messages"
+        label.textAlignment = .center
+        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.90)
+        
+        // add gesture recognizer to label
+        let messagesTap = UITapGestureRecognizer(target: self, action: #selector(handleMessageInboxView))
+        messagesTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(messagesTap)
+        label.alpha = 0.90
+        return label
+    } ()
     
 
     // MARK: - Init
@@ -163,17 +214,17 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         fetchProfileData()
         
-        /*
+        
         //extends the edges beyound the tab bar
-        edgesForExtendedLayout = .all
+        edgesForExtendedLayout = .top
         extendedLayoutIncludesOpaqueBars = true
-        */
+        
 
         // uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // adjust view background color
-        collectionView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
+        collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         
         
@@ -185,9 +236,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         refreshFeedControl.addTarget(self, action: #selector(handleFeedRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshFeedControl
         
+
+        
         configureNavigationBar()
         
         configureFeedViewElements()
+        
+        configureNotificationComponents()
         
         //setUserFCMTocken()
     
@@ -224,6 +279,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
+        configureNavigationBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -262,7 +318,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                            
                           // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                    return CGSize(width: view.frame.width - 0, height: view.frame.height - 120)
+                    return CGSize(width: view.frame.width - 0, height: view.frame.height)
             }
             
         }
@@ -278,12 +334,12 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 
                 //return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                return CGSize(width: view.frame.width - 0, height: view.frame.height - 120)
+                return CGSize(width: view.frame.width - 0, height: view.frame.height)
             }
             
         }
         // return CGSize(width: view.frame.width - 0, height: 200)
-        return CGSize(width: view.frame.width - 0, height: view.frame.height - 120)
+        return CGSize(width: view.frame.width - 0, height: view.frame.height)
         
     }
 
@@ -327,7 +383,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     // calling function to give space and insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: -22, left: 0, bottom: 0, right: 0)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -372,7 +428,50 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 visualEffectView.addGestureRecognizer(gesture)
             }
         }
-
+        
+        //collectionView.addSubview(titleLabel)
+        //titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: -10, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+    }
+    
+    func configureNotificationComponents() {
+        
+        
+        let stackView = UIStackView(arrangedSubviews: [messageLabel, notificationsLabel])
+        
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(stackView)
+        stackView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.isUserInteractionEnabled = true
+        
+        
+        /*
+        if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+            
+            if let window:UIWindow = applicationDelegate.window {
+                
+                let stackView = UIStackView(arrangedSubviews: [messageLabel, notificationsLabel])
+                
+                stackView.axis = .horizontal
+                stackView.distribution = .equalSpacing
+                stackView.alignment = .center
+                stackView.spacing = 16
+                stackView.translatesAutoresizingMaskIntoConstraints = false
+                
+                window.addSubview(stackView)
+                stackView.anchor(top: window.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 32, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
+                stackView.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
+                stackView.backgroundColor = .lightGray
+  
+            }
+        }
+        */
     }
     
     @objc func handleBlurDismiss() {
@@ -420,21 +519,38 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func configureNavigationBar() {
-
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
+         navigationController?.navigationBar.isHidden = true
+         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+         self.navigationController?.navigationBar.shadowImage = UIImage()
+         self.navigationController?.navigationBar.isTranslucent = true
+        
+        // add or remove nav bar bottom border
+        /*
+        navigationController?.navigationBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
+        lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        navigationController?.navigationBar.addSubview(lineView)
+         */
+        
+        /*
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.backgroundColor = .clear
+        navigationController?.navigationBar.barTintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        */
+        
+        /*
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
             navBarAppearance.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-            navBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 0, green: 0, blue: 0), NSAttributedString.Key.backgroundColor: UIColor.rgb(red: 255, green: 255, blue: 255), NSAttributedString.Key.font: UIFont(name: "PingFangTC-Semibold", size: 24)!]
+            navBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 0, green: 0, blue: 0), NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont(name: "PingFangTC-Semibold", size: 24)!]
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         }
+         */
         
-        navigationItem.title = "Explore"
+        //navigationItem.title = "Explore"
             
         /*
             profileImageView.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
@@ -487,13 +603,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         navigationController?.navigationBar.topItem?.titleView = imageView
         */
         
-        // add or remove nav bar bottom border
-        /*
-        navigationController?.navigationBar.shadowImage = UIImage()
-        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: -0.50))
-        lineView.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
-        navigationController?.navigationBar.addSubview(lineView)
-        */
+        
+        
         
        
         
@@ -533,7 +644,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         */
         
         // custom notifications button
-            
+         
+        
+        
+        /*
                    let adminStorePostButton = UIButton(type: UIButton.ButtonType.system)
                        
                        adminStorePostButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
@@ -548,6 +662,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                
                let adminFeedButton = UIBarButtonItem(customView: adminStorePostButton)
                self.navigationItem.rightBarButtonItems = [adminFeedButton]
+ 
+        */
+ 
+        
+ 
         
         /*
         // custom back button

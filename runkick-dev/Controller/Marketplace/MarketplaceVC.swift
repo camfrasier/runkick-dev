@@ -100,6 +100,9 @@ class MarketplaceVC: UICollectionViewController {
         extendedLayoutIncludesOpaqueBars = true
         */
         
+        // configure search bar
+        configureSearchBar()
+        
         configureViewComponents()
         
         configureNavigationBar()
@@ -128,6 +131,10 @@ class MarketplaceVC: UICollectionViewController {
     // MARK: - Selectors
     
     @objc func showSearchBar() {
+        
+        navigationItem.titleView = searchBar
+        navigationItem.rightBarButtonItem = nil
+        
         configureSearchBar()
     }
     
@@ -157,14 +164,16 @@ class MarketplaceVC: UICollectionViewController {
     
     func configureSearchBar() {
         
-        // using the searchbar constructor
-        //searchBar = UISearchBar()
         searchBar.delegate = self
+        navigationItem.titleView = searchBar
+        
+        searchBar.placeholder = "Search"
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
-        searchBar.placeholder = "Search"
-        searchBar.autocapitalizationType = .none
         searchBar.becomeFirstResponder()
+        searchBar.autocapitalizationType = .none
+        
+        
         searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
         // SearchBar text
@@ -182,6 +191,7 @@ class MarketplaceVC: UICollectionViewController {
             // Fallback on earlier versions
         }
         
+        /*
         if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
                let glassIconView = textFieldInsideSearchBar.leftView as? UIImageView {
 
@@ -189,9 +199,9 @@ class MarketplaceVC: UICollectionViewController {
                    glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
                    glassIconView.tintColor = .white
            }
-            
-        navigationItem.rightBarButtonItem = nil
-        navigationItem.titleView = searchBar
+           */
+        //navigationItem.rightBarButtonItem = nil
+        //navigationItem.titleView = searchBar
     }
     
     func configureSearchBarButton() {
