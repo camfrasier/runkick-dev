@@ -2214,7 +2214,8 @@ class HomeVC: UIViewController, Alertable {
                 //let width: CGFloat = 510
                 //let collectionViewX = window.frame.width - width + 155
                 
-                let height: CGFloat = 568
+                //let height: CGFloat = 568
+                let height: CGFloat = 620
                 let collectionViewY = window.frame.height - height
                 
                 UIView.animate(withDuration: 0.15) {
@@ -2450,7 +2451,8 @@ class HomeVC: UIViewController, Alertable {
     
     @objc func handleRightMenuDismiss() {
         
-        let height: CGFloat = 568
+        //let height: CGFloat = 568
+        let height: CGFloat = 620
         
         if isRightMenuExpanded == true {
             
@@ -2462,7 +2464,7 @@ class HomeVC: UIViewController, Alertable {
                 let collectionViewY = window.frame.width - height
                 
                 
-                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                    UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                             self.rightMenuVC.view.frame = CGRect(x: 0, y: -(collectionViewY) + 650, width: window.frame.width, height: self.rightMenuVC.view.frame.height)
             
                         self.isRightMenuExpanded = false

@@ -101,8 +101,8 @@ class MessageCell: UITableViewCell {
         //detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
         detailTextLabel?.font = UIFont(name: "HelveticaNeue", size: 14)
         
-        addSubview(separatorView)
-        separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        //addSubview(separatorView)
+        //separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
         
         /*
         detailTextLabel?.frame = CGRect(x: 72, y: detailTextLabel!.frame.origin.y + 2,

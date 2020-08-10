@@ -67,38 +67,89 @@ class RightMenuOptionCell: UITableViewCell {
     let distanceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 25)
-        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 40)
+        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        //label.font = UIFont(name: "HelveticaNeue", size: 50)
+        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 40)
         label.text = "0.00"
-        
         return label
     }()
     
     let milesLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.boldSystemFont(ofSize: 11)
+        //label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "Miles"
         
         return label
     }()
     
+    let stepCountLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        //label.font = UIFont.systemFont(ofSize: 18)
+        //label.font = UIFont(name: "HelveticaNeue", size: 18)
+        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 65)
+        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        label.text = "0"
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let stepsLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.text = "Steps"
+        
+        return label
+    }()
+    
+
     
     let caloriesCountLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        label.text = "2,200"
-        
+        label.font = UIFont.systemFont(ofSize: 40)
+        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        //label.font = UIFont(name: "HelveticaNeue", size: 50)
+        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 40)
+        label.text = "560"
         return label
     }()
     
     let caloriesLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.boldSystemFont(ofSize: 11)
+        //label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.text = "Calories"
+        
+        return label
+    }()
+    
+    
+    let averagePaceLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 40)
+        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        //label.font = UIFont(name: "HelveticaNeue", size: 50)
+        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 40)
+        label.text = "0.00"
+        return label
+    }()
+    
+    let paceLabel: UILabel = {
+        let label = UILabel()
+        //label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "Calories"
         
@@ -111,32 +162,12 @@ class RightMenuOptionCell: UITableViewCell {
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        label.text = "0.00"
+        label.text = "Min/mi"
         return label
     }()
     
-    let stepCountLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .black
-        //label.font = UIFont.systemFont(ofSize: 18)
-        label.font = UIFont(name: "HelveticaNeue", size: 18)
-        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        label.text = "0"
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    let stepsLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.boldSystemFont(ofSize: 12)
-        //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        label.text = "Steps"
-        
-        return label
-    }()
-    
+
+    /*
     let averagePaceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -154,7 +185,7 @@ class RightMenuOptionCell: UITableViewCell {
         label.text = "0.00"
         return label
     }()
-    
+    */
     let milesMinuteLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
@@ -169,16 +200,19 @@ class RightMenuOptionCell: UITableViewCell {
     let pointsCountlabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 25)
-        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        label.text = "950"
+        label.font = UIFont.systemFont(ofSize: 40)
+        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        //label.font = UIFont(name: "HelveticaNeue", size: 50)
+        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 40)
+        label.text = "1250"
         return label
     }()
     
     let pointsLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.boldSystemFont(ofSize: 11)
+        //label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "Points"
         
@@ -190,7 +224,7 @@ class RightMenuOptionCell: UITableViewCell {
     let postTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 11)
-        label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
         label.text = "date"
         return label
     } ()
@@ -201,7 +235,8 @@ class RightMenuOptionCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = .white
-
+        
+        
         selectionStyle = .default
 
         self.selectionStyle = .default
@@ -209,45 +244,59 @@ class RightMenuOptionCell: UITableViewCell {
         configureUserAnalytics()
         
         addSubview(distanceLabel)
-        distanceLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 120, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
+        distanceLabel.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 67, paddingRight: 0, width: 0, height: 35)
+        //distanceLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         addSubview(milesLabel)
         milesLabel.anchor(top: distanceLabel.bottomAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        addSubview(paceLabel)
-        paceLabel.anchor(top: milesLabel.bottomAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        addSubview(milesMinuteLabel)
-        milesMinuteLabel.anchor(top: paceLabel.bottomAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        
-        addSubview(pointsCountlabel)
-        pointsCountlabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 210, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
-        
-        addSubview(pointsLabel)
-        pointsLabel.anchor(top: pointsCountlabel.bottomAnchor, left: pointsCountlabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
         addSubview(caloriesCountLabel)
-        caloriesCountLabel.anchor(top: pointsLabel.bottomAnchor, left: pointsCountlabel.leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        caloriesCountLabel.anchor(top: distanceLabel.topAnchor, left: distanceLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
         
         addSubview(caloriesLabel)
         caloriesLabel.anchor(top: caloriesCountLabel.bottomAnchor, left: caloriesCountLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        addSubview(pointsCountlabel)
+        pointsCountlabel.anchor(top: distanceLabel.topAnchor, left: caloriesLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
+        
+        addSubview(pointsLabel)
+        pointsLabel.anchor(top: pointsCountlabel.bottomAnchor, left: pointsCountlabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        /*
+        addSubview(paceLabel)
+        paceLabel.anchor(top: distanceLabel.topAnchor, left: distanceLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        addSubview(milesMinuteLabel)
+        milesMinuteLabel.anchor(top: paceLabel.bottomAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        */
+        
+        /*
+        addSubview(paceLabel)
+        paceLabel.anchor(top: topAnchor, left: milesLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 70, paddingBottom: 0, paddingRight: 0, width: 0, height: 26)
+        
+        addSubview(durationLabel)
+        durationLabel.anchor(top: postTimeLabel.bottomAnchor, left: nil, bottom: nil, right: postTimeLabel.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        */
+
+        
+        
+
+        
+        
         addSubview(stepsLabel)
-        stepsLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 52, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stepsLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 220, paddingLeft: 185, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(stepCountLabel)
-        stepCountLabel.anchor(top: nil, left: nil, bottom: stepsLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 24)
+        stepCountLabel.anchor(top: nil, left: nil, bottom: stepsLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 65)
         stepCountLabel.centerXAnchor.constraint(equalTo: stepsLabel.centerXAnchor).isActive = true
         
         addSubview(postTimeLabel)
-        postTimeLabel.anchor(top: distanceLabel.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
+        postTimeLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
         
-        //addSubview(paceLabel)
-        //paceLabel.anchor(top: topAnchor, left: milesLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 70, paddingBottom: 0, paddingRight: 0, width: 0, height: 26)
+
         
-        //addSubview(durationLabel)
-        //durationLabel.anchor(top: postTimeLabel.bottomAnchor, left: nil, bottom: nil, right: postTimeLabel.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
        
         
     }
@@ -314,7 +363,7 @@ class RightMenuOptionCell: UITableViewCell {
         let date = dateFormatter.date(from: date)
         //dateFormatter.dateFormat = "yyyy-MM-dd"
         // month day and time 16hr clock
-        dateFormatter.dateFormat = "dd MMM h:mm a"
+        dateFormatter.dateFormat = "d MMM h:mm a"
         return  dateFormatter.string(from: date!)
     }
     
@@ -323,18 +372,19 @@ class RightMenuOptionCell: UITableViewCell {
         // this can be users on the analytics page
         
         //let center = self.center
-        //let center = CGPoint(x: self.center.x - 100, y: self.center.y - 90)
+        let center = CGPoint(x: self.center.x + 50, y: self.center.y + 180)
         
-        let center = CGPoint(x: 56, y: 48)
-        let circularPath = UIBezierPath(arcCenter: center, radius: 35, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        //let center = CGPoint(x: 61, y: 48)
+        let circularPath = UIBezierPath(arcCenter: center, radius: 135, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
         
         // create my track layer
         let trackLayer = CAShapeLayer()
         trackLayer.path = circularPath.cgPath
-        trackLayer.strokeColor = UIColor.lightGray.cgColor
-        trackLayer.lineWidth = 6
+        trackLayer.strokeColor = UIColor.rgb(red: 240, green: 240, blue: 240).cgColor
+        trackLayer.lineWidth = 30
         trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.lineCap = CAShapeLayerLineCap.round
+        //trackLayer.lineCap = CAShapeLayerLineCap.round
+        trackLayer.lineCap = CAShapeLayerLineCap.square
         
         self.layer.addSublayer(trackLayer)
         
@@ -347,9 +397,17 @@ class RightMenuOptionCell: UITableViewCell {
         shapeLayer.path = circularPath.cgPath
         
         shapeLayer.strokeColor = UIColor.statusBarGreen().cgColor
-        shapeLayer.lineWidth = 6
+        shapeLayer.lineWidth = 30
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineCap = CAShapeLayerLineCap.round
+        
+        /*
+        shapeLayer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.40).cgColor
+        shapeLayer.shadowOpacity = 85 // Shadow is 30 percent opaque.
+        shapeLayer.shadowRadius = 3.0
+        shapeLayer.shadowOffset = CGSize(width: 1, height: 1)
+        */
+        
         //shapeLayer.strokeEnd = 0
         
         self.layer.addSublayer(shapeLayer)

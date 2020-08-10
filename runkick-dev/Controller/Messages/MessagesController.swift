@@ -29,7 +29,7 @@ class MessagesController: UITableViewController {
         extendedLayoutIncludesOpaqueBars = true
         */
         
-        view.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 240)
+        view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
         tableView.separatorStyle = .none
         
         configureNavigationBar()
@@ -146,7 +146,7 @@ class MessagesController: UITableViewController {
          returnNavButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
          
          //using this code to show the true image without rendering color
-         returnNavButton.setImage(UIImage(named:"whiteCircleLeftArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
+         returnNavButton.setImage(UIImage(named:"leftCircleArrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
          returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
         returnNavButton.addTarget(self, action: #selector(MessagesController.handleBackButton), for: .touchUpInside)
          returnNavButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)

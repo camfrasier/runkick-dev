@@ -163,7 +163,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     let stackIndicatorBar: UIView = {
         let view = UIView()
+        view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.95)
         view.layer.cornerRadius = 3
+        view.alpha = 0.95
         return view
     } ()
     
@@ -171,17 +173,17 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         let label = UILabel()
         //label.layer.backgroundColor = UIColor.rgb(red: 220, green: 30, blue: 30).cgColor
         label.backgroundColor = .clear
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         label.text = "Notifications"
         label.textAlignment = .center
-        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.90)
+        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.95)
         
         // add gesture recognizer to label
         let notificationsTap = UITapGestureRecognizer(target: self, action: #selector(handleNotificationView))
         notificationsTap.numberOfTapsRequired = 1
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(notificationsTap)
-        label.alpha = 0.90
+        label.alpha = 0.95
         return label
     } ()
     
@@ -189,17 +191,17 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         let label = UILabel()
         //label.layer.backgroundColor = UIColor.rgb(red: 220, green: 30, blue: 30).cgColor
         label.backgroundColor = .clear
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         label.text = "Messages"
         label.textAlignment = .center
-        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.90)
+        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.95)
         
         // add gesture recognizer to label
         let messagesTap = UITapGestureRecognizer(target: self, action: #selector(handleMessageInboxView))
         messagesTap.numberOfTapsRequired = 1
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(messagesTap)
-        label.alpha = 0.90
+        label.alpha = 0.95
         return label
     } ()
     
@@ -383,7 +385,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     // calling function to give space and insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: -22, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: -68, left: 0, bottom: 0, right: 0)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -437,18 +439,24 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     func configureNotificationComponents() {
         
         
-        let stackView = UIStackView(arrangedSubviews: [messageLabel, notificationsLabel])
+        let stackView = UIStackView(arrangedSubviews: [messageLabel, stackIndicatorBar, notificationsLabel])
         
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
         stackView.alignment = .center
-        stackView.spacing = 16
+        stackView.spacing = 14
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
+        stackIndicatorBar.anchor(top: stackView.topAnchor, left: nil, bottom: stackView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 3, height: 0)
+        stackIndicatorBar.layer.cornerRadius = 1
+        
         view.addSubview(stackView)
-        stackView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 110, paddingBottom: 0, paddingRight: 0, width: 0, height: 25)
+        //stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         stackView.isUserInteractionEnabled = true
+        
+        navigationController?.navigationBar.topItem?.titleView = stackView
+        //navigationController?.navigationBar.addSubview(stackView)
         
         
         /*
@@ -520,24 +528,26 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     func configureNavigationBar() {
         
-         navigationController?.navigationBar.isHidden = true
+         //navigationController?.navigationBar.isHidden = true
          self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
          self.navigationController?.navigationBar.shadowImage = UIImage()
          self.navigationController?.navigationBar.isTranslucent = true
         
-        // add or remove nav bar bottom border
+        
         /*
+        // add or remove nav bar bottom border
+        
         navigationController?.navigationBar.shadowImage = UIImage()
         let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
         lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        navigationController?.navigationBar.addSubview(lineView)
-         */
+        */
+         
         
-        /*
+        
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.backgroundColor = .clear
         navigationController?.navigationBar.barTintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        */
+        
         
         /*
         if #available(iOS 13.0, *) {

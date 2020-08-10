@@ -59,7 +59,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     lazy var groupsLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 22)
-        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.text = "Groups"
         let activityTap = UITapGestureRecognizer(target: self, action: #selector(handleGroupsTapped))
         activityTap.numberOfTapsRequired = 1
@@ -71,7 +71,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     lazy var activityLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 22)
-        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.text = "Activity"
         let groupTap = UITapGestureRecognizer(target: self, action: #selector(handleActivityTapped))
         groupTap.numberOfTapsRequired = 1
@@ -83,6 +83,30 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     let separatorViewGradient: GradientActionView = {
         let view = GradientActionView()
         //view.layer.backgroundColor = UIColor.actionRed().cgColor
+        return view
+    }()
+    
+    lazy var destinationTextField: UITextField = {
+        let tf = UITextField()
+        tf.layer.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1).cgColor
+        /*
+        //tf.placeholder = "Where to?"
+        tf.attributedPlaceholder = NSAttributedString(string:"Search..", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
+        tf.font = UIFont.systemFont(ofSize: 22)
+        tf.keyboardType = UIKeyboardType.default
+        tf.layer.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1).cgColor
+        tf.layer.cornerRadius = 25
+        tf.clipsToBounds = true
+        tf.autocapitalizationType = .none
+        //tf.addTarget(self, action: #selector(HomeVC.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
+        view.isUserInteractionEnabled = true
+        */
+        return tf
+    }()
+    
+    let searchBarContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
         return view
     }()
     
@@ -201,10 +225,11 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         let refreshFeedControl = UIRefreshControl()
         refreshFeedControl.addTarget(self, action: #selector(handleFeedRefresh), for: .valueChanged)
         tableView?.refreshControl = refreshFeedControl
+
     }
     
 
-    
+/*
     func fetchActivityPosts() {
         
         print("fetch activity function called")
@@ -239,10 +264,39 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
                     let tripId = snapshot.key
                     if tripId != self.currentKey {
                         self.fetchActivity(withTripId: tripId)
+                        print("DEBUG: SNAPSHOT AFTER SCROLL \(snapshot)")
                     }
                 })
                 self.currentKey = first.key
                 })
+        }
+    }
+*/
+    
+    func fetchActivityPosts() {
+        
+        print("fetch activity function called")
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+
+        // fetching posts with pagination and only observing x amount of post at a time
+        
+        if currentKey == nil {
+            DataService.instance.REF_ACTIVITY.child(currentUid).queryLimited(toLast: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.tableView?.refreshControl?.endRefreshing()
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let tripId = snapshot.key
+                    self.fetchActivity(withTripId: tripId)
+                    print("DEBUG: SNAPSHOT \(snapshot)")
+                    })
+                self.currentKey = first.key
+            
+        })
         }
     }
     
@@ -277,6 +331,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         
         //separatorViewGradient.transform = CGAffineTransform(translationX: 1, y: 1)
         collectionView.isHidden = false
+        searchBarContainer.isHidden = false
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
@@ -288,6 +343,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         //delegate?.handleActivityTapped(for: self)
         
         collectionView.isHidden = true
+        searchBarContainer.isHidden = true
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
@@ -306,7 +362,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1)
-        tableView.rowHeight = 95
+        tableView.rowHeight = 500
         
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = true
@@ -333,13 +389,15 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         //hoziontalSeparatorView.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: view.frame.width / 2, paddingBottom: 0, paddingRight: 0, width: 0.25, height: 80)
         //hoziontalSeparatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        gradientView.addSubview(separatorView)
-        separatorView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 79, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        //gradientView.addSubview(separatorView)
+        //separatorView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 79, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
         
 
-        
         gradientView.addSubview(separatorViewGradient)
-        separatorViewGradient.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 77, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 2), height: 2.5)
+        separatorViewGradient.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 77, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 2), height: 4)
+        separatorViewGradient.layer.cornerRadius = 2
+        
+
         
         /*
         //view.addSubview(tableSuperView)
@@ -369,7 +427,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
            layout.scrollDirection = .vertical
            
            //let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - (tabBarController?.tabBar.frame.height)! - (navigationController?.navigationBar.frame.height)!)
-           let frame = CGRect(x: 0, y: 80, width: view.frame.width, height: view.frame.height)
+           let frame = CGRect(x: 0, y: 160, width: view.frame.width, height: view.frame.height - 270)
 
         
            collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
@@ -378,10 +436,14 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
            collectionView.alwaysBounceVertical = true
            collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
             collectionView.isHidden = true
+        searchBarContainer.isHidden = true
         
            view.addSubview(collectionView)
            collectionView.register(GroupsCell.self, forCellWithReuseIdentifier: reuseGroupsCellIdentifier)
-           
+        
+        view.addSubview(searchBarContainer)
+        searchBarContainer.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 80)
+                   
            tableView.separatorColor = .clear
            
            //tableView.separatorInset = UIEdgeInsets(top: 56, left: 0, bottom: 0, right: 0)
@@ -398,7 +460,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
            
-           return UIEdgeInsets(top: 0, left: 2, bottom: 2, right: 2)
+           return UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -436,6 +498,8 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
        }
        
        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        print("you selected a cell")
            /*
            let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
            
@@ -589,6 +653,46 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     
 extension RightMenuVC: UITableViewDelegate, UITableViewDataSource {
     
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         //return 1
+         activities.count
+     }
+     
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RightMenuOptionCell
+         
+         //cell.delegate = self
+         cell.activity = activities[indexPath.row]
+           
+    
+         /*
+         // the below will allow us to bring back a value based on the option pressed
+         let rightMenuOption = RightMenuOption(rawValue: indexPath.row)
+         cell.descriptionLabel.text = rightMenuOption?.description
+         cell.iconImageView.image = rightMenuOption?.image
+         cell.iconImageView2.image = rightMenuOption?.image2
+         */
+         return cell
+     }
+     
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         //let rightMenuOption = RightMenuOption(rawValue: indexPath.row)
+         //delegate?.handleRightMenuToggle(shouldDismiss: true, rightMenuOption: rightMenuOption)
+         
+         print("THIS IS SELECTED")
+         tableView.deselectRow(at: indexPath, animated: true)
+     }
+     
+     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+             if activities.count > 4 {
+             if indexPath.item == activities.count - 1 {
+                 fetchActivityPosts()
+             }
+         }
+     }
+    
+    
+/*
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 1
         activities.count
@@ -626,5 +730,9 @@ extension RightMenuVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
+*/
 
 }
+
+
+
