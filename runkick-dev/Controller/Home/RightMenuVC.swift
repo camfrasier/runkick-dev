@@ -335,7 +335,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
-            self.separatorViewGradient.transform = CGAffineTransform(translationX: 210, y: 0)
+            self.separatorViewGradient.transform = CGAffineTransform(translationX: 205, y: 0)
         })
     }
     
@@ -380,7 +380,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         
         
         gradientView.addSubview(activityLabel)
-        activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 65, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 70, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         gradientView.addSubview(groupsLabel)
         groupsLabel.anchor(top: gradientView.topAnchor, left: nil, bottom: nil, right: gradientView.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 65, width: 0, height: 0)
@@ -394,7 +394,8 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         
 
         gradientView.addSubview(separatorViewGradient)
-        separatorViewGradient.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 77, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 2), height: 4)
+        //separatorViewGradient.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 77, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 2), height: 4)
+        separatorViewGradient.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 77, paddingLeft: 55, paddingBottom: 0, paddingRight: 0, width: 110, height: 5)
         separatorViewGradient.layer.cornerRadius = 2
         
 

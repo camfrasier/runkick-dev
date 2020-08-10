@@ -42,7 +42,8 @@ class RightMenuOptionCell: UITableViewCell {
             }
             
             distanceLabel.text = String(format:"%02.02f", (distance))
-            postTimeLabel.text = convertDateFormater("\(creationDate)")
+            postTimeLabel.text = convertTimeFormater("\(creationDate)")
+            postDateLabel.text = convertDateFormater("\(creationDate)")
             stepCountLabel.text = "\(Int(stepCount))"
             durationLabel.text = String(duration)
             paceLabel.text = String(pace)
@@ -102,7 +103,7 @@ class RightMenuOptionCell: UITableViewCell {
     let stepsLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
-        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "Steps"
         
@@ -145,6 +146,7 @@ class RightMenuOptionCell: UITableViewCell {
         return label
     }()
     
+    
     let paceLabel: UILabel = {
         let label = UILabel()
         //label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
@@ -156,7 +158,7 @@ class RightMenuOptionCell: UITableViewCell {
         return label
     }()
     
-    
+    /*
     let durationLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -165,8 +167,7 @@ class RightMenuOptionCell: UITableViewCell {
         label.text = "Min/mi"
         return label
     }()
-    
-
+    */
     /*
     let averagePaceLabel: UILabel = {
         let label = UILabel()
@@ -185,7 +186,7 @@ class RightMenuOptionCell: UITableViewCell {
         label.text = "0.00"
         return label
     }()
-    */
+    
     let milesMinuteLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
@@ -195,7 +196,7 @@ class RightMenuOptionCell: UITableViewCell {
         
         return label
     }()
-    
+    */
     
     let pointsCountlabel: UILabel = {
         let label = UILabel()
@@ -219,13 +220,36 @@ class RightMenuOptionCell: UITableViewCell {
         return label
     }()
     
-    
+    let postDateLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.textColor = UIColor.rgb(red: 130, green: 130, blue: 130)
+        label.text = "date"
+        return label
+    } ()
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 11)
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.text = "date"
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.text = "time"
+        return label
+    } ()
+    
+
+    let durationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.textColor = UIColor.rgb(red: 130, green: 130, blue: 130)
+        label.text = "00:00"
+        return label
+    } ()
+    
+    let tripTimeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.text = "Duration"
         return label
     } ()
     
@@ -244,7 +268,7 @@ class RightMenuOptionCell: UITableViewCell {
         configureUserAnalytics()
         
         addSubview(distanceLabel)
-        distanceLabel.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 67, paddingRight: 0, width: 0, height: 35)
+        distanceLabel.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 57, paddingRight: 0, width: 0, height: 35)
         //distanceLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         addSubview(milesLabel)
@@ -275,8 +299,7 @@ class RightMenuOptionCell: UITableViewCell {
         addSubview(paceLabel)
         paceLabel.anchor(top: topAnchor, left: milesLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 70, paddingBottom: 0, paddingRight: 0, width: 0, height: 26)
         
-        addSubview(durationLabel)
-        durationLabel.anchor(top: postTimeLabel.bottomAnchor, left: nil, bottom: nil, right: postTimeLabel.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
         */
 
         
@@ -285,15 +308,24 @@ class RightMenuOptionCell: UITableViewCell {
         
         
         addSubview(stepsLabel)
-        stepsLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 220, paddingLeft: 185, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stepsLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 240, paddingLeft: 183, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(stepCountLabel)
         stepCountLabel.anchor(top: nil, left: nil, bottom: stepsLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 65)
         stepCountLabel.centerXAnchor.constraint(equalTo: stepsLabel.centerXAnchor).isActive = true
         
-        addSubview(postTimeLabel)
-        postTimeLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
+        addSubview(postDateLabel)
+        postDateLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 24)
         
+        addSubview(postTimeLabel)
+        postTimeLabel.anchor(top: postDateLabel.bottomAnchor, left: nil, bottom: nil, right: postDateLabel.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        addSubview(durationLabel)
+        durationLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 24)
+        
+        addSubview(tripTimeLabel)
+        tripTimeLabel.anchor(top: durationLabel.bottomAnchor, left: durationLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
         
 
@@ -363,7 +395,20 @@ class RightMenuOptionCell: UITableViewCell {
         let date = dateFormatter.date(from: date)
         //dateFormatter.dateFormat = "yyyy-MM-dd"
         // month day and time 16hr clock
-        dateFormatter.dateFormat = "d MMM h:mm a"
+        dateFormatter.dateFormat = "d MMM"
+        return  dateFormatter.string(from: date!)
+    }
+    
+    func convertTimeFormater(_ date: String) -> String
+    {
+        let dateFormatter = DateFormatter()
+        //dateFormatter.dateFormat = "hh:mm a"
+        //dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
+        let date = dateFormatter.date(from: date)
+        //dateFormatter.dateFormat = "yyyy-MM-dd"
+        // month day and time 16hr clock
+        dateFormatter.dateFormat = "h:mm a"
         return  dateFormatter.string(from: date!)
     }
     
@@ -372,7 +417,7 @@ class RightMenuOptionCell: UITableViewCell {
         // this can be users on the analytics page
         
         //let center = self.center
-        let center = CGPoint(x: self.center.x + 50, y: self.center.y + 180)
+        let center = CGPoint(x: self.center.x + 48, y: self.center.y + 200)
         
         //let center = CGPoint(x: 61, y: 48)
         let circularPath = UIBezierPath(arcCenter: center, radius: 135, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)

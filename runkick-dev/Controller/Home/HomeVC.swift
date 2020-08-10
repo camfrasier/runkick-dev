@@ -4600,7 +4600,8 @@ extension HomeVC: MKMapViewDelegate {
         let minutes = (seconds / 60) % 60
         seconds = seconds % 60
         
-        return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+        //return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+        return String(format: "%02i:%02i", hours, minutes)
     }
     
     // convert a pace in meters per second to a string with the metric m/s and imperial minutes per mile

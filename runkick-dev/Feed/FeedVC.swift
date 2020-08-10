@@ -320,7 +320,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                            
                           // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                    return CGSize(width: view.frame.width - 0, height: view.frame.height)
+                    return CGSize(width: view.frame.width - 0, height: view.frame.height - 100)
             }
             
         }

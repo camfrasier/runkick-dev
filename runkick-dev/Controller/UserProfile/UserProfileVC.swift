@@ -90,7 +90,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
-        self.collectionView?.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
+        self.collectionView?.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
 
         //collectionView.isScrollEnabled = false
 
@@ -153,13 +153,13 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         // sets the vertical spacing between photos
         //return 4
-        return 0
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         //return UIEdgeInsets(top:0, left: 4, bottom: 4, right: 4)
-        return UIEdgeInsets(top:0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top:0, left: 2, bottom: 2, right: 2)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -171,7 +171,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 344)
+        return CGSize(width: view.frame.width, height: 380)
     }
     
     // Mark: - UICollectionView
@@ -206,8 +206,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! UserPostCell
         
         cell.post = posts[indexPath.item]
-        cell.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        cell.layer.borderWidth = 1
+        //cell.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        //cell.layer.borderWidth = 1
         
         // we need to set the delegate variable in order for this to work. now when we call on the delegate it will go back to the controller and execute it. anytime we have an action inside of a cell to implement a protocol we will need to ensure that the delegate is set. this is a part of the model <-- controller --> view protocol.
         cell.delegate = self
