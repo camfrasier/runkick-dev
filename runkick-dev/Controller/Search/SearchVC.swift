@@ -25,6 +25,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     var posts = [Post]()
     var currentKey: String?
     var userCurrentKey: String?
+    var titleView: UIView!
     
     
     // MARK: - Init
@@ -35,10 +36,10 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         // configure search bar
         configureSearchBar()
         
-        /*
-        edgesForExtendedLayout = .all
-        extendedLayoutIncludesOpaqueBars = true
-        */
+        
+        //edgesForExtendedLayout = .all
+        //extendedLayoutIncludesOpaqueBars = true
+        
         
         // register cell classes
         tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier)
@@ -47,7 +48,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
         
         //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
 
         // configure collection view
         configureCollectionView()
@@ -67,7 +68,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.setHidesBackButton(true, animated: true)
         
-        configureNavigationBar()
+        //configureNavigationBar()
         
         configureTabBar()
         
@@ -244,7 +245,20 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
 
         
         searchBar.delegate = self
-        navigationItem.titleView = searchBar
+        
+        titleView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
+       // let frame = CGRect(x: 0, y: 0, width: 100, height: 44)
+        //let titleView = UIView(frame: frame)
+        //searchBar.backgroundImage = UIImage()
+        //searchBar.frame = frame
+        titleView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        titleView.addSubview(searchBar)
+        searchBar.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: titleView.rightAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 5, width: view.frame.width - 35, height: 40)
+        
+        navigationItem.titleView = titleView
+        
+        
+        //navigationItem.titleView = searchBar
         
         searchBar.placeholder = "Search"
         searchBar.sizeToFit()
@@ -252,11 +266,13 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         searchBar.becomeFirstResponder()
         searchBar.autocapitalizationType = .none
         
+        //searchBar.backgroundColor = .blue
+        
         
         // SearchBar text
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
-        textFieldInsideUISearchBar?.textColor = UIColor.red
-        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
+        //textFieldInsideUISearchBar?.textColor = UIColor.red
+        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(18)
         
         /*
         if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
@@ -280,6 +296,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
             searchBar.searchTextField.layer.cornerRadius = 0
             searchBar.searchTextField.layer.masksToBounds = true
+            
         } else {
             // Fallback on earlier versions
         }
@@ -303,6 +320,11 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        
+        // add or remove nav bar bottom border
+        navigationController?.navigationBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
+        lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
         /*
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
@@ -517,7 +539,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         button.frame = CGRect(x: 0, y: 0, width: 320, height: 35)
         button.backgroundColor = .clear
         button.setTitle("Search", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+        button.titleLabel?.font =  UIFont(name: "PingFangTC-Semibold", size: 17)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         navigationItem.titleView = button
@@ -534,7 +556,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                        //using this code to show the true image without rendering color
                        searchBarButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
         
-                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 23 )
+                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 21 )
                        searchBarButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
                        searchBarButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                        searchBarButton.backgroundColor = .clear
@@ -545,15 +567,17 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     @objc func showSearchBar() {
-        // hide collectionView will in search mode
         
-        navigationItem.titleView = searchBar
+        
+        // hide collectionView will in search mode
+        //navigationItem.titleView = searchBar
+        
+        navigationItem.titleView = titleView
         navigationItem.rightBarButtonItem = nil
         
         fetchUsers()
         collectionView.isHidden = true
         collectionViewEnabled = false
-        //self.navigationItem.rightBarButtonItems = nil
     
         configureSearchBar()
     }

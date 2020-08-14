@@ -15,7 +15,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     let dot = UIView()
     var notificationIdArray = [String]()
-    
+    var cameraVC = CameraVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,6 +106,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // Mark: - Upload image controller
         let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "PHOTO")
         
+        // Mark: - Camera view controller
+        let cameraVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "CAMERA", rootViewController: CameraVC())
+        
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
         viewControllers = [homeVC, marketplaceVC, selectImageVC, feedVC, searchVC]
         
@@ -174,9 +177,17 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // will need to go back and clean this up for another index value later.
         if index == 2 {
             
+            /*
             let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
             let navController = UINavigationController(rootViewController: selectImageVC)
             selectImageVC.isUserAdminUpload = false
+            */
+            let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
+            
+            //let cameraVC = CameraVC()
+            let navController = UINavigationController(rootViewController: CameraVC())
+            selectImageVC.isUserAdminUpload = false
+            
             print("THe user is an admin or user BUT we should always present the normal upload view.. set to false")
             navController.modalPresentationStyle = .fullScreen
             navController.navigationBar.tintColor = UIColor(red: 60/255, green: 124/255, blue: 222/255, alpha: 1)

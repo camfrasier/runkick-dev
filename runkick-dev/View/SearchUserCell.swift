@@ -57,6 +57,8 @@ class SearchUserCell: UITableViewCell {
         self.detailTextLabel?.text = "Full Name"
     
         self.selectionStyle = .none
+        
+        
     }
     
     override func layoutSubviews() {
@@ -79,8 +81,8 @@ class SearchUserCell: UITableViewCell {
         
         detailTextLabel?.font = UIFont(name: "HelveticaNeue", size: 15)
         
-        addSubview(separatorView)
-        separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+        //addSubview(separatorView)
+        //separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
     }
     
     required init?(coder aDecoder: NSCoder) {

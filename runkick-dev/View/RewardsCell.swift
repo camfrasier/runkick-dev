@@ -36,14 +36,14 @@ class RewardsCell: UITableViewCell {
     
     let storeTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = UIColor.rgb(red: 17, green: 20, blue: 20)
         return label
     } ()
     
     let pointsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = UIColor.rgb(red: 17, green: 20, blue: 20)
         return label
     } ()
@@ -59,6 +59,7 @@ class RewardsCell: UITableViewCell {
 
         self.storeTitleLabel.text = "Store Name"
     
+        
         //self.selectionStyle = .none
     }
     
@@ -73,10 +74,10 @@ class RewardsCell: UITableViewCell {
         rewardsImageView.layer.cornerRadius = postImageDimension / 2
         
         addSubview(storeTitleLabel)
-        storeTitleLabel.anchor(top: topAnchor, left: rewardsImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeTitleLabel.anchor(top: topAnchor, left: rewardsImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(pointsLabel)
-        pointsLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        pointsLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 25, width: 0, height: 0)
     
     }
     

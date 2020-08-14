@@ -32,6 +32,8 @@
 		69236752230B7F99002FCA4D /* MarketplaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69236751230B7F99002FCA4D /* MarketplaceVC.swift */; };
 		692CAE18233C23470056FC7A /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692CAE17233C23470056FC7A /* SearchPostCell.swift */; };
 		692CAE1B233C32350056FC7A /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692CAE1A233C32350056FC7A /* MessagesController.swift */; };
+		6934E69424E243020041F1E8 /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6934E69324E243020041F1E8 /* CameraVC.swift */; };
+		69365A4A24E361BC00AF156F /* ImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69365A4924E361BC00AF156F /* ImageVC.swift */; };
 		6937B43522A6CFED00446926 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6937B43422A6CFED00446926 /* AppDelegate.swift */; };
 		6937B43A22A6CFED00446926 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6937B43822A6CFED00446926 /* Main.storyboard */; };
 		6937B43F22A6CFF100446926 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6937B43D22A6CFF100446926 /* LaunchScreen.storyboard */; };
@@ -157,6 +159,8 @@
 		69236751230B7F99002FCA4D /* MarketplaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceVC.swift; sourceTree = "<group>"; };
 		692CAE17233C23470056FC7A /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
 		692CAE1A233C32350056FC7A /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
+		6934E69324E243020041F1E8 /* CameraVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
+		69365A4924E361BC00AF156F /* ImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVC.swift; sourceTree = "<group>"; };
 		6937B43122A6CFED00446926 /* runkick-dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "runkick-dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6937B43422A6CFED00446926 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6937B43922A6CFED00446926 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -562,6 +566,8 @@
 				6937B45322A98FE700446926 /* LeftSidePanelVC.swift */,
 				69977C4A2398929A0057D0A3 /* MenuVC.swift */,
 				6999CE3B244BBA6C00FB8FFC /* RightMenuVC.swift */,
+				6934E69324E243020041F1E8 /* CameraVC.swift */,
+				69365A4924E361BC00AF156F /* ImageVC.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -822,11 +828,13 @@
 				696A5216249EB4EC00289C33 /* HelperFunctions.swift in Sources */,
 				69D8CCD124AEA24A001432FD /* UserService.swift in Sources */,
 				6937B43522A6CFED00446926 /* AppDelegate.swift in Sources */,
+				6934E69424E243020041F1E8 /* CameraVC.swift in Sources */,
 				69FBDCF02443A43D00709E21 /* UserSpecificFeedCell.swift in Sources */,
 				69FBDCF424467D1600709E21 /* AdminProfileVC.swift in Sources */,
 				69FBDCE6243D4F5400709E21 /* PhotoFeedView.swift in Sources */,
 				69FA082B23425306002DC00F /* ChatCell.swift in Sources */,
 				692CAE18233C23470056FC7A /* SearchPostCell.swift in Sources */,
+				69365A4A24E361BC00AF156F /* ImageVC.swift in Sources */,
 				692367452305C567002FCA4D /* UserProfileVC.swift in Sources */,
 				69236752230B7F99002FCA4D /* MarketplaceVC.swift in Sources */,
 				696A70B82345296800CDD512 /* HashtagController.swift in Sources */,

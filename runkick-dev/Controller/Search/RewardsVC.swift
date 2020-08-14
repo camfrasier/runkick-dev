@@ -20,7 +20,9 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
     var userCurrentKey: String?
     var inSearchMode = false
     var searchBar = UISearchBar()
+    var titleView: UIView!
     
+
     // MARK: - Init
     
     override func viewDidLoad() {
@@ -28,6 +30,12 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
         
         // configure search bar
         configureSearchBar()
+        
+        configureNavigationBar()
+        
+        configureTabBar()
+        
+
 
         // register cell classes
         tableView.register(RewardsCell.self, forCellReuseIdentifier: reuseIdentifier)
@@ -36,20 +44,18 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
         //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
     
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        
-        configureNavigationBar()
-        
-        configureTabBar()
-        
+
         // fetch rewards
         fetchRewards()
+        
+        tableView.separatorColor = .clear
     }
     
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
-        configureSearchBar()
-        configureNavigationBar()
+        //configureSearchBar()
+        //configureNavigationBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -149,6 +155,10 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
         
         navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         
+        // add or remove nav bar bottom border
+        navigationController?.navigationBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
+        lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
         configureSearchBarButton()
     }
@@ -280,7 +290,17 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
         //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
 
         searchBar.delegate = self
-        navigationItem.titleView = searchBar
+         
+         titleView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
+        // let frame = CGRect(x: 0, y: 0, width: 100, height: 44)
+         //let titleView = UIView(frame: frame)
+         //searchBar.backgroundImage = UIImage()
+         //searchBar.frame = frame
+         titleView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+         titleView.addSubview(searchBar)
+         searchBar.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: titleView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: view.frame.width - 65, height: 40)
+         
+         navigationItem.titleView = titleView
         
         searchBar.placeholder = "Search"
         searchBar.sizeToFit()
@@ -301,7 +321,7 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
         // SearchBar text
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.textColor = UIColor.red
-        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
+        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(18)
     
         //navigationItem.titleView = searchBar
         //searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
@@ -348,7 +368,7 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
                        //using this code to show the true image without rendering color
                        searchBarButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
         
-                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 23 )
+                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 21 )
                        searchBarButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
                        searchBarButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                        searchBarButton.backgroundColor = .clear
@@ -361,13 +381,13 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
     @objc func showSearchBar() {
         // hide collectionView will in search mode
         
-        configureSearchBar()
-        navigationItem.titleView = searchBar
+        //navigationItem.titleView = searchBar
+        navigationItem.titleView = titleView
         navigationItem.rightBarButtonItem = nil
-        
+
         fetchRewards()
 
-        
+        configureSearchBar()
     }
 
     

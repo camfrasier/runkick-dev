@@ -593,7 +593,7 @@ class FeedCell: UICollectionViewCell {
         //backgroundOptionsButton.addSubview(likesButton)
         //likesButton.translatesAutoresizingMaskIntoConstraints = false
                
-        gradientImageView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 220)
+        gradientImageView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: frame.height - 300)
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0.65)-[image]-(0.65)-|", options: [], metrics: nil, views: ["image": postImageView]))
         
@@ -602,6 +602,7 @@ class FeedCell: UICollectionViewCell {
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(0.40)-[image]-(0.40)-|", options: [], metrics: nil, views: ["image": postImageView]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[image]-2-|", options: [], metrics: nil, views: ["image": postImageView]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[image]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[caption]-25-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
@@ -649,7 +650,7 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[backgroundOption(35)]-12-|", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[backgroundOption(35)]", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-15-[backgroundOption(35)]", options: [], metrics: nil, views: ["backgroundOption": backgroundOptionsButton]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[optionsButton(28)]-10-|", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
          
@@ -673,7 +674,7 @@ class FeedCell: UICollectionViewCell {
         stackView2.spacing = 5
         stackView2.translatesAutoresizingMaskIntoConstraints = false
         postImageView.addSubview(stackView2)
-        stackView2.anchor(top: captionLabel.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        stackView2.anchor(top: captionLabel.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
         
         
         

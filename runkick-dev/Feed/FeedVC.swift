@@ -216,11 +216,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         fetchProfileData()
         
-        
+        /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .top
         extendedLayoutIncludesOpaqueBars = true
-        
+        */
 
         // uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -244,7 +244,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         configureFeedViewElements()
         
-        configureNotificationComponents()
+        //configureNotificationComponents()
         
         //setUserFCMTocken()
     
@@ -294,6 +294,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
+        //let navigationBarHeight = navigationController?.navigationBar.frame.height ?? 0
+        //let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
+        
         
         /*
         // if statement safely unwraps status text
@@ -320,7 +323,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                            
                           // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                    return CGSize(width: view.frame.width - 0, height: view.frame.height - 100)
+                    return CGSize(width: view.frame.width, height: view.frame.height)
             }
             
         }
@@ -336,12 +339,15 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 
                 //return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                return CGSize(width: view.frame.width - 0, height: view.frame.height)
+                //return CGSize(width: view.frame.width - 0, height: view.frame.height - 50)
+                
+                return CGSize(width: view.frame.width, height: view.frame.height)
             }
             
         }
         // return CGSize(width: view.frame.width - 0, height: 200)
-        return CGSize(width: view.frame.width - 0, height: view.frame.height)
+        //return CGSize(width: view.frame.width - 0, height: view.frame.height + 50)
+        return CGSize(width: view.frame.width, height: view.frame.height)
         
     }
 
@@ -385,7 +391,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     // calling function to give space and insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: -68, left: 0, bottom: 0, right: 0)
+        //return UIEdgeInsets(top: -68, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -527,26 +534,30 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func configureNavigationBar() {
-        
+        /*
+        //make navigation bar clear
          //navigationController?.navigationBar.isHidden = true
          self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
          self.navigationController?.navigationBar.shadowImage = UIImage()
          self.navigationController?.navigationBar.isTranslucent = true
+        */
         
         
-        /*
         // add or remove nav bar bottom border
-        
         navigationController?.navigationBar.shadowImage = UIImage()
         let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
         lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        */
+        
          
         
-        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.backgroundColor = .clear
         navigationController?.navigationBar.barTintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        let font = UIFont(name: "PingFangTC-Semibold", size: 17)!
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 0, green: 0, blue: 0)]
+        navigationItem.title = "Explore"
         
         
         /*

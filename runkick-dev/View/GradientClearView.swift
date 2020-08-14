@@ -27,7 +27,7 @@ class GradientClearView: UIView {
     func setupGradientView(){
         
         gradient.frame = bounds
-        gradient.colors = [UIColor.black.withAlphaComponent(0.75).cgColor,
+        gradient.colors = [UIColor.black.withAlphaComponent(0.25).cgColor,
         UIColor.black.withAlphaComponent(0.0).cgColor]
         gradient.locations = [0.0, 0.65]
         gradient.startPoint = CGPoint(x: 1.0, y: 1.0)

@@ -88,6 +88,7 @@ class MarketplaceVC: UICollectionViewController {
     //var searchBar: UISearchBar!
     var searchBar = UISearchBar()
     var inSearchMode = false
+    var titleView: UIView!
     
     // MARK: - Init
     
@@ -125,14 +126,16 @@ class MarketplaceVC: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
-        configureNavigationBar()
+        //configureNavigationBar()
     }
     
     // MARK: - Selectors
     
     @objc func showSearchBar() {
         
-        navigationItem.titleView = searchBar
+        //navigationItem.titleView = searchBar
+        
+        navigationItem.titleView = titleView
         navigationItem.rightBarButtonItem = nil
         
         configureSearchBar()
@@ -164,8 +167,21 @@ class MarketplaceVC: UICollectionViewController {
     
     func configureSearchBar() {
         
-        searchBar.delegate = self
-        navigationItem.titleView = searchBar
+        
+         searchBar.delegate = self
+         
+         titleView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
+        // let frame = CGRect(x: 0, y: 0, width: 100, height: 44)
+         //let titleView = UIView(frame: frame)
+         //searchBar.backgroundImage = UIImage()
+         //searchBar.frame = frame
+         titleView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+         titleView.addSubview(searchBar)
+         searchBar.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: titleView.rightAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 5, width: view.frame.width - 35, height: 40)
+         
+         navigationItem.titleView = titleView
+        
+        //navigationItem.titleView = searchBar
         
         searchBar.placeholder = "Search"
         searchBar.sizeToFit()
@@ -179,7 +195,7 @@ class MarketplaceVC: UICollectionViewController {
         // SearchBar text
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.textColor = UIColor.red
-        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
+        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(18)
         
         
         if #available(iOS 13.0, *) {
@@ -228,7 +244,7 @@ class MarketplaceVC: UICollectionViewController {
                        //using this code to show the true image without rendering color
                        searchBarButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
         
-                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 23 )
+                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 21 )
                        searchBarButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
                        searchBarButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                        searchBarButton.backgroundColor = .clear

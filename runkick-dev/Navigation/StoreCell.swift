@@ -146,7 +146,7 @@ class StoreCell: UITableViewCell {
     
     let locationTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 19)
         label.textColor = UIColor.rgb(red: 20, green: 20, blue: 20)
         return label
     } ()
@@ -222,7 +222,7 @@ class StoreCell: UITableViewCell {
             , paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationDistanceLabel)
-        locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 1, paddingRight: 0, width: 0, height: 0)
+        locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationAddressLabel)
         locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil
@@ -236,7 +236,7 @@ class StoreCell: UITableViewCell {
 
         addSubview(imageContainerView)
         //let dimension: CGFloat = 140
-        imageContainerView.anchor(top: storeHoursLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 260, height: 160)
+        imageContainerView.anchor(top: storeHoursLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 260, height: 160)
         imageContainerView.layer.cornerRadius = 0
         
         imageContainerView.addSubview(storeImageView)

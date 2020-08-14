@@ -31,6 +31,7 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     var uploadAction: UploadAction!
     var selectedImage: UIImage?
     var postToEdit: Post?
+    //var image: UIImage?
     
     let photoImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -39,6 +40,17 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         iv.backgroundColor = .lightGray
         return iv
     } ()
+    
+    lazy var saveImage: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Save Image", for: .normal)
+        button.addTarget(self, action: #selector(handleSaveImage), for: .touchUpInside)
+        button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //button.layer.borderWidth = 1
+        //button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
+        button.alpha = 1
+        return button
+    }()
     
     let captionTextView: UITextView = {
         let tv = UITextView()
@@ -154,7 +166,20 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     }
     
     @objc func handleCancel() {
+        
+        print("the cancel button should work here")
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func handleSaveImage() {
+        
+        // if user toggles save the image will save
+        print("save current image")
+        guard let imageToSave = selectedImage else {
+            return
+        }
+            UIImageWriteToSavedPhotosAlbum(imageToSave, nil, nil, nil)
+           // dismiss(animated: false, completion: nil)
     }
     
     func buttonSelector(uploadAction: UploadAction) {
@@ -268,6 +293,12 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         
         view.addSubview(actionButton)
         actionButton.anchor(top: photoImageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 24, paddingBottom: 0, paddingRight: 24, width: 0, height: 40)
+        
+        
+        view.addSubview(saveImage)
+        saveImage.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 60, paddingBottom: 50, paddingRight: 0, width: 100, height: 50)
+        //saveImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        saveImage.layer.cornerRadius = 15
     }
     
     func loadImage() {

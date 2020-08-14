@@ -240,7 +240,7 @@ class HomeVC: UIViewController, Alertable {
         tf.font = UIFont.systemFont(ofSize: 22)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
-        tf.layer.cornerRadius = 25
+        tf.layer.cornerRadius = 0 //25
         tf.clipsToBounds = true
         tf.autocapitalizationType = .none
         tf.addTarget(self, action: #selector(HomeVC.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
@@ -424,7 +424,7 @@ class HomeVC: UIViewController, Alertable {
     }()
     
     
-    let beBoppActionButton: UIButton = {
+    lazy var beBoppActionButton: UIButton = {
         let button = UIButton(type: .custom)
         //button.setImage(UIImage(named: "beBoppAction2"), for: .normal)
         button.setImage(UIImage(named: "roundedWhitePlus"), for: .normal)
@@ -1732,7 +1732,7 @@ class HomeVC: UIViewController, Alertable {
         rewardsBackground.layer.cornerRadius = 45 / 2
         
         rewardsBackground.addSubview(homeRewardsButton)
-        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 11.5, paddingBottom: 0, paddingRight: 0, width: 23, height: 24)
+        homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 22, height: 23)
         
         
         /*
@@ -1865,7 +1865,6 @@ class HomeVC: UIViewController, Alertable {
                     print("DEBUG: Search table is set to false")
                     self.expansionState = .NotExpanded
                 }
-        
          }
         
         
@@ -2128,7 +2127,7 @@ class HomeVC: UIViewController, Alertable {
                
                    window.addSubview(rightMenuBV)
                    rightMenuBV.frame = window.frame
-               
+                            
                    UIView.animate(withDuration: 0.5, animations: {
                        self.rightMenuBV.alpha = 0
                    })
@@ -2141,6 +2140,7 @@ class HomeVC: UIViewController, Alertable {
                    
                 window.addSubview(rightMenuVC.view)
                    
+                
                 
                 // initial starting point of the horizontal slide view
                 //rightMenuVC.view.frame = CGRect(x: (view.frame.width) + 35, y: 0, width: 450, height: window.frame.height)
@@ -2215,7 +2215,7 @@ class HomeVC: UIViewController, Alertable {
                 //let collectionViewX = window.frame.width - width + 155
                 
                 //let height: CGFloat = 568
-                let height: CGFloat = 620
+                let height: CGFloat = 525
                 let collectionViewY = window.frame.height - height
                 
                 UIView.animate(withDuration: 0.15) {
@@ -2452,7 +2452,7 @@ class HomeVC: UIViewController, Alertable {
     @objc func handleRightMenuDismiss() {
         
         //let height: CGFloat = 568
-        let height: CGFloat = 620
+        let height: CGFloat = 525
         
         if isRightMenuExpanded == true {
             
@@ -2464,7 +2464,7 @@ class HomeVC: UIViewController, Alertable {
                 let collectionViewY = window.frame.width - height
                 
                 
-                    UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                             self.rightMenuVC.view.frame = CGRect(x: 0, y: -(collectionViewY) + 650, width: window.frame.width, height: self.rightMenuVC.view.frame.height)
             
                         self.isRightMenuExpanded = false
@@ -2477,6 +2477,8 @@ class HomeVC: UIViewController, Alertable {
         UIView.animate(withDuration: 0.25) {
         self.rightMenuBV.alpha = 0
         }
+        
+        rightMenuVC.handleDissmissKeyboard()
          
     }
     

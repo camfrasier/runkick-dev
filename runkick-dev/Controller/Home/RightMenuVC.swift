@@ -20,6 +20,9 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     
     var tableView: UITableView!
     var delegate: HomeControllerDelegate?
+    var searchBar = UISearchBar()
+    var inSearchMode = false
+    //var homeVC: HomeVC?
     
     var collectionView: UICollectionView!
      
@@ -86,27 +89,12 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         return view
     }()
     
-    lazy var destinationTextField: UITextField = {
-        let tf = UITextField()
-        tf.layer.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1).cgColor
-        /*
-        //tf.placeholder = "Where to?"
-        tf.attributedPlaceholder = NSAttributedString(string:"Search..", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
-        tf.font = UIFont.systemFont(ofSize: 22)
-        tf.keyboardType = UIKeyboardType.default
-        tf.layer.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1).cgColor
-        tf.layer.cornerRadius = 25
-        tf.clipsToBounds = true
-        tf.autocapitalizationType = .none
-        //tf.addTarget(self, action: #selector(HomeVC.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
-        view.isUserInteractionEnabled = true
-        */
-        return tf
-    }()
     
     let searchBarContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        view.layer.borderWidth = 2
         return view
     }()
     
@@ -198,6 +186,15 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
        }()
     
 
+    let indicatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 3
+        view.alpha = 1
+        return view
+    }()
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -219,12 +216,16 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         // adjust the corner radius of the slide menu view
         let myControlLayer: CALayer = self.view.layer
         myControlLayer.masksToBounds = true
-        myControlLayer.cornerRadius = 0
+        myControlLayer.cornerRadius = 10
         
         // configure refresh control
         let refreshFeedControl = UIRefreshControl()
         refreshFeedControl.addTarget(self, action: #selector(handleFeedRefresh), for: .valueChanged)
         tableView?.refreshControl = refreshFeedControl
+        
+        view.addSubview(indicatorView)
+        indicatorView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
+        indicatorView.centerX(inView: view)
 
     }
     
@@ -272,6 +273,47 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         }
     }
 */
+    
+    func configureSearchBar() {
+        
+        //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
+
+        
+        searchBar.delegate = self
+        //navigationItem.titleView = searchBar
+        
+        searchBar.placeholder = "Search"
+        searchBar.sizeToFit()
+        searchBar.showsCancelButton = true
+        searchBar.becomeFirstResponder()
+        searchBar.autocapitalizationType = .none
+        
+        
+        // SearchBar text
+        let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.textColor = UIColor.red
+        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
+        
+        searchBar.isTranslucent = false
+        searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0) // changes the text
+        searchBar.alpha = 1
+        
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            //searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            searchBar.searchTextField.layer.cornerRadius = 0
+            searchBar.searchTextField.layer.masksToBounds = true
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        searchBarContainer.addSubview(searchBar)
+        searchBar.anchor(top: searchBarContainer.topAnchor, left: searchBarContainer.leftAnchor, bottom: searchBarContainer.bottomAnchor, right: searchBarContainer.rightAnchor, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        searchBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        searchBar.layer.borderColor = UIColor.white.cgColor
+        searchBar.layer.borderWidth = 2
+    }
     
     func fetchActivityPosts() {
         
@@ -329,6 +371,8 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     @objc func handleGroupsTapped() {
         //delegate?.handleGridViewTapped(for: self)
         
+        configureSearchBar()
+        
         //separatorViewGradient.transform = CGAffineTransform(translationX: 1, y: 1)
         collectionView.isHidden = false
         searchBarContainer.isHidden = false
@@ -349,6 +393,13 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
             
             self.separatorViewGradient.transform = CGAffineTransform(translationX: 0, y: 0)
         })
+        
+        
+        view.endEditing(true)
+    }
+    
+    func handleDissmissKeyboard() {
+        view.endEditing(true)
     }
     
     func configureTableView() {
@@ -360,7 +411,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         tableView.register(RightMenuOptionCell.self, forCellReuseIdentifier: reuseIdentifier)
         //tableView.backgroundColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        tableView.separatorStyle = .singleLine
+        //tableView.separatorStyle = .singleLine
         tableView.separatorColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1)
         tableView.rowHeight = 500
         
@@ -378,12 +429,13 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         view.addSubview(gradientView)
         gradientView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
         
-        
         gradientView.addSubview(activityLabel)
         activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 70, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         gradientView.addSubview(groupsLabel)
         groupsLabel.anchor(top: gradientView.topAnchor, left: nil, bottom: nil, right: gradientView.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 65, width: 0, height: 0)
+        
+
         
         //gradientView.addSubview(hoziontalSeparatorView)
         //hoziontalSeparatorView.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: view.frame.width / 2, paddingBottom: 0, paddingRight: 0, width: 0.25, height: 80)
@@ -443,7 +495,9 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
            collectionView.register(GroupsCell.self, forCellWithReuseIdentifier: reuseGroupsCellIdentifier)
         
         view.addSubview(searchBarContainer)
-        searchBarContainer.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 80)
+        searchBarContainer.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 85, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 75)
+        
+       
                    
            tableView.separatorColor = .clear
            
@@ -735,5 +789,52 @@ extension RightMenuVC: UITableViewDelegate, UITableViewDataSource {
 
 }
 
+// MARK: - UISearchBarDelegate
 
+extension RightMenuVC: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        handleDissmissKeyboard()
+        print("cancel button clicked here")
+   
+        /*
+       // configureSearchBarButton()
+        inSearchMode = false
+        
+        searchBar.text = nil
+        navigationItem.titleView = nil
+        
+        collectionView.reloadData()
+        
+        configureSearchBarButton()
+        */
+    }
+    
+     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        print("did beginning editing here")
+        
+        // text printing out the text real time
+        print(searchText)
+        /*
+        if searchText == "" || searchBar.text == nil {
+            inSearchMode = false
+            collectionView.reloadData()
+            view.endEditing(true)
+        } else {
+            inSearchMode = true
+            // whatever pokemon we are looking at look at there name and see if there name contains that search text, here $0 represnts any categories array
+            filteredCategories = categories.filter({ $0.category?.range(of: searchText) != nil
+                
+                return ($0.category?.localizedCaseInsensitiveContains(searchText))!
+            })
+            collectionView.reloadData()
+
+        }
+ */
+    }
+    
+}
 
