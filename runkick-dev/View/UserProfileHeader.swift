@@ -355,7 +355,7 @@ class UserProfileHeader: UICollectionViewCell {
     let separatorView: UIView = {
         let view = UIView()
         //view.layer.backgroundColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1).cgColor
-        view.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        view.layer.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1).cgColor
         return view
     }()
     let separatorViewLower: UIView = {
@@ -371,9 +371,18 @@ class UserProfileHeader: UICollectionViewCell {
         return view
     }()
     */
+    
+    /*
     let separatorViewGradient: GradientActionView = {
         let view = GradientActionView()
         //view.layer.backgroundColor = UIColor.actionRed().cgColor
+        return view
+    }()
+    */
+    
+    let separatorViewGradient: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor.airBnBNew().cgColor
         return view
     }()
     
@@ -678,7 +687,8 @@ class UserProfileHeader: UICollectionViewCell {
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
-            self.separatorViewGradient.transform = CGAffineTransform(translationX: 195, y: 0)
+            //self.separatorViewGradient.transform = CGAffineTransform(translationX: 205, y: 0)
+            self.separatorViewGradient.transform = CGAffineTransform(translationX: self.frame.width / 2, y: 0)
         })
     }
     
@@ -732,20 +742,20 @@ class UserProfileHeader: UICollectionViewCell {
         userBioLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         addSubview(separatorView)
-        separatorView.anchor(top: userBioLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
+        separatorView.anchor(top: userBioLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
         
        // addSubview(separatorViewLower)
        // separatorViewLower.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.30)
         
         addSubview(activityBackgroundOne)
-        activityBackgroundOne.anchor(top: separatorView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
+        activityBackgroundOne.anchor(top: separatorView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
         
         activityBackgroundOne.addSubview(activityHistoryView)
         activityHistoryView.anchor(top: activityBackgroundOne.topAnchor, left: activityBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
          activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
          
         addSubview(gridBackgroundOne)
-        gridBackgroundOne.anchor(top: separatorView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
+        gridBackgroundOne.anchor(top: separatorView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
         
         gridBackgroundOne.addSubview(gridViewButton)
         gridViewButton.anchor(top: gridBackgroundOne.topAnchor, left: gridBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
@@ -754,8 +764,7 @@ class UserProfileHeader: UICollectionViewCell {
          addSubview(separatorViewGradient)
         //separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: (frame.width / 2), height: 5)
         
-        separatorViewGradient.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 77, paddingLeft: 55, paddingBottom: 5, paddingRight: 0, width: 110, height: 5)
-        separatorViewGradient.layer.cornerRadius = 2
+        separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 1)
 
     }
     
@@ -824,24 +833,24 @@ class UserProfileHeader: UICollectionViewCell {
                     self.userBioLabel.centerXAnchor.constraint(equalTo: self.profileImageView.centerXAnchor).isActive = true
                     
                     self.addSubview(self.separatorView)
-                    self.separatorView.anchor(top: self.userBioLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
+                    self.separatorView.anchor(top: self.userBioLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
                     
                     self.addSubview(self.activityBackgroundOne)
-                    self.activityBackgroundOne.anchor(top: self.separatorView.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
+                    self.activityBackgroundOne.anchor(top: self.separatorView.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
                     
                     self.activityBackgroundOne.addSubview(self.activityHistoryView)
                     self.activityHistoryView.anchor(top: self.activityBackgroundOne.topAnchor, left: self.activityBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
                     self.activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
                      
                     self.addSubview(self.gridBackgroundOne)
-                    self.gridBackgroundOne.anchor(top: self.separatorView.topAnchor, left: nil, bottom: nil, right: self.rightAnchor, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
+                    self.gridBackgroundOne.anchor(top: self.separatorView.topAnchor, left: nil, bottom: nil, right: self.rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
                     
                     self.gridBackgroundOne.addSubview(self.gridViewButton)
                     self.gridViewButton.anchor(top: self.gridBackgroundOne.topAnchor, left: self.gridBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
                     self.gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
                     
                     self.addSubview(self.separatorViewGradient)
-                    self.separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 2.5)
+                    self.separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 2)
 
                 } else {
                     
@@ -881,24 +890,24 @@ class UserProfileHeader: UICollectionViewCell {
                             self.userBioLabel.centerXAnchor.constraint(equalTo: self.profileImageView.centerXAnchor).isActive = true
                             
                             self.addSubview(self.separatorView)
-                            self.separatorView.anchor(top: self.userBioLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
+                            self.separatorView.anchor(top: self.userBioLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.50)
                             
                             self.addSubview(self.activityBackgroundOne)
-                            self.activityBackgroundOne.anchor(top: self.separatorView.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
+                            self.activityBackgroundOne.anchor(top: self.separatorView.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 90, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
                             
                             self.activityBackgroundOne.addSubview(self.activityHistoryView)
                             self.activityHistoryView.anchor(top: self.activityBackgroundOne.topAnchor, left: self.activityBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
                             self.activityHistoryView.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
                              
                             self.addSubview(self.gridBackgroundOne)
-                            self.gridBackgroundOne.anchor(top: self.separatorView.topAnchor, left: nil, bottom: nil, right: self.rightAnchor, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
+                            self.gridBackgroundOne.anchor(top: self.separatorView.topAnchor, left: nil, bottom: nil, right: self.rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 40, height: 30)
                             
                             self.gridBackgroundOne.addSubview(self.gridViewButton)
                             self.gridViewButton.anchor(top: self.gridBackgroundOne.topAnchor, left: self.gridBackgroundOne.leftAnchor, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 16, height: 16)
                             self.gridViewButton.tintColor = UIColor(red: 181/255, green: 201/255, blue: 215/255, alpha: 1)
                             
                             self.addSubview(self.separatorViewGradient)
-                            self.separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 2.5)
+                    self.separatorViewGradient.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (self.frame.width / 2), height: 2)
                             
                         } else {
                             // don't show the send message button because the current user is not following the other user

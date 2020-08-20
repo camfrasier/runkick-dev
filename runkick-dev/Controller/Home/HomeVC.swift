@@ -307,15 +307,15 @@ class HomeVC: UIViewController, Alertable {
         return label
     }()
     
-    /*
+    
     let indicatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .white
         view.layer.cornerRadius = 3
-        view.alpha = 0.8
+        view.alpha = 1
         return view
     }()
-    */
+    
     
     let navigatorSubView: UIView = {
         let view = UIView()
@@ -425,11 +425,13 @@ class HomeVC: UIViewController, Alertable {
     
     
     lazy var beBoppActionButton: UIButton = {
-        let button = UIButton(type: .custom)
-        //button.setImage(UIImage(named: "beBoppAction2"), for: .normal)
-        button.setImage(UIImage(named: "roundedWhitePlus"), for: .normal)
+        let button = UIButton(type: .system)
+        //button.setImage(UIImage(named: "whitePlus"), for: .normal)
+        button.setImage(UIImage(named: "simplePlusSignBlack"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
         button.backgroundColor = .clear
+        button.tintColor = UIColor.airBnBNew()
+        //button.tintColor = UIColor.black
         /*
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.65).cgColor
@@ -457,7 +459,7 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var simpleActionShadowBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.actionRed()
+        view.backgroundColor = UIColor.white
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckRight))
         menuTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
@@ -543,7 +545,10 @@ class HomeVC: UIViewController, Alertable {
     
     let centerMapButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
-        button.setImage(UIImage(named: "centerMapIcon"), for: .normal)
+        //button.setImage(UIImage(named: "centerMapIcon"), for: .normal)
+        //button.setImage(UIImage(named: "centerMapIconSharpInner"), for: .normal)
+        //button.setImage(UIImage(named: "centerMapIconSharpOuter"), for: .normal)
+        button.setImage(UIImage(named: "centerMapIconSharpOuterInner"), for: .normal)
         button.addTarget(self, action: #selector(handleCenterMapBtnPressed), for: .touchUpInside)
         button.alpha = 0
         return button
@@ -996,18 +1001,20 @@ class HomeVC: UIViewController, Alertable {
         simpleMenuButton.anchor(top: simpleMenuBackground.topAnchor, left: simpleMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 5.5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)
         
         mapView.addSubview(simpleActionShadowBackground)
-        simpleActionShadowBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 60, height: 60)
-        simpleActionShadowBackground.layer.cornerRadius = 60 / 2
+        simpleActionShadowBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 50, height: 50)
+        simpleActionShadowBackground.layer.cornerRadius = 50 / 2
         
+        /*
         simpleActionShadowBackground.addSubview(simpleRightMenuBackground)
         simpleRightMenuBackground.anchor(top: simpleActionShadowBackground.topAnchor, left: simpleActionShadowBackground.leftAnchor, bottom:  simpleActionShadowBackground.bottomAnchor, right: simpleActionShadowBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         simpleRightMenuBackground.layer.cornerRadius = 60 / 2
-
+        */
+        
        //simpleRightMenuBackground.addSubview(simpleRightMenuButton)
        //simpleRightMenuButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
-        simpleRightMenuBackground.addSubview(beBoppActionButton)
-        beBoppActionButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 18, paddingLeft: 18, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
+        simpleActionShadowBackground.addSubview(beBoppActionButton)
+        beBoppActionButton.anchor(top: simpleActionShadowBackground.topAnchor, left: simpleActionShadowBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
         
         /*
         mapView.addSubview(saveSegmentButton)
@@ -1712,16 +1719,16 @@ class HomeVC: UIViewController, Alertable {
         let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
         
         mapView.addSubview(centerMapBackground)
-        centerMapBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 20, paddingRight: 0, width: 60, height: 60)
-        centerMapBackground.layer.cornerRadius = 60 / 2
+        centerMapBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 20, paddingRight: 0, width: 55, height: 55)
+        centerMapBackground.layer.cornerRadius = 55 / 2
         
         centerMapBackground.addSubview(centerMapButton)
-        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
         
         //mapView.addSubview(analyticsButton)
         //analyticsButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
         
-        
+        /*
         mapView.addSubview(rewardsBackgroundSubView)
         rewardsBackgroundSubView.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 45, height: 45)
         rewardsBackgroundSubView.layer.cornerRadius = 45 / 2
@@ -1733,7 +1740,7 @@ class HomeVC: UIViewController, Alertable {
         
         rewardsBackground.addSubview(homeRewardsButton)
         homeRewardsButton.anchor(top: rewardsBackground.topAnchor, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 22, height: 23)
-        
+        */
         
         /*
         mapView.addSubview(startTripButton)
@@ -2139,7 +2146,6 @@ class HomeVC: UIViewController, Alertable {
                if let window:UIWindow = applicationDelegate.window {
                    
                 window.addSubview(rightMenuVC.view)
-                   
                 
                 
                 // initial starting point of the horizontal slide view
@@ -2148,8 +2154,12 @@ class HomeVC: UIViewController, Alertable {
                 // the proper slide from east to west requires a subtracted value
                 //rightMenuVC.view.frame = CGRect(x: (view.frame.width) - 200, y: 0, width: 450, height: window.frame.height)
                 
+                // need to add 16 to the height of the original position to account for the indicator view poking up
+                rightMenuVC.view.frame = CGRect(x: 0, y: view.frame.height + 16, width: view.frame.width, height: 575)
+                window.addSubview(indicatorView)
                 
-                rightMenuVC.view.frame = CGRect(x: 0, y: view.frame.height - 0, width: view.frame.width, height: 650)
+                indicatorView.anchor(top: rightMenuVC.view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
+                indicatorView.centerX(inView: rightMenuVC.view)
             
                }
            }
@@ -2222,12 +2232,20 @@ class HomeVC: UIViewController, Alertable {
                     self.rightMenuBV.alpha = 1
                 }
                 
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.70, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                 
                     // final starting point of the view
                     //self.rightMenuVC.view.frame = CGRect(x: collectionViewX, y: 0, width: self.rightMenuVC.view.frame.width, height: window.frame.height)
                         
                     self.rightMenuVC.view.frame = CGRect(x: 0, y: collectionViewY, width: window.frame.width, height: self.rightMenuVC.view.frame.height)
+                    
+                    //self.indicatorView.frame = CGRect(x: 0, y: collectionViewY, width: window.frame.width, height: self.rightMenuVC.view.frame.height)
+                    
+                    // add bounce of indicator view
+                    self.indicatorView.frame.origin.y = self.rightMenuVC.view.frame.origin.y - self.rightMenuVC.view.frame.height
+                    
+                    // remove bounce of indicator view
+                    //self.indicatorView.frame.origin.y = self.indicatorView.frame.origin.y - self.rightMenuVC.view.frame.height
                     
                     self.isRightMenuExpanded = true
                                                  

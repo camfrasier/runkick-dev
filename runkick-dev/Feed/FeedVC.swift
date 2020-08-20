@@ -28,6 +28,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     var post: Post?
     var currentKey: String?
     var userProfileController: UserProfileVC?
+   
     
     // here we are using the class photo feed view in order to pull up the photo we need from the subclass
     let photoFeedView: PhotoFeedView = {
@@ -211,6 +212,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         // adding blur effect with this function at alpha 0 initially
         configureViewComponents()
         
@@ -262,6 +265,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             //flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
             flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
         }
+        
+     
         
     }
     
@@ -323,7 +328,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                            
                           // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                    return CGSize(width: view.frame.width, height: view.frame.height)
+                    return CGSize(width: view.frame.width, height: view.frame.height - 40)
             }
             
         }
@@ -341,13 +346,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 
                 //return CGSize(width: view.frame.width - 0, height: view.frame.height - 50)
                 
-                return CGSize(width: view.frame.width, height: view.frame.height)
+                return CGSize(width: view.frame.width, height: view.frame.height - 40)
             }
             
         }
         // return CGSize(width: view.frame.width - 0, height: 200)
         //return CGSize(width: view.frame.width - 0, height: view.frame.height + 50)
-        return CGSize(width: view.frame.width, height: view.frame.height)
+        return CGSize(width: view.frame.width, height: view.frame.height - 40)
         
     }
 
@@ -505,16 +510,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         print("DEBUG: Profile view selected")
         
         let profileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
-        profileVC.modalPresentationStyle = .fullScreen
+        //profileVC.modalPresentationStyle = .fullScreen
         //present(profileVC, animated: true, completion:nil)
-        
-        let nav = self.navigationController
-        DispatchQueue.main.async {
-            nav?.view.layer.add(CATransition().segueFromBottom(), forKey: nil)
-            nav?.pushViewController(profileVC, animated: true)
-        }
-
-        //navigationController?.pushViewController(profileVC, animated: true)
+        navigationController?.pushViewController(profileVC, animated: true)
     }
     
     func fetchProfileData() {
@@ -573,19 +571,20 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         //navigationItem.title = "Explore"
             
-        /*
+        // custom profile image view of current user
+        
+        
+            /*
             profileImageView.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-            profileImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
+            profileImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 32, height: 32 )
             profileImageView.backgroundColor = .clear
-        profileImageView.layer.cornerRadius = 32 / 2
+            profileImageView.layer.cornerRadius = 32 / 2
 
             let profileView = UIBarButtonItem(customView: profileImageView)
             self.navigationItem.leftBarButtonItems = [profileView]
-        
-            let profileView = UIBarButtonItem(customView: profileImageView)
-            self.navigationItem.leftBarButtonItems = [profileView]
-        
             */
+        
+            
         
         
         /*
@@ -893,6 +892,23 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         userProfileVC.user = post.user
         
         navigationController?.pushViewController(userProfileVC, animated: true)
+    }
+    
+    func handleFollowFollowingTapped(for cell: FeedCell) {
+        
+        guard let post = cell.post else { return }
+    
+            if cell.followFollowingLabel.text == "follow" {
+                cell.followFollowingLabel.text = "following"
+                cell.followFollowingLabel.font = UIFont.systemFont(ofSize: 16)
+                print("The user just tapped to follow this profile")
+                post.follow()
+            } else {
+                cell.followFollowingLabel.text = "follow"
+                cell.followFollowingLabel.font = UIFont.boldSystemFont(ofSize: 16)
+                post.unfollow()
+                print("This user just unfollowed this profile")
+            }
     }
     
     func handleOptionTapped(for cell: FeedCell) {

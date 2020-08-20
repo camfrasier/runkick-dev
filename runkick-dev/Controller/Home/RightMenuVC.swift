@@ -53,6 +53,12 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         return view
     }()
     
+    let searchBarBlackLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)
+        return view
+    }()
+    
     let hoziontalSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
@@ -61,31 +67,64 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     
     lazy var groupsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 22)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.text = "Groups"
-        let activityTap = UITapGestureRecognizer(target: self, action: #selector(handleGroupsTapped))
+        let groupTap = UITapGestureRecognizer(target: self, action: #selector(handleGroupsTapped))
+        groupTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(groupTap)
+        return label
+    } ()
+    /*
+    lazy var messageInboxButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "simpleMarineCircleSendText"), for: .normal)
+        button.addTarget(self, action: #selector(handleMessagesTapped), for: .touchUpInside)
+        button.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        button.layer.borderWidth = 3
+        button.alpha = 1
+        button.backgroundColor = .clear
+        return button
+    }()
+    */
+    lazy var activityLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.text = "Activity"
+        let activityTap = UITapGestureRecognizer(target: self, action: #selector(handleActivityTapped))
         activityTap.numberOfTapsRequired = 1
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(activityTap)
         return label
     } ()
     
-    lazy var activityLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 22)
-        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
-        label.text = "Activity"
-        let groupTap = UITapGestureRecognizer(target: self, action: #selector(handleActivityTapped))
-        groupTap.numberOfTapsRequired = 1
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(groupTap)
-        return label
-    } ()
+    let separatorViewGradient: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor.airBnBNew().cgColor
+        return view
+    }()
     
-    let separatorViewGradient: GradientActionView = {
-        let view = GradientActionView()
-        //view.layer.backgroundColor = UIColor.actionRed().cgColor
+    lazy var rightTabView: UIView = {
+        let view = UIView()
+        view.clipsToBounds = true
+        view.layer.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245).cgColor
+        let groupTap = UITapGestureRecognizer(target: self, action: #selector(handleGroupsTapped))
+        groupTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(groupTap)
+        return view
+    }()
+    
+    lazy var leftTabView: UIView = {
+        let view = UIView()
+        view.clipsToBounds = true
+        view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        let activityTap = UITapGestureRecognizer(target: self, action: #selector(handleActivityTapped))
+        activityTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(activityTap)
         return view
     }()
     
@@ -95,6 +134,12 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         view.layer.borderWidth = 2
+        return view
+    }()
+    
+    let searchBarBoarder: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         return view
     }()
     
@@ -188,17 +233,20 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
 
     let indicatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .red
         view.layer.cornerRadius = 3
         view.alpha = 1
         return view
     }()
     
-
+    var bottomConstraint: NSLayoutConstraint?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        
+        
         
         fetchActivityPosts()
         
@@ -218,17 +266,51 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         myControlLayer.masksToBounds = true
         myControlLayer.cornerRadius = 10
         
+        //view.addSubview(indicatorView)
+        //indicatorView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
+        //indicatorView.centerX(inView: view)
+        
+
         // configure refresh control
         let refreshFeedControl = UIRefreshControl()
         refreshFeedControl.addTarget(self, action: #selector(handleFeedRefresh), for: .valueChanged)
         tableView?.refreshControl = refreshFeedControl
         
-        view.addSubview(indicatorView)
-        indicatorView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
-        indicatorView.centerX(inView: view)
+
+        
+        // configure the listener for when the keyboard shows up
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        // configure the listener for when the keyboard goes down
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+            
 
     }
     
+    @objc func handleKeyboardNotification(notification: NSNotification) {
+        
+        if let userInfo = notification.userInfo {
+            // the UI responder finds the exact diminsions of the keyboard frame for us. We can utilze this for other diminsions
+            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            print(keyboardFrame)
+            
+            let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
+            
+            bottomConstraint?.constant = isKeyboardShowing ? -keyboardFrame.height - 50 : -60
+            
+            UIView.animate(withDuration: 0, delay: 0, options: .curveEaseInOut, animations: {
+                // calling this function will help perform the smooth animation
+                self.view.layoutIfNeeded()
+                
+            }) { (completed) in
+                
+            }
+            
+            
+            //bottomConstraint?.constant = -keyboardFrame.height
+        }
+        
+    }
 
 /*
     func fetchActivityPosts() {
@@ -285,14 +367,15 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         searchBar.placeholder = "Search"
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
-        searchBar.becomeFirstResponder()
+        //searchBar.becomeFirstResponder()  // this command displays the search bar as soon as the view presents
         searchBar.autocapitalizationType = .none
+        //searchBar.frame.origin.y = 0
         
         
         // SearchBar text
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.textColor = UIColor.red
-        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(22)
+        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(19)
         
         searchBar.isTranslucent = false
         searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0) // changes the text
@@ -301,18 +384,26 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             //searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-            searchBar.searchTextField.layer.cornerRadius = 0
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+            searchBar.searchTextField.layer.cornerRadius = 17
             searchBar.searchTextField.layer.masksToBounds = true
+            UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "HelveticaNeue", size: 12)!], for: .normal)
+            
+    
         } else {
             // Fallback on earlier versions
         }
+     
         
         searchBarContainer.addSubview(searchBar)
-        searchBar.anchor(top: searchBarContainer.topAnchor, left: searchBarContainer.leftAnchor, bottom: searchBarContainer.bottomAnchor, right: searchBarContainer.rightAnchor, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        searchBar.anchor(top: searchBarContainer.topAnchor, left: searchBarContainer.leftAnchor, bottom: searchBarContainer.bottomAnchor, right: searchBarContainer.rightAnchor, paddingTop: 5, paddingLeft: 20, paddingBottom: 0, paddingRight: 5, width: 0, height: 0)
+        
+        
         searchBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        searchBar.layer.borderColor = UIColor.white.cgColor
+        searchBar.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         searchBar.layer.borderWidth = 2
+
+        
     }
     
     func fetchActivityPosts() {
@@ -372,26 +463,56 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         //delegate?.handleGridViewTapped(for: self)
         
         configureSearchBar()
-        
+        /*
         //separatorViewGradient.transform = CGAffineTransform(translationX: 1, y: 1)
         collectionView.isHidden = false
         searchBarContainer.isHidden = false
         
+        
+        groupsLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        activityLabel.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        leftTabView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        rightTabView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        */
+        
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
-            self.separatorViewGradient.transform = CGAffineTransform(translationX: 205, y: 0)
+            self.collectionView.isHidden = false
+            self.searchBarContainer.isHidden = false
+            
+            self.groupsLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+            self.activityLabel.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+            self.leftTabView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+            self.rightTabView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            
+            self.separatorViewGradient.transform = CGAffineTransform(translationX: self.view.frame.width / 2, y: 0)
         })
     }
     
     @objc func handleActivityTapped() {
         //delegate?.handleActivityTapped(for: self)
         
+        /*
         collectionView.isHidden = true
         searchBarContainer.isHidden = true
+        
+        activityLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        groupsLabel.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        leftTabView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        rightTabView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        */
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             self.separatorViewGradient.transform = CGAffineTransform(translationX: 0, y: 0)
+            
+            self.collectionView.isHidden = true
+            self.searchBarContainer.isHidden = true
+            
+            self.activityLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+            self.groupsLabel.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+            self.leftTabView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            self.rightTabView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
         })
         
         
@@ -413,7 +534,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //tableView.separatorStyle = .singleLine
         tableView.separatorColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1)
-        tableView.rowHeight = 500
+        tableView.rowHeight = 450
         
         // disables the scrolling feature for the table view
         tableView.isScrollEnabled = true
@@ -423,19 +544,28 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
   
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 90, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 45, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
         view.addSubview(gradientView)
-        gradientView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
+        gradientView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
         
-        gradientView.addSubview(activityLabel)
-        activityLabel.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 28, paddingLeft: 70, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        gradientView.addSubview(leftTabView)
+        leftTabView.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width / 2, height: 50)
         
-        gradientView.addSubview(groupsLabel)
-        groupsLabel.anchor(top: gradientView.topAnchor, left: nil, bottom: nil, right: gradientView.rightAnchor, paddingTop: 28, paddingLeft: 0, paddingBottom: 0, paddingRight: 65, width: 0, height: 0)
+        gradientView.addSubview(rightTabView)
+        rightTabView.anchor(top: gradientView.topAnchor, left: nil, bottom: nil, right: gradientView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width / 2, height: 50)
         
-
+        leftTabView.addSubview(activityLabel)
+        activityLabel.anchor(top: leftTabView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityLabel.centerXAnchor.constraint(equalTo: leftTabView.centerXAnchor).isActive = true
+        
+        rightTabView.addSubview(groupsLabel)
+        groupsLabel.anchor(top: rightTabView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        groupsLabel.centerXAnchor.constraint(equalTo: rightTabView.centerXAnchor).isActive = true
+        
+        //gradientView.addSubview(separatorViewGradient)
+        //separatorViewGradient.anchor(top: nil, left: view.leftAnchor, bottom: gradientView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 75, paddingBottom: 1, paddingRight: 0, width: (view.frame.width / 8), height: 3)
         
         //gradientView.addSubview(hoziontalSeparatorView)
         //hoziontalSeparatorView.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: view.frame.width / 2, paddingBottom: 0, paddingRight: 0, width: 0.25, height: 80)
@@ -445,10 +575,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         //separatorView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 79, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
         
 
-        gradientView.addSubview(separatorViewGradient)
-        //separatorViewGradient.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 77, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: (view.frame.width / 2), height: 4)
-        separatorViewGradient.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 77, paddingLeft: 55, paddingBottom: 0, paddingRight: 0, width: 110, height: 5)
-        separatorViewGradient.layer.cornerRadius = 2
+
         
 
         
@@ -480,7 +607,8 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
            layout.scrollDirection = .vertical
            
            //let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - (tabBarController?.tabBar.frame.height)! - (navigationController?.navigationBar.frame.height)!)
-           let frame = CGRect(x: 0, y: 160, width: view.frame.width, height: view.frame.height - 270)
+           //let frame = CGRect(x: 0, y: 115, width: view.frame.width, height: view.frame.height - 270)
+        let frame = CGRect(x: 0, y: 50, width: view.frame.width, height: view.frame.height - 50)
 
         
            collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
@@ -494,8 +622,24 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
            view.addSubview(collectionView)
            collectionView.register(GroupsCell.self, forCellWithReuseIdentifier: reuseGroupsCellIdentifier)
         
-        view.addSubview(searchBarContainer)
-        searchBarContainer.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 85, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 75)
+       view.addSubview(searchBarContainer)
+        //searchBarContainer.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 45, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
+        searchBarContainer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+
+        
+        
+        searchBarContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[container]-0-|", options: [], metrics: nil, views: ["container": searchBarContainer]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[container(60)]", options: [], metrics: nil, views: ["container": searchBarContainer]))
+        
+        // create the bottom constraint here in order to mutate or move it along with the keyboard
+        // adjusting the constant value manipulates the bottom anchor
+        bottomConstraint = NSLayoutConstraint(item: searchBarContainer, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -60)
+        view.addConstraint(bottomConstraint!)
+        
+        //view.addSubview(searchBarBlackLine)
+        //searchBarBlackLine.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 110, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
         
        
                    

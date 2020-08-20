@@ -24,6 +24,7 @@ class Post {
     var storeId: String!
     var user: User?
     var didLike = false
+    var isFollowed = false
     
     init(postId: String!, user: User, dictionary: Dictionary<String, AnyObject>) {
         
@@ -251,4 +252,90 @@ class Post {
             })
         }
     }
+    
+    func follow() {
+           guard let currentUid = Auth.auth().currentUser?.uid else { return }
+           
+           // update: = Get uid like this to work with update. This uid is the user that is getting followed.
+           guard let uid = ownerUid else { return }
+           
+           // set is followed to true
+           self.isFollowed = true
+           
+           // add followed user to current user-following structure
+           DataService.instance.REF_FOLLOWING.child(currentUid).updateChildValues([uid: 1])
+           
+           // add current user to followed user-follower structure
+           DataService.instance.REF_FOLLOWER.child(uid).updateChildValues([currentUid: 1])
+           
+           // upload follow notification to server
+           uploadFollowNotificationToServer()
+           
+           // add followed users post to current user-feed
+
+           // also use this when we check in
+           DataService.instance.REF_USER_POSTS.child(uid).observe(.childAdded) { (snapshot) in
+               
+               let postId = snapshot.key
+               DataService.instance.REF_FEED.child(currentUid).updateChildValues([postId: 1])
+           }
+       }
+       
+       func unfollow() {
+           
+           guard let currentUid = Auth.auth().currentUser?.uid else { return }
+           guard let uid = ownerUid else { return }
+        
+           // set is followed to false
+           self.isFollowed = false
+           
+           // Remove followed user to current user-following structure
+           DataService.instance.REF_FOLLOWING.child(currentUid).child(uid).removeValue()
+           
+           // Remove current user to followed user-follower structure
+           DataService.instance.REF_FOLLOWER.child(uid).child(currentUid).removeValue()
+     
+           // Remove followed users post to current user-feed
+           DataService.instance.REF_USER_POSTS.child(uid).observe(.childAdded) { (snapshot) in
+               
+               let postId = snapshot.key
+               DataService.instance.REF_FEED.child(currentUid).child(postId).removeValue()
+           }
+       }
+       
+       func checkIfUserIsFollowed(completion: @escaping(Bool) ->()) {
+           
+           guard let currentUid = Auth.auth().currentUser?.uid else { return }
+           guard let uid = ownerUid else { return }
+        
+           DataService.instance.REF_FOLLOWING.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
+               
+               if snapshot.hasChild(uid) {
+                   
+                   self.isFollowed = true
+                   completion(true)
+                   print("User is followed")
+               } else {
+                   
+                   self.isFollowed = false
+                   completion(false)
+                   print("User is not followed")
+               }
+           }
+       }
+       
+       func uploadFollowNotificationToServer() {
+           
+           guard let currentUid = Auth.auth().currentUser?.uid else { return }
+           let creationDate = Int(NSDate().timeIntervalSince1970)
+        guard let uid = ownerUid else { return }
+           
+           // notification values
+           let values = ["checked": 0,
+                         "creationDate": creationDate,
+                         "uid": currentUid,
+                         "type": FOLLOW_INT_VALUE] as [String : Any]
+           
+           DataService.instance.REF_NOTIFICATIONS.child(uid).childByAutoId().updateChildValues(values)
+       }
 }

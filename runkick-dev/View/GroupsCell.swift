@@ -25,14 +25,14 @@ class GroupsCell: UICollectionViewCell {
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
-        iv.image = UIImage(named: "userProfileSilhouetteWhite")
+        iv.image = UIImage(named: "simpleCirclePurpleGroups")
         return iv
     } ()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let postImageDimension = CGFloat(90)
+        let postImageDimension = CGFloat(60)
         addSubview(postImageView)
         postImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: postImageDimension, height: postImageDimension)
         postImageView.layer.cornerRadius = postImageDimension / 2

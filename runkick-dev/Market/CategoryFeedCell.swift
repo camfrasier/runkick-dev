@@ -260,7 +260,7 @@ class CategoryFeedCell: UICollectionViewCell {
         //self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[points]-0-|", options: [], metrics: nil, views: ["points": pointsLabel]))
         
         
-        postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 160)
+        postImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 160)
         
         poppPriceBlock.anchor(top: topAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 25)
         

@@ -29,11 +29,12 @@
 		6923674C230B7ECE002FCA4D /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6923674B230B7ECE002FCA4D /* FeedVC.swift */; };
 		6923674E230B7EE4002FCA4D /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6923674D230B7EE4002FCA4D /* SearchVC.swift */; };
 		69236750230B7F09002FCA4D /* UploadPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6923674F230B7F09002FCA4D /* UploadPostVC.swift */; };
-		69236752230B7F99002FCA4D /* MarketplaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69236751230B7F99002FCA4D /* MarketplaceVC.swift */; };
 		692CAE18233C23470056FC7A /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692CAE17233C23470056FC7A /* SearchPostCell.swift */; };
 		692CAE1B233C32350056FC7A /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692CAE1A233C32350056FC7A /* MessagesController.swift */; };
 		6934E69424E243020041F1E8 /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6934E69324E243020041F1E8 /* CameraVC.swift */; };
 		69365A4A24E361BC00AF156F /* ImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69365A4924E361BC00AF156F /* ImageVC.swift */; };
+		69365A4C24E7808900AF156F /* CategoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69365A4B24E7808800AF156F /* CategoriesCell.swift */; };
+		69365A4E24E7920500AF156F /* MarketplaceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69365A4D24E7920500AF156F /* MarketplaceVC.swift */; };
 		6937B43522A6CFED00446926 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6937B43422A6CFED00446926 /* AppDelegate.swift */; };
 		6937B43A22A6CFED00446926 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6937B43822A6CFED00446926 /* Main.storyboard */; };
 		6937B43F22A6CFF100446926 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6937B43D22A6CFF100446926 /* LaunchScreen.storyboard */; };
@@ -101,6 +102,7 @@
 		69E8EEB4246A2CEC006D4AF6 /* CategoryFeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E8EEB3246A2CEC006D4AF6 /* CategoryFeedVC.swift */; };
 		69E8EEB6246A3237006D4AF6 /* CategoryFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */; };
 		69EB6A4A22DD69BF000C764E /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EB6A4922DD69BF000C764E /* StoreCell.swift */; };
+		69EC680624ECC75D007A5F3D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EC680524ECC75D007A5F3D /* LocationManager.swift */; };
 		69EDAAC223034BB10020D477 /* UNService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EDAAC123034BB00020D477 /* UNService.swift */; };
 		69FA0821233D4C95002DC00F /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FA0820233D4C95002DC00F /* MessageCell.swift */; };
 		69FA0823233D5823002DC00F /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FA0822233D5823002DC00F /* NewMessageController.swift */; };
@@ -156,11 +158,12 @@
 		6923674B230B7ECE002FCA4D /* FeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		6923674D230B7EE4002FCA4D /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		6923674F230B7F09002FCA4D /* UploadPostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostVC.swift; sourceTree = "<group>"; };
-		69236751230B7F99002FCA4D /* MarketplaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceVC.swift; sourceTree = "<group>"; };
 		692CAE17233C23470056FC7A /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
 		692CAE1A233C32350056FC7A /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		6934E69324E243020041F1E8 /* CameraVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
 		69365A4924E361BC00AF156F /* ImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVC.swift; sourceTree = "<group>"; };
+		69365A4B24E7808800AF156F /* CategoriesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCell.swift; sourceTree = "<group>"; };
+		69365A4D24E7920500AF156F /* MarketplaceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceVC.swift; sourceTree = "<group>"; };
 		6937B43122A6CFED00446926 /* runkick-dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "runkick-dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6937B43422A6CFED00446926 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6937B43922A6CFED00446926 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -231,6 +234,7 @@
 		69E8EEB3246A2CEC006D4AF6 /* CategoryFeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFeedVC.swift; sourceTree = "<group>"; };
 		69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFeedCell.swift; sourceTree = "<group>"; };
 		69EB6A4922DD69BF000C764E /* StoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
+		69EC680524ECC75D007A5F3D /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		69EDAAC123034BB00020D477 /* UNService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNService.swift; sourceTree = "<group>"; };
 		69FA0820233D4C95002DC00F /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		69FA0822233D5823002DC00F /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
@@ -340,7 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				69E20BF622DB9C460054BCEE /* StoreDetailView.swift */,
-				69236751230B7F99002FCA4D /* MarketplaceVC.swift */,
+				69365A4D24E7920500AF156F /* MarketplaceVC.swift */,
 				696A521F24A57CC400289C33 /* CheckoutVC.swift */,
 			);
 			path = Marketplace;
@@ -376,6 +380,7 @@
 				69E0FAF2247831CF00608CCF /* GradientPathRenderer.swift */,
 				696A521D24A4594500289C33 /* Product.swift */,
 				6980617824D8E30A00628077 /* Rewards.swift */,
+				69EC680524ECC75D007A5F3D /* LocationManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -478,6 +483,7 @@
 				691A86FD231754EB00EBB64A /* UserProfileHeader.swift */,
 				69FB5F22245E328D00A02FA1 /* AdminStorePostCell.swift */,
 				69FBDCEF2443A43D00709E21 /* UserSpecificFeedCell.swift */,
+				69365A4B24E7808800AF156F /* CategoriesCell.swift */,
 				69E70849240467FA0083444B /* MarketplaceCell.swift */,
 			);
 			path = View;
@@ -760,8 +766,10 @@
 				6918226423B025060009F00A /* SettingsMenuOptionCell.swift in Sources */,
 				69FB5F23245E328D00A02FA1 /* AdminStorePostCell.swift in Sources */,
 				691E4F3A23C3E5C100757291 /* CKAnnotationView.swift in Sources */,
+				69365A4C24E7808900AF156F /* CategoriesCell.swift in Sources */,
 				69977C4D2399B6C00057D0A3 /* MenuOption.swift in Sources */,
 				6937B45422A98FE700446926 /* LeftSidePanelVC.swift in Sources */,
+				69365A4E24E7920500AF156F /* MarketplaceVC.swift in Sources */,
 				6937B45022A97B3D00446926 /* CircleView.swift in Sources */,
 				692CAE1B233C32350056FC7A /* MessagesController.swift in Sources */,
 				69D8CCCB24A8591F001432FD /* CheckoutCell.swift in Sources */,
@@ -816,6 +824,7 @@
 				69D8CCCD24A99BD9001432FD /* StripeCart.swift in Sources */,
 				6999CE3E244BC22900FB8FFC /* RightMenuOptionCell.swift in Sources */,
 				691A87072318B7ED00EBB64A /* User.swift in Sources */,
+				69EC680624ECC75D007A5F3D /* LocationManager.swift in Sources */,
 				69A1D56A23480CD9003276B1 /* CommentInputTextView.swift in Sources */,
 				69E20BF522D9716A0054BCEE /* Alertable.swift in Sources */,
 				69236742230396FB002FCA4D /* AlertService.swift in Sources */,
@@ -836,7 +845,6 @@
 				692CAE18233C23470056FC7A /* SearchPostCell.swift in Sources */,
 				69365A4A24E361BC00AF156F /* ImageVC.swift in Sources */,
 				692367452305C567002FCA4D /* UserProfileVC.swift in Sources */,
-				69236752230B7F99002FCA4D /* MarketplaceVC.swift in Sources */,
 				696A70B82345296800CDD512 /* HashtagController.swift in Sources */,
 				6937B44A22A85D9B00446926 /* GradientView.swift in Sources */,
 				69E20BEF22D43D200054BCEE /* RunnerTrip.swift in Sources */,

@@ -183,6 +183,7 @@ class StoreDetailView: UIView {
         addSubview(indicatorView)
         indicatorView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
         indicatorView.centerX(inView: self)
+        
         //indicatorView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         //indicatorView.layer.borderWidth = 1
         
@@ -217,6 +218,13 @@ class StoreDetailView: UIView {
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.frame.origin.y =  self.frame.origin.y - 450
+            
+            /*
+            self.addSubview(self.indicatorView)
+            self.indicatorView.anchor(top: self.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
+            self.indicatorView.centerX(inView: self)
+            */
+            self.indicatorView.frame.origin.y = self.frame.origin.y - 450
         })
     }
     
@@ -290,8 +298,9 @@ class StoreDetailView: UIView {
                     self.expansionState = .NotExpanded
                     print("partially expanded to not expanded")
                     self.isHidden = true
-                    self.homeVC?.storeViewSetToDismissed()
+                    //self.homeVC?.storeViewSetToDismissed()
                 }
+                self.homeVC?.storeViewSetToDismissed()
             }
             
         }

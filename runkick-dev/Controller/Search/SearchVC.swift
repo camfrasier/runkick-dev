@@ -296,6 +296,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
             searchBar.searchTextField.layer.cornerRadius = 0
             searchBar.searchTextField.layer.masksToBounds = true
+            UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "HelveticaNeue", size: 12)!], for: .normal)
+            
             
         } else {
             // Fallback on earlier versions
@@ -562,7 +564,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                        searchBarButton.backgroundColor = .clear
                
                let searchButton = UIBarButtonItem(customView: searchBarButton)
-               self.navigationItem.rightBarButtonItems = [searchButton]
+               self.navigationItem.leftBarButtonItems = [searchButton]
         
     }
     
@@ -573,7 +575,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //navigationItem.titleView = searchBar
         
         navigationItem.titleView = titleView
-        navigationItem.rightBarButtonItem = nil
+        navigationItem.leftBarButtonItem = nil
         
         fetchUsers()
         collectionView.isHidden = true
@@ -628,6 +630,5 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
             })
         }
     }
-    
 }
 

@@ -56,6 +56,7 @@ protocol StoreItemSelectionCellDelegate {
 protocol FeedCellDelegate {
     func handleUsernameTapped(for cell: FeedCell)
     func handleOptionTapped(for cell: FeedCell)
+    func handleFollowFollowingTapped(for cell: FeedCell)
     func handleLikeTapped(for cell: FeedCell, isDoubleTap: Bool)
     func handlePhotoTapped(for cell: FeedCell)
     func handleCommentTapped(for cell: FeedCell)

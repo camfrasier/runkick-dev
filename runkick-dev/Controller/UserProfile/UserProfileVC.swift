@@ -138,7 +138,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         
         //return 1
-        return 0
+        return 1
     }
     
     // this is a bit smoother to use with pagination, because it loads while your scrolling or when the cell is coming into view
@@ -159,13 +159,13 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         //return UIEdgeInsets(top:0, left: 4, bottom: 4, right: 4)
-        return UIEdgeInsets(top:0, left: 2, bottom: 2, right: 2)
+        return UIEdgeInsets(top: 0, left: 2, bottom: 2, right: 2)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         //let width = (view.frame.width - 2) / 3
         
-        let width = (view.frame.width - 0) / 3
+        let width = (view.frame.width - 8) / 3
         //return CGSize(width: width, height: width - 10)
         return CGSize(width: width, height: width)
     }
