@@ -40,6 +40,10 @@ extension UIColor {
         return UIColor.rgb(red: 49, green: 213, blue: 56)
     }
     
+    static func statusBarGreenDeep() -> UIColor {
+        return UIColor.rgb(red: 41, green: 205, blue: 48)
+    }
+    
     
     static func actionRed() -> UIColor {
         return UIColor.rgb(red: 236, green: 38, blue: 125)
@@ -123,8 +127,8 @@ extension Date {
         
         // determining whether or not we want to add a letter s to the end of the unit
         //return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
-        //return "\(quotient)\(unit)\(quotient == 1 ? "" : "") ago"
-        return "\(quotient)\(unit)\(quotient == 1 ? "" : "")"
+        return "\(quotient)\(unit)\(quotient == 1 ? "" : "") ago"
+        //return "\(quotient)\(unit)\(quotient == 1 ? "" : "")"
     }
 }
 

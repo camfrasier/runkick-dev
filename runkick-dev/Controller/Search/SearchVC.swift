@@ -253,7 +253,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //searchBar.frame = frame
         titleView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         titleView.addSubview(searchBar)
-        searchBar.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: titleView.rightAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 5, width: view.frame.width - 35, height: 40)
+        searchBar.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: titleView.rightAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 20, width: view.frame.width - 35, height: 40)
         
         navigationItem.titleView = titleView
         
@@ -536,6 +536,50 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     func configureSearchBarButton() {
+        
+        
+         // configuring title button
+         let button =  UIButton(type: .custom)
+         button.frame = CGRect(x: 0, y: 0, width: 320, height: 35)
+         button.backgroundColor = .clear
+         button.setTitleColor(.black, for: .normal)
+         button.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+         navigationItem.titleView = button
+         
+         searchBar.showsCancelButton = true
+         
+         
+                    let searchBarText = UIButton(type: UIButton.ButtonType.custom)
+                        
+                        searchBarText.frame = CGRect(x: 0, y: 0, width: 120, height: 33)
+                        
+                     searchBarText.setTitle("Find friends or invite new ones", for: .normal)
+                     searchBarText.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
+                     searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+                        searchBarText.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+                        //searchBarText.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+                        searchBarText.backgroundColor = .clear
+         
+         
+                    let magnifyButton = UIButton(type: UIButton.ButtonType.system)
+                        
+                        magnifyButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+                        
+                        //using this code to show the true image without rendering color
+                        magnifyButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                        magnifyButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 16 )
+                        magnifyButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+         magnifyButton.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+                        magnifyButton.backgroundColor = .clear
+                         
+                
+                let searchText = UIBarButtonItem(customView: searchBarText)
+             let searchButton = UIBarButtonItem(customView: magnifyButton)
+         
+                self.navigationItem.leftBarButtonItems = [searchButton, searchText]
+        
+        
+        /*
         // configuring titile button
         let button =  UIButton(type: .custom)
         button.frame = CGRect(x: 0, y: 0, width: 320, height: 35)
@@ -565,6 +609,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                
                let searchButton = UIBarButtonItem(customView: searchBarButton)
                self.navigationItem.leftBarButtonItems = [searchButton]
+        */
         
     }
     

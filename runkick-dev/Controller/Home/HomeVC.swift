@@ -21,6 +21,7 @@ class HomeVC: UIViewController, Alertable {
     
     // MARK: - Map Properties
     
+    
     var mapView: MKMapView!
     var manager: CLLocationManager?
     var regionRadius: CLLocationDistance = 750
@@ -28,6 +29,17 @@ class HomeVC: UIViewController, Alertable {
     var selectedItemPlacemark: MKPlacemark? = nil
     var selectedAnnotation: MKPointAnnotation?
     var tempCustomAnnotation: CKAnnotationView?
+    //var accuracyRangeCircle: MKCircle?
+    var rtPolyline: MKPolyline?
+    
+    
+    var locationList: [CLLocation] = []
+    //private let locationManager = LocationManager.shared
+    var seconds = 0
+    var newTimer: Timer?
+    var recordedDistance = Measurement(value: 0, unit: UnitLength.meters)
+    var run: Run?
+    
     
     var oldSource: MKMapItem?
     var savedSource: MKMapItem?
@@ -71,6 +83,11 @@ class HomeVC: UIViewController, Alertable {
     var didSetUserOrigin = Bool()
     var didSetPolylineOrigin = false
     var secondSegmentSelected = Bool()
+    var startTripPressed = false
+    
+    
+    
+    
     
     
     //var isStoreViewAtOrigin = Bool()
@@ -78,6 +95,7 @@ class HomeVC: UIViewController, Alertable {
     
     // placeholder properties
     var i = Int( )
+    var monVal = 1
     var count = Int()
     var keyHolder = String()
     var tripHolder = String()
@@ -949,6 +967,10 @@ class HomeVC: UIViewController, Alertable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.view.layoutSubviews()
+        
+        // when user changes view should we invalidate timer? i want to keep on while user toggles
+        //newTimer.invalidate()
+        //manager?.stopUpdatingLocation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1377,6 +1399,7 @@ class HomeVC: UIViewController, Alertable {
         searchBarSubView.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 100)
         
         mapView.tintColor = UIColor.airBnBRed()
+        
         //mapView.tintColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
         //mapView.tintColor = UIColor(red: 122/255, green: 206/255, blue: 33/255, alpha: 1) // limer
 
@@ -2626,13 +2649,17 @@ class HomeVC: UIViewController, Alertable {
 
                 }) { (_) in
                     self.toggleSaveRemoveSegmentView.transform = .identity
-
+                    
+                    // setting your boolean variable here
+                    self.startTripPressed = true
                 }
 
                 }
                 
             
+            
             } else {
+            
             
             // when we stop.. we may need to make sure the last key is saved as the key to compare to determine when to end route
             
@@ -2668,13 +2695,22 @@ class HomeVC: UIViewController, Alertable {
                   // if the pedometer has started then we need to stop it
                   stopPedometer()
                   
-                  // when your trip is over the checkpoints you actually reach are
-                  //plotActualTrip()
-              
-
                startStopButton.setTitle("START", for: .normal)
             startStopButton.setTitleColor(UIColor.airBnBNew(), for: .normal)
                  startStopButton.backgroundColor = .white
+            startTripPressed = false
+            
+           
+            saveRun()
+            
+            newTimer?.invalidate()
+            manager?.stopUpdatingLocation()
+            
+            // when your trip is over the checkpoints you actually reach are
+            //loadMap()
+            
+            
+        
             }
         }
 
@@ -2847,6 +2883,8 @@ class HomeVC: UIViewController, Alertable {
     @objc func handleStartStopPedometer() {
         print("Pedometer started")
         
+        // not sure if this is being used.
+        
         if startStopPedometerButton.titleLabel?.text == "Start Pedometer" {
             //Start the pedometer
             pedometer = CMPedometer()
@@ -2874,7 +2912,28 @@ class HomeVC: UIViewController, Alertable {
             statusTitle.text = "Pedometer On"
            startStopPedometerButton.setTitle("Stop Pedometer", for: .normal)
            startStopPedometerButton.backgroundColor = stopColor
+            
+            
+            
+            seconds = 0
+            recordedDistance = Measurement(value: 0, unit: UnitLength.meters)
+            
+            
+// locationList.removeAll()    // will need to at some point
+            
+            
+            //updateDisplay()
+            
+            // a second timer here until I figure out what i'm doing
+            newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+              self.eachSecond()
+            }
+             
+            startLocationUpdates() // updates should have already started
+            
+            
         } else {
+            
            //Stop the pedometer
             pedometer.stopUpdates()
             stopTimer() // stop the timer
@@ -2884,6 +2943,12 @@ class HomeVC: UIViewController, Alertable {
             
            startStopPedometerButton.backgroundColor = startColor
            startStopPedometerButton.setTitle("Start Pedometer", for: .normal)
+            
+           
+            
+           
+            
+            startTripPressed = true
         }
     }
     
@@ -2913,7 +2978,7 @@ class HomeVC: UIViewController, Alertable {
          })
                      
         //Toggle the UI to on state
-         statusTitle.text = "Pedometer On"
+        statusTitle.text = "Pedometer On"
         startStopPedometerButton.setTitle("Stop Pedometer", for: .normal)
         startStopPedometerButton.backgroundColor = stopColor
         
@@ -2939,7 +3004,119 @@ class HomeVC: UIViewController, Alertable {
         if timer.isValid { timer.invalidate() }
         timer = Timer.scheduledTimer(timeInterval: timerInterval,target: self, selector: #selector(timerAction(timer:)) , userInfo: nil, repeats: true)
     }
-
+    
+    
+    //function for core data
+    func eachSecond() {
+      seconds += 1
+      //updateDisplay()
+    }
+    
+    
+    
+    
+    func saveRun() {
+        
+        let newRun = Run(context: CoreDataStack.context)
+        
+      newRun.distance = recordedDistance.value
+      newRun.duration = Int16(seconds)
+        //newRun.duration = Int16(timeElapsed)   // this may be the wrong format if so change back to seconds
+      newRun.timestamp = Date()
+      
+        
+        
+      for location in locationList {
+        let locationObject = Location(context: CoreDataStack.context)
+        locationObject.timestamp = location.timestamp
+        locationObject.latitude = location.coordinate.latitude
+        locationObject.longitude = location.coordinate.longitude
+        newRun.addToLocations(locationObject)
+        
+        
+      }
+      
+      CoreDataStack.saveContext()
+      
+      run = newRun
+    }
+    
+    func mapRegion() -> MKCoordinateRegion? {
+      guard
+        let locations = run?.locations,
+        locations.count > 0
+      else {
+        return nil
+      }
+        
+      let latitudes = locations.map { location -> Double in
+        let location = location as! Location
+        return location.latitude
+      }
+        
+      let longitudes = locations.map { location -> Double in
+        let location = location as! Location
+        return location.longitude
+      }
+        
+      let maxLat = latitudes.max()!
+      let minLat = latitudes.min()!
+      let maxLong = longitudes.max()!
+      let minLong = longitudes.min()!
+        
+      let center = CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2,
+                                          longitude: (minLong + maxLong) / 2)
+      let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * 1.3,
+                                  longitudeDelta: (maxLong - minLong) * 1.3)
+      return MKCoordinateRegion(center: center, span: span)
+    }
+    
+    
+    func polyLine() -> MKPolyline {
+        guard let locations = run?.locations else {
+        return MKPolyline()
+      }
+        
+        
+     
+      let coords: [CLLocationCoordinate2D] = locations.map { location in
+        let location = location as! Location
+        return CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+      }
+        
+        print("DEBUG: Here are the location coordinates \(coords)")
+      return MKPolyline(coordinates: coords, count: coords.count)
+    }
+    
+    
+    
+    func loadMap() {
+      guard
+        let locations = run?.locations,  //  not saving anything  figure out
+        locations.count > 0,
+        let region = mapRegion()
+      else {
+          let alert = UIAlertController(title: "Error",
+                                        message: "Sorry, this run has no locations saved",
+                                        preferredStyle: .alert)
+          alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+          present(alert, animated: true)
+          return
+      }
+        
+        print("HERE ARE THE LOCATIONS \(locations.count)")
+        
+      mapView.setRegion(region, animated: true)
+        mapView.addOverlay(polyLine())
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     func stopTimer(){
         timer.invalidate()
         displayPedometerData()
@@ -2981,6 +3158,9 @@ class HomeVC: UIViewController, Alertable {
         
         mapView.removeOverlays(mapView.overlays)
         UpdateService.instance.resetTripId()
+        
+        // loading finished map of actual path
+        loadMap()
     }
      
     @objc func timerAction(timer:Timer){
@@ -3117,7 +3297,13 @@ class HomeVC: UIViewController, Alertable {
             saveSegmentVisible = true
         }
     }
- 
+    
+   func startLocationUpdates() {
+        manager?.delegate = self  // may be repetitive
+        manager?.activityType = .fitness
+        manager?.distanceFilter = 10
+        //manager?.startUpdatingLocation()
+    }
 }
 
 
@@ -3130,22 +3316,32 @@ extension HomeVC: CLLocationManagerDelegate {
         }
     }
     
-    /*
+    
+    // used in unison with core data in order to save the location data
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let userInfo : NSDictionary = ["location" : locations]
-        //let userInfo = locations as Any
-        
-        print("Here is the NS Dictionary value for location \(locations)")
-        
-        // posting notification here
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UserLocationNotification"), object: self, userInfo: userInfo as [NSObject : AnyObject])
-        
+      for newLocation in locations {
+        let howRecent = newLocation.timestamp.timeIntervalSinceNow
+        guard newLocation.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
+
+        if let lastLocation = locationList.last {
+          let delta = newLocation.distance(from: lastLocation)
+          recordedDistance = recordedDistance + Measurement(value: delta, unit: UnitLength.meters)
+            
+            print("HERE IS THE RECORDED DISTANCE \(recordedDistance)")
+        }
+
+        locationList.append(newLocation)
+        print("HERE IS THE new location \(newLocation)")
+      }
     }
-    */ 
+
 }
 
 extension HomeVC: MKMapViewDelegate {
+    
+
+    
+    
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         
@@ -3320,7 +3516,9 @@ extension HomeVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
-        
+        // if start trip has not been pressed render this line else render the other line
+        if startTripPressed == false {
+            
         let lineRenderer = MKPolylineRenderer(overlay: self.route.polyline)
 
         //lineRenderer.strokeColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
@@ -3339,6 +3537,25 @@ extension HomeVC: MKMapViewDelegate {
         
         
         return lineRenderer
+        
+        
+        
+        
+    } else {
+     
+          guard let polyline = overlay as? MKPolyline else {
+            return MKOverlayRenderer(overlay: overlay)
+          }
+          let renderer = MKPolylineRenderer(polyline: polyline)
+          renderer.strokeColor = .red
+          renderer.lineWidth = 8
+          return renderer
+        
+        }
+        
+        
+        
+        
  
         /*
         let overlay = overlay as? MKPolyline
@@ -3499,6 +3716,8 @@ extension HomeVC: MKMapViewDelegate {
         let currentLocation: CLLocation = (manager?.location)!
         let placeMark = MKPlacemark(coordinate: currentLocation.coordinate)
         let userStartLocation = MKMapItem(placemark: placeMark)
+        
+    print("DEBUG: THIS IS THE USER new start location \(currentLocation)")
         
         let request = MKDirections.Request()
         request.source = userStartLocation
@@ -4013,14 +4232,56 @@ extension HomeVC: MKMapViewDelegate {
                 
                 // preserve points for the trip id
                 //self.preservePointValue(tripId)
-            
-                // use trip id to add point value when first destination is hit
+                    
      
             self.keyHolder = key
+
             self.tripHolder = tripId
+                
+                
             }
         }
     
+    }
+    
+    func updateMonitoredDestination(_ incrementedVal: Int) {
+        
+        let currentKey = (Auth.auth().currentUser?.uid)!
+        
+           DataService.instance.REF_TRIPS.child(currentKey).queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
+               // this is the key for all of the child snapshots which in this case is the trip ID
+               let tripId = snapshot.key
+               
+               // when we find the trip id that we want go under this trip specifically and grab the destination
+            DataService.instance.REF_TRIPS.child(currentKey).child(tripId).queryLimited(toFirst: UInt(incrementedVal)).observe(.childAdded) {(snapshot: DataSnapshot) in
+               
+               let destinationKey = snapshot.key
+               print("Print path id as they are saved \(key)")
+
+                
+                // updating the region that is to be monitored the plot new source and destination
+                    DataService.instance.REF_TRIPS.child(currentKey).child(tripId).child(destinationKey).child("destinationCoordinate").observe(.value) { (snapshot) in
+                        
+                        let destinCoordinatesArray = snapshot.value as! NSArray
+                        let latitude = destinCoordinatesArray[0] as! Double
+                        let longitude = destinCoordinatesArray[1] as! Double
+                        
+                        let newCoordinateValue = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                        
+                        print("THIS IS THE SNAPSHOT OF OUR NEXT DESTINATION \(newCoordinateValue)")
+                        
+                        //updateDestinationCoordMonitor(newCoordinateValue)
+                        self.monitorRegionLocation(center: newCoordinateValue, identifier: "newPlaceholder")
+                        
+                        let destinCoord = newCoordinateValue
+                        let placemark = MKPlacemark(coordinate: destinCoord)
+                        let mapItem = MKMapItem(placemark: placemark)
+                        self.addUserTripPolyline(forMapItem: mapItem)
+                    }
+                   
+               }
+           }
+   
     }
     
     func preservePointValue(_ tripId: String) {
@@ -4112,6 +4373,8 @@ extension HomeVC: MKMapViewDelegate {
             
             // here is when we set the destination to be monitored
             self.monitorRegionLocation(center: destinCoord, identifier: "placeholder")
+            
+            print("THIS IS THE NEW DESTINATION COORDINATE \(destinCoord)")
             self.addUserTripPolyline(forMapItem: mapItem)
          }
         
@@ -4124,6 +4387,10 @@ extension HomeVC: MKMapViewDelegate {
         let mapItem = MKMapItem(placemark: placemark)
         mapItem.openInMaps(launchOptions: launchOptions) */
     }
+    
+
+    
+
     
     func monitorRegionLocation(center: CLLocationCoordinate2D, identifier: String) {
     
@@ -4166,6 +4433,8 @@ extension HomeVC: MKMapViewDelegate {
                 }
             })
         }
+        
+    
     }
     
     func calculateSaveRewards(_ storeIdentifier: String, pointsAdded: Int, name: String, image: String) {
@@ -4313,9 +4582,15 @@ extension HomeVC: MKMapViewDelegate {
                 return
             }
         
-        }
+        } else {
         
         self.i += 1
+            // increments value to for region monitor
+        self.monVal += 1
+        updateMonitoredDestination(self.monVal)
+            print("DEBUG: THE MONITOR VALUE IS \(self.monVal)")
+            
+            
         self.getTripKey()
         
         AlertService.actionSheet(in: self, title: "You're Here, Check In!") {
@@ -4327,6 +4602,10 @@ extension HomeVC: MKMapViewDelegate {
                 // collect points for a particular location
       
             }
+            
+
+            
+        }
         
         // first grab points from trip.. by comparing the region.. then add points, add coordinates, and add storeid to actual trip to plot and to the each store rewards via the storeid
         
@@ -5309,3 +5588,6 @@ extension HomeVC: UITextFieldDelegate {
         return true
     }
 }
+
+
+

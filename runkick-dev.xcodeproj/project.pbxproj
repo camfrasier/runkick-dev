@@ -103,6 +103,8 @@
 		69E8EEB6246A3237006D4AF6 /* CategoryFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */; };
 		69EB6A4A22DD69BF000C764E /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EB6A4922DD69BF000C764E /* StoreCell.swift */; };
 		69EC680624ECC75D007A5F3D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EC680524ECC75D007A5F3D /* LocationManager.swift */; };
+		69EC680824F320A9007A5F3D /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EC680724F320A8007A5F3D /* CoreDataStack.swift */; };
+		69EC680D24F36B5C007A5F3D /* RunKick.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 69EC680B24F36B5C007A5F3D /* RunKick.xcdatamodeld */; };
 		69EDAAC223034BB10020D477 /* UNService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EDAAC123034BB00020D477 /* UNService.swift */; };
 		69FA0821233D4C95002DC00F /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FA0820233D4C95002DC00F /* MessageCell.swift */; };
 		69FA0823233D5823002DC00F /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FA0822233D5823002DC00F /* NewMessageController.swift */; };
@@ -235,6 +237,8 @@
 		69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFeedCell.swift; sourceTree = "<group>"; };
 		69EB6A4922DD69BF000C764E /* StoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
 		69EC680524ECC75D007A5F3D /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		69EC680724F320A8007A5F3D /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		69EC680C24F36B5C007A5F3D /* RunKick.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RunKick.xcdatamodel; sourceTree = "<group>"; };
 		69EDAAC123034BB00020D477 /* UNService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNService.swift; sourceTree = "<group>"; };
 		69FA0820233D4C95002DC00F /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		69FA0822233D5823002DC00F /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
@@ -459,7 +463,6 @@
 				69FA081F233D4C45002DC00F /* Messages */,
 				696A70B32342656F00CDD512 /* Social */,
 				6937B44922A85D9B00446926 /* GradientView.swift */,
-				6980617A24DBB3B300628077 /* GroupsCell.swift */,
 				69757C3C24CB59C000956D53 /* GradientDiagonalView.swift */,
 				69777BA1248C1F8B005EC4E6 /* GradientClearView.swift */,
 				696A521B24A18F5F00289C33 /* GradientActionView.swift */,
@@ -483,6 +486,7 @@
 				691A86FD231754EB00EBB64A /* UserProfileHeader.swift */,
 				69FB5F22245E328D00A02FA1 /* AdminStorePostCell.swift */,
 				69FBDCEF2443A43D00709E21 /* UserSpecificFeedCell.swift */,
+				6980617A24DBB3B300628077 /* GroupsCell.swift */,
 				69365A4B24E7808800AF156F /* CategoriesCell.swift */,
 				69E70849240467FA0083444B /* MarketplaceCell.swift */,
 			);
@@ -574,6 +578,8 @@
 				6999CE3B244BBA6C00FB8FFC /* RightMenuVC.swift */,
 				6934E69324E243020041F1E8 /* CameraVC.swift */,
 				69365A4924E361BC00AF156F /* ImageVC.swift */,
+				69EC680B24F36B5C007A5F3D /* RunKick.xcdatamodeld */,
+				69EC680724F320A8007A5F3D /* CoreDataStack.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -748,6 +754,7 @@
 				6937B46722B3097200446926 /* DataService.swift in Sources */,
 				69E20BEB22D01AC50054BCEE /* UIViewControllerExt.swift in Sources */,
 				69EB6A4A22DD69BF000C764E /* StoreCell.swift in Sources */,
+				69EC680824F320A9007A5F3D /* CoreDataStack.swift in Sources */,
 				6999CE40244BC4D500FB8FFC /* RightMenuOption.swift in Sources */,
 				69D7C7A423664C9D00AF2736 /* AdminLoginVC.swift in Sources */,
 				69757C3D24CB59C100956D53 /* GradientDiagonalView.swift in Sources */,
@@ -821,6 +828,7 @@
 				69236749230B7BCC002FCA4D /* MainTabVC.swift in Sources */,
 				6918226623B025560009F00A /* SettingsMenuOption.swift in Sources */,
 				69E0FAF3247831CF00608CCF /* GradientPathRenderer.swift in Sources */,
+				69EC680D24F36B5C007A5F3D /* RunKick.xcdatamodeld in Sources */,
 				69D8CCCD24A99BD9001432FD /* StripeCart.swift in Sources */,
 				6999CE3E244BC22900FB8FFC /* RightMenuOptionCell.swift in Sources */,
 				691A87072318B7ED00EBB64A /* User.swift in Sources */,
@@ -1059,6 +1067,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		69EC680B24F36B5C007A5F3D /* RunKick.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				69EC680C24F36B5C007A5F3D /* RunKick.xcdatamodel */,
+			);
+			currentVersion = 69EC680C24F36B5C007A5F3D /* RunKick.xcdatamodel */;
+			path = RunKick.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6937B42922A6CFED00446926 /* Project object */;
 }

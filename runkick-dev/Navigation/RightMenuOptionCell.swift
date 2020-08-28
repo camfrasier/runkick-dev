@@ -44,6 +44,7 @@ class RightMenuOptionCell: UITableViewCell {
             distanceLabel.text = String(format:"%02.02f", (distance))
             postTimeLabel.text = convertTimeFormater("\(creationDate)")
             postDateLabel.text = convertDateFormater("\(creationDate)")
+            postDayLabel.text = convertDayFormater("\(creationDate)")
             stepCountLabel.text = "\(Int(stepCount))"
             durationLabel.text = String(duration)
             paceLabel.text = String(pace)
@@ -69,9 +70,9 @@ class RightMenuOptionCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
-        //label.font = UIFont(name: "HelveticaNeue", size: 50)
-        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 24)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 24)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 24)
         label.text = "0.00"
         return label
     }()
@@ -91,9 +92,9 @@ class RightMenuOptionCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         //label.font = UIFont.systemFont(ofSize: 18)
-        //label.font = UIFont(name: "HelveticaNeue", size: 18)
-        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 55)
-        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 55)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 55)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
         label.text = "0"
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -102,7 +103,7 @@ class RightMenuOptionCell: UITableViewCell {
     
     let stepsLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
         label.font = UIFont.boldSystemFont(ofSize: 18)
         //label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.text = "Steps"
@@ -116,9 +117,9 @@ class RightMenuOptionCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 24)
-        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
-        //label.font = UIFont(name: "HelveticaNeue", size: 50)
-        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 24)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 24)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 24)
         label.text = "560"
         return label
     }()
@@ -139,7 +140,7 @@ class RightMenuOptionCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 24)
-        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
         //label.font = UIFont(name: "HelveticaNeue", size: 50)
         label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 24)
         label.text = "0.00"
@@ -202,9 +203,9 @@ class RightMenuOptionCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 24)
-        label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
-        //label.font = UIFont(name: "HelveticaNeue", size: 50)
-        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 24)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 24)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 24)
         label.text = "1250"
         return label
     }()
@@ -222,23 +223,37 @@ class RightMenuOptionCell: UITableViewCell {
     
     let postDateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 17)
-        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.text = "date"
         return label
     } ()
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.rgb(red: 115, green: 115, blue: 115)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.text = "time"
+        return label
+    } ()
+    
+    let postDayLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.text = "Mon"
         return label
     } ()
     
     let postTimeBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        return view
+    }()
+    
+    let postDateBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
         return view
     }()
     
@@ -246,7 +261,7 @@ class RightMenuOptionCell: UITableViewCell {
     let durationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = UIColor.rgb(red: 130, green: 130, blue: 130)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
         label.text = "00:00"
         return label
     } ()
@@ -254,7 +269,7 @@ class RightMenuOptionCell: UITableViewCell {
     let tripTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor.rgb(red: 170, green: 170, blue: 170)
+        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
         label.text = "Duration"
         return label
     } ()
@@ -265,7 +280,7 @@ class RightMenuOptionCell: UITableViewCell {
         button.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         //button.titleLabel?.font =  UIFont(name: "HelveticaNeue-CondensedBold", size: 14)
-        button.setTitleColor(UIColor.rgb(red: 90, green: 90, blue: 90), for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
         button.addTarget(self, action: #selector(handleActivityHistory), for: .touchUpInside)
         return button
     } ()
@@ -292,17 +307,22 @@ class RightMenuOptionCell: UITableViewCell {
         stepCountLabel.centerXAnchor.constraint(equalTo: stepsLabel.centerXAnchor).isActive = true
         
         addSubview(postTimeBackground)
-        postTimeBackground.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 90, height: 60)
-        postTimeBackground.layer.cornerRadius = 30
+        postTimeBackground.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 75, height: 40)
+        postTimeBackground.layer.cornerRadius = 20
         
+        addSubview(postDateBackground)
+        postDateBackground.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 85, height: 40)
+        postDateBackground.layer.cornerRadius = 20
         
-        postTimeBackground.addSubview(postDateLabel)
-        postDateLabel.anchor(top: postTimeBackground.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
-        postDateLabel.centerXAnchor.constraint(equalTo: postTimeBackground.centerXAnchor).isActive = true
+        postDateBackground.addSubview(postDateLabel)
+        postDateLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
+        postDateLabel.centerXAnchor.constraint(equalTo: postDateBackground.centerXAnchor).isActive = true
+        postDateLabel.centerYAnchor.constraint(equalTo: postDateBackground.centerYAnchor).isActive = true
         
-        postTimeBackground.addSubview(postTimeLabel)
-        postTimeLabel.anchor(top: postDateLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        postTimeLabel.centerXAnchor.constraint(equalTo: postDateLabel.centerXAnchor).isActive = true
+        postTimeBackground.addSubview(postDayLabel)
+        postDayLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        postDayLabel.centerXAnchor.constraint(equalTo: postTimeBackground.centerXAnchor).isActive = true
+        postDayLabel.centerYAnchor.constraint(equalTo: postTimeBackground.centerYAnchor).isActive = true
         
         /*
         addSubview(durationLabel)
@@ -313,7 +333,7 @@ class RightMenuOptionCell: UITableViewCell {
         */
         
         addSubview(distanceLabel)
-        distanceLabel.anchor(top: postTimeLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 245, paddingLeft: 65, paddingBottom: 0, paddingRight: 0, width: 0, height: 24)
+        distanceLabel.anchor(top: postTimeBackground.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 245, paddingLeft: 65, paddingBottom: 0, paddingRight: 0, width: 0, height: 24)
         //distanceLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         addSubview(milesLabel)
@@ -434,6 +454,13 @@ class RightMenuOptionCell: UITableViewCell {
         // month day and time 16hr clock
         dateFormatter.dateFormat = "h:mm a"
         return  dateFormatter.string(from: date!)
+    }
+    
+    func convertDayFormater(_ date: String) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.setLocalizedDateFormatFromTemplate("EEE")
+        return  (dateFormatter.string(from: Date()))
     }
     
     func configureUserAnalytics() {

@@ -132,7 +132,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.alwaysBounceVertical = true
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .white //.red
         
         tableView.addSubview(collectionView)
         collectionView.register(MarketplaceCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -153,7 +153,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        return UIEdgeInsets(top: 80, left: 16, bottom: 0, right: 16)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -164,8 +164,8 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         return CGSize(width: width, height: width)
         */
         
-        let width = (view.frame.width - 24) / 2
-        return CGSize(width: width, height: (width - 50))
+        let width = (view.frame.width - 38) / 2
+        return CGSize(width: width, height: width - 10)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -596,8 +596,8 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         let button =  UIButton(type: .custom)
         button.frame = CGRect(x: 0, y: 0, width: 320, height: 35)
         button.backgroundColor = .clear
-        button.setTitle("Categories", for: .normal)
-        button.titleLabel?.font =  UIFont(name: "PingFangTC-Semibold", size: 17)
+       // button.setTitle("Categories", for: .normal)
+       // button.titleLabel?.font =  UIFont(name: "PingFangTC-Semibold", size: 17)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         navigationItem.titleView = button
@@ -607,20 +607,34 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
         //navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
-                   let searchBarButton = UIButton(type: UIButton.ButtonType.custom)
+                   let searchBarText = UIButton(type: UIButton.ButtonType.custom)
                        
-                       searchBarButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
+                       searchBarText.frame = CGRect(x: 0, y: 0, width: 120, height: 33)
+                       
+                    searchBarText.setTitle("Search restaurants and healthy cuisines", for: .normal)
+                    searchBarText.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
+                    searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+                       searchBarText.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+                       searchBarText.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+                       searchBarText.backgroundColor = .clear
+        
+        
+                   let magnifyButton = UIButton(type: UIButton.ButtonType.system)
+                       
+                       magnifyButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
                        
                        //using this code to show the true image without rendering color
-                       searchBarButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 21 )
-                       searchBarButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
-                       searchBarButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
-                       searchBarButton.backgroundColor = .clear
+                       magnifyButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                       magnifyButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 16 )
+                       magnifyButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+        magnifyButton.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+                       magnifyButton.backgroundColor = .clear
+                        
                
-               let searchButton = UIBarButtonItem(customView: searchBarButton)
-               self.navigationItem.leftBarButtonItems = [searchButton]
+               let searchText = UIBarButtonItem(customView: searchBarText)
+            let searchButton = UIBarButtonItem(customView: magnifyButton)
+        
+               self.navigationItem.leftBarButtonItems = [searchButton, searchText]
         
     }
     

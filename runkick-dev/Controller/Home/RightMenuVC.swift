@@ -67,7 +67,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     
     lazy var groupsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.text = "Groups"
         let groupTap = UITapGestureRecognizer(target: self, action: #selector(handleGroupsTapped))
@@ -90,8 +90,9 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     */
     lazy var activityLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.textColor = UIColor.statusBarGreenDeep()
         label.text = "Activity"
         let activityTap = UITapGestureRecognizer(target: self, action: #selector(handleActivityTapped))
         activityTap.numberOfTapsRequired = 1
@@ -509,7 +510,8 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
             self.collectionView.isHidden = true
             self.searchBarContainer.isHidden = true
             
-            self.activityLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+            //self.activityLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+            self.activityLabel.textColor = UIColor.statusBarGreenDeep()
             self.groupsLabel.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
             self.leftTabView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
             self.rightTabView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)

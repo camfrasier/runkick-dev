@@ -7,7 +7,7 @@
 //
 
 // may want to create a location manager class at some point.
-
+/*
 import CoreLocation
 
 class LocationManager {
@@ -15,3 +15,4 @@ class LocationManager {
   
   private init() { }
 }
+*/
