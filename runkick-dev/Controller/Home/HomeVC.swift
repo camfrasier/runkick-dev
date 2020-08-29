@@ -38,7 +38,7 @@ class HomeVC: UIViewController, Alertable {
     var seconds = 0
     var newTimer: Timer?
     var recordedDistance = Measurement(value: 0, unit: UnitLength.meters)
-    var run: Run?
+    var run: Run!
     
     
     var oldSource: MKMapItem?
@@ -2651,7 +2651,7 @@ class HomeVC: UIViewController, Alertable {
                     self.toggleSaveRemoveSegmentView.transform = .identity
                     
                     // setting your boolean variable here
-                    self.startTripPressed = true
+                    
                 }
 
                 }
@@ -2698,8 +2698,12 @@ class HomeVC: UIViewController, Alertable {
                startStopButton.setTitle("START", for: .normal)
             startStopButton.setTitleColor(UIColor.airBnBNew(), for: .normal)
                  startStopButton.backgroundColor = .white
-            startTripPressed = false
+      
             
+            
+            
+            startTripPressed = true
+            print("DEBUG: START TRIP SHOULD BE TRUE")
            
             saveRun()
             
@@ -2709,8 +2713,6 @@ class HomeVC: UIViewController, Alertable {
             // when your trip is over the checkpoints you actually reach are
             //loadMap()
             
-            
-        
             }
         }
 
@@ -2736,7 +2738,9 @@ class HomeVC: UIViewController, Alertable {
         //count = 1
         
         // initial source of user saved here in preparation to plot complete route
-        let currentLocation: CLLocation = (manager?.location)!
+        //let currentLocation: CLLocation = (manager?.location)!
+        
+        guard let currentLocation = manager?.location else { return }
         let placeMark = MKPlacemark(coordinate: currentLocation.coordinate)
         let placeHolder = MKMapItem(placemark: placeMark)
         savedSource = placeHolder
@@ -2917,23 +2921,18 @@ class HomeVC: UIViewController, Alertable {
             
             seconds = 0
             recordedDistance = Measurement(value: 0, unit: UnitLength.meters)
-            
-            
-// locationList.removeAll()    // will need to at some point
-            
-            
-            //updateDisplay()
+            locationList.removeAll()    // will need to at some point
             
             // a second timer here until I figure out what i'm doing
             newTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
               self.eachSecond()
             }
              
-            startLocationUpdates() // updates should have already started
+            startLocationUpdates() // monitor updates have already started
             
             
         } else {
-            
+              
            //Stop the pedometer
             pedometer.stopUpdates()
             stopTimer() // stop the timer
@@ -2944,11 +2943,8 @@ class HomeVC: UIViewController, Alertable {
            startStopPedometerButton.backgroundColor = startColor
            startStopPedometerButton.setTitle("Start Pedometer", for: .normal)
             
-           
             
-           
-            
-            startTripPressed = true
+            //loadMap()
         }
     }
     
@@ -3019,13 +3015,12 @@ class HomeVC: UIViewController, Alertable {
         
         let newRun = Run(context: CoreDataStack.context)
         
-      newRun.distance = recordedDistance.value
-      newRun.duration = Int16(seconds)
+        newRun.distance = recordedDistance.value
+        newRun.duration = Int16(seconds)
         //newRun.duration = Int16(timeElapsed)   // this may be the wrong format if so change back to seconds
-      newRun.timestamp = Date()
+        newRun.timestamp = Date()
       
-        
-        
+ 
       for location in locationList {
         let locationObject = Location(context: CoreDataStack.context)
         locationObject.timestamp = location.timestamp
@@ -3039,6 +3034,18 @@ class HomeVC: UIViewController, Alertable {
       CoreDataStack.saveContext()
       
       run = newRun
+        print("DOES THIS VALUE RUN PRESET ANYTHING \(run)")
+        
+        //mapView.removeOverlays(mapView.overlays)
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            
+            self.loadMap()
+            
+         }
+        
+        
     }
     
     func mapRegion() -> MKCoordinateRegion? {
@@ -3118,7 +3125,7 @@ class HomeVC: UIViewController, Alertable {
     
     
     func stopTimer(){
-        timer.invalidate()
+        newTimer?.invalidate()
         displayPedometerData()
         
         
@@ -3160,7 +3167,7 @@ class HomeVC: UIViewController, Alertable {
         UpdateService.instance.resetTripId()
         
         // loading finished map of actual path
-        loadMap()
+        
     }
      
     @objc func timerAction(timer:Timer){
@@ -3299,8 +3306,8 @@ class HomeVC: UIViewController, Alertable {
     }
     
    func startLocationUpdates() {
-        manager?.delegate = self  // may be repetitive
-        manager?.activityType = .fitness
+        //manager?.delegate = self  // may be repetitive
+    manager?.activityType = .fitness
         manager?.distanceFilter = 10
         //manager?.startUpdatingLocation()
     }
@@ -3324,7 +3331,7 @@ extension HomeVC: CLLocationManagerDelegate {
         guard newLocation.horizontalAccuracy < 20 && abs(howRecent) < 10 else { continue }
 
         if let lastLocation = locationList.last {
-          let delta = newLocation.distance(from: lastLocation)
+            let delta = newLocation.distance(from: lastLocation)
           recordedDistance = recordedDistance + Measurement(value: delta, unit: UnitLength.meters)
             
             print("HERE IS THE RECORDED DISTANCE \(recordedDistance)")
@@ -3516,9 +3523,13 @@ extension HomeVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
+        
+     
         // if start trip has not been pressed render this line else render the other line
         if startTripPressed == false {
             
+            
+            print("WE GET HEEEEERE START is FALSE SO THE NORMAL LINE RENDERS")
         let lineRenderer = MKPolylineRenderer(overlay: self.route.polyline)
 
         //lineRenderer.strokeColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
@@ -3542,13 +3553,20 @@ extension HomeVC: MKMapViewDelegate {
         
         
     } else {
-     
+            
+            
+     print("WE GET HEEEEERE START TRIP set to TRUE  SO THE NORMAL LINE RENDERS")
+            
+            mapView.removeOverlays(mapView.overlays)
+            
           guard let polyline = overlay as? MKPolyline else {
             return MKOverlayRenderer(overlay: overlay)
           }
           let renderer = MKPolylineRenderer(polyline: polyline)
-          renderer.strokeColor = .red
+            renderer.strokeColor = UIColor.airBnBNew()
           renderer.lineWidth = 8
+            
+            self.startTripPressed = false // may move this after the load map function
           return renderer
         
         }
@@ -3713,7 +3731,13 @@ extension HomeVC: MKMapViewDelegate {
         
         mapView.removeOverlays(mapView.overlays)
         
-        let currentLocation: CLLocation = (manager?.location)!
+        //let currentLocation: CLLocation = (manager?.location)!
+        
+
+        // here we need to make sure we get the proper user location, doesn't work in similation but may work in real life
+        guard let currentLocation = manager?.location else { return }
+        
+        //let currentLocation = mapView.userLocation
         let placeMark = MKPlacemark(coordinate: currentLocation.coordinate)
         let userStartLocation = MKMapItem(placemark: placeMark)
         
@@ -4578,6 +4602,16 @@ extension HomeVC: MKMapViewDelegate {
                 
                 // make sure this applies to the last check in region
                 self.handleStartStopTrip()
+                
+                /*
+                  startTripPressed = true
+                  print("DEBUG: START TRIP SHOULD BE TRUE")
+                 
+                  saveRun()
+                  
+                  newTimer?.invalidate()
+                  manager?.stopUpdatingLocation()
+                 */
                 
                 return
             }
