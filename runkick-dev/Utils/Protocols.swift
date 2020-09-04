@@ -64,6 +64,17 @@ protocol FeedCellDelegate {
     func handleShowLikes(for cell: FeedCell)
 }
 
+protocol CheckInCellDelegate {
+    func handleUsernameTapped(for cell: CheckInCell)
+    func handleOptionTapped(for cell: CheckInCell)
+    func handleFollowFollowingTapped(for cell: CheckInCell)
+    func handleLikeTapped(for cell: CheckInCell, isDoubleTap: Bool)
+    func handlePhotoTapped(for cell: CheckInCell)
+    func handleCommentTapped(for cell: CheckInCell)
+    func handleConfigureLikeButton(for cell: CheckInCell)
+    func handleShowLikes(for cell: CheckInCell)
+}
+
 
 protocol CategoryFeedCellDelegate {
 

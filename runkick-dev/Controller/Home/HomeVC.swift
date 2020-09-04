@@ -151,12 +151,21 @@ class HomeVC: UIViewController, Alertable {
         case FullyExpanded
     }
     
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         return cv
     }()
+    
+    let photoImageView: CustomImageView = {
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.backgroundColor = .lightGray
+        return iv
+    } ()
     
     let statusTitle: UILabel = {
         let label = UILabel()
@@ -231,8 +240,17 @@ class HomeVC: UIViewController, Alertable {
         label.alpha = 0
         return label
     }()
-    
-    
+    /*
+    lazy var screenshotMapView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 20
+        view.layer.shadowRadius = 10
+        view.layer.shadowOpacity = 0.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    */
     let pointsBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
@@ -329,7 +347,7 @@ class HomeVC: UIViewController, Alertable {
     let indicatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 2
         view.alpha = 1
         return view
     }()
@@ -2181,7 +2199,7 @@ class HomeVC: UIViewController, Alertable {
                 rightMenuVC.view.frame = CGRect(x: 0, y: view.frame.height + 16, width: view.frame.width, height: 575)
                 window.addSubview(indicatorView)
                 
-                indicatorView.anchor(top: rightMenuVC.view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
+                indicatorView.anchor(top: rightMenuVC.view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 5)
                 indicatorView.centerX(inView: rightMenuVC.view)
             
                }
@@ -2706,6 +2724,7 @@ class HomeVC: UIViewController, Alertable {
             print("DEBUG: START TRIP SHOULD BE TRUE")
            
             saveRun()
+            snapshotMapview()
             
             newTimer?.invalidate()
             manager?.stopUpdatingLocation()
@@ -3079,13 +3098,55 @@ class HomeVC: UIViewController, Alertable {
     }
     
     
+    private func polyLine() -> [MulticolorPolyline] {
+        
+      // 1
+      let locations = run.locations?.array as! [Location]
+      var coordinates: [(CLLocation, CLLocation)] = []
+      var speeds: [Double] = []
+      var minSpeed = Double.greatestFiniteMagnitude
+      var maxSpeed = 0.0
+        
+      // 2
+      for (first, second) in zip(locations, locations.dropFirst()) {
+        let start = CLLocation(latitude: first.latitude, longitude: first.longitude)
+        let end = CLLocation(latitude: second.latitude, longitude: second.longitude)
+        coordinates.append((start, end))
+          
+        //3
+        let distance = end.distance(from: start)
+        let time = second.timestamp!.timeIntervalSince(first.timestamp! as Date)
+        let speed = time > 0 ? distance / time : 0
+        speeds.append(speed)
+        minSpeed = min(minSpeed, speed)
+        maxSpeed = max(maxSpeed, speed)
+      }
+        
+      //4
+      let midSpeed = speeds.reduce(0, +) / Double(speeds.count)
+        
+      //5
+      var segments: [MulticolorPolyline] = []
+      for ((start, end), speed) in zip(coordinates, speeds) {
+        let coords = [start.coordinate, end.coordinate]
+        let segment = MulticolorPolyline(coordinates: coords, count: 2)
+        segment.color = segmentColor(speed: speed,
+                                     midSpeed: midSpeed,
+                                     slowestSpeed: minSpeed,
+                                     fastestSpeed: maxSpeed)
+        segments.append(segment)
+      }
+      return segments
+    }
+    
+    
+    
+    /*
     func polyLine() -> MKPolyline {
         guard let locations = run?.locations else {
         return MKPolyline()
       }
         
-        
-     
       let coords: [CLLocationCoordinate2D] = locations.map { location in
         let location = location as! Location
         return CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
@@ -3094,6 +3155,9 @@ class HomeVC: UIViewController, Alertable {
         print("DEBUG: Here are the location coordinates \(coords)")
       return MKPolyline(coordinates: coords, count: coords.count)
     }
+    */
+    
+    
     
     
     
@@ -3114,7 +3178,8 @@ class HomeVC: UIViewController, Alertable {
         print("HERE ARE THE LOCATIONS \(locations.count)")
         
       mapView.setRegion(region, animated: true)
-        mapView.addOverlay(polyLine())
+        //mapView.addOverlay(polyLine())
+        mapView.addOverlays(polyLine())
     }
     
     
@@ -3559,6 +3624,20 @@ extension HomeVC: MKMapViewDelegate {
             
             mapView.removeOverlays(mapView.overlays)
             
+            
+            guard let polyline = overlay as? MulticolorPolyline else {
+              return MKOverlayRenderer(overlay: overlay)
+            }
+            let renderer = MKPolylineRenderer(polyline: polyline)
+            renderer.strokeColor = polyline.color
+            renderer.lineWidth = 8
+            
+            self.startTripPressed = false // may move this after the load map function
+            
+            return renderer
+            
+            
+          /*
           guard let polyline = overlay as? MKPolyline else {
             return MKOverlayRenderer(overlay: overlay)
           }
@@ -3568,7 +3647,7 @@ extension HomeVC: MKMapViewDelegate {
             
             self.startTripPressed = false // may move this after the load map function
           return renderer
-        
+            */
         }
         
         
@@ -3770,6 +3849,41 @@ extension HomeVC: MKMapViewDelegate {
            // self.zoomToFit(selectedAnnotation: annotation)
         }
     }
+    
+    
+    func segmentColor(speed: Double, midSpeed: Double, slowestSpeed: Double, fastestSpeed: Double) -> UIColor {
+      enum BaseColors {
+        static let r_red: CGFloat = 1
+        static let r_green: CGFloat = 20 / 255
+        static let r_blue: CGFloat = 44 / 255
+        
+        static let y_red: CGFloat = 1
+        static let y_green: CGFloat = 215 / 255
+        static let y_blue: CGFloat = 0
+        
+        static let g_red: CGFloat = 0
+        static let g_green: CGFloat = 146 / 255
+        static let g_blue: CGFloat = 78 / 255
+      }
+      
+      let red, green, blue: CGFloat
+      
+      if speed < midSpeed {
+        let ratio = CGFloat((speed - slowestSpeed) / (midSpeed - slowestSpeed))
+        red = BaseColors.r_red + ratio * (BaseColors.y_red - BaseColors.r_red)
+        green = BaseColors.r_green + ratio * (BaseColors.y_green - BaseColors.r_green)
+        blue = BaseColors.r_blue + ratio * (BaseColors.y_blue - BaseColors.r_blue)
+      } else {
+        let ratio = CGFloat((speed - midSpeed) / (fastestSpeed - midSpeed))
+        red = BaseColors.y_red + ratio * (BaseColors.g_red - BaseColors.y_red)
+        green = BaseColors.y_green + ratio * (BaseColors.g_green - BaseColors.y_green)
+        blue = BaseColors.y_blue + ratio * (BaseColors.g_blue - BaseColors.y_blue)
+      }
+      
+      return UIColor(red: red, green: green, blue: blue, alpha: 1)
+    }
+    
+    
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
@@ -4412,8 +4526,88 @@ extension HomeVC: MKMapViewDelegate {
         mapItem.openInMaps(launchOptions: launchOptions) */
     }
     
-
     
+    
+    // LET"S START HERE!!!!
+    
+    
+    @objc func imageWasSaved(_ image: UIImage, error: Error?, context: UnsafeMutableRawPointer) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+
+        // print("Image was saved in the photo gallery")
+       // UIApplication.shared.open(URL(string:"photos-redirect://")!)
+        
+        let postImg = image
+             guard
+                 //let caption = captionTextView.text,
+                 //let postImg = photoImageView.image,
+               
+                 let currentUid = Auth.auth().currentUser?.uid else { return }
+             
+             
+        
+             // Get image upload data.
+             //guard let uploadData = postImg.jpegData(compressionQuality: 0.3) else { return }
+        guard let uploadData = postImg.jpegData(compressionQuality: 0.75) else { return }
+             
+             // Update storage
+             let filename = NSUUID().uuidString
+            // let creationDate = Int(NSDate().timeIntervalSince1970)
+             
+             // creating a new folder for admin_store_images
+        let storageRef = DataService.instance.REF_STORAGE_SCREENSHOT_IMAGES.child(filename)
+             
+             storageRef.putData(uploadData, metadata: nil) {(metadata, error) in
+                 
+                 if let error = error {
+                     print("Failed to upload image to storage with error", error.localizedDescription)
+                     return
+                 }
+                 
+                 // Image URL.
+                 
+                 storageRef.downloadURL(completion: { (url, error) in
+                     if error != nil {
+                         print("Failed to download url:", error!)
+                         return
+                     } else {
+                         let postImageUrl = (url?.absoluteString)!
+                         print(postImageUrl)
+                         
+                         let values = ["imageUrl": postImageUrl] as [String: Any]
+                         
+         
+                         // place value or image under the activity database
+                        DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).updateChildValues(values)
+                         
+                     }
+                 })
+             }
+        
+        
+    }
+    
+    func takeScreenshot(of view: UIView) {
+        UIGraphicsBeginImageContextWithOptions(
+            CGSize(width: view.bounds.width, height: view.bounds.height),
+            false,
+            2
+        )
+
+        view.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        UIImageWriteToSavedPhotosAlbum(screenshot, self, #selector(imageWasSaved), nil)
+    }
+    
+    func snapshotMapview() {
+
+        takeScreenshot(of: mapView)
+    }
 
     
     func monitorRegionLocation(center: CLLocationCoordinate2D, identifier: String) {
@@ -4602,6 +4796,8 @@ extension HomeVC: MKMapViewDelegate {
                 
                 // make sure this applies to the last check in region
                 self.handleStartStopTrip()
+                
+        
                 
                 /*
                   startTripPressed = true

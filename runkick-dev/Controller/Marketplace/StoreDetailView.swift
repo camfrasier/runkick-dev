@@ -51,7 +51,7 @@ class StoreDetailView: UIView {
     let indicatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 2
         view.alpha = 1
         return view
     }()
@@ -181,7 +181,7 @@ class StoreDetailView: UIView {
         tableView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
         
         addSubview(indicatorView)
-        indicatorView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
+        indicatorView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 5)
         indicatorView.centerX(inView: self)
         
         //indicatorView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor

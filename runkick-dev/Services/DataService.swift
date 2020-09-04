@@ -29,6 +29,7 @@ class DataService {
     private var _REF_BASE = DB_BASE
     private var _REF_STORAGE = STORAGE_BASE
     private var _REF_STORAGE_PROFILE_IMAGES = STORAGE_BASE.child("profile_images")
+    private var _REF_STORAGE_SCREENSHOT_IMAGES = STORAGE_BASE.child("screenshot_images")
     private var _REF_USERS = DB_BASE.child("users")
     private var _REF_STOREADMIN = DB_BASE.child("storeadmin")
     private var _REF_CATEGORIES = DB_BASE.child("categories")
@@ -66,6 +67,11 @@ class DataService {
     
     var REF_STORAGE_PROFILE_IMAGES: StorageReference {
         return _REF_STORAGE_PROFILE_IMAGES
+        
+    }
+    
+    var REF_STORAGE_SCREENSHOT_IMAGES: StorageReference {
+        return _REF_STORAGE_SCREENSHOT_IMAGES
         
     }
     

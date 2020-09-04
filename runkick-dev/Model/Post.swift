@@ -9,6 +9,13 @@
 import Foundation  // for the date functionality we need the swift foundation
 import Firebase
 
+/*
+enum PostType: String {
+    case checkIn
+    case userPost
+}
+*/
+
 class Post {
     
     var caption: String!
@@ -22,9 +29,24 @@ class Post {
     var price: Double!
     var poppPrice: Double!
     var storeId: String!
+    var type: String!
+    
+    var points: Int!
+    var averagePace: String!
+    var distance: Double!
+    var duration: String!
+    var stepCount: Int!
+    
     var user: User?
     var didLike = false
     var isFollowed = false
+    
+    /*
+    enum PostType: String {
+        case checkIn
+        case userPost
+    }
+    */
     
     init(postId: String!, user: User, dictionary: Dictionary<String, AnyObject>) {
         
@@ -34,6 +56,10 @@ class Post {
         
         if let caption = dictionary["caption"] as? String {
             self.caption = caption
+        }
+        
+        if let type = dictionary["type"] as? String {
+            self.type = type
         }
         
         if let category = dictionary["category"] as? String {
@@ -62,6 +88,26 @@ class Post {
         
         if let ownerUid = dictionary["ownerUid"] as? String {
             self.ownerUid = ownerUid
+        }
+        
+        if let storeId = dictionary["storeId"] as? String {
+            self.storeId = storeId
+        }
+        
+        if let points = dictionary["points"] as? Int {
+            self.points = points
+        }
+        
+        if let averagePace = dictionary["averagePace"] as? String {
+            self.averagePace = averagePace
+        }
+        
+        if let duration = dictionary["duration"] as? String {
+            self.duration = duration
+        }
+        
+        if let stepCount = dictionary["stepCount"] as? Int {
+            self.stepCount = stepCount
         }
         
         if let storeId = dictionary["storeId"] as? String {

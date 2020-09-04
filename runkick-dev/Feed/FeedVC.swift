@@ -11,6 +11,8 @@ import Firebase
 import ActiveLabel
 
 private let reuseIdentifier = "Cell"
+private let reuseCheckInIdentifier = "CheckInCell"
+
 
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
@@ -206,6 +208,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         return label
     } ()
     
+    
+    enum PostType: String {
+
+        case userPost = "userPost"
+        case checkIn = "checkIn"
+    }
+    
 
     // MARK: - Init
     
@@ -235,6 +244,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         // register cell classes
         self.collectionView!.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.register(CheckInCell.self, forCellWithReuseIdentifier: reuseCheckInIdentifier)
         
         // configure refresh control
         let refreshFeedControl = UIRefreshControl()
@@ -401,29 +411,106 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
         
-        cell.delegate = self
-        
-        // delegate to view long press post
-        cell.altDelegate = self
-        
-        if viewSinglePost {
-            if let post = self.post {
-                cell.post = post
-            }
-        } else {
-            cell.post = posts[indexPath.item]
 
+        
+        let post = posts[indexPath.item]
+        
+        //let type = PostType.init(rawValue: post.type)
+       let type = PostType.init(rawValue: post.type)
+        
+        
+        switch type {
+            
+        case .checkIn:
+            
+            print("DEBUG: THE CHECKIN FUNCTION WAS HIT")
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCheckInIdentifier, for: indexPath) as! CheckInCell
+            
+            cell.delegate = self
+            
+            cell.post = posts[indexPath.item]
+            
+            return cell
+            
+        case .userPost:
+            print("DEBUG: show the normal upload cell")
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
+            
+            cell.delegate = self
+            
+            // delegate to view long press post
+            cell.altDelegate = self
+            
+            if viewSinglePost {
+                if let post = self.post {
+                    cell.post = post
+                }
+            } else {
+                cell.post = posts[indexPath.item]
+
+            }
+            
+            handleHastagTapped(forCell: cell)
+            
+            handleUsernameLabelTapped(forCell: cell)
+            
+            handleMentionedTapped(forCell: cell)
+            
+            return cell
+
+        case .none:
+    
+            return UICollectionViewCell()
+            
         }
         
-        handleHastagTapped(forCell: cell)
+        /*
+        // if caption section is not empty then the post is more than likely a check in
         
-        handleUsernameLabelTapped(forCell: cell)
-        
-        handleMentionedTapped(forCell: cell)
-        
-        return cell
+        if (posts[indexPath.item].caption == nil) {
+            
+            print("DEBUG: show the normal upload cell")
+            // else post as a check in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCheckInIdentifier, for: indexPath) as! CheckInCell
+            
+            cell.delegate = self
+            
+            cell.post = posts[indexPath.item]
+            
+            return cell
+            
+        } else {
+            
+            print("DEBUG: show the normal upload cell")
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
+            
+            cell.delegate = self
+            
+            // delegate to view long press post
+            cell.altDelegate = self
+            
+            if viewSinglePost {
+                if let post = self.post {
+                    cell.post = post
+                }
+            } else {
+                cell.post = posts[indexPath.item]
+
+            }
+            
+            handleHastagTapped(forCell: cell)
+            
+            handleUsernameLabelTapped(forCell: cell)
+            
+            handleMentionedTapped(forCell: cell)
+            
+            return cell
+
+        }
+        */
+      
+       
     }
     
     
@@ -449,8 +536,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func configureNotificationComponents() {
-        
-        
+
         let stackView = UIStackView(arrangedSubviews: [messageLabel, stackIndicatorBar, notificationsLabel])
         
         stackView.axis = .horizontal
@@ -1267,4 +1353,40 @@ extension FeedVC: PhotoFeedViewDelegate {
             self.photoFeedView.removeFromSuperview()
         }
     }
+}
+
+extension FeedVC: CheckInCellDelegate {
+    func handleUsernameTapped(for cell: CheckInCell) {
+        print("username tapped")
+    }
+    
+    func handleOptionTapped(for cell: CheckInCell) {
+        print("username tapped")
+    }
+    
+    func handleFollowFollowingTapped(for cell: CheckInCell) {
+        print("username tapped")
+    }
+    
+    func handleLikeTapped(for cell: CheckInCell, isDoubleTap: Bool) {
+        print("username tapped")
+    }
+    
+    func handlePhotoTapped(for cell: CheckInCell) {
+        print("username tapped")
+    }
+    
+    func handleCommentTapped(for cell: CheckInCell) {
+        print("username tapped")
+    }
+    
+    func handleConfigureLikeButton(for cell: CheckInCell) {
+        print("username tapped")
+    }
+    
+    func handleShowLikes(for cell: CheckInCell) {
+        print("username tapped")
+    }
+    
+
 }

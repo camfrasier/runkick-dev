@@ -54,6 +54,7 @@ class RightMenuOptionCell: UITableViewCell {
             print("DEBUG: THIS IS THE STEPS \(stepCountLabel.text)")
             print("DEBUG: THIS IS THE DURATION \(durationLabel.text)")
             print("DEBUG: THIS IS THE PACE \(paceLabel.text)")
+            print("DEBUG: THIS IS THE DAy \(postDayLabel.text)")
             /*
             
             self.averagePaceLabel.text = "\(Double(averagePace))"
