@@ -81,7 +81,12 @@
 		69A1D56823480CA9003276B1 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1D56723480CA9003276B1 /* CommentInputAccessoryView.swift */; };
 		69A1D56A23480CD9003276B1 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A1D56923480CD9003276B1 /* CommentInputTextView.swift */; };
 		69B3E83224FF2DDB004CD859 /* CheckInCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B3E83124FF2DDA004CD859 /* CheckInCell.swift */; };
+		69B3E8382506E5F4004CD859 /* CircleCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B3E8372506E5F3004CD859 /* CircleCollectionViewLayout.swift */; };
+		69B3E83A2506F057004CD859 /* CircleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B3E8392506F056004CD859 /* CircleVC.swift */; };
+		69B3E83C250706B1004CD859 /* CircleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B3E83B250706B1004CD859 /* CircleCell.swift */; };
+		69B4116C2516A9D5007C6D2A /* ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B4116B2516A9D5007C6D2A /* ShareData.swift */; };
 		69BC68A024FAE9A80021724C /* MulticolorPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BC689F24FAE9A80021724C /* MulticolorPolyline.swift */; };
+		69BC71912512FA8700EA84C8 /* Logos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BC71902512FA8600EA84C8 /* Logos.swift */; };
 		69BC7EE023EA527E009F8AD3 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69BC7EDF23EA527E009F8AD3 /* HomeVC.swift */; };
 		69C5EDA3247CE48A006A22B1 /* ActivityHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C5EDA2247CE48A006A22B1 /* ActivityHistoryCell.swift */; };
 		69D7C7A02356841300AF2736 /* SearchStoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7C79F2356841200AF2736 /* SearchStoreCell.swift */; };
@@ -217,7 +222,12 @@
 		69A1D56723480CA9003276B1 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		69A1D56923480CD9003276B1 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		69B3E83124FF2DDA004CD859 /* CheckInCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCell.swift; sourceTree = "<group>"; };
+		69B3E8372506E5F3004CD859 /* CircleCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCollectionViewLayout.swift; sourceTree = "<group>"; };
+		69B3E8392506F056004CD859 /* CircleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleVC.swift; sourceTree = "<group>"; };
+		69B3E83B250706B1004CD859 /* CircleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCell.swift; sourceTree = "<group>"; };
+		69B4116B2516A9D5007C6D2A /* ShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareData.swift; sourceTree = "<group>"; };
 		69BC689F24FAE9A80021724C /* MulticolorPolyline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticolorPolyline.swift; sourceTree = "<group>"; };
+		69BC71902512FA8600EA84C8 /* Logos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logos.swift; sourceTree = "<group>"; };
 		69BC7EDF23EA527E009F8AD3 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		69C5EDA2247CE48A006A22B1 /* ActivityHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ActivityHistoryCell.swift; path = "/Users/cameronfrasier/Desktop/runkick-dev/runkick-dev/View/Messages/ActivityHistoryCell.swift"; sourceTree = "<absolute>"; };
 		69D7C79F2356841200AF2736 /* SearchStoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStoreCell.swift; sourceTree = "<group>"; };
@@ -344,6 +354,7 @@
 				69FB5F20245E319D00A02FA1 /* AdminStorePostVC.swift */,
 				696A70B72345296800CDD512 /* HashtagController.swift */,
 				69FBDCE5243D4F5300709E21 /* PhotoFeedView.swift */,
+				69B3E8372506E5F3004CD859 /* CircleCollectionViewLayout.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -354,6 +365,7 @@
 				69E20BF622DB9C460054BCEE /* StoreDetailView.swift */,
 				69365A4D24E7920500AF156F /* MarketplaceVC.swift */,
 				696A521F24A57CC400289C33 /* CheckoutVC.swift */,
+				69B3E8392506F056004CD859 /* CircleVC.swift */,
 			);
 			path = Marketplace;
 			sourceTree = "<group>";
@@ -389,6 +401,8 @@
 				696A521D24A4594500289C33 /* Product.swift */,
 				6980617824D8E30A00628077 /* Rewards.swift */,
 				69EC680524ECC75D007A5F3D /* LocationManager.swift */,
+				69BC71902512FA8600EA84C8 /* Logos.swift */,
+				69B4116B2516A9D5007C6D2A /* ShareData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -594,13 +608,13 @@
 			children = (
 				696A5215249EB4EB00289C33 /* HelperFunctions.swift */,
 				69FE5BC02326D8A700039BF5 /* FeedCell.swift */,
-				69B3E83124FF2DDA004CD859 /* CheckInCell.swift */,
 				69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */,
 				696A5219249EC0E500289C33 /* StoreItemSelectionCell.swift */,
 				696A5217249EBDC800289C33 /* StoreItemSelectionVC.swift */,
 				69D8CCCA24A8591F001432FD /* CheckoutCell.swift */,
 				69D8CCCC24A99BD9001432FD /* StripeCart.swift */,
 				69D8CCCE24AD75CA001432FD /* StripeApi.swift */,
+				69B3E83124FF2DDA004CD859 /* CheckInCell.swift */,
 			);
 			path = Market;
 			sourceTree = "<group>";
@@ -612,6 +626,7 @@
 				69FA0824233D58ED002DC00F /* NewMessageCell.swift */,
 				69FA082A23425306002DC00F /* ChatCell.swift */,
 				696A52122495ADB900289C33 /* ActivityHistoryCell.swift */,
+				69B3E83B250706B1004CD859 /* CircleCell.swift */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -788,6 +803,7 @@
 				69D8CCCB24A8591F001432FD /* CheckoutCell.swift in Sources */,
 				69E6FC4923208FF2004D59A7 /* FollowLikeCell.swift in Sources */,
 				696A6BE1240B3CDE00C2138F /* MainSwitch.swift in Sources */,
+				69B3E83A2506F057004CD859 /* CircleVC.swift in Sources */,
 				69E6A0B1236B523500149219 /* SettingsVC.swift in Sources */,
 				698B486623233D7700A0F3E0 /* SelectPhotoCell.swift in Sources */,
 				69E20BF722DB9C460054BCEE /* StoreDetailView.swift in Sources */,
@@ -798,6 +814,7 @@
 				69FE5BCA2331AD4C00039BF5 /* NotificationsVC.swift in Sources */,
 				69777BA2248C1F8D005EC4E6 /* GradientClearView.swift in Sources */,
 				691914E724D8C73A008DCA06 /* RewardsVC.swift in Sources */,
+				69BC71912512FA8700EA84C8 /* Logos.swift in Sources */,
 				69E7084A240467FA0083444B /* MarketplaceCell.swift in Sources */,
 				692367472305CBB6002FCA4D /* SignUpVC.swift in Sources */,
 				69236750230B7F09002FCA4D /* UploadPostVC.swift in Sources */,
@@ -819,8 +836,10 @@
 				691A870D231AFA1400EBB64A /* FollowLikeVC.swift in Sources */,
 				6980617924D8E30A00628077 /* Rewards.swift in Sources */,
 				6937B46D22C2913600446926 /* StoreAnnotation.swift in Sources */,
+				69B3E83C250706B1004CD859 /* CircleCell.swift in Sources */,
 				69FBDCF624467FCB00709E21 /* AdminProfileCell.swift in Sources */,
 				69E8EEB2246771B4006D4AF6 /* MarketCategory.swift in Sources */,
+				69B3E8382506E5F4004CD859 /* CircleCollectionViewLayout.swift in Sources */,
 				6923674C230B7ECE002FCA4D /* FeedVC.swift in Sources */,
 				69BC68A024FAE9A80021724C /* MulticolorPolyline.swift in Sources */,
 				69977C492398905D0057D0A3 /* MenuOptionCell.swift in Sources */,
@@ -828,6 +847,7 @@
 				69D7C7A02356841300AF2736 /* SearchStoreCell.swift in Sources */,
 				69FB5F1D245E10D100A02FA1 /* UploadStorePostVC.swift in Sources */,
 				6937B46922C18C1E00446926 /* UpdateService.swift in Sources */,
+				69B4116C2516A9D5007C6D2A /* ShareData.swift in Sources */,
 				6923674023039257002FCA4D /* CLService.swift in Sources */,
 				691A8711231E278100EBB64A /* CustomImageView.swift in Sources */,
 				6937B44C22A977E300446926 /* RoundImageView.swift in Sources */,

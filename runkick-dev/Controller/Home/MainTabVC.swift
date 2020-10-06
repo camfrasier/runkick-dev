@@ -115,6 +115,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // Mark: - Camera view controller
         let cameraVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "CAMERA", rootViewController: CameraVC())
         
+        let circleVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Circle", rootViewController: CircleVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
         viewControllers = [homeVC, marketplaceVC, selectImageVC, feedVC, searchVC]
         

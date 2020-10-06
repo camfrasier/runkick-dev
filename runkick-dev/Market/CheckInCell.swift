@@ -16,14 +16,29 @@ class CheckInCell: UICollectionViewCell {
     // creating a variable of the type CheckInCellDelegate that's optional
     
     var delegate: CheckInCellDelegate?
+    var logos = [Logos]()
+    let reuseCircleCellIdentifier = "CircleCell"
+    var variable: String?
     
     var post: Post? {
         
         didSet {
             
+            guard let postId = post?.postId else { return }
+            
+            fetchPosts(postId)
+        
+            print("THIS SEGMENT POSTS HOW MANY TIMES \(postId)")
+            
             guard let ownerUid = post?.ownerUid else { return }
             guard let imageUrl = post?.imageUrl else { return }
             guard let likes = post?.likes else { return }
+            
+            //let circleVC = CircleVC()
+            //circleVC.postId = postId
+            
+            // save variable value of the post Id
+            //circleVC.postId = "value here"
             
             Database.fetchUser(with: ownerUid) { (user) in  // In order to grab the photo of the correct post owner.
                 
@@ -35,7 +50,10 @@ class CheckInCell: UICollectionViewCell {
                 self.configurePostCaption(user: user)
                 
                 guard let userProfileImage = user.profileImageURL else { return }
+    
+                self.checkInProfileImageView.loadImage(with: userProfileImage)
                 self.profileImageView.loadImage(with: userProfileImage)
+                
             }
             
             postImageView.loadImage(with: imageUrl)
@@ -46,14 +64,17 @@ class CheckInCell: UICollectionViewCell {
             configureComments()
             
             configureFollowFollowing()
+            
+            //self.collectionView?.refreshControl?.endRefreshing()
+   
         }
     }
     
     // MARK: - Properties
-    
+    /*
     lazy var profileImageView: CustomImageView = {  // Using the Custom image view class.
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleUsernameTapped))
@@ -62,6 +83,38 @@ class CheckInCell: UICollectionViewCell {
         iv.addGestureRecognizer(profileTap)
         return iv
     }()
+    */
+
+    
+    lazy var checkInProfileImageView: CustomImageView = {
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.image = UIImage(named: "userProfileSilhouetteWhite")
+        
+        /*
+        // add gesture recognizer for double tap to like
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleUsernameTapped))
+        profileTap.numberOfTapsRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(profileTap)
+        */
+        return iv
+    } ()
+    
+    lazy var profileImageView: CustomImageView = {
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.image = UIImage(named: "userProfileSilhouetteWhite")
+        
+        // add gesture recognizer for double tap to like
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleUsernameTapped))
+        profileTap.numberOfTapsRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(profileTap)
+        return iv
+    } ()
     
     lazy var followFollowingLabel: UILabel = {
         let label = UILabel()
@@ -151,11 +204,24 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
+    lazy var postImageViewBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220)
+        
+        /*
+        let optionTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoTapped))
+        optionTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(optionTap)
+        */
+        return view
+    }()
+    
     lazy var postImageView: CustomImageView = {  // Using the Custom image view class.
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        
+
         // add gesture recognizer for double tap to like
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoTapped))
         likeTap.numberOfTapsRequired = 2
@@ -163,6 +229,7 @@ class CheckInCell: UICollectionViewCell {
         iv.addGestureRecognizer(likeTap)
         return iv
     } ()
+    
     
     let gradientProfileView: GradientView = {
         let view = GradientView()
@@ -291,16 +358,32 @@ class CheckInCell: UICollectionViewCell {
         return button
     } ()
     
+    //let circleVC = CircleVC(collectionViewLayout: UICollectionViewFlowLayout())
+    
 
     let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
-   
+    var collectionView: UICollectionView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         configureContraints()
-
-        backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+        
+        backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        let layout = UICollectionViewFlowLayout()
+        let frame = CGRect(x: 0, y: frame.height / 2, width: frame.width, height: frame.height / 2)
+        collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        collectionView?.collectionViewLayout = CircleCollectionViewLayout()
+        collectionView.register(CircleCell.self, forCellWithReuseIdentifier: reuseCircleCellIdentifier)
+        
+        addSubview(collectionView)
+        collectionView.layer.backgroundColor = UIColor.clear.cgColor
+        
+        
     }
     
     // MARK: - Handlers / Selectors
@@ -340,9 +423,9 @@ class CheckInCell: UICollectionViewCell {
         delegate?.handleConfigureLikeButton(for: self)
     }
     
-
     
     // MARK: - Helper Functions
+    
     
     func addBlurEffect() {
         let bounds = backgroundOptionsButton.bounds
@@ -358,10 +441,26 @@ class CheckInCell: UICollectionViewCell {
     
     func configureContraints() {
         
-        /*
+        addSubview(postImageViewBackground)
+        postImageViewBackground.translatesAutoresizingMaskIntoConstraints = false
+        
         // photo attributes and constraints
-        addSubview(postImageView)
+        postImageViewBackground.addSubview(postImageView)
         postImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let gradientDiminsion: CGFloat = 100
+        addSubview(gradientProfileView)
+        gradientProfileView.translatesAutoresizingMaskIntoConstraints = false
+        gradientProfileView.layer.cornerRadius = gradientDiminsion / 2
+        
+        
+        let profileDiminsion: CGFloat = 95
+        gradientProfileView.addSubview(checkInProfileImageView)
+        checkInProfileImageView.translatesAutoresizingMaskIntoConstraints = false
+        checkInProfileImageView.layer.cornerRadius = profileDiminsion / 2
+        checkInProfileImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        checkInProfileImageView.layer.borderWidth = 2
+        
         
         // profile attributes and constraints
         addSubview(profileImageView)
@@ -370,10 +469,7 @@ class CheckInCell: UICollectionViewCell {
         // username attributes and constraints
         addSubview(usernameButton)
         usernameButton.translatesAutoresizingMaskIntoConstraints = false
-        */
- 
- 
-        /*
+        
         // separator attributes and constraints
         addSubview(circleDotView)
         circleDotView.translatesAutoresizingMaskIntoConstraints = false
@@ -385,6 +481,9 @@ class CheckInCell: UICollectionViewCell {
         // following/follower attributes and constraints
         addSubview(followFollowingLabel)
         followFollowingLabel.translatesAutoresizingMaskIntoConstraints = false
+ 
+        /*
+
         
         // caption block attributes and constraints
         addSubview(captionBlock)
@@ -394,9 +493,7 @@ class CheckInCell: UICollectionViewCell {
         captionBlock.addSubview(captionLabel)
         captionLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // like and comment icon block attributes and constraints
-        addSubview(likeCommentBlock)
-        likeCommentBlock.translatesAutoresizingMaskIntoConstraints = false
+
         
         // following/follower attributes and constraints
         addSubview(addCommentBlock)
@@ -404,6 +501,10 @@ class CheckInCell: UICollectionViewCell {
         
         addCommentBlock.addSubview(replyCommentLabel)
         addCommentBlock.translatesAutoresizingMaskIntoConstraints = false
+        
+
+        
+         */
         
         //options background
         addSubview(backgroundOptionsButton)
@@ -415,6 +516,10 @@ class CheckInCell: UICollectionViewCell {
         backgroundOptionsButton.addSubview(optionsButton)
         optionsButton.translatesAutoresizingMaskIntoConstraints = false
         optionsButton.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        
+        // like and comment icon block attributes and constraints
+        addSubview(likeCommentBlock)
+        likeCommentBlock.translatesAutoresizingMaskIntoConstraints = false
         
         likeCommentBlock.addSubview(newCommentBubble)
         newCommentBubble.translatesAutoresizingMaskIntoConstraints = false
@@ -428,21 +533,82 @@ class CheckInCell: UICollectionViewCell {
         likeCommentBlock.addSubview(likesLabel)
         likesLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        */
         
-        /*
+        
+        
+        // constant attributes and anchors
+        
         // constant attributes and anchors
         let profileImageDimension = CGFloat(40)
         profileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         profileImageView.layer.cornerRadius = profileImageDimension / 2
         
+        usernameButton.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 16)
+        
+        circleDotView.anchor(top: usernameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
+
+        followFollowingLabel.anchor(top: usernameButton.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        gradientProfileView.anchor(top: nil, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 100, paddingRight: 0, width: gradientDiminsion, height: gradientDiminsion)
+        gradientProfileView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        gradientProfileView.addSubview(checkInProfileImageView)
+        checkInProfileImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileDiminsion, height: profileDiminsion)
+        checkInProfileImageView.centerXAnchor.constraint(equalTo: gradientProfileView.centerXAnchor).isActive = true
+        checkInProfileImageView.centerYAnchor.constraint(equalTo: gradientProfileView.centerYAnchor).isActive = true
+
+        
+        // variable constraints
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[background]-0-|", options: [], metrics: nil, views: ["background": postImageViewBackground]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-60-[background(204)]-0-[likeCommentBlock]", options: [], metrics: nil, views: ["background": postImageViewBackground, "likeCommentBlock": likeCommentBlock]))
+        
         // variable constraints
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[image]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-60-[image]-0-[likeCommentBlock]-2-[captionBlock]", options: [], metrics: nil, views: ["image": postImageView, "likeCommentBlock": likeCommentBlock, "captionBlock": captionBlock]))
-        */
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(0.25)-[image]-(0.25)-|", options: [], metrics: nil, views: ["image": postImageView]))
         
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[optionsButton(20)]-5-|", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
+         
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[optionsButton(20)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
+        
+        /*
+        contentView.addSubview(circleVC.view)
+        circleVC.view.anchor(top: postImageViewBackground.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 35, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 0, height: 0)
+        */
+        likeCommentBlock.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 2, height: 35)
+        
+        newLikeHeart.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 21, height: 18)
+         
+        newCommentBubble.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 21, height: 18)
+        
+        postTimeLabel.anchor(top: postImageViewBackground.bottomAnchor, left: nil, bottom: nil, right: postImageViewBackground.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
+
+        
+        let stackView = UIStackView(arrangedSubviews: [newLikeHeart, likesLabel])
+        
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        likeCommentBlock.addSubview(stackView)
+        
+        let stackView2 = UIStackView(arrangedSubviews: [newCommentBubble, commentLabel])
+        
+        stackView2.axis = .horizontal
+        stackView2.distribution = .equalSpacing
+        stackView2.alignment = .center
+        stackView2.spacing = 5
+        stackView2.translatesAutoresizingMaskIntoConstraints = false
+        likeCommentBlock.addSubview(stackView2)
+        
+        
+        stackView.anchor(top: likeCommentBlock.topAnchor, left: likeCommentBlock.leftAnchor, bottom: nil, right: nil , paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        stackView2.anchor(top: stackView.topAnchor, left: stackView.rightAnchor, bottom: nil, right: nil , paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
+    
     
     func configurePostCaption(user: User) {
         
@@ -548,9 +714,74 @@ class CheckInCell: UICollectionViewCell {
             self.commentLabel.attributedText = attributedText
         }
     }
+    
+
+    func fetchPosts(_ postId: String) {
+        
+        self.logos.removeAll()
+        
+        
+        //guard let postIdenitifier = post?.postId else { return }
+
+        DataService.instance.REF_POSTS.child(postId).observe(.childAdded) {(snapshot: DataSnapshot) in
+                      
+                      //guard let childId = snapshot.key as String? else { return }
+                        
+            
+                      guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                          
+                     allObjects.forEach({ (snapshot) in
+                          let key = snapshot.key
+                        
+                        print("HERE ARE the KEY VALUES THAT COME BACK \(key) ")
+                         
+                        Database.fetchStoreLogos(with: postId, logoId: key, completion: { (post) in
+                           
+                              self.logos.append(post)
+                                
+                                print("HERE ARE the POST THAT COME BACK \(post) ")
+                              self.collectionView.reloadData()
+                          })
+                          
+            
+                      })
+         
+                  }
+         
+     }
+    
+    
+    
  
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+extension CheckInCell: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        //return numberOfCells
+        
+        print("THIS IS THE LOGO COUNT \(logos.count)")
+        return logos.count
+    }
+
+     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCircleCellIdentifier, for: indexPath)
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCircleCellIdentifier, for: indexPath) as! CircleCell
+        
+        cell.logo = logos[indexPath.item]
+        
+        print("HERE IS THE IMAGE URL \(cell.logo?.logoUrl)")
+        
+        return cell
+    }
+    
+     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Do something here when pressed")
+    }
+}
+

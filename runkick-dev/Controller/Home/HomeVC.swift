@@ -15,9 +15,11 @@ import Firebase
 import Contacts
 import UserNotifications
 
-private let reuseIdentifier = "SearchStoreCell"
+
 
 class HomeVC: UIViewController, Alertable {
+    
+    let reuseIdentifier = "SearchStoreCell"
     
     // MARK: - Map Properties
     
@@ -84,7 +86,7 @@ class HomeVC: UIViewController, Alertable {
     var didSetPolylineOrigin = false
     var secondSegmentSelected = Bool()
     var startTripPressed = false
-    
+    var checkpointReached = false
     
     
     
@@ -142,7 +144,8 @@ class HomeVC: UIViewController, Alertable {
     var timer = Timer()
     let timerInterval = 1.0
     var timeElapsed: TimeInterval = 0.0
-    
+    var childByAutoKey: String!
+    var didCreateFolder = false
 
     
     enum ExpansionState {
@@ -2653,6 +2656,7 @@ class HomeVC: UIViewController, Alertable {
                 startPedometer()
                 
                 plotProposedTrip()
+            
                 
                 // if we have the select path button showing , remove it before starting
                 if initialCheckpointSelected == true {
@@ -2678,7 +2682,7 @@ class HomeVC: UIViewController, Alertable {
             
             } else {
             
-            
+            startTripPressed = true
             // when we stop.. we may need to make sure the last key is saved as the key to compare to determine when to end route
             
             startStopButton.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -2720,14 +2724,15 @@ class HomeVC: UIViewController, Alertable {
             
             
             
-            startTripPressed = true
+            
             print("DEBUG: START TRIP SHOULD BE TRUE")
            
             saveRun()
-            snapshotMapview()
             
             newTimer?.invalidate()
             manager?.stopUpdatingLocation()
+            
+
             
             // when your trip is over the checkpoints you actually reach are
             //loadMap()
@@ -3058,13 +3063,13 @@ class HomeVC: UIViewController, Alertable {
         //mapView.removeOverlays(mapView.overlays)
         
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             
             self.loadMap()
             
+            // this is here to reset the folder creation for logo images
+            self.didCreateFolder = false
          }
-        
-        
     }
     
     func mapRegion() -> MKCoordinateRegion? {
@@ -3092,8 +3097,8 @@ class HomeVC: UIViewController, Alertable {
         
       let center = CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2,
                                           longitude: (minLong + maxLong) / 2)
-      let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * 1.3,
-                                  longitudeDelta: (maxLong - minLong) * 1.3)
+        let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * 3,
+                                    longitudeDelta: (maxLong - minLong) * 3)
       return MKCoordinateRegion(center: center, span: span)
     }
     
@@ -3179,7 +3184,14 @@ class HomeVC: UIViewController, Alertable {
         
       mapView.setRegion(region, animated: true)
         //mapView.addOverlay(polyLine())
+        
         mapView.addOverlays(polyLine())
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.snapshotMapview()
+         }
+        
     }
     
     
@@ -3587,14 +3599,12 @@ extension HomeVC: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        
-        
-     
+
         // if start trip has not been pressed render this line else render the other line
         if startTripPressed == false {
             
             
-            print("WE GET HEEEEERE START is FALSE SO THE NORMAL LINE RENDERS")
+            print("WE GET HERE START is FALSE SO THE NORMAL LINE RENDERS")
         let lineRenderer = MKPolylineRenderer(overlay: self.route.polyline)
 
         //lineRenderer.strokeColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
@@ -3604,7 +3614,7 @@ extension HomeVC: MKMapViewDelegate {
         //lineRenderer.strokeColor = UIColor(red: 253/255, green: 145/255, blue: 20/255, alpha: 1) // orange
         //lineRenderer.strokeColor = UIColor(red: 122/255, green: 206/255, blue: 33/255, alpha: 1) // limer
         //lineRenderer.strokeColor = UIColor(red: 252/255, green: 180/255, blue: 16/255, alpha: 1) // gold coin
-        lineRenderer.lineWidth = 4.5
+            lineRenderer.lineWidth = 6
         lineRenderer.lineCap = .round
         lineRenderer.lineJoin = .bevel
         //lineRenderer.lineJoin = .miter
@@ -3613,9 +3623,7 @@ extension HomeVC: MKMapViewDelegate {
         
         
         return lineRenderer
-        
-        
-        
+
         
     } else {
             
@@ -3631,9 +3639,7 @@ extension HomeVC: MKMapViewDelegate {
             let renderer = MKPolylineRenderer(polyline: polyline)
             renderer.strokeColor = polyline.color
             renderer.lineWidth = 8
-            
-            self.startTripPressed = false // may move this after the load map function
-            
+
             return renderer
             
             
@@ -4531,15 +4537,23 @@ extension HomeVC: MKMapViewDelegate {
     // LET"S START HERE!!!!
     
     
-    @objc func imageWasSaved(_ image: UIImage, error: Error?, context: UnsafeMutableRawPointer) {
+   // @objc func imageWasSaved(_ image: UIImage, error: Error?, context: UnsafeMutableRawPointer) {
+    func imageWasSaved(_ image: UIImage) {
+        /*
         if let error = error {
             print(error.localizedDescription)
             return
         }
-
-        // print("Image was saved in the photo gallery")
-       // UIApplication.shared.open(URL(string:"photos-redirect://")!)
+        */
+        //let checkInCreationDate = Int(NSDate().timeIntervalSince1970)
         
+        // print("Image was saved in the photo gallery")
+        // UIApplication.shared.open(URL(string:"photos-redirect://")!)
+        
+        
+        // START HERE AND WORK BACK
+        
+         
         let postImg = image
              guard
                  //let caption = captionTextView.text,
@@ -4557,6 +4571,10 @@ extension HomeVC: MKMapViewDelegate {
              let filename = NSUUID().uuidString
             // let creationDate = Int(NSDate().timeIntervalSince1970)
              
+        
+        print("DEBUG: We are checking the value to this point\(filename)")
+        
+       
              // creating a new folder for admin_store_images
         let storageRef = DataService.instance.REF_STORAGE_SCREENSHOT_IMAGES.child(filename)
              
@@ -4582,13 +4600,153 @@ extension HomeVC: MKMapViewDelegate {
          
                          // place value or image under the activity database
                         DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).updateChildValues(values)
-                         
+                        
+                        if self.checkpointReached == true {
+                        self.createCheckInPost(postImageUrl)
+                        }
+
                      }
                  })
              }
+    }
+    
+    func createCheckInPost(_ imageUrl: String) {
+        // here is well we build the checkin and place it in the post feed.
         
+        // use tripholder, send image to create the actual post then place in post feed .. use current upload post
+        // Parameters  send image url
+               guard let currentUid = Auth.auth().currentUser?.uid else { return }
+
+               let creationDate = Int(NSDate().timeIntervalSince1970)
+
+    
+            let postImageUrl = imageUrl
+                           
+            let values = [//"caption": caption,
+                                        "tripId": tripHolder,
+                                        "logoId": childByAutoKey as Any,
+                                         "creationDate": creationDate,
+                                         "likes": 0,
+                                         "imageUrl": postImageUrl,
+                                         "type": "checkIn",
+                                         "ownerUid": currentUid] as [String: Any]
+                           
+                           // Post id.
+                           let postId = DataService.instance.REF_POSTS.childByAutoId()
+                           let userPostId = DataService.instance.REF_USER_CHECKIN_POSTS  // update checkin post to data base
+                           // Upload information to database.
+                           
+                           postId.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                               
+                            
+                            // very slick way to get the post key MUST USE!!!
+                            
+                            
+                               guard let postKey = postId.key else { return }
+                               // update user post section.
+                               userPostId.child(currentUid).updateChildValues([postKey: 1])
+                               
+                               // update user feed structure
+                               self.updateUserFeeds(with: postKey)
+                               
+                            self.retrieveStoreLogos(self.childByAutoKey, uid: currentUid, tripId: self.tripHolder, postId: postKey)
+                               /*
+                               // upload store hashtags to server
+                               self.uploadHastagToServer(withPostId: postKey)
+                               
+                             
+                               // upload store mentions notification to server
+                               if caption.contains("@") {
+                                   self.uploadMentionNotification(forPostId: postKey, withText: caption, isForComment: false)
+                               }
+                                */
+                               
+                               // auto dismiss and return to home category food feed.
+                               self.dismiss(animated: true, completion: {
+                                   self.tabBarController?.selectedIndex = 1
+                                   
+                               })
+                           })
         
     }
+    
+    
+    
+    
+    
+    
+    
+    // TWO MAJOR KEY FEATURES THAT WILL REDUCE MY CODE, ABOVE SAVING THE KEY VALUE. AND THE GRABBING AND SAVING AN ENTIRE ARRAY!!!
+
+    
+    
+    
+    
+    
+    func retrieveStoreLogos(_ logoId: String, uid: String, tripId: String, postId: String) {
+        
+        //DataService.instance.REF_POSTS.child(postId).updateChildValues(["postId": postId])
+        
+        // we need to grab the store logos using the logo id, user id, trip id and activity feed.. grab the entire array and place
+        //it under your checkin
+
+        DataService.instance.REF_ACTIVITY.child(uid).child(tripId).child(logoId).observeSingleEvent(of: .value) { (snapshot) in
+            
+            let snap = snapshot.value as! [String: Dictionary<String, Any>]
+            
+            // saving the entire array to the post feed for checkIn
+            DataService.instance.REF_POSTS.child(postId).updateChildValues(["postId": postId, "logoImages" :snap])
+            
+        }
+        
+        //then we need to make sure that we read the cell data rather than attempting to retrieve new everytime
+        
+    }
+    
+    // MARK: - Handlers
+    
+    func updateUserFeeds(with postId: String) {
+        
+        // current user id
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        // database values
+        let values = [postId: 1]
+        
+        // update our follower feeds
+        DataService.instance.REF_FOLLOWER.child(currentUid).observe(.childAdded) { (snapshot) in
+            
+            let followerUid = snapshot.key
+            DataService.instance.REF_FEED.child(followerUid).updateChildValues(values)
+        }
+        
+        // update current user feed.
+        DataService.instance.REF_FEED.child(currentUid).updateChildValues(values)
+        
+    }
+    
+    /*
+    func uploadHastagToServer(withPostId postId: String) {
+        
+        guard let caption = captionTextView.text else { return }
+        
+        // loop though all captions and search for words with a hashtag in front of them
+        let words: [String] = caption.components(separatedBy: .whitespacesAndNewlines)
+        
+        for var word in words {
+            
+            if word.hasPrefix("#") {
+                // below lines to confirm that we aren't getting any spaces or odd characters
+                word = word.trimmingCharacters(in: .punctuationCharacters)
+                word = word.trimmingCharacters(in: .symbols)
+                
+                let hashtagValues = [postId : 1]
+                
+                DataService.instance.REF_HASHTAG_POST.child(word.lowercased()).updateChildValues(hashtagValues)
+            }
+        }
+    }
+    */
     
     func takeScreenshot(of view: UIView) {
         UIGraphicsBeginImageContextWithOptions(
@@ -4600,12 +4758,16 @@ extension HomeVC: MKMapViewDelegate {
         view.layer.render(in: UIGraphicsGetCurrentContext()!)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
+    
 
-        UIImageWriteToSavedPhotosAlbum(screenshot, self, #selector(imageWasSaved), nil)
+       //UIImageWriteToSavedPhotosAlbum(screenshot, self, #selector(imageWasSaved), nil)
+        imageWasSaved(screenshot)
+        
     }
     
     func snapshotMapview() {
-
+        
+        // maybe add a delay here then take screen shot
         takeScreenshot(of: mapView)
     }
 
@@ -4761,6 +4923,59 @@ extension HomeVC: MKMapViewDelegate {
         
     }
     
+    func addStoreUrl(_ storeId: String) {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        
+        print("DEBUG: able to pass store id but now we must see why the store LOgo url \(storeId)")
+        
+        
+    if didCreateFolder == false {
+        DataService.instance.REF_STORES.child(storeId).child("storeLogoUrl").observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let logoUrl = snapshot.value as? String else { return }
+            
+            // adding this information to the activity folder
+            DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).childByAutoId().childByAutoId().updateChildValues(["logoUrl": logoUrl, "storeId": storeId])
+            
+                // going back to save the key value for the url value that was just created
+            DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).queryLimited(toFirst: 1).observe(.childAdded) { (snapshot) in
+            
+                        let snap = snapshot.key
+                self.childByAutoKey = snap // we only need to find this once
+                
+                print("DEBUG: This is the child key \(self.childByAutoKey)")
+                            }
+                        }
+            
+            self.didCreateFolder = true
+            
+    } else {
+            
+            DataService.instance.REF_STORES.child(storeId).child("storeLogoUrl").observeSingleEvent(of: .value) { (snapshot) in
+                guard let logoUrl = snapshot.value as? String else { return }
+                
+                // adding this information to the activity folder
+                //DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child(self.childByAutoKey).childByAutoId().updateChildValues([storeId: logoUrl])
+                
+                DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child(self.childByAutoKey).childByAutoId().updateChildValues(["logoUrl": logoUrl, "storeId": storeId])
+                
+            }
+        }
+        
+        
+        /*
+         let logosKey = snapshot.value as! [String: Dictionary<String, String>]
+         for (key, value) in logosKey {
+             if value[storeId] == logoUrl {
+                 self.childByAutoKey = key // we only need to find this once
+             }
+         }
+         */
+
+    }
+    
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Did enter region \(region.identifier)")
@@ -4779,8 +4994,9 @@ extension HomeVC: MKMapViewDelegate {
             self.updateCompletedPath(storeIdentifier, keyHolder: currentKeyHolderKey)
             
             
+            // call function that grabs takes store id and using this to get logo image and placing it under the posts
+            self.addStoreUrl(storeIdentifier)
         })
-        
     
 
         print("Normal key value is \(keyHolder)")
@@ -4796,9 +5012,7 @@ extension HomeVC: MKMapViewDelegate {
                 
                 // make sure this applies to the last check in region
                 self.handleStartStopTrip()
-                
-        
-                
+
                 /*
                   startTripPressed = true
                   print("DEBUG: START TRIP SHOULD BE TRUE")
@@ -4823,6 +5037,8 @@ extension HomeVC: MKMapViewDelegate {
             
         self.getTripKey()
         
+            // setting a boolean here to control whether or not a checkin gets posted
+        checkpointReached = true
         AlertService.actionSheet(in: self, title: "You're Here, Check In!") {
                 
                 CLService.shared.updateLocation()
@@ -4973,6 +5189,8 @@ extension HomeVC: MKMapViewDelegate {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 print("show trips")
+                
+
             }
 
         case .Settings:

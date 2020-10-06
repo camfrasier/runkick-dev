@@ -26,6 +26,7 @@ class FeedCell: UICollectionViewCell {
             guard let ownerUid = post?.ownerUid else { return }
             guard let imageUrl = post?.imageUrl else { return }
             guard let likes = post?.likes else { return }
+            guard let postId = post?.postId else { return }
             
             Database.fetchUser(with: ownerUid) { (user) in  // In order to grab the photo of the correct post owner.
                 
@@ -881,7 +882,7 @@ class FeedCell: UICollectionViewCell {
  
  */
     }
-    
+        
     func configurePostCaption(user: User) {
         
         guard let post = self.post else { return }

@@ -14,7 +14,6 @@ private let reuseIdentifier = "Cell"
 private let reuseCheckInIdentifier = "CheckInCell"
 
 
-
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
     
     /*
@@ -25,12 +24,15 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     // MARK: - Properties
     var homeVC: HomeVC!
+    var circleVC: CircleVC!
     var posts = [Post]() // This need to be a variable so we can mutate it.
+    //var logoData = [Logos]()
+    //var logos: Logos?
     var viewSinglePost = false
     var post: Post?
     var currentKey: String?
     var userProfileController: UserProfileVC?
-   
+    var value: String?
     
     // here we are using the class photo feed view in order to pull up the photo we need from the subclass
     let photoFeedView: PhotoFeedView = {
@@ -260,7 +262,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         //configureNotificationComponents()
         
         //setUserFCMTocken()
-    
         
         // fetch posts if we are not viewing a single post
         if !viewSinglePost {
@@ -419,7 +420,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         //let type = PostType.init(rawValue: post.type)
        let type = PostType.init(rawValue: post.type)
         
-        
         switch type {
             
         case .checkIn:
@@ -428,8 +428,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCheckInIdentifier, for: indexPath) as! CheckInCell
             
             cell.delegate = self
-            
             cell.post = posts[indexPath.item]
+
+            value = cell.post?.postId
+            print("THE VALUE IS EQUAL TO \(value)")
             
             return cell
             
@@ -914,8 +916,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     func fetchPosts() {
         
-        print("fetch post function called")
-        
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
 
         // fetching posts with pagination and only observing x amount of post at a time
@@ -928,9 +928,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
+                
                 allObjects.forEach({ (snapshot) in
                     let postId = snapshot.key
+                    
+                    print("we know what type to look fooooor \(postId)")
                     self.fetchPost(withPostId: postId)
+                    
                 })
                 self.currentKey = first.key
             })
@@ -1217,6 +1221,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     @objc func handleFeedRefresh() {
         // this is a screen pull down function to refresh you feed
+        
         posts.removeAll(keepingCapacity: false)
         self.currentKey = nil
         fetchPosts()
@@ -1225,6 +1230,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         feedCell.configureLikeButton()
         
         collectionView?.reloadData()
+        
+        //let checkInCell = CheckInCell()
+        //checkInCell.logos.removeAll()
     }
     
     @objc func handleShowMessages() {
@@ -1361,7 +1369,58 @@ extension FeedVC: CheckInCellDelegate {
     }
     
     func handleOptionTapped(for cell: CheckInCell) {
-        print("username tapped")
+        
+        
+        // if user is super user or if user is the current user ... allow all of these options..
+        
+        guard let post = cell.post else { return }
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_USERS.child(currentUserId).child("isStoreadmin").observe(.value) { (snapshot) in
+        let isStoreadmin = snapshot.value as! Bool
+        
+        print(snapshot.value as! Bool)
+        
+            if post.ownerUid == currentUserId || isStoreadmin == true {    // this is the profile screen for users
+            
+                print("DEBUG: The user is either the user who owns the post or a super user")
+                
+                let alertController = UIAlertController(title: "Options", message: nil, preferredStyle: .actionSheet)
+                
+                alertController.addAction(UIAlertAction(title: "Delete Post", style: .destructive, handler: { (_) in
+                    
+                    // this function can be found under the post class
+                    post.deleteCheckInPost(post.ownerUid)
+                    
+                    // if we are in our reguar feed mode
+                    if !self.viewSinglePost {
+                        self.handleFeedRefresh()
+                    } else {
+                        if let userProfileController = self.userProfileController {
+                            _ = self.navigationController?.popViewController(animated: true)
+                            userProfileController.handleRefresh()
+                        }
+                    }
+                }))
+                /*
+                alertController.addAction(UIAlertAction(title: "Edit Post", style: .default, handler: { (_) in
+                    
+                    let uploadPostController = UploadPostVC()
+                    let navigationController = UINavigationController(rootViewController: uploadPostController)
+                    uploadPostController.postToEdit = post
+                    uploadPostController.uploadAction = UploadPostVC.UploadAction(index: 1)
+                    self.present(navigationController, animated: true, completion: nil)
+                    
+                }))
+                */
+                alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                
+                self.present(alertController, animated: true, completion: nil)
+            
+            
+            }
+        }
+        
     }
     
     func handleFollowFollowingTapped(for cell: CheckInCell) {

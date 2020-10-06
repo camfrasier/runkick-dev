@@ -367,12 +367,14 @@ extension Database {
                 
                 let post = Post(postId: postId, user: user, dictionary: dictionary)
                 
+                
                 completion(post)
             })
         }
     }
-    
+    // here we use trip ID to find post under the activity section
     static func fetchStorePost(with postId: String, completion: @escaping(StorePost) -> ()) {
+
         DataService.instance.REF_ADMIN_STORE_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
             
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
@@ -386,6 +388,22 @@ extension Database {
             })
         }
     }
+    
+    static func fetchStoreLogos(with postId: String, logoId: String, completion: @escaping(Logos) -> ()) {
+       // guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        DataService.instance.REF_POSTS.child(postId).child("logoImages").child(logoId).observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            
+            print("The image SNAPSHOT IS GOING TO BE \(snapshot)")
+                           
+                let post = Logos(postId: postId, dictionary: dictionary)
+            print("The image URL IS GOING TO BE \(post.logoUrl)")
+                completion(post)
+    
+        }
+    }
+    
     /*
     static func fetchCategoryPost(with postId: String, completion: @escaping(StorePost) -> ()) {
         DataService.instance.REF_CATEGORIES.child(postId).observeSingleEvent(of: .value) { (snapshot) in

@@ -30,8 +30,7 @@ class StoreCell: UITableViewCell {
             configureCell()
         }
     }
-    
-    
+
     
     lazy var saveSegmentLabel: UILabel = {
         let label = UILabel()

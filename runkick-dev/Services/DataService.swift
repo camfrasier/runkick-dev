@@ -42,6 +42,7 @@ class DataService {
     private var _REF_ADMIN_USER_POSTS = DB_BASE.child("admin-user-posts")
     private var _REF_TEXT_FIRST_POSTS = DB_BASE.child("text-first-posts")
     private var _REF_USER_POSTS = DB_BASE.child("user-posts")
+    private var _REF_USER_CHECKIN_POSTS = DB_BASE.child("user-checkin-posts")
     private var _REF_FOLLOWING = DB_BASE.child("user-following")
     private var _REF_FOLLOWERS = DB_BASE.child("user-followers")
     private var _REF_FEED = DB_BASE.child("user-feed")
@@ -73,6 +74,11 @@ class DataService {
     var REF_STORAGE_SCREENSHOT_IMAGES: StorageReference {
         return _REF_STORAGE_SCREENSHOT_IMAGES
         
+    }
+    
+    
+    var REF_USER_CHECKIN_POSTS: DatabaseReference {
+        return _REF_USER_CHECKIN_POSTS
     }
     
     var REF_USERS: DatabaseReference {

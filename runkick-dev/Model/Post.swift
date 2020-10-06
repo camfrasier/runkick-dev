@@ -24,6 +24,8 @@ class Post {
     var ownerUid: String!
     var creationDate: Date!
     var postId: String!
+    var tripId: String!
+    var logoId: String!
     var category: String!
     var description: String!
     var price: Double!
@@ -40,13 +42,7 @@ class Post {
     var user: User?
     var didLike = false
     var isFollowed = false
-    
-    /*
-    enum PostType: String {
-        case checkIn
-        case userPost
-    }
-    */
+
     
     init(postId: String!, user: User, dictionary: Dictionary<String, AnyObject>) {
         
@@ -96,6 +92,14 @@ class Post {
         
         if let points = dictionary["points"] as? Int {
             self.points = points
+        }
+        
+        if let tripId = dictionary["tripId"] as? String {
+            self.tripId = tripId
+        }
+        
+        if let logoId = dictionary["logoId"] as? String {
+            self.logoId = logoId
         }
         
         if let averagePace = dictionary["averagePace"] as? String {
@@ -272,6 +276,67 @@ class Post {
         DataService.instance.REF_USER_POST_COMMENT.child(postId).removeValue()
         DataService.instance.REF_POSTS.child(postId).removeValue()
     }
+    
+    
+    // will need to create a function similar to this to delete user post
+    func deleteCheckInPost(_ sender: String?) {
+        
+        guard let ownderUid = sender else { return }
+        print("DEBUG: This is the user post ID\(ownderUid)")
+            
+        //guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        Storage.storage().reference(forURL: self.imageUrl).delete(completion: nil)
+        
+        DataService.instance.REF_FOLLOWER.child(ownderUid).observe(.childAdded) { (snapshot) in
+            let followerUid = snapshot.key
+            DataService.instance.REF_FEED.child(followerUid).child(self.postId).removeValue()
+        }
+        
+        DataService.instance.REF_FEED.child(ownderUid).child(postId).removeValue()
+        
+        DataService.instance.REF_USER_POSTS.child(ownderUid).child(postId).removeValue()
+        
+        // get all of the posts that users liked first
+        DataService.instance.REF_POST_LIKES.child(postId).observe(.childAdded) { (snapshot) in
+            let uid = snapshot.key
+            
+            // now we find all of the post id that is being deleted from each user that has liked a post
+            DataService.instance.REF_USER_LIKES.child(uid).child(self.postId).observeSingleEvent(of: .value, with: { (snapshot) in
+                guard let notificationId = snapshot.value as? String else { return }
+                
+                // after we have observed the post likes, we need to identify the notification under the post owner and delete
+                DataService.instance.REF_NOTIFICATIONS.child(self.ownerUid).child(notificationId).removeValue(completionBlock: { (err, ref) in
+                    
+                    // now remove post id from the post likes ref and then lastly the user likes ref - this must be done last!
+                    DataService.instance.REF_POST_LIKES.child(self.postId).removeValue()
+                    DataService.instance.REF_USER_LIKES.child(uid).child(self.postId).removeValue()
+                })
+            })
+        }
+        
+        // now we need to remove all hashtags related to the post we don't have this value
+        
+        /*
+        // creates an array out of the caption to allow us to loop through that array for the hashtag
+        let words = caption.components(separatedBy: .whitespacesAndNewlines)
+        
+        for var word in words {
+            if word.hasPrefix("#") {
+                
+                word = word.trimmingCharacters(in: .punctuationCharacters)
+                word = word.trimmingCharacters(in: .symbols)
+                
+                DataService.instance.REF_HASHTAG_POST.child(word).child(postId).removeValue()
+            }
+        }
+        */
+        
+        DataService.instance.REF_USER_POST_COMMENT.child(postId).removeValue()
+        DataService.instance.REF_POSTS.child(postId).removeValue()
+    }
+    
+    
     
     func sendLikeNotificationToServer() {
         
