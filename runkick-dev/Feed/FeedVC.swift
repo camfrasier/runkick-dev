@@ -412,7 +412,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        print("DEBUG: THE CHECKIN FUNCTION WAS HIT")
 
         
         let post = posts[indexPath.item]
@@ -424,14 +424,24 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             
         case .checkIn:
             
-            print("DEBUG: THE CHECKIN FUNCTION WAS HIT")
+            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCheckInIdentifier, for: indexPath) as! CheckInCell
+            
+            // running through the checkin function to make sure we relaod, however on a second reload it won't work because it will be true
+            
+            //let checkInCell = CheckInCell()
+            //checkInCell.setToTrue(false)
+            //print("Setting the did load funtions")
+            
+            
             
             cell.delegate = self
             cell.post = posts[indexPath.item]
 
-            value = cell.post?.postId
-            print("THE VALUE IS EQUAL TO \(value)")
+            //value = cell.post?.postId
+            //print("THE VALUE IS EQUAL TO")
+            
+
             
             return cell
             
@@ -915,7 +925,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     func fetchPosts() {
-        
+        print("HOW MANY TIMES IS THIS CALLED")
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
 
         // fetching posts with pagination and only observing x amount of post at a time
@@ -1220,9 +1230,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     // MARK: - Handlers
     
     @objc func handleFeedRefresh() {
+                
         // this is a screen pull down function to refresh you feed
         
         posts.removeAll(keepingCapacity: false)
+
         self.currentKey = nil
         fetchPosts()
         
@@ -1231,8 +1243,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         collectionView?.reloadData()
         
-        //let checkInCell = CheckInCell()
-        //checkInCell.logos.removeAll()
+
     }
     
     @objc func handleShowMessages() {

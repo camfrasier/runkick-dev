@@ -18,18 +18,13 @@ class CheckInCell: UICollectionViewCell {
     var delegate: CheckInCellDelegate?
     var logos = [Logos]()
     let reuseCircleCellIdentifier = "CircleCell"
-    var variable: String?
+    var didLoad = false
     
     var post: Post? {
         
         didSet {
-            
-            guard let postId = post?.postId else { return }
-            
-            fetchPosts(postId)
-        
-            print("THIS SEGMENT POSTS HOW MANY TIMES \(postId)")
-            
+
+ 
             guard let ownerUid = post?.ownerUid else { return }
             guard let imageUrl = post?.imageUrl else { return }
             guard let likes = post?.likes else { return }
@@ -66,9 +61,14 @@ class CheckInCell: UICollectionViewCell {
             configureFollowFollowing()
             
             //self.collectionView?.refreshControl?.endRefreshing()
+            
+            print("Debug: the value of didload is \(self.didLoad)")
+            guard let postId = post?.postId else { return }
+            fetchPosts(postId)
    
         }
     }
+    
     
     // MARK: - Properties
     /*
@@ -382,6 +382,7 @@ class CheckInCell: UICollectionViewCell {
         
         addSubview(collectionView)
         collectionView.layer.backgroundColor = UIColor.clear.cgColor
+        
         
         
     }
@@ -715,12 +716,19 @@ class CheckInCell: UICollectionViewCell {
         }
     }
     
+    func setToTrue(_ bool: Bool) {
+        // setting bool to false to consistenly ensure we are loading. unless it is the first checkin value reload
+        didLoad = bool
+    }
+    
 
     func fetchPosts(_ postId: String) {
         
+        if didLoad == false {
         self.logos.removeAll()
         
-        
+        print("Did load is set to False, no need to reload more than once")
+            
         //guard let postIdenitifier = post?.postId else { return }
 
         DataService.instance.REF_POSTS.child(postId).observe(.childAdded) {(snapshot: DataSnapshot) in
@@ -740,13 +748,20 @@ class CheckInCell: UICollectionViewCell {
                               self.logos.append(post)
                                 
                                 print("HERE ARE the POST THAT COME BACK \(post) ")
-                              self.collectionView.reloadData()
+                                self.collectionView.reloadData()
                           })
                           
-            
                       })
-         
+            self.didLoad = true
+            print("Did load is set to TRUE so it can not load again")
                   }
+        } else {
+         
+            print("Did load is set to FALSE so it can load again")
+            
+            self.didLoad = false
+        }
+        
          
      }
     
