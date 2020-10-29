@@ -550,7 +550,7 @@ class CheckInCell: UICollectionViewCell {
 
         followFollowingLabel.anchor(top: usernameButton.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        gradientProfileView.anchor(top: nil, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 100, paddingRight: 0, width: gradientDiminsion, height: gradientDiminsion)
+        gradientProfileView.anchor(top: nil, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 92, paddingRight: 0, width: gradientDiminsion, height: gradientDiminsion)
         gradientProfileView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         gradientProfileView.addSubview(checkInProfileImageView)

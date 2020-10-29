@@ -64,6 +64,7 @@ class HashtagController: UICollectionViewController, UICollectionViewDelegateFlo
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        /*
         let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
         
         feedVC.viewSinglePost = true
@@ -71,6 +72,14 @@ class HashtagController: UICollectionViewController, UICollectionViewDelegateFlo
         feedVC.post = posts[indexPath.item]
         
         navigationController?.pushViewController(feedVC, animated: true)
+        */
+        
+        let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        userSpecificFeedVC.viewSinglePost = true
+        userSpecificFeedVC.post = posts[indexPath.item]
+        
+        navigationController?.pushViewController(userSpecificFeedVC, animated: true)
     }
     
     // MARK: - Handlers

@@ -1,18 +1,17 @@
 //
-//  SearchVC.swift
+//  InviteFriendsVC.swift
 //  runkick-dev
 //
-//  Created by Cameron Frasier on 8/19/19.
-//  Copyright © 2019 Cameron Frasier. All rights reserved.
+//  Created by Cameron Frasier on 10/27/20.
+//  Copyright © 2020 Cameron Frasier. All rights reserved.
 //
 
 import UIKit
 import Firebase
 
-private let reuseIdentifier = "SeachUserCell"
-private let reusePostCellIdentifier = "SearchPostCell"
+private let reuseIdentifier = "InviteFriendsCell"
 
-class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
     
     // Mark: - Properties
     
@@ -27,11 +26,6 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     var userCurrentKey: String?
     var titleView: UIView!
     
-    enum PostType: String {
-
-        case userPost = "userPost"
-        case checkIn = "checkIn"
-    }
     
     // MARK: - Init
     
@@ -40,34 +34,24 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // configure search bar
         configureSearchBar()
-        
-        
-        //edgesForExtendedLayout = .all
-        //extendedLayoutIncludesOpaqueBars = true
-        
-        
+
         // register cell classes
-        tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(InviteFriendsCell.self, forCellReuseIdentifier: reuseIdentifier)
         
         // seperator insets.
         //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
         
-        //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-
-        // configure collection view
-        configureCollectionView()
         
         // configure refresh control
-        configureRefreshControl()
+        //configureRefreshControl()
         
         //configureNavigationBar
         configureNavigationBar()
         
         configureTabBar()
         
-        // fetch posts
-        fetchPosts()
+        fetchUsers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,7 +121,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SearchUserCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! InviteFriendsCell
         
         var user: User!
         
@@ -152,109 +136,6 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         return cell
     }
     
-    
-    // MARK: - UICollectionView
-    
-    func configureCollectionView() {
-        
-        // define the collection view characteristics
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        
-        //let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - (tabBarController?.tabBar.frame.height)! - (navigationController?.navigationBar.frame.height)!)
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
-
-        collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.alwaysBounceVertical = true
-        collectionView.backgroundColor = .white
-        
-        tableView.addSubview(collectionView)
-        collectionView.register(SearchPostCell.self, forCellWithReuseIdentifier: reusePostCellIdentifier)
-        
-        tableView.separatorColor = .clear
-        
-        //tableView.separatorInset = UIEdgeInsets(top: 56, left: 0, bottom: 0, right: 0)
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        return UIEdgeInsets(top: 0, left: 2, bottom: 2, right: 2)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //let width = (view.frame.width - 16) / 3
-        let width = (view.frame.width - 8) / 3
-        return CGSize(width: width, height: width)
-    }
-    
-    /*func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 200)
-    }*/
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        if posts.count > 20 {
-            if indexPath.item == posts.count - 1 {
-                fetchPosts()
-            }
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        print("the number of post is \(posts.count)")
-        return posts.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusePostCellIdentifier, for: indexPath) as! SearchPostCell
-        
-        cell.post = posts[indexPath.item]
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        /*
-        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        
-        feedVC.viewSinglePost = true
-        
-        feedVC.post = posts[indexPath.item]
-        
-        print("WE SEE FEED POST PIC")
-        
-        navigationController?.pushViewController(feedVC, animated: true)
-        */
-        
-        
-        let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        
-        userSpecificFeedVC.viewSinglePost = true
-        userSpecificFeedVC.post = posts[indexPath.item]
-        
-        navigationController?.pushViewController(userSpecificFeedVC, animated: true)
-    }
-    
-    /*
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 80)
-    }
-    */
     
     // MARK: - Handlers
     
@@ -292,17 +173,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
         //textFieldInsideUISearchBar?.textColor = UIColor.red
         textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(18)
-        
-        /*
-        if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
-               let glassIconView = textFieldInsideSearchBar.leftView as? UIImageView {
-
-                   //Magnifying glass
-                   glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
-                   glassIconView.tintColor = .white
-           }
-        */
-        
+                
         //navigationItem.titleView = searchBar
         //searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         searchBar.isTranslucent = false
@@ -321,15 +192,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         } else {
             // Fallback on earlier versions
         }
-        //searchBar.searchTextField.layer.borderColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1).cgColor
-        //searchBar.searchTextField.layer.borderWidth = 0.25
-        
-        /*
-        navigationItem.rightBarButtonItem = nil
-        navigationItem.titleView = searchBar
-        */
-        
-        //navigationItem.titleView = nil
+
     }
     
     func configureNavigationBar() {
@@ -346,19 +209,10 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         navigationController?.navigationBar.shadowImage = UIImage()
         let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
         lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        
-        /*
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
-        
-        let font = UIFont(name: "HelveticaNeue", size: 17)!
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)]
-        navigationItem.title = "Search"
-        */
-        
+
         navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
  
         configureSearchBarButton()
-        //configureLeftBarButton()
     }
     
     func configureTabBar() {
@@ -377,31 +231,6 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         lineView.addSubview(thinLineView)
     }
     
-    
-    func configureLeftBarButton() {
-        // custom back button
-             
-         let customNotificationsButton = UIButton(type: UIButton.ButtonType.custom)
-         
-         customNotificationsButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
-         
-         //using this code to show the true image without rendering color
-         customNotificationsButton.setImage(UIImage(named:"whiteCircleLeftArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-         customNotificationsButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
-          customNotificationsButton.addTarget(self, action: #selector(SearchVC.handleBackButton), for: .touchUpInside)
-         customNotificationsButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
-         customNotificationsButton.backgroundColor = .clear
-             
-         
-         //let barSearchTitle = UIBarButtonItem(customView: customSearchTitle)
-         let barNotificationButton = UIBarButtonItem(customView: customNotificationsButton)
-         self.navigationItem.leftBarButtonItems = [barNotificationButton]
-    }
-    
-    @objc func handleBackButton() {
-        _ = self.navigationController?.popViewController(animated: true)
-    }
     
     @objc func handleReturnMap() {
         dismiss(animated: true, completion: nil)
@@ -471,9 +300,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
-        
-        //configureLeftBarButton()
-        
+
         searchBar.showsCancelButton = false
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
@@ -484,9 +311,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         inSearchMode = false
         
         searchBar.text = nil
-        
-        collectionViewEnabled = true
-        collectionView.isHidden = false
+
         
         // added stuff
         navigationItem.titleView = nil
@@ -502,8 +327,6 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     @objc func handleRefresh() {
         posts.removeAll(keepingCapacity: false)
         self.currentKey = nil
-        fetchPosts()
-        collectionView?.reloadData()
     }
     
     func configureRefreshControl() {
@@ -572,7 +395,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                         
                         searchBarText.frame = CGRect(x: 0, y: 0, width: 120, height: 33)
                         
-                     searchBarText.setTitle("Find friends or invite new ones", for: .normal)
+                     searchBarText.setTitle("SEARCH FRIENDS TO INVITE", for: .normal)
                      searchBarText.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
                      searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 14)
                         searchBarText.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
@@ -596,103 +419,15 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
              let searchButton = UIBarButtonItem(customView: magnifyButton)
          
                 self.navigationItem.leftBarButtonItems = [searchButton, searchText]
-        
-        
-        /*
-        // configuring titile button
-        let button =  UIButton(type: .custom)
-        button.frame = CGRect(x: 0, y: 0, width: 320, height: 35)
-        button.backgroundColor = .clear
-        button.setTitle("Search", for: .normal)
-        button.titleLabel?.font =  UIFont(name: "PingFangTC-Semibold", size: 17)
-        button.setTitleColor(.black, for: .normal)
-        button.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
-        navigationItem.titleView = button
-        
-        searchBar.showsCancelButton = true
-        
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchBar))
-        //navigationItem.rightBarButtonItem?.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        
-                   let searchBarButton = UIButton(type: UIButton.ButtonType.custom)
-                       
-                       searchBarButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
-                       
-                       //using this code to show the true image without rendering color
-                       searchBarButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-                       searchBarButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 21 )
-                       searchBarButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
-                       searchBarButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
-                       searchBarButton.backgroundColor = .clear
-               
-               let searchButton = UIBarButtonItem(customView: searchBarButton)
-               self.navigationItem.leftBarButtonItems = [searchButton]
-        */
-        
     }
     
     @objc func showSearchBar() {
-        
-        
-        // hide collectionView will in search mode
-        //navigationItem.titleView = searchBar
-        
+
         navigationItem.titleView = titleView
         navigationItem.leftBarButtonItem = nil
         
-        fetchUsers()
-        collectionView.isHidden = true
-        collectionViewEnabled = false
-    
+        //fetchUsers()
         configureSearchBar()
-    }
-    
-    func fetchPosts() {
-        // function to fetch our images and place them in the collection view
-
-        if currentKey == nil {
-            
-            // initial data pull
-            DataService.instance.REF_POSTS.queryLimited(toLast: 21).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                self.tableView.refreshControl?.endRefreshing()
-                
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
-                allObjects.forEach({ (snapshot) in
-                    let postId = snapshot.key
-                    
-                    Database.fetchSearchPost(with: postId, completion: { (post) in
-                        self.posts.append(post)
-                        self.collectionView.reloadData()
-                    })
-                })
-                self.currentKey = first.key
-            })
-        } else {
-            // paginate here
-            
-            DataService.instance.REF_POSTS.queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 10).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
-                allObjects.forEach({ (snapshot) in
-                    let postId = snapshot.key
-                    
-                    if postId != self.currentKey {
-                        Database.fetchSearchPost(with: postId, completion: { (post) in
-                            self.posts.append(post)
-                            self.collectionView.reloadData()
-                        })
-                    }
-                })
-                self.currentKey = first.key
-                
-            })
-        }
     }
 }
 

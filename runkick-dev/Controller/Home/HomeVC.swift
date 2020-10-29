@@ -5158,7 +5158,16 @@ extension HomeVC: MKMapViewDelegate {
             
         case .Groups:
 
-            print("show groups")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                print("show Groups")
+                
+                //self.groupMessageController.delegate = self
+                let groupMessageController = GroupMessageController()
+                self.navigationController?.pushViewController(groupMessageController, animated: true)
+                
+                //groupMessageController.modalPresentationStyle = .fullScreen
+                //self.present(groupMessageController, animated: true, completion:nil)
+            }
         
             
         case .Search:
@@ -5180,9 +5189,13 @@ extension HomeVC: MKMapViewDelegate {
             navigationController?.pushViewController(notificationsVC, animated: true)
             
         case .Rewards:
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                print("show rewards")
-            }
+            print("show rewards")
+            let rewardsVC = RewardsVC()
+            navigationController?.pushViewController(rewardsVC, animated: true)
+            
+            //DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                
+            //}
             
             
         case .Trips:

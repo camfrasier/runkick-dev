@@ -30,6 +30,7 @@ class DataService {
     private var _REF_STORAGE = STORAGE_BASE
     private var _REF_STORAGE_PROFILE_IMAGES = STORAGE_BASE.child("profile_images")
     private var _REF_STORAGE_SCREENSHOT_IMAGES = STORAGE_BASE.child("screenshot_images")
+    private var _REF_STORAGE_GROUP_PROFILE_IMAGES = STORAGE_BASE.child("group_profile_images")
     private var _REF_USERS = DB_BASE.child("users")
     private var _REF_STOREADMIN = DB_BASE.child("storeadmin")
     private var _REF_CATEGORIES = DB_BASE.child("categories")
@@ -37,6 +38,7 @@ class DataService {
     private var _REF_TRIPS = DB_BASE.child("trips")
     private var _REF_ACTIVITY = DB_BASE.child("activity")
     private var _REF_STORES = DB_BASE.child("stores")
+    private var _REF_USER_GROUPS = DB_BASE.child("user_groups")
     private var _REF_POSTS = DB_BASE.child("posts")
     private var _REF_ADMIN_STORE_POSTS = DB_BASE.child("admin-store-posts")
     private var _REF_ADMIN_USER_POSTS = DB_BASE.child("admin-user-posts")
@@ -71,11 +73,15 @@ class DataService {
         
     }
     
+    var REF_STORAGE_GROUP_PROFILE_IMAGES: StorageReference {
+        return _REF_STORAGE_GROUP_PROFILE_IMAGES
+        
+    }
+    
     var REF_STORAGE_SCREENSHOT_IMAGES: StorageReference {
         return _REF_STORAGE_SCREENSHOT_IMAGES
         
     }
-    
     
     var REF_USER_CHECKIN_POSTS: DatabaseReference {
         return _REF_USER_CHECKIN_POSTS
@@ -83,6 +89,10 @@ class DataService {
     
     var REF_USERS: DatabaseReference {
         return _REF_USERS
+    }
+    
+    var REF_USER_GROUPS: DatabaseReference {
+        return _REF_USER_GROUPS
     }
     
     var REF_MARKETPLACE: DatabaseReference {

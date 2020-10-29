@@ -11,11 +11,12 @@
 import UIKit
 import Firebase
 
-var loginVC: LoginVC?
-var menuVC: MenuVC?
-var delegate: AdminStatusControllerDelegate?
+
 
 class MainSwitch: UISwitch {
+
+var createGroupVC: CreateGroupVC?
+var delegate: PrivacyStatusControllerDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,14 +32,12 @@ class MainSwitch: UISwitch {
     
     @objc fileprivate func handleSwitch() {
         if self.isOn {
-            print("DEBUG: Logging in as admin")
-            //menuVC?.configureUserAdminStatus(isStoreAdmin: true)
-            //delegate?.handleLoginStatus(adminToggled: true)
+            print("Group set to private")
+            delegate?.handlePrivacySetting(privacyToggled: true)
             
         } else {
-            print("DEBUG: Logging in as user")
-            //menuVC?.configureUserAdminStatus(isStoreAdmin: false)
-            //delegate?.handleLoginStatus(adminToggled: false)
+            print("Group set to public")
+            delegate?.handlePrivacySetting(privacyToggled: false)
         }
         
         

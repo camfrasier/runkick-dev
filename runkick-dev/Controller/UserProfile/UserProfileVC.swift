@@ -718,7 +718,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     func fetchPost(withPostId postId: String) {
         
-        Database.fetchPost(with: postId) { (post) in
+        Database.fetchSearchPost(with: postId) { (post) in
             self.posts.append(post)
             
             self.posts.sort(by: { (post1, post2) -> Bool in

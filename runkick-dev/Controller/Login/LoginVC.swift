@@ -124,6 +124,8 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        formValidation()
+        
         // Set the delegate of the email field to be this ViewController.
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -161,6 +163,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, Alertable {
         titleStackView.alignment = .firstBaseline
         */
         
+
         //view.addSubview(switchElement)
        //switchElement.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 70, height: 50)
         

@@ -62,7 +62,46 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
     // MARK: UICollectionViewFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    
         
+        if viewSinglePost {
+            
+        if let post = self.post {
+            if let captionText = post.caption {
+                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
+                           
+                           // the height of all the variables in the cell
+                          // let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
+                           
+                          // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
+                
+                    return CGSize(width: view.frame.width, height: (view.frame.height - 40) + rect.height)
+            }
+            
+        }
+        } else {
+            
+            // if statement safely unwraps status text
+            if let captionText = posts[indexPath.item].caption {
+                
+                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
+                
+                // the height of all the variables in the cell
+               // let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
+                
+                //return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
+                
+                //return CGSize(width: view.frame.width - 0, height: view.frame.height - 50)
+                
+                return CGSize(width: view.frame.width, height: (view.frame.height - 40) + rect.height)
+            }
+            
+        }
+        // return CGSize(width: view.frame.width - 0, height: 200)
+        //return CGSize(width: view.frame.width - 0, height: view.frame.height + 50)
+        return CGSize(width: view.frame.width, height: view.frame.height - 40)
+        
+    /*
         if viewSinglePost {
             
         if let post = self.post {
@@ -93,18 +132,7 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
 
         
         return CGSize(width: view.frame.width - 0, height: 200)
-
-        /*
-        
-        let width = view.frame.width
-        //var height = width
-        var height = width - 220
-        
-        height += 40
-        //height += 10
-          
-          return CGSize(width: width, height: height)
-        */
+    */
     }
     
 
@@ -303,6 +331,7 @@ class UserSpecificFeedVC: UICollectionViewController, UICollectionViewDelegateFl
                 self.currentKey = first.key
             })
         } else {
+    
             
             // query ordered by key to organize the snapshot by key instead of their value
             DataService.instance.REF_USER_POSTS.child(observedUserId).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 7).observeSingleEvent(of: .value, with: { (snapshot) in

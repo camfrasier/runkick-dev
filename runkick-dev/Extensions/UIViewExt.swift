@@ -357,6 +357,19 @@ extension Database {
         }
     }
     
+    static func fetchUserGroups(with groupId: String, completion: @escaping(UserGroup) -> ()) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_USER_GROUPS.child(groupId).observeSingleEvent(of: .value) { (snapshot) in
+            
+                guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+                       
+                let group = UserGroup(groupId: groupId, dictionary: dictionary)
+                       
+                completion(group)
+        }
+    }
+    
     static func fetchPost(with postId: String, completion: @escaping(Post) -> ()) {
         DataService.instance.REF_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
             
@@ -367,11 +380,35 @@ extension Database {
                 
                 let post = Post(postId: postId, user: user, dictionary: dictionary)
                 
-                
                 completion(post)
             })
         }
     }
+    
+    static func fetchSearchPost(with postId: String, completion: @escaping(Post) -> ()) {
+        DataService.instance.REF_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            guard let ownerUid = dictionary["ownerUid"] as? String else { return }  // Parsing through JSON data.
+            guard let type = dictionary["type"] as? String else { return }
+            
+            print("This is the value of the dictionary \(type)")
+            
+            if type == "userPost" {
+            Database.fetchUser(with: ownerUid, completion: { (user) in
+                
+                let post = Post(postId: postId, user: user, dictionary: dictionary)
+                
+                completion(post)
+            })
+            } else {
+                print("do nothing")
+            }
+            
+        }
+    }
+    
+    
     // here we use trip ID to find post under the activity section
     static func fetchStorePost(with postId: String, completion: @escaping(StorePost) -> ()) {
 

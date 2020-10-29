@@ -116,6 +116,9 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // this may not be needed, but i believe this sets the tone early
+        formValidation()
+        
         if Auth.auth().currentUser != nil {
             emailLabel.text = Auth.auth().currentUser?.email
             userEmail = emailLabel.text

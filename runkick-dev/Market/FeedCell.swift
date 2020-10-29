@@ -362,7 +362,7 @@ class FeedCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.font = UIFont(name: "HelveticaNeue", size: 14)
         label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         label.text = "2 days ago"
         return label
@@ -639,7 +639,7 @@ class FeedCell: UICollectionViewCell {
         // variable constraints
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[image]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-60-[image]-0-[likeCommentBlock]-2-[captionBlock]", options: [], metrics: nil, views: ["image": postImageView, "likeCommentBlock": likeCommentBlock, "captionBlock": captionBlock]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-60-[image(450)]-0-[likeCommentBlock]-2-[captionBlock]", options: [], metrics: nil, views: ["image": postImageView, "likeCommentBlock": likeCommentBlock, "captionBlock": captionBlock]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[caption]-15-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
@@ -656,7 +656,7 @@ class FeedCell: UICollectionViewCell {
 
         followFollowingLabel.anchor(top: usernameButton.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
-        addCommentBlock.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
+        addCommentBlock.anchor(top: nil, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
         
         captionBlock.anchor(top: nil, left: leftAnchor, bottom: addCommentBlock.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
@@ -664,7 +664,7 @@ class FeedCell: UICollectionViewCell {
         
         likeCommentBlock.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 2, height: 35)
         
-        postTimeLabel.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
+        postTimeLabel.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: postImageView.rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
         
         backgroundOptionsButton.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 30, height: 30)
         

@@ -339,10 +339,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                            
                           // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
                 
-                    return CGSize(width: view.frame.width, height: (view.frame.height - 20) + rect.height)
+                    return CGSize(width: view.frame.width, height: (view.frame.height - 40) + rect.height)
             }
             
         }
+            
         } else {
             
             // if statement safely unwraps status text
@@ -357,13 +358,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
                 
                 //return CGSize(width: view.frame.width - 0, height: view.frame.height - 50)
                 
-                return CGSize(width: view.frame.width, height: (view.frame.height - 20) + rect.height)
+                return CGSize(width: view.frame.width, height: (view.frame.height - 40) + rect.height)
             }
             
         }
         // return CGSize(width: view.frame.width - 0, height: 200)
         //return CGSize(width: view.frame.width - 0, height: view.frame.height + 50)
-        return CGSize(width: view.frame.width, height: view.frame.height - 20)
+        return CGSize(width: view.frame.width, height: view.frame.height - 50)
         
     }
 

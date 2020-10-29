@@ -64,6 +64,17 @@ protocol FeedCellDelegate {
     func handleShowLikes(for cell: FeedCell)
 }
 
+protocol UserSpecificFeedCellDelegate {
+    func handleUsernameTapped(for cell: UserSpecificFeedCell)
+    func handleOptionTapped(for cell: UserSpecificFeedCell)
+    func handleFollowFollowingTapped(for cell: UserSpecificFeedCell)
+    func handleLikeTapped(for cell: UserSpecificFeedCell, isDoubleTap: Bool)
+    func handlePhotoTapped(for cell: UserSpecificFeedCell)
+    func handleCommentTapped(for cell: UserSpecificFeedCell)
+    func handleConfigureLikeButton(for cell: UserSpecificFeedCell)
+    func handleShowLikes(for cell: UserSpecificFeedCell)
+}
+
 protocol CheckInCellDelegate {
     func handleUsernameTapped(for cell: CheckInCell)
     func handleOptionTapped(for cell: CheckInCell)
@@ -74,7 +85,6 @@ protocol CheckInCellDelegate {
     func handleConfigureLikeButton(for cell: CheckInCell)
     func handleShowLikes(for cell: CheckInCell)
 }
-
 
 protocol CategoryFeedCellDelegate {
 
@@ -119,7 +129,8 @@ protocol AdminLoginControllerDelegate {
     func handleAdminLogin(shouldDismiss: Bool)
 }
 
-protocol AdminStatusControllerDelegate {
-    func handleLoginStatus(adminToggled: Bool)
+protocol PrivacyStatusControllerDelegate {
+    //func handleLoginStatus(adminToggled: Bool)
+    func handlePrivacySetting(privacyToggled: Bool)
 }
 
