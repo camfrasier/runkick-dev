@@ -19,7 +19,10 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     var didSelectImage = false
     var groupImageSelected = false
     var privacyEnabled = false
+    let inviteFriendsVC = InviteFriendsVC()
     var delegate: GroupMessageControllerDelegate?
+    var inviteFriendsViewExpanded = false
+    let blackView = UIView()
     
     let plusPhotoBtn: UIButton = {
         let button = UIButton(type: .system)
@@ -38,12 +41,21 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         return tf
     } ()
     
-    let saveProfileButton: UIButton = {
+    let saveGroupButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Save Group", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 100/255, green: 110/255, blue: 244/255, alpha: 1)
         button.addTarget(self, action: #selector(handleSaveGroup), for: .touchUpInside)
+        return button
+    } ()
+    
+    let inviteFriendsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Invite Friends", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(red: 100/255, green: 110/255, blue: 244/255, alpha: 1)
+        button.addTarget(self, action: #selector(presentInviteFriendsVC), for: .touchUpInside)
         return button
     } ()
     
@@ -54,7 +66,7 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
     } ()
-    
+    /*
     let returnHomeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "home_unselected"), for: .normal)
@@ -62,6 +74,14 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         button.addTarget(self, action: #selector(handleReturnHome), for: .touchUpInside)
         return button
     } ()
+    */
+    let indicatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 2
+        view.alpha = 1
+        return view
+    }()
 
 
     override func viewDidLoad() {
@@ -69,10 +89,12 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                 
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        view.bindToKeyboard()
+        //view.bindToKeyboard()
         configureViewComponents()
         
         formValidation()
+        
+        setupToHideKeyboardOnTap()
         
         // calling handleScreenTap from inside our selector
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleScreenTap(sender:)))
@@ -83,18 +105,18 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
 
     func configureViewComponents() {
         
-        view.addSubview(returnHomeButton)
-        returnHomeButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 30, height: 30)
+        //view.addSubview(returnHomeButton)
+        //returnHomeButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 30, height: 30)
         
         view.addSubview(plusPhotoBtn)
-        plusPhotoBtn.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
+        plusPhotoBtn.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
         plusPhotoBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
         view.addSubview(groupNameTextField)
-        groupNameTextField.anchor(top: plusPhotoBtn.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 60, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 40)
+        groupNameTextField.anchor(top: plusPhotoBtn.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 40)
 
         view.addSubview(privacySettingLabel)
-        privacySettingLabel.anchor(top: groupNameTextField.bottomAnchor, left: groupNameTextField.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        privacySettingLabel.anchor(top: groupNameTextField.bottomAnchor, left: groupNameTextField.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         let switchElement = MainSwitch()
         
@@ -105,10 +127,19 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         view.addSubview(switchElement)
         switchElement.anchor(top: privacySettingLabel.topAnchor, left: privacySettingLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: 70, height: 50)
         
-        view.addSubview(saveProfileButton)
-        saveProfileButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 200, height: 60)
-        saveProfileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        saveProfileButton.layer.cornerRadius = 25
+        view.addSubview(saveGroupButton)
+        saveGroupButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 200, height: 50)
+        saveGroupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        saveGroupButton.layer.cornerRadius = 25
+        
+        view.addSubview(inviteFriendsButton)
+        inviteFriendsButton.anchor(top: nil, left: nil, bottom: saveGroupButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 150, height: 50)
+        inviteFriendsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        inviteFriendsButton.layer.cornerRadius = 25
+        
+
+        
+        configureInviteFriendsVC()
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -216,6 +247,108 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         
     }
     
+    func configureInviteFriendsVC() {
+    
+           //print("DEBUG: Right menu is configured at this point.")
+           
+           inviteFriendsVC.delegate = self
+        
+
+        if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+            
+            if let window:UIWindow = applicationDelegate.window {
+                
+            blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+                blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleInviteFriendsDismiss)))
+             
+            
+                window.addSubview(blackView)
+                blackView.frame = window.frame
+                         
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.blackView.alpha = 0
+                })
+            }
+        }
+        
+           if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+               
+               if let window:UIWindow = applicationDelegate.window {
+                   
+                window.addSubview(inviteFriendsVC.view)
+
+                inviteFriendsVC.view.frame = CGRect(x: 0, y: view.frame.height + 16, width: view.frame.width, height: 675)
+                window.addSubview(indicatorView)
+                
+                indicatorView.anchor(top: inviteFriendsVC.view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 5)
+                indicatorView.centerX(inView: inviteFriendsVC.view)
+            
+               }
+           }
+       }
+    
+    @objc func handleInviteFriendsDismiss() {
+
+        let height: CGFloat = 650
+        
+        if inviteFriendsViewExpanded == true {
+            
+            if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+            
+            if let window:UIWindow = applicationDelegate.window {
+                
+                print("in practice this works")
+                let collectionViewY = window.frame.width - height
+                
+                
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                            self.inviteFriendsVC.view.frame = CGRect(x: 0, y: -(collectionViewY) + 650, width: window.frame.width, height: self.inviteFriendsVC.view.frame.height)
+            
+                        self.inviteFriendsViewExpanded = false
+                        print("menu expanded set to false")
+                    })
+                }
+            }
+        }
+
+        UIView.animate(withDuration: 0.25) {
+        self.blackView.alpha = 0
+        }
+        
+        inviteFriendsVC.handleDissmissKeyboard()
+         
+    }
+    
+     @objc func presentInviteFriendsVC() {
+         
+         if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+             if let window:UIWindow = applicationDelegate.window {
+
+                 let height: CGFloat = 650
+                 let collectionViewY = window.frame.height - height
+                
+                UIView.animate(withDuration: 0.15) {
+                    self.blackView.alpha = 1
+                }
+                 
+                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                         
+                     self.inviteFriendsVC.view.frame = CGRect(x: 0, y: collectionViewY, width: window.frame.width, height: self.inviteFriendsVC.view.frame.height)
+                     
+                     // add bounce of indicator view
+                     self.indicatorView.frame.origin.y = self.inviteFriendsVC.view.frame.origin.y - self.inviteFriendsVC.view.frame.height
+                     
+                     // remove bounce of indicator view
+                     //self.indicatorView.frame.origin.y = self.indicatorView.frame.origin.y - self.rightMenuVC.view.frame.height
+                     
+                     self.inviteFriendsViewExpanded = true
+                                                  
+                 }, completion: nil)
+             }
+         }
+     }
+
+    
     @objc func handleReturnHome() {
 
         self.dismiss(animated:true, completion: nil)
@@ -237,15 +370,15 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             groupImageSelected,
             groupNameTextField.hasText == true else {
         
-                saveProfileButton.isEnabled = false
-                saveProfileButton.backgroundColor = UIColor(red: 10/255, green: 204/255, blue: 10/255, alpha: 1)
+                saveGroupButton.isEnabled = false
+                saveGroupButton.backgroundColor = UIColor(red: 10/255, green: 204/255, blue: 10/255, alpha: 1)
                 
                 
                 return
         }
         
-        saveProfileButton.isEnabled = true
-        saveProfileButton.backgroundColor = UIColor(red: 100/255, green: 110/255, blue: 244/255, alpha: 1)
+        saveGroupButton.isEnabled = true
+        saveGroupButton.backgroundColor = UIColor(red: 100/255, green: 110/255, blue: 244/255, alpha: 1)
         
     }
 }
@@ -267,3 +400,53 @@ extension CreateGroupVC: PrivacyStatusControllerDelegate {
     }
 }
 
+extension CreateGroupVC: InviteFriendsDelegate {
+    func handleInviteFriendsToggle(shouldDismiss: Bool) {
+        
+        if shouldDismiss {
+                let height: CGFloat = 625
+
+                if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+                    
+                if let window:UIWindow = applicationDelegate.window {
+
+                    let collectionViewY = window.frame.width - height
+                        //print("we get this far it should toggle back")
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                            
+                            self.inviteFriendsVC.view.frame = CGRect(x: 0, y: -(collectionViewY) + 650, width: window.frame.width, height: self.inviteFriendsVC.view.frame.height)
+                                                
+                            self.inviteFriendsViewExpanded = false
+                    
+                            //must first complete using this completions block below
+                        }) { (_) in
+                            //guard let rightMenuOption = rightMenuOption else { return }
+                            //self.handleRightMenuToggle(rightMenuOption: rightMenuOption)
+                        }
+                    }
+                }
+            } else {
+                print("DEBUG: FROM HERE I CAN GET A RESPONSE")
+            }
+                
+
+    }
+}
+
+extension UIViewController {
+    
+    func setupToHideKeyboardOnTap()
+    {
+        
+        print("SCREEN IS TAPPED HERE")
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.toDismissKeyboard))
+        
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func toDismissKeyboard() {
+        print("KEYBOARD IS DISMISSED HERE")
+        view.endEditing(true)
+    }
+}

@@ -11,7 +11,7 @@ import Firebase
 
 private let reuseIdentifier = "InviteFriendsCell"
 
-class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
+class InviteFriendsVC: UIViewController, UISearchBarDelegate {
     
     // Mark: - Properties
     
@@ -25,6 +25,17 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
     var currentKey: String?
     var userCurrentKey: String?
     var titleView: UIView!
+    var tableView: UITableView!
+    var delegate: CreateGroupVC?
+    var bottomConstraint: NSLayoutConstraint?
+    
+    let searchBarContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        view.layer.borderWidth = 2
+        return view
+    }()
     
     
     // MARK: - Init
@@ -32,26 +43,35 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // configure search bar
-        configureSearchBar()
-
-        // register cell classes
-        tableView.register(InviteFriendsCell.self, forCellReuseIdentifier: reuseIdentifier)
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        // seperator insets.
-        //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
-        
-        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        configureTableView()
+ 
+        // adjust the corner radius of the slide menu view
+        let myControlLayer: CALayer = self.view.layer
+        myControlLayer.masksToBounds = true
+        myControlLayer.cornerRadius = 10
         
         // configure refresh control
         //configureRefreshControl()
         
         //configureNavigationBar
-        configureNavigationBar()
+        //configureNavigationBar()
         
-        configureTabBar()
+        //configureTabBar()
         
         fetchUsers()
+        
+        // configure the listener for when the keyboard shows up
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        // configure the listener for when the keyboard goes down
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        configureViewComponents()
+        
+        // configure search bar
+        configureSearchBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,7 +79,7 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
         
         //configureNavigationBar()
         
-        configureTabBar()
+        //configureTabBar()
         
     }
     
@@ -68,77 +88,104 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
         super.viewWillDisappear(animated)
         navigationController?.view.layoutSubviews()
     }
+    
+      func configureTableView() {
+          tableView = UITableView()
+          tableView.delegate = self
+          tableView.dataSource = self
+       
+        // register cell classes
+        tableView.register(InviteFriendsCell.self, forCellReuseIdentifier: reuseIdentifier)
+        
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tableView.separatorColor = .clear
+        
+          
+          // disables the scrolling feature for the table view
+          tableView.isScrollEnabled = true
 
-    // MARK: - Table view data source
+          self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+          
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
+          view.addSubview(tableView)
+          tableView.translatesAutoresizingMaskIntoConstraints = false
+          tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 45, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+          
+      }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if inSearchMode {
-            return filteredUsers.count
-        } else {
-            return users.count
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        if users.count > 3 {
-            if indexPath.item == users.count - 1 {
-                fetchUsers()
-            }
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        var user: User!
-        
-        if inSearchMode {
-            user = filteredUsers[indexPath.row]
-        } else {
-            user = users[indexPath.row]
-        }
-        
-        // Create instance of user profile vc.
-        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
-        
-        // Set the user from search vc to the correct user that was clicked on.
-        userProfileVC.user = user
-        
-        // send the user value with more info
-        
-        // Push view controller.
-        navigationController?.pushViewController(userProfileVC, animated: true)
-        
-    }
-
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! InviteFriendsCell
-        
-        var user: User!
-        
-        if inSearchMode {
-            user = filteredUsers[indexPath.row]
-        } else {
-            user = users[indexPath.row]
-        }
-        
-        cell.user = user
-        
-        return cell
-    }
-    
+  
     
     // MARK: - Handlers
     
+    func configureSearchBar() {
+        
+        //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
+
+        
+        searchBar.delegate = self
+        //navigationItem.titleView = searchBar
+        
+        searchBar.placeholder = "Search"
+        searchBar.sizeToFit()
+        searchBar.showsCancelButton = true
+        //searchBar.becomeFirstResponder()  // this command displays the search bar as soon as the view presents
+        searchBar.autocapitalizationType = .none
+        //searchBar.frame.origin.y = 0
+        
+        
+        // SearchBar text
+        let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.textColor = UIColor.red
+        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(19)
+        
+        searchBar.isTranslucent = false
+        searchBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0) // changes the text
+        searchBar.alpha = 1
+        
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            //searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+            searchBar.searchTextField.layer.cornerRadius = 17
+            searchBar.searchTextField.layer.masksToBounds = true
+            UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "HelveticaNeue", size: 12)!], for: .normal)
+            
+    
+        } else {
+            // Fallback on earlier versions
+        }
+     
+        
+        searchBarContainer.addSubview(searchBar)
+        searchBar.anchor(top: searchBarContainer.topAnchor, left: searchBarContainer.leftAnchor, bottom: searchBarContainer.bottomAnchor, right: searchBarContainer.rightAnchor, paddingTop: 5, paddingLeft: 20, paddingBottom: 0, paddingRight: 5, width: 0, height: 0)
+        
+        
+        searchBar.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        searchBar.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        searchBar.layer.borderWidth = 2
+
+        
+    }
+    
+    func configureViewComponents() {
+
+        view.addSubview(searchBarContainer)
+         searchBarContainer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        searchBarContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[container]-0-|", options: [], metrics: nil, views: ["container": searchBarContainer]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[container(60)]", options: [], metrics: nil, views: ["container": searchBarContainer]))
+        
+        // create the bottom constraint here in order to mutate or move it along with the keyboard
+        // adjusting the constant value manipulates the bottom anchor
+        bottomConstraint = NSLayoutConstraint(item: searchBarContainer, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -30)
+        view.addConstraint(bottomConstraint!)
+         
+        
+    }
+    
+    /*
     func configureSearchBar() {
         
         //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
@@ -194,7 +241,9 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
         }
 
     }
+    */
     
+    /*
     func configureNavigationBar() {
         
         //view.addSubview(navigationController!.navigationBar)
@@ -214,7 +263,9 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
  
         configureSearchBarButton()
     }
+    */
     
+    /*
     func configureTabBar() {
         // removing shadow from tab bar
          tabBarController?.tabBar.layer.shadowRadius = 0
@@ -230,7 +281,7 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
         thinLineView.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220)
         lineView.addSubview(thinLineView)
     }
-    
+    */
     
     @objc func handleReturnMap() {
         dismiss(animated: true, completion: nil)
@@ -271,10 +322,14 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
         //tableView.separatorColor = .clear
     }
     
+    func handleDissmissKeyboard() {
+        view.endEditing(true)
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         let searchText = searchText.lowercased()
-    
+        searchBar.showsCancelButton = true
         //let searchText = String(searchText.text!)
         
         
@@ -299,9 +354,10 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+                
         searchBar.endEditing(true)
 
-        searchBar.showsCancelButton = false
+        //searchBar.showsCancelButton = false
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         } else {
@@ -315,11 +371,15 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
         
         // added stuff
         navigationItem.titleView = nil
-        configureSearchBarButton()
+        //configureSearchBarButton()
         
         tableView.separatorColor = .clear
         
         tableView.reloadData()
+        
+        // maybe we don't need this
+        handleDissmissKeyboard()
+        print("cancel button clicked here")
     }
     
     // MARK: - Handlers
@@ -377,6 +437,7 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
         }
     }
     
+    /*
     func configureSearchBarButton() {
         
         
@@ -420,7 +481,9 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
          
                 self.navigationItem.leftBarButtonItems = [searchButton, searchText]
     }
+    */
     
+    /*
     @objc func showSearchBar() {
 
         navigationItem.titleView = titleView
@@ -429,5 +492,105 @@ class InviteFriendsVC: UITableViewController, UISearchBarDelegate {
         //fetchUsers()
         configureSearchBar()
     }
+    */
+    
+    @objc func handleKeyboardNotification(notification: NSNotification) {
+        
+        if let userInfo = notification.userInfo {
+            // the UI responder finds the exact diminsions of the keyboard frame for us. We can utilze this for other diminsions
+            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            print(keyboardFrame)
+            
+            let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
+            
+            // the rate of the container as it compares to the keyboard
+            bottomConstraint?.constant = isKeyboardShowing ? -keyboardFrame.height - 25 : -30
+            
+            UIView.animate(withDuration: 0, delay: 0, options: .curveEaseInOut, animations: {
+                // calling this function will help perform the smooth animation
+                self.view.layoutIfNeeded()
+                
+            }) { (completed) in
+                
+            }
+            
+            
+            //bottomConstraint?.constant = -keyboardFrame.height
+        }
+        
+    }
 }
 
+extension InviteFriendsVC: UITableViewDelegate, UITableViewDataSource {
+      // MARK: - Table view data source
+      
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+          return 80
+      }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+          return 1
+      }
+
+      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+          if inSearchMode {
+              return filteredUsers.count
+          } else {
+              return users.count
+          }
+      }
+      
+      func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+          
+          if users.count > 3 {
+              if indexPath.item == users.count - 1 {
+                  fetchUsers()
+              }
+          }
+      }
+      
+      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+          
+          print("THIS IS SELECTED")
+          tableView.deselectRow(at: indexPath, animated: true)
+          
+          /*
+          var user: User!
+          
+          if inSearchMode {
+              user = filteredUsers[indexPath.row]
+          } else {
+              user = users[indexPath.row]
+          }
+          
+          // Create instance of user profile vc.
+          let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+          
+          // Set the user from search vc to the correct user that was clicked on.
+          userProfileVC.user = user
+          
+          // send the user value with more info
+          
+          // Push view controller.
+          navigationController?.pushViewController(userProfileVC, animated: true)
+          */
+      }
+
+      
+      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+          let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! InviteFriendsCell
+          
+          var user: User!
+          
+          if inSearchMode {
+              user = filteredUsers[indexPath.row]
+          } else {
+              user = users[indexPath.row]
+          }
+          
+          cell.user = user
+          
+          return cell
+      }
+    
+}

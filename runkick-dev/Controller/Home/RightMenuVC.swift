@@ -619,6 +619,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
            collectionView.alwaysBounceVertical = true
            collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
             collectionView.isHidden = true
+        
         searchBarContainer.isHidden = true
         
            view.addSubview(collectionView)

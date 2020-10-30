@@ -121,6 +121,10 @@ protocol HomeControllerDelegate {
     func handleProfileToggle(shouldDismiss: Bool)
 }
 
+protocol InviteFriendsDelegate {
+    func handleInviteFriendsToggle(shouldDismiss: Bool)
+}
+
 protocol SettingsControllerDelegate {
     func handleSettingsMenuToggle(shouldDismiss: Bool, settingsMenuOption: SettingsMenuOption?)
 }
