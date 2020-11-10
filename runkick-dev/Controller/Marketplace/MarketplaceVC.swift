@@ -27,6 +27,16 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
     var currentKey: String?
     var userCurrentKey: String?
     
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Eat"
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 28)
+        return label
+    }()
+    
+    
     // MARK: - Init
     
     override func viewDidLoad() {
@@ -134,6 +144,9 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .white //.red
         
+        collectionView.addSubview(titleLabel)
+        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         tableView.addSubview(collectionView)
         collectionView.register(MarketplaceCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -153,7 +166,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 80, left: 16, bottom: 0, right: 16)
+        return UIEdgeInsets(top: 5, left: 16, bottom: 0, right: 16)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -176,6 +189,13 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
             }
         }
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        
+        
+        return CGSize(width: view.frame.width, height: 80)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

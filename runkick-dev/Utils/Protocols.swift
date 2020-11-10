@@ -30,6 +30,11 @@ protocol UserProfileHeaderDelegate {
     func handleActivityTapped(for header: UserProfileHeader)
 }
 
+protocol GroupProfileHeaderDelegate {
+    func setUserStats(for header: GroupProfileHeader)
+    func handleMemberDetailView(for header: GroupProfileHeader)
+}
+
 // will be able to delete this protocol
 protocol AdminProfileHeaderDelegate {
     func handleEditFollowTapped(for header: AdminProfileHeader)
@@ -123,6 +128,13 @@ protocol HomeControllerDelegate {
 
 protocol InviteFriendsDelegate {
     func handleInviteFriendsToggle(shouldDismiss: Bool)
+}
+protocol SendGroupDelegate {
+    
+}
+
+protocol InviteToGroupDelegate {
+    func handleInviteTapped(for cell: InviteFriendsCell)
 }
 
 protocol SettingsControllerDelegate {

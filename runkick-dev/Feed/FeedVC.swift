@@ -34,6 +34,14 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     var userProfileController: UserProfileVC?
     var value: String?
     
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Explore"
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 28)
+        return label
+    }()
+    
     // here we are using the class photo feed view in order to pull up the photo we need from the subclass
     let photoFeedView: PhotoFeedView = {
         let view = PhotoFeedView()
@@ -156,7 +164,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         return view
     }()
     
-    lazy var titleLabel: UILabel = {
+    lazy var feedTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 28)
         label.text = "Explore"
@@ -253,7 +261,8 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         refreshFeedControl.addTarget(self, action: #selector(handleFeedRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshFeedControl
         
-
+        collectionView.addSubview(feedTitleLabel)
+        feedTitleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 22, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         configureNavigationBar()
         
@@ -409,8 +418,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         //return UIEdgeInsets(top: -68, left: 0, bottom: 0, right: 0)
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 85, left: 0, bottom: 0, right: 0)
     }
+    
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("DEBUG: THE CHECKIN FUNCTION WAS HIT")
@@ -433,9 +443,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             //let checkInCell = CheckInCell()
             //checkInCell.setToTrue(false)
             //print("Setting the did load funtions")
-            
-            
-            
+        
             cell.delegate = self
             cell.post = posts[indexPath.item]
 

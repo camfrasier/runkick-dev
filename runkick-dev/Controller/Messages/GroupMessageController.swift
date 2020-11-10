@@ -11,89 +11,97 @@ import Firebase
 
 private let reuseIdentifier = "GroupMessageCell"
 
-class GroupMessageController: UITableViewController, UISearchBarDelegate, GroupMessageControllerDelegate {
+class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessageControllerDelegate {
   
     
     // MARK: - Properties
     var groups = [UserGroup]()
+    var tableView: UITableView!
     var filteredGroups = [UserGroup]()
     var userCurrentKey: String?
     var inSearchMode = false
     var searchBar = UISearchBar()
     var titleView: UIView!
     var createGroupVC = CreateGroupVC()
+    
+    var headerView: UIView = UIView.init(frame: CGRect.init(x: 1, y: 50, width: 276, height: 80))
+    var labelView: UILabel = UILabel.init(frame: CGRect.init(x: 4, y: 35, width: 276, height: 38))
+
+
+    
+    /*
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Groups"
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 24)
+        return label
+    }()
+    */
 
     // MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
 
-            tableView.register(GroupMessageCell.self, forCellReuseIdentifier: reuseIdentifier)
-        
+            
+        configureTableView()
+
         createGroupVC.delegate = self
+        
+        //configureViewComponents()
         
         configureNavigationBar()
         
         configureTabBar()
         
+        fetchGroups()
+        
+        
+        
         // configure refresh control
         configureRefreshControl()
-        
-        fetchGroups()
     }
     
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
+        tableView?.reloadData()
     }
     
-    // MARK: - UITableView
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
+    func configureTableView()  {
+  
+        tableView = UITableView()
+        tableView.rowHeight = 60
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.isScrollEnabled = true
+        tableView.separatorColor = .clear
 
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return 5
-        if inSearchMode {
-            return filteredGroups.count
-        } else {
-            return groups.count
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! GroupMessageCell
+        tableView.register(GroupMessageCell.self, forCellReuseIdentifier: reuseIdentifier)
         
-        var group: UserGroup!
         
-        if inSearchMode {
-            group = filteredGroups[indexPath.row]
-        } else {
-            group = groups[indexPath.row]
-        }
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //self.tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
         
-        cell.group = group
         
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // adjust the header settings
+        headerView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //labelView.text = "hello"
+        labelView.text = "Groups"
+        labelView.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        labelView.font = UIFont(name: "PingFangTC-Semibold", size: 28)
         
-        if groups.count > 3 {
-            if indexPath.item == groups.count - 1 {
-                fetchGroups()
-            }
-        }
+        headerView.addSubview(labelView)
+        labelView.anchor(top: headerView.topAnchor, left: headerView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        self.tableView.tableHeaderView = headerView
 
+
+  
     }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print("This is where user should be allowed to join an existing friends group or create one")
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
+ 
     // MARK: - Handlers
     
        func configureNavigationBar() {
@@ -119,13 +127,15 @@ class GroupMessageController: UITableViewController, UISearchBarDelegate, GroupM
     
     func fetchGroups() {
         
-        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        //guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        
+        self.tableView.refreshControl?.endRefreshing()
 
          if userCurrentKey == nil {
             
             DataService.instance.REF_USER_GROUPS.queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
                  
-                self.tableView.refreshControl?.endRefreshing()
+                
                 
                  guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                  guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
@@ -133,10 +143,10 @@ class GroupMessageController: UITableViewController, UISearchBarDelegate, GroupM
                  allObjects.forEach({ (snapshot) in
                      let groupId = snapshot.key
                      
-                    Database.fetchUserGroups(with: groupId) { (group) in
+                    Database.fetchUserGroups(with: groupId, completion: { (group) in
                         self.groups.append(group)
                         self.tableView.reloadData()
-                    }
+                    })
                  })
                  self.userCurrentKey = first.key
              }
@@ -160,7 +170,14 @@ class GroupMessageController: UITableViewController, UISearchBarDelegate, GroupM
              })
          }
      }
-    
+    /*
+    func configureViewComponents() {
+        
+        view.addSubview(titleLabel)
+        titleLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+    }
+    */
     
     func configureTabBar() {
         
@@ -364,6 +381,7 @@ class GroupMessageController: UITableViewController, UISearchBarDelegate, GroupM
         groups.removeAll(keepingCapacity: false)
         self.userCurrentKey = nil
         fetchGroups()
+        
         tableView?.reloadData()
     }
     
@@ -393,6 +411,78 @@ class GroupMessageController: UITableViewController, UISearchBarDelegate, GroupM
         self.navigationController?.pushViewController(createGroupVC, animated: true)
     }
 }
+
+extension GroupMessageController: UITableViewDelegate, UITableViewDataSource {
+    
+    // MARK: - UITableView
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //return 5
+        if inSearchMode {
+            return filteredGroups.count
+        } else {
+            return groups.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! GroupMessageCell
+        
+        var group: UserGroup!
+        
+        if inSearchMode {
+            group = filteredGroups[indexPath.row]
+        } else {
+            group = groups[indexPath.row]
+        }
+        
+        cell.group = group
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if groups.count > 3 {
+            if indexPath.item == groups.count - 1 {
+                fetchGroups()
+            }
+        }
+
+    }
+    
+   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print("This is where user should be allowed to join an existing friends group or create one")
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+    /*
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 50))
+
+        let label = UILabel()
+        label.frame = CGRect.init(x: 5, y: 5, width: headerView.frame.width-10, height: headerView.frame.height-10)
+        label.text = "Groups"
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 24)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+
+        headerView.addSubview(label)
+
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 80
+    }
+    */
+}
+
 
 /*
 // MARK: - GroupMessageControllerDelegate

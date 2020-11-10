@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class InviteFriendsCell: UITableViewCell {
     
@@ -36,11 +37,41 @@ class InviteFriendsCell: UITableViewCell {
         return iv
     } ()
     
+    /*
+    lazy var inviteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Invite", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.airBnBRed()
+        button.addTarget(self, action: #selector(handleInvite), for: .touchUpInside)
+        return button
+    } ()
+    */
+    
+    lazy var inviteButton: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        label.text = "Invite"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.backgroundColor = UIColor.airBnBRed()
+        
+        // add gesture recognizer for double tap to like
+        let inviteTap = UITapGestureRecognizer(target: self, action: #selector(handleInvite))
+        inviteTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(inviteTap)
+        return label
+    } ()
+    
     let separatorView: UIView = {
         let view = UIView()
         view.layer.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220).cgColor
         return view
     }()
+    
+    var delegate: InviteToGroupDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -51,6 +82,11 @@ class InviteFriendsCell: UITableViewCell {
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.layer.cornerRadius = profileImageDimension / 2
+        
+        addSubview(inviteButton)
+        inviteButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 60, height: 30)
+        inviteButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        inviteButton.layer.cornerRadius = 10
         
         self.textLabel?.text = "Username"
         
@@ -83,6 +119,19 @@ class InviteFriendsCell: UITableViewCell {
         
         //addSubview(separatorView)
         //separatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.25)
+    }
+    
+    @objc func handleInvite() {
+        
+        delegate?.handleInviteTapped(for: self)
+    }
+    
+    func configureInviteButton() {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        //guard let user = self.post else { return }
+        
+        //some sort of database check to see if user is invited to the group x already
     }
     
     required init?(coder aDecoder: NSCoder) {

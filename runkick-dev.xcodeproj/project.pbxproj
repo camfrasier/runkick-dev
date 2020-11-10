@@ -37,6 +37,9 @@
 		692EDB59253F745100BB86B6 /* UserGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB58253F745100BB86B6 /* UserGroup.swift */; };
 		692EDB5B2548BE3A00BB86B6 /* InviteFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB5A2548BE3900BB86B6 /* InviteFriendsVC.swift */; };
 		692EDB5D2548C1B400BB86B6 /* InviteFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB5C2548C1B400BB86B6 /* InviteFriendsCell.swift */; };
+		692EDB6025547F8F00BB86B6 /* GroupProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB5F25547F8D00BB86B6 /* GroupProfileVC.swift */; };
+		692EDB62255480ED00BB86B6 /* GroupProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB61255480ED00BB86B6 /* GroupProfileHeader.swift */; };
+		692EDB642554968A00BB86B6 /* GroupDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB632554968900BB86B6 /* GroupDetailCell.swift */; };
 		6934E69424E243020041F1E8 /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6934E69324E243020041F1E8 /* CameraVC.swift */; };
 		69365A4A24E361BC00AF156F /* ImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69365A4924E361BC00AF156F /* ImageVC.swift */; };
 		69365A4C24E7808900AF156F /* CategoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69365A4B24E7808800AF156F /* CategoriesCell.swift */; };
@@ -181,6 +184,9 @@
 		692EDB58253F745100BB86B6 /* UserGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGroup.swift; sourceTree = "<group>"; };
 		692EDB5A2548BE3900BB86B6 /* InviteFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendsVC.swift; sourceTree = "<group>"; };
 		692EDB5C2548C1B400BB86B6 /* InviteFriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendsCell.swift; sourceTree = "<group>"; };
+		692EDB5F25547F8D00BB86B6 /* GroupProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProfileVC.swift; sourceTree = "<group>"; };
+		692EDB61255480ED00BB86B6 /* GroupProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProfileHeader.swift; sourceTree = "<group>"; };
+		692EDB632554968900BB86B6 /* GroupDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailCell.swift; sourceTree = "<group>"; };
 		6934E69324E243020041F1E8 /* CameraVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
 		69365A4924E361BC00AF156F /* ImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVC.swift; sourceTree = "<group>"; };
 		69365A4B24E7808800AF156F /* CategoriesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCell.swift; sourceTree = "<group>"; };
@@ -432,6 +438,14 @@
 			path = Messages;
 			sourceTree = "<group>";
 		};
+		692EDB5E25547F1C00BB86B6 /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				692EDB5F25547F8D00BB86B6 /* GroupProfileVC.swift */,
+			);
+			path = Groups;
+			sourceTree = "<group>";
+		};
 		6937B42822A6CFED00446926 = {
 			isa = PBXGroup;
 			children = (
@@ -478,6 +492,7 @@
 			children = (
 				69E6A0B2236CAD6600149219 /* Home */,
 				691A8703231771C100EBB64A /* Marketplace */,
+				692EDB5E25547F1C00BB86B6 /* Groups */,
 				691A87002317717B00EBB64A /* UserProfile */,
 				69E6A0AF236B51E500149219 /* Menu */,
 				691A86FF2317715D00EBB64A /* Login */,
@@ -510,6 +525,7 @@
 				698B486523233D7700A0F3E0 /* SelectPhotoCell.swift */,
 				698B486723233DD900A0F3E0 /* SelectPhotoHeader.swift */,
 				69FE5BBE2326C61000039BF5 /* UserPostCell.swift */,
+				692EDB632554968900BB86B6 /* GroupDetailCell.swift */,
 				69FBDCF524467FCB00709E21 /* AdminProfileCell.swift */,
 				69FE5BC4233017C600039BF5 /* CommentCell.swift */,
 				69FE5BCB2331B18E00039BF5 /* NotificationsCell.swift */,
@@ -519,6 +535,7 @@
 				692CAE17233C23470056FC7A /* SearchPostCell.swift */,
 				69FBDCFB244A1B8500709E21 /* AdminProfileHeader.swift */,
 				691A86FD231754EB00EBB64A /* UserProfileHeader.swift */,
+				692EDB61255480ED00BB86B6 /* GroupProfileHeader.swift */,
 				69FB5F22245E328D00A02FA1 /* AdminStorePostCell.swift */,
 				69FBDCEF2443A43D00709E21 /* UserSpecificFeedCell.swift */,
 				6980617A24DBB3B300628077 /* GroupsCell.swift */,
@@ -782,6 +799,7 @@
 				69FE5BC32330159600039BF5 /* CommentVC.swift in Sources */,
 				691A87092319D35D00EBB64A /* SearchUserCell.swift in Sources */,
 				69D8CCCF24AD75CB001432FD /* StripeApi.swift in Sources */,
+				692EDB6025547F8F00BB86B6 /* GroupProfileVC.swift in Sources */,
 				69C5EDA3247CE48A006A22B1 /* ActivityHistoryCell.swift in Sources */,
 				6980617B24DBB3B300628077 /* GroupsCell.swift in Sources */,
 				69FB5F1F245E266D00A02FA1 /* StorePost.swift in Sources */,
@@ -817,6 +835,7 @@
 				69977C4D2399B6C00057D0A3 /* MenuOption.swift in Sources */,
 				692EDB57253E19AF00BB86B6 /* CreateGroupVC.swift in Sources */,
 				692EDB5525352C9A00BB86B6 /* GroupMessageCell.swift in Sources */,
+				692EDB642554968A00BB86B6 /* GroupDetailCell.swift in Sources */,
 				6937B45422A98FE700446926 /* LeftSidePanelVC.swift in Sources */,
 				69365A4E24E7920500AF156F /* MarketplaceVC.swift in Sources */,
 				6937B45022A97B3D00446926 /* CircleView.swift in Sources */,
@@ -907,6 +926,7 @@
 				692367452305C567002FCA4D /* UserProfileVC.swift in Sources */,
 				696A70B82345296800CDD512 /* HashtagController.swift in Sources */,
 				6937B44A22A85D9B00446926 /* GradientView.swift in Sources */,
+				692EDB62255480ED00BB86B6 /* GroupProfileHeader.swift in Sources */,
 				69E20BEF22D43D200054BCEE /* RunnerTrip.swift in Sources */,
 				69FE5BC5233017C600039BF5 /* CommentCell.swift in Sources */,
 				696A70BA23452A9F00CDD512 /* HashtagCell.swift in Sources */,

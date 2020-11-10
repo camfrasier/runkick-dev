@@ -27,6 +27,14 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     var userCurrentKey: String?
     var titleView: UIView!
     
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Search"
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 28)
+        return label
+    }()
+    
     enum PostType: String {
 
         case userPost = "userPost"
@@ -112,6 +120,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         }
     }
     
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         var user: User!
@@ -174,6 +183,10 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         tableView.addSubview(collectionView)
         collectionView.register(SearchPostCell.self, forCellWithReuseIdentifier: reusePostCellIdentifier)
         
+        
+        collectionView.addSubview(titleLabel)
+        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         tableView.separatorColor = .clear
         
         //tableView.separatorInset = UIEdgeInsets(top: 56, left: 0, bottom: 0, right: 0)
@@ -190,7 +203,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 0, left: 2, bottom: 2, right: 2)
+        return UIEdgeInsets(top: 85, left: 2, bottom: 2, right: 2)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

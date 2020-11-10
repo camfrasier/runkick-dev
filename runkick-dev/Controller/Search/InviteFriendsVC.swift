@@ -11,8 +11,8 @@ import Firebase
 
 private let reuseIdentifier = "InviteFriendsCell"
 
-class InviteFriendsVC: UIViewController, UISearchBarDelegate {
-    
+class InviteFriendsVC: UIViewController, UISearchBarDelegate, InviteToGroupDelegate {
+
     // Mark: - Properties
     
     var users = [User]()
@@ -28,6 +28,7 @@ class InviteFriendsVC: UIViewController, UISearchBarDelegate {
     var tableView: UITableView!
     var delegate: CreateGroupVC?
     var bottomConstraint: NSLayoutConstraint?
+    var groupId: String!
     
     let searchBarContainer: UIView = {
         let view = UIView()
@@ -37,7 +38,7 @@ class InviteFriendsVC: UIViewController, UISearchBarDelegate {
         return view
     }()
     
-    
+
     // MARK: - Init
     
     override func viewDidLoad() {
@@ -185,6 +186,32 @@ class InviteFriendsVC: UIViewController, UISearchBarDelegate {
         
     }
     
+    func test(_ sender: String) {
+        
+        groupId = sender
+    }
+    
+    func handleInviteTapped(for cell: InviteFriendsCell) {
+        
+                guard let user = cell.user else { return }
+       
+                    //cell.delegate = self
+        
+                if cell.inviteButton.text == "Invite" {
+                    cell.inviteButton.text = "Invited"
+                    cell.inviteButton.font = UIFont.boldSystemFont(ofSize: 15)
+                    print("The user has just been invited to the group \(groupId)")
+                    user.inviteUserToGroup(groupId)
+                    
+                } else {
+                    cell.inviteButton.text = "Invite"
+                    cell.inviteButton.font = UIFont.boldSystemFont(ofSize: 15)
+                    user.uninviteUserToGroup(groupId)
+                    print("This user has just been uninvited to group")
+                }
+        
+    }
+    
     /*
     func configureSearchBar() {
         
@@ -298,6 +325,8 @@ class InviteFriendsVC: UIViewController, UISearchBarDelegate {
         present(navController, animated: true, completion: nil)
     }
     
+
+    
     // MARK: - UISearchBar
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -306,12 +335,13 @@ class InviteFriendsVC: UIViewController, UISearchBarDelegate {
         //self.navigationItem.leftBarButtonItems = nil
 
         
+        /*
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         } else {
             // Fallback on earlier versions
         }
-        
+        */
         
         //fetchUsers()
         
@@ -356,14 +386,16 @@ class InviteFriendsVC: UIViewController, UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
                 
         searchBar.endEditing(true)
-
+            
         //searchBar.showsCancelButton = false
+        
+        /*
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         } else {
             // Fallback on earlier versions
         }
-        
+        */
         inSearchMode = false
         
         searchBar.text = nil
@@ -552,7 +584,7 @@ extension InviteFriendsVC: UITableViewDelegate, UITableViewDataSource {
       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
           
           print("THIS IS SELECTED")
-          tableView.deselectRow(at: indexPath, animated: true)
+          //tableView.deselectRow(at: indexPath, animated: true)
           
           /*
           var user: User!
@@ -580,6 +612,9 @@ extension InviteFriendsVC: UITableViewDelegate, UITableViewDataSource {
       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
           let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! InviteFriendsCell
           
+        // in order for the invite button to work we must link the delegate to anything in this particular cell
+        cell.delegate = self
+        
           var user: User!
           
           if inSearchMode {

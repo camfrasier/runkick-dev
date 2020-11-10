@@ -358,8 +358,6 @@ extension Database {
     }
     
     static func fetchUserGroups(with groupId: String, completion: @escaping(UserGroup) -> ()) {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        
         DataService.instance.REF_USER_GROUPS.child(groupId).observeSingleEvent(of: .value) { (snapshot) in
             
                 guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }

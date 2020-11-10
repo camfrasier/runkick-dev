@@ -21,8 +21,14 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     var privacyEnabled = false
     let inviteFriendsVC = InviteFriendsVC()
     var delegate: GroupMessageControllerDelegate?
+    var inviteDelegate: SendGroupDelegate?
     var inviteFriendsViewExpanded = false
     let blackView = UIView()
+    var groupId: String!
+    var user: User?
+    var groupInstantiated = false
+    var groupDateSaved = false
+    
     
     let plusPhotoBtn: UIButton = {
         let button = UIButton(type: .system)
@@ -49,7 +55,7 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         button.addTarget(self, action: #selector(handleSaveGroup), for: .touchUpInside)
         return button
     } ()
-    
+
     let inviteFriendsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Invite Friends", for: .normal)
@@ -100,6 +106,103 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleScreenTap(sender:)))
         self.view.addGestureRecognizer(tap)
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        
+    let myGroup = DispatchGroup()
+        print("this will let me know if the group is set upon dismissal \(groupInstantiated)")
+        if groupInstantiated == true {
+        
+            if groupDateSaved == false {
+                
+                
+                DataService.instance.REF_USER_GROUPS.child(groupId).child("members").observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                        
+                        
+                    for snap in snapshots {
+                            
+                        let value = snap.value as! String
+                            //print("this snap represents one group member uid\(value)")
+                            
+                        // this should remove the group from the users section if we haven't instantiated the group
+                        
+                        DataService.instance.REF_USERS.child(value).child("groups").child(self.groupId).removeValue()
+                        
+                        print("Finished request \(value)")
+                            //myGroup.leave()
+                        }
+                        // waiting for the for loop to complete
+                        myGroup.notify(queue: .main) {
+                            print("Finished all requests.")
+                            
+                            DataService.instance.REF_USER_GROUPS.child(self.groupId).removeValue()
+                            
+                        }
+                        
+                    }
+                    
+                })
+                
+                
+                /*
+                firstTask { (success) -> Void in
+                    if success {
+                       // do second task if success
+                       // remove group instance
+                        
+                        print("this should not be before the users are listed")
+                       //DataService.instance.REF_USER_GROUPS.child(groupId).removeValue()
+                    }
+                }
+                */
+
+
+        } else {
+            print("view did dissappear called and group saved")
+        }
+        
+        } else {
+            print("the group was never instanted")
+            // technically the group was instantiated.. but this is hit because the boolean value is reset before leaving the page.
+        }
+        
+        
+    }
+    
+    // completion block function to run and after the group can be removed
+    func firstTask(completion: (_ success: Bool) -> Void) {
+        
+        DataService.instance.REF_USER_GROUPS.child(groupId).child("members").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                
+            for snap in snapshots {
+                    
+                let value = snap.value as! String
+                    print("this snap represents one group member uid\(value)")
+                    
+                // this should remove the group from the users section if we haven't instantiated the group
+                
+                DataService.instance.REF_USERS.child(value).child("groups").child(self.groupId).removeValue()
+
+                }
+                
+            }
+            
+        })
+            completion(true)
+      
+        
+        
+        // Call completion, when finished, success or faliure
+        
+    }
+
+    
+
     
     // Creating stackview
 
@@ -177,6 +280,9 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         guard let groupName = groupNameTextField.text else { return }
+        guard let groupId = groupId else { return }
+        
+         print("The saved group id WILL BE DOGG \(groupId)")
         
         let creationDate = Int(NSDate().timeIntervalSince1970)
         
@@ -208,12 +314,15 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                                             "groupName": groupName,
                                             "groupOwnerId": currentUid,
                                             "fcmToken": fcmToken, // automatically upload in database right away
+                                            "groupId": groupId,
                                             "profileImageURL": profileImageURL] as [String : Any]
                     
                     //let values = [Auth.auth().currentUser?.uid: dictionaryValues]
                     //let userKey = Auth.auth().currentUser?.uid
                     // Save user info to database
                     
+                    
+                    /*
                     DataService.instance.REF_USER_GROUPS.childByAutoId().updateChildValues(dictionaryValues, withCompletionBlock: { (error, ref) in
                         print("Successfully created user GROUP and saved information to database.")
                         
@@ -240,7 +349,25 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                         _ = self.navigationController?.popViewController(animated: true)
 
                     })
-  
+                    */
+                    
+                    DataService.instance.REF_USER_GROUPS.child(groupId).updateChildValues(dictionaryValues, withCompletionBlock: { (error, ref) in
+                        
+                        if self.privacyEnabled == true {
+                            DataService.instance.REF_USER_GROUPS.child(groupId).updateChildValues(["privacyEnabled": true, "groupId": groupId])
+                            
+                        } else {
+                            DataService.instance.REF_USER_GROUPS.child(groupId).updateChildValues(["privacyEnabled": false, "groupId": groupId])
+                        }
+                        
+                        // resetting the status which allows us to creat an entire new group
+                        self.groupInstantiated = false
+                        self.groupDateSaved = true
+                        
+                        // dissmissing the view
+                            _ = self.navigationController?.popViewController(animated: true)
+                    })
+                  
                 }
             })
         }
@@ -320,6 +447,8 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
      @objc func presentInviteFriendsVC() {
+        
+        
          
          if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
              if let window:UIWindow = applicationDelegate.window {
@@ -343,11 +472,51 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                      
                      self.inviteFriendsViewExpanded = true
                                                   
-                 }, completion: nil)
+                    }) { (_) in
+                        
+                        if self.groupInstantiated == false {
+                            
+                        self.instantiateGroup()
+                        }
+                }
              }
          }
+
      }
 
+    func instantiateGroup() {
+        
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        let values = ["creationDate": creationDate,
+                      "isAdmin": true,
+                      "inviteAccepted": true] as [String : Any]
+        
+        DataService.instance.REF_USERS.child(currentUid).child("groups").childByAutoId().updateChildValues(values, withCompletionBlock: { (error, ref) in
+            
+            
+            // MAJOR KEY WHENEVER WE ARE PULLING MULTIPLE RUNS OF A DATABASE FUNCTION WE NEED TO USE OBSERVE SINGLE EVENT!!
+            
+            DataService.instance.REF_USERS.child(currentUid).child("groups").queryLimited(toLast: 1).observeSingleEvent(of: .childAdded, with: { (snapshot) in
+                
+                // preserving groupId
+                let groupIdentifier = snapshot.key
+                self.groupId = groupIdentifier
+                
+                print("The new group id instantiated is \(groupIdentifier)")
+                
+                //DataService.instance.REF_USER_GROUPS.child(groupIdentifier).updateChildValues(["members": currentUid])
+                DataService.instance.REF_USER_GROUPS.child("\(groupIdentifier)/members").childByAutoId().setValue(currentUid)
+                
+                self.inviteFriendsVC.test(groupIdentifier)
+                
+                
+                self.groupInstantiated = true
+                print("this group should be instantied here \(self.groupInstantiated)")
+            })
+        })
+    }
     
     @objc func handleReturnHome() {
 
@@ -371,14 +540,17 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             groupNameTextField.hasText == true else {
         
                 saveGroupButton.isEnabled = false
+                inviteFriendsButton.isEnabled = false
                 saveGroupButton.backgroundColor = UIColor(red: 10/255, green: 204/255, blue: 10/255, alpha: 1)
-                
+                inviteFriendsButton.backgroundColor = UIColor(red: 10/255, green: 204/255, blue: 10/255, alpha: 1)
                 
                 return
         }
         
         saveGroupButton.isEnabled = true
+        inviteFriendsButton.isEnabled = true
         saveGroupButton.backgroundColor = UIColor(red: 100/255, green: 110/255, blue: 244/255, alpha: 1)
+        inviteFriendsButton.backgroundColor = UIColor(red: 100/255, green: 110/255, blue: 244/255, alpha: 1)
         
     }
 }
@@ -428,7 +600,6 @@ extension CreateGroupVC: InviteFriendsDelegate {
             } else {
                 print("DEBUG: FROM HERE I CAN GET A RESPONSE")
             }
-                
 
     }
 }

@@ -74,6 +74,78 @@ class User {
         
     }
     
+    func inviteUserToGroup(_ groupId: String) {
+        // access database etc. and send notification
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = uid else { return }
+        
+        print("Here is the current user id \(currentUid)")
+        print("Here is the user id \(uid)")
+        print("Here is the user group Id \(groupId)")
+       
+        // adding user to group
+        //DataService.instance.REF_USER_GROUPS.child(groupId).child("members").childByAutoId().updateChildValues(["uid": uid])
+        DataService.instance.REF_USER_GROUPS.child("\(groupId)/members").childByAutoId().setValue(uid)
+        
+        
+        // adding the user group to user profile
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        DataService.instance.REF_USERS.child(uid).child("groups").child(groupId).updateChildValues(["inviteDate": creationDate, "inviteAccepted": false, "isAdmin": false])
+        
+    }
+    
+    func uninviteUserToGroup(_ groupId: String) {
+        //guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = uid else { return }
+
+        // remove specific user to group
+        DataService.instance.REF_USER_GROUPS.child(groupId).child("members").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+            for snap in snapshots {
+                    
+                let snapshotKey = snap.key
+                    
+                    print("This should be the key \(snapshotKey)")
+                DataService.instance.REF_USER_GROUPS.child(groupId).child("members").child(snapshotKey).observeSingleEvent(of: .value) { (snapshot) in
+                    
+                    let keyValue = snapshot.value as? String
+                    
+                   print("This should be the value for key \(keyValue)")
+                    
+                    if uid == keyValue {
+                        print("here we should remove the key value in question")
+                        DataService.instance.REF_USER_GROUPS.child(groupId).child("members").child(snapshotKey).removeValue()
+                    }
+                }
+                    
+                }
+            }
+        })
+    
+        
+        // adding the user group to user profile
+        DataService.instance.REF_USERS.child(uid).child("groups").child(groupId).removeValue()
+        
+        /*
+            DataService.instance.REF_USERS.child(currentUid).child("groups").queryLimited(toLast: 1).observe(.childAdded) {(snapshot: DataSnapshot) in
+                
+                // preserving groupId
+                let groupId = snapshot.key
+                
+                print("The USER GROUP ID IS>>> \(groupId)")
+                
+                // remove specific user to group
+                DataService.instance.REF_USER_GROUPS.child(groupId).child("members").child(uid).removeValue()
+                
+                // adding the user group to user profile
+                DataService.instance.REF_USERS.child("groups").child(groupId).removeValue()
+            }
+         */
+    }
+    
     func follow() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
