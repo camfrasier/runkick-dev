@@ -120,6 +120,10 @@ protocol CommentInputAccessoryViewDelagate {
     func didSubmit(forComment comment: String)
 }
 
+protocol MenuControllerDelegate {
+    func handleMenuToggle(shouldToggle: Bool)
+}
+
 protocol HomeControllerDelegate {
     func handleMenuToggle(shouldDismiss: Bool, menuOption: MenuOption?)
     func handleRightMenuToggle(shouldDismiss: Bool, rightMenuOption: RightMenuOption?)

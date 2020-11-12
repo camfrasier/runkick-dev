@@ -23,11 +23,22 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
     var searchBar = UISearchBar()
     var titleView: UIView!
     var createGroupVC = CreateGroupVC()
+    var delegate: MenuControllerDelegate?
+    
     
     var headerView: UIView = UIView.init(frame: CGRect.init(x: 1, y: 50, width: 276, height: 80))
     var labelView: UILabel = UILabel.init(frame: CGRect.init(x: 4, y: 35, width: 276, height: 38))
-
-
+    
+    lazy var userSpecificGroups: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Your Groups", for: .normal)
+        button.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
+        //button.titleLabel?.font =  UIFont(name: "HelveticaNeue-CondensedBold", size: 14)
+        button.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
+        button.addTarget(self, action: #selector(yourGroupsTapped), for: .touchUpInside)
+        return button
+    } ()
     
     /*
     let titleLabel: UILabel = {
@@ -48,7 +59,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
 
         createGroupVC.delegate = self
         
-        //configureViewComponents()
+        configureViewComponents()
         
         configureNavigationBar()
         
@@ -133,7 +144,8 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
 
          if userCurrentKey == nil {
             
-            DataService.instance.REF_USER_GROUPS.queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
+            // because I expect more per view i increased the toLast count to 8
+            DataService.instance.REF_USER_GROUPS.queryLimited(toLast: 8).observeSingleEvent(of: .value) { (snapshot) in
                  
                 
                 
@@ -151,7 +163,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
                  self.userCurrentKey = first.key
              }
          } else {
-            DataService.instance.REF_USER_GROUPS.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
+            DataService.instance.REF_USER_GROUPS.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 9).observeSingleEvent(of: .value, with: { (snapshot) in
                  
                  guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                  guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
@@ -170,14 +182,19 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
              })
          }
      }
-    /*
+    
+     
     func configureViewComponents() {
         
-        view.addSubview(titleLabel)
-        titleLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        headerView.addSubview(userSpecificGroups)
+        userSpecificGroups.anchor(top: headerView.topAnchor, left: nil, bottom: nil, right: headerView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 140, height: 50)
+        userSpecificGroups.layer.cornerRadius = 25
+        userSpecificGroups.centerXAnchor.constraint(equalTo: userSpecificGroups.centerXAnchor).isActive = true
+        userSpecificGroups.layer.borderColor = UIColor.rgb(red: 120, green: 120, blue: 120).cgColor
+        userSpecificGroups.layer.borderWidth = 0.5
         
     }
-    */
+    
     
     func configureTabBar() {
         
@@ -337,7 +354,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
          
                     let searchBarText = UIButton(type: UIButton.ButtonType.custom)
                         
-                        searchBarText.frame = CGRect(x: 0, y: 0, width: 120, height: 33)
+                    searchBarText.frame = CGRect(x: 0, y: 0, width: 120, height: 33)
                         
                      searchBarText.setTitle("Search user groups or create a new one", for: .normal)
                      searchBarText.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
@@ -376,6 +393,41 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
     }
     
     // MARK: - Handlers
+    
+    @objc func yourGroupsTapped() {
+         
+        // dismiss after calling delegate
+        //_ = self.navigationController?.popViewController(animated: true)
+        
+        print("do something here")
+        
+        let userGroupVC = UserGroupVC()
+
+        userGroupVC.modalPresentationStyle = .fullScreen
+        present(userGroupVC, animated: true, completion: nil)
+        
+        //navigationController?.pushViewController(userGroupVC, animated: true)
+        
+        
+        /*
+        firstTask { (success) -> Void in
+            if success {
+                
+            delegate?.handleMenuToggle(shouldToggle: true)
+            }
+        }
+        */
+    }
+    
+    // completion block function to run and after the group can be removed
+    func firstTask(completion: (_ success: Bool) -> Void) {
+        
+            _ = self.navigationController?.popViewController(animated: true)
+            completion(true)
+
+        // Call completion, when finished, success or faliure
+        
+    }
     
     @objc func handleRefresh() {
         groups.removeAll(keepingCapacity: false)
@@ -448,7 +500,7 @@ extension GroupMessageController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if groups.count > 3 {
+        if groups.count > 7 {
             if indexPath.item == groups.count - 1 {
                 fetchGroups()
             }

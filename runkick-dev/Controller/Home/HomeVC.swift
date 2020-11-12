@@ -123,6 +123,7 @@ class HomeVC: UIViewController, Alertable {
     let storeCell = StoreCell()
     let searchStoreCell = SearchStoreCell()
     let notificationsVC = NotificationsVC()
+    let groupMessageController = GroupMessageController()
     let loginVC = LoginVC()
     //var user: User?
     
@@ -939,6 +940,8 @@ class HomeVC: UIViewController, Alertable {
         manager = CLLocationManager()
         manager?.delegate = self
         manager?.desiredAccuracy = kCLLocationAccuracyBest
+        
+        
         
  
         // check user location auth status
@@ -6050,5 +6053,16 @@ extension HomeVC: UITextFieldDelegate {
     }
 }
 
+extension HomeVC: MenuControllerDelegate {
+    func handleMenuToggle(shouldToggle: Bool) {
+        //groupMessageController.delegate = self
+        
+        if shouldToggle == true {
+        print("groups menu to right menu toggle")
+
+        presentRightSlideMenu()
+        }
+    }
+}
 
 
