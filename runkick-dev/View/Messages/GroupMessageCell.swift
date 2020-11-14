@@ -42,10 +42,18 @@ class GroupMessageCell: UITableViewCell {
         let label = UILabel()
         //label.font = UIFont.systemFont(ofSize: 15)
         label.textAlignment = .center
-        label.font = UIFont(name: "HelveticaNeue", size: 15)
-        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        label.textColor = UIColor.rgb(red: 90, green: 90, blue: 90)
         return label
     } ()
+    
+    let groupDetailsLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont(name: "HelveticaNeue", size: 14)
+        label.text = "10 members, last post: 3h"
+        return label
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -75,13 +83,16 @@ class GroupMessageCell: UITableViewCell {
         
         let profileImageDimension = CGFloat(55)
         addSubview(groupImageView)
-        groupImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
+        groupImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         groupImageView.layer.cornerRadius = profileImageDimension / 2
         groupImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         
         addSubview(groupsNameLabel)
         groupsNameLabel.anchor(top: groupImageView.topAnchor, left: groupImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(groupDetailsLabel)
+        groupDetailsLabel.anchor(top: groupsNameLabel.bottomAnchor, left: groupsNameLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
         //textLabel?.text = "Group Name Here"

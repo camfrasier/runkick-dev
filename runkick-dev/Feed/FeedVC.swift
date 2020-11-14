@@ -249,7 +249,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         // adjust view background color
         collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        //collectionView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         
         
         // register cell classes
@@ -262,7 +261,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         collectionView?.refreshControl = refreshFeedControl
         
         collectionView.addSubview(feedTitleLabel)
-        feedTitleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 22, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        feedTitleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         configureNavigationBar()
         
@@ -416,9 +415,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     // calling function to give space and insets
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        //return UIEdgeInsets(top: -68, left: 0, bottom: 0, right: 0)
-        return UIEdgeInsets(top: 85, left: 0, bottom: 0, right: 0)
+
+        //return UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 55, left: 0, bottom: 0, right: 0)
     }
     
 
@@ -662,7 +661,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         let font = UIFont(name: "PingFangTC-Semibold", size: 17)!
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 0, green: 0, blue: 0)]
-        navigationItem.title = "Explore"
+        navigationItem.title = ""
         
         
         /*

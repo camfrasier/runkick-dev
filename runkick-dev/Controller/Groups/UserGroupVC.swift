@@ -24,6 +24,7 @@ class UserGroupVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     var groups = [UserGroup]()
     var filteredGroups = [UserGroup]()
     //var uid: String?
+    
    
     //var homeVC: HomeVC?
     
@@ -1140,7 +1141,7 @@ extension UserGroupVC: UISearchBarDelegate {
         
         searchBar.showsCancelButton = false
         if #available(iOS 13.0, *) {
-            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
         } else {
             // Fallback on earlier versions
         }

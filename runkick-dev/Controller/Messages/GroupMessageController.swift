@@ -26,10 +26,10 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
     var delegate: MenuControllerDelegate?
     
     
-    var headerView: UIView = UIView.init(frame: CGRect.init(x: 1, y: 50, width: 276, height: 80))
+    var headerView: UIView = UIView.init(frame: CGRect.init(x: 1, y: 50, width: 276, height: 50))
     var labelView: UILabel = UILabel.init(frame: CGRect.init(x: 4, y: 35, width: 276, height: 38))
     
-    lazy var userSpecificGroups: UIButton = {
+    lazy var userSpecificGroupsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Your Groups", for: .normal)
         button.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
@@ -82,7 +82,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
     func configureTableView()  {
   
         tableView = UITableView()
-        tableView.rowHeight = 60
+        tableView.rowHeight = 70
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = true
@@ -102,11 +102,11 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
         headerView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //labelView.text = "hello"
         labelView.text = "Groups"
-        labelView.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        labelView.textColor = UIColor.rgb(red: 90, green: 90, blue: 90)
         labelView.font = UIFont(name: "PingFangTC-Semibold", size: 28)
         
         headerView.addSubview(labelView)
-        labelView.anchor(top: headerView.topAnchor, left: headerView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        labelView.anchor(top: headerView.topAnchor, left: headerView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         self.tableView.tableHeaderView = headerView
 
 
@@ -186,12 +186,12 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
      
     func configureViewComponents() {
         
-        headerView.addSubview(userSpecificGroups)
-        userSpecificGroups.anchor(top: headerView.topAnchor, left: nil, bottom: nil, right: headerView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 140, height: 50)
-        userSpecificGroups.layer.cornerRadius = 25
-        userSpecificGroups.centerXAnchor.constraint(equalTo: userSpecificGroups.centerXAnchor).isActive = true
-        userSpecificGroups.layer.borderColor = UIColor.rgb(red: 120, green: 120, blue: 120).cgColor
-        userSpecificGroups.layer.borderWidth = 0.5
+        headerView.addSubview(userSpecificGroupsButton)
+        userSpecificGroupsButton.anchor(top: headerView.topAnchor, left: nil, bottom: nil, right: headerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 120, height: 40)
+        userSpecificGroupsButton.layer.cornerRadius = 20
+        userSpecificGroupsButton.centerXAnchor.constraint(equalTo: userSpecificGroupsButton.centerXAnchor).isActive = true
+        userSpecificGroupsButton.layer.borderColor = UIColor.rgb(red: 120, green: 120, blue: 120).cgColor
+        userSpecificGroupsButton.layer.borderWidth = 0.5
         
     }
     
@@ -356,9 +356,9 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
                         
                     searchBarText.frame = CGRect(x: 0, y: 0, width: 120, height: 33)
                         
-                     searchBarText.setTitle("Search user groups or create a new one", for: .normal)
+                     searchBarText.setTitle("Search user groups", for: .normal)
                      searchBarText.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
-                     searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+                     searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 16)
                         searchBarText.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
                         //searchBarText.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                         searchBarText.backgroundColor = .clear
@@ -512,7 +512,11 @@ extension GroupMessageController: UITableViewDelegate, UITableViewDataSource {
         
         print("This is where user should be allowed to join an existing friends group or create one")
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
+        let groupProfilVC = GroupProfileVC()
+        groupProfilVC.group = groups[indexPath.item]
+        navigationController?.pushViewController(groupProfilVC, animated: true)
+
     }
     /*
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

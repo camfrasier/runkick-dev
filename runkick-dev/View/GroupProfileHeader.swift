@@ -17,12 +17,22 @@ class GroupProfileHeader: UICollectionViewCell {
     
     var delegate: GroupProfileHeaderDelegate?
     
+    
     var userGroup: UserGroup? {
-        didSet {  // Did set here means we are going to be setting the user for our header in the controller file )
-
+        didSet {
+           /*
+            guard let photoImageUrl = group?.profileImageURL else { return }
+            groupImageView.loadImage(with: photoImageUrl)
+            
+            guard let groupName = group?.groupName else { return }
+            self.groupsNameLabel.text = groupName
+            
+            //guard let points = group?.points else { return }
+            //self.pointsLabel.text = String(points)
+            */
         }
-
     }
+    
 
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()

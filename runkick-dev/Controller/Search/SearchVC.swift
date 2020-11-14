@@ -76,6 +76,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // fetch posts
         fetchPosts()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -185,7 +186,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         
         collectionView.addSubview(titleLabel)
-        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         tableView.separatorColor = .clear
         
@@ -203,7 +204,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 85, left: 2, bottom: 2, right: 2)
+        return UIEdgeInsets(top: 60, left: 2, bottom: 2, right: 2)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -587,7 +588,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
                         
                      searchBarText.setTitle("Find friends or invite new ones", for: .normal)
                      searchBarText.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
-                     searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+                     searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 16)
                         searchBarText.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
                         //searchBarText.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                         searchBarText.backgroundColor = .clear

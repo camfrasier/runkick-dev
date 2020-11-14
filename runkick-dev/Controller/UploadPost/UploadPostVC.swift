@@ -247,6 +247,7 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
                                   "creationDate": creationDate,
                                   "likes": 0,
                                   "imageUrl": postImageUrl,
+                                  "type": "userPost",
                                   "ownerUid": currentUid] as [String: Any]
                     
                     // Post id.
