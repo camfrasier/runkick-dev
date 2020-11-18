@@ -3241,6 +3241,30 @@ class HomeVC: UIViewController, Alertable {
                 
                 DataService.instance.REF_ACTIVITY.child(currentUid).child(tripId).updateChildValues(["creationDate": creationDate, "distance": distance, "stepCount": steps, "duration": duration, "pace": pace, "averagePace": averagePace])
                 
+                
+                // get current date
+                
+                let date = Date()
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd" //"dd.MM.yyyy"
+                let result = formatter.string(from: date)
+                print("this is the current date \(result)")
+                
+                // convert current date interger into date
+                
+                // convert Int to TimeInterval (typealias for Double)
+                let timeInterval = TimeInterval(creationDate)
+                // create NSDate from Double (NSTimeInterval)
+                let myNSDate = Date(timeIntervalSince1970: timeInterval)
+                print("this is the last date of my activity \(result)")
+                
+                // now lets get the difference in these days
+                let numOfDays = date.daysBetweenDate(toDate: myNSDate)
+                print("number of days should be equal to zero \(numOfDays)")
+                
+                // calling function with date and trip id
+                self.calculateToDateTotal(tripDate: myNSDate, tripId: tripId)
+                
             }
         
         mapView.removeOverlays(mapView.overlays)
@@ -3248,6 +3272,63 @@ class HomeVC: UIViewController, Alertable {
         
         // loading finished map of actual path
         
+    }
+    
+    func calculateToDateTotal(tripDate: Date, tripId: String ) {
+        
+        // go to activities and examine the last 20 entries
+        // if any of these entries match the date of the latest entry above then find values and add them
+        // sum of values will be placed under the current trip
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        DataService.instance.REF_ACTIVITY.child(currentUid).queryLimited(toLast: 20).observeSingleEvent(of: .value, with: { (snapshot) in
+
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+            for snap in snapshots {
+                    
+                let snapshotKey = snap.key
+                
+                print("The key value is THIS ONNNNE \(snapshotKey)")
+                    
+                DataService.instance.REF_ACTIVITY.child(currentUid).child(snapshotKey).child("creationDate").observeSingleEvent(of: .value) { (snapshot) in
+                    
+                    guard let creationDateValue = snapshot.value as? Int else { return }
+                    
+                    
+                    // convert Int to Date
+                    let timeInterval = TimeInterval(creationDateValue)
+                    let myNSDate = Date(timeIntervalSince1970: timeInterval)
+                    
+                    // now convert the date into a string
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd" //"dd.MM.yyyy"
+                    let result1 = formatter.string(from: myNSDate)
+                    let result2 = formatter.string(from: tripDate)
+                    
+                    
+                    if result1 == result2 {
+                        
+                        print("These keys were created equal \(snapshotKey) result1 is \(result1) and result2 is \(result2)")
+                        
+                        // now i need to add the values of each snapshot key and pull the dictionary to fetch values
+                        
+                        Database.fetchActivity(with: snapshotKey) { (activity) in
+                            
+                            guard let distance = activity.distance else {return }
+                            guard let steps = activity.stepCount else { return }
+                            
+                            //let totalPoints = (currentPointVal as! Int? ?? 0) + pointsAdded
+                        }
+                    }
+
+                }
+                    
+            }
+            }
+
+        })
     }
      
     @objc func timerAction(timer:Timer){
@@ -4486,7 +4567,7 @@ extension HomeVC: MKMapViewDelegate {
         
         //saveActivityMetrics(value)
     }
-    
+    /*
     func saveActivityMetrics(_ value: String) {
         
         guard let currentUid = (Auth.auth().currentUser?.uid) else { return }
@@ -4497,7 +4578,7 @@ extension HomeVC: MKMapViewDelegate {
         DataService.instance.REF_ACTIVITY.child(currentUid).child(value).updateChildValues(["creationDate": 0, "points": 0, "stepCount": 0, "duration": 0, "averagePace": 0, "distance": 0])
         
     }
-    
+    */
     func navigateRunner() {
         
         print(self.destinCoordinate)
@@ -6063,6 +6144,22 @@ extension HomeVC: MenuControllerDelegate {
         presentRightSlideMenu()
         }
     }
+}
+
+extension Date {
+    func daysBetweenDate(toDate: Date) -> Int {
+        let components = Calendar.current.dateComponents([.day], from: self, to: toDate)
+        return components.day ?? 0
+    }
+    /*
+    func dateConverter() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
+        let date = dateFormatter.date(from: "18-11-2016")
+    }
+    */
+
 }
 
 

@@ -53,9 +53,9 @@ class MarketplaceCell: UICollectionViewCell {
     let categoryNameLabel: UILabel = {
         let label = UILabel()
         //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.textColor = UIColor.rgb(red: 60, green: 60, blue: 60)
         //label.font = UIFont(name: "HelveticaNeue", size: 15)
-        label.font = UIFont(name: "PingFangTC-Semibold", size: 15)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 16)
         //label.font = UIFont.boldSystemFont(ofSize: 20)
         label.text = "Sweet Green"
         return label

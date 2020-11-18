@@ -199,17 +199,17 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 60, left: 2, bottom: 2, right: 2)
+        return UIEdgeInsets(top: 60, left: 4, bottom: 4, right: 4)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         //let width = (view.frame.width - 16) / 3
-        let width = (view.frame.width - 8) / 3
+        let width = (view.frame.width - 16) / 3
         return CGSize(width: width, height: width)
     }
     

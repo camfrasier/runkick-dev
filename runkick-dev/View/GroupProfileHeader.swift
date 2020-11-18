@@ -20,21 +20,21 @@ class GroupProfileHeader: UICollectionViewCell {
     
     var userGroup: UserGroup? {
         didSet {
-           /*
-            guard let photoImageUrl = group?.profileImageURL else { return }
-            groupImageView.loadImage(with: photoImageUrl)
+           
+            guard let photoImageUrl = userGroup?.profileImageURL else { return }
+            groupProfileImageView.loadImage(with: photoImageUrl)
             
-            guard let groupName = group?.groupName else { return }
-            self.groupsNameLabel.text = groupName
+            guard let groupName = userGroup?.groupName else { return }
+            self.groupnameLabel.text = groupName
             
             //guard let points = group?.points else { return }
             //self.pointsLabel.text = String(points)
-            */
+            
         }
     }
     
 
-    let profileImageView: CustomImageView = {
+    let groupProfileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -120,6 +120,12 @@ class GroupProfileHeader: UICollectionViewCell {
     func configureViewComponents() {
         
        // configure view components here
+        
+        let profileCircleDimension: CGFloat = 95
+        addSubview(groupProfileImageView)
+        groupProfileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: profileCircleDimension, height: profileCircleDimension)
+        groupProfileImageView.layer.cornerRadius = profileCircleDimension / 2
+        //groupProfileImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
 
     }
     

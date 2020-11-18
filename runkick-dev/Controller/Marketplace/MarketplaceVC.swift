@@ -167,7 +167,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         //return UIEdgeInsets(top: 60, left: 16, bottom: 0, right: 16)
-        return UIEdgeInsets(top: 60, left: 8, bottom: 0, right: 8)
+        return UIEdgeInsets(top: 60, left: 4, bottom: 0, right: 4)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -178,7 +178,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         return CGSize(width: width, height: width)
         */
         
-        let width = (view.frame.width - 26) / 2
+        let width = (view.frame.width - 12) / 2
         return CGSize(width: width, height: width - 10)
     }
     

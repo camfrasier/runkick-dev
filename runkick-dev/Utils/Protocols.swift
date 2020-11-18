@@ -33,6 +33,7 @@ protocol UserProfileHeaderDelegate {
 protocol GroupProfileHeaderDelegate {
     func setUserStats(for header: GroupProfileHeader)
     func handleMemberDetailView(for header: GroupProfileHeader)
+    func handleRequestInvite(for header: GroupProfileHeader)
 }
 
 // will be able to delete this protocol

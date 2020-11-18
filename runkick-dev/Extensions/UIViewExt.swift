@@ -320,6 +320,7 @@ extension Database {
         }
     }
     
+    
     static func fetchCategoryPosts(with postId: String, completion: @escaping(Category) -> ()) {
         DataService.instance.REF_CATEGORIES.child(postId).observeSingleEvent(of: .value) { (snapshot) in
             

@@ -21,7 +21,6 @@ class GroupsCell: UICollectionViewCell {
             
             //guard let points = group?.points else { return }
             //self.pointsLabel.text = String(points)
-
         }
     }
     
