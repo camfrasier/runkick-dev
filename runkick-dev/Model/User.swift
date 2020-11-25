@@ -20,9 +20,12 @@ class User {
     var profileCompleted: Bool!
     var uid: String!
     var stripeId: String!
+    var stepCount: Int!
+    var distance: Double!
     var isFollowed = false
     var isAdmin = false
     var isProfileCompleted = false
+    var activityDate: String!
 
     
     // When we create our user it will ask us for a value
@@ -49,6 +52,19 @@ class User {
         if let profileImageURL = dictionary["profileImageURL"] as? String {
             self.profileImageURL = profileImageURL
         }
+        
+        if let activityDate = dictionary["dailyActivityDate"] as? String {
+            self.activityDate = activityDate
+        }
+        
+        if let stepCount = dictionary["dailyStepCount"] as? Int {
+            self.stepCount = stepCount
+        }
+        
+        if let distance = dictionary["dailyDistance"] as? Double {
+            self.distance = distance
+        }
+        
         
         if let email = dictionary["email"] as? String {
             self.email = email

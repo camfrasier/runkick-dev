@@ -22,6 +22,7 @@ class GroupProfileVC: UIViewController {
     var groups = [UserGroup]()
     var groupIdentifier: String?
     var userCurrentKey: String?
+    var userLeaderCurrentKey: String?
     var users = [User]()
     var userLeaders = [User]()
     //var group: UserGroup?
@@ -51,7 +52,6 @@ class GroupProfileVC: UIViewController {
     
     let headerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     } ()
@@ -60,9 +60,6 @@ class GroupProfileVC: UIViewController {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.layer.borderWidth = 2
-        iv.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        iv.image = UIImage(named: "userProfileSilhouetteWhite")
         return iv
     } ()
     
@@ -70,7 +67,7 @@ class GroupProfileVC: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
-        label.font = UIFont(name: "HelveticaNeue", size: 18)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 22)
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         return label
     } ()
@@ -91,6 +88,27 @@ class GroupProfileVC: UIViewController {
         label.textAlignment = .center
         label.font = UIFont(name: "PingFangTC-Semibold", size: 16)
         label.text = "Leaderboard"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        return label
+    } ()
+    
+    let distanceHeaderLabel: UILabel = {
+        let label = UILabel()
+        //label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .center
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 14)
+        label.text = "Distance"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        return label
+    } ()
+    
+    
+    let stepCountHeaderLabel: UILabel = {
+        let label = UILabel()
+        //label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .center
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 14)
+        label.text = "Steps"
         label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         return label
     } ()
@@ -119,33 +137,60 @@ class GroupProfileVC: UIViewController {
         return button
     } ()
 
+    lazy var chatroomContainer: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        let chatTapped = UITapGestureRecognizer(target: self, action: #selector(handleChatRoom))
+        chatTapped.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(chatTapped)
+        return view
+    }()
+    
+    let chatRoomLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        label.text = "Chatroom"
+        let chatTapped = UITapGestureRecognizer(target: self, action: #selector(handleChatRoom))
+        chatTapped.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(chatTapped)
+        return label
+    }()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        view.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
         collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        
+        /*
+        tableView.addSubview(headerView)
+        headerView.anchor(top: tableView.topAnchor, left: tableView.leftAnchor, bottom: nil, right: tableView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 270)
+        headerView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        */
+        /*
         view.addSubview(headerView)
-        headerView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 155)
+        headerView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 270)
+        headerView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
         
         headerView.addSubview(groupMemberTitleLabel)
         groupMemberTitleLabel.anchor(top: nil, left: headerView.leftAnchor, bottom: headerView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        view.addSubview(collectionView)
-        collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 155, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 100)
+ 
+
+         */
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        
-        
-        configureViewComponents()
-        
+       
         fetchGroupMembers()
         
-        //fetchLeaderBoard()
-        
         configureTableView()
+        
+        fetchLeaderBoard()
 
     }
     
@@ -164,40 +209,34 @@ class GroupProfileVC: UIViewController {
         print("handle request invite")
     }
     */
-    
-    func configureViewComponents() {
-        
-       // configure view components here
-        
-        let profileCircleDimension: CGFloat = 95
-        view.addSubview(groupProfileImageView)
-        groupProfileImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: profileCircleDimension, height: profileCircleDimension)
-        groupProfileImageView.layer.cornerRadius = profileCircleDimension / 2
 
-    }
 
     
     func configureTableView() {
-
-        tableView = UITableView()
+        
+        //tableView = UITableView()
+        tableView = UITableView(frame: .zero, style: .grouped)
         //tableView.rowHeight = 80
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = true
         tableView.separatorColor = .clear
-        
+   
         // disables the scrolling feature for the table view
         
         tableView.register(GroupStatisticsCell.self, forCellReuseIdentifier: statisticsIdentifier)
         
+        
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: collectionView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //tableView.anchor(top: collectionView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        tableView.backgroundColor = UIColor.rgb(red: 200, green: 200, blue: 200)
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        view.addSubview(groupLeadersLabel)
-        groupLeadersLabel.anchor(top: collectionView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //tableView.separatorInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+
+        
     }
     
     func fetchGroupMembers() {
@@ -247,37 +286,63 @@ class GroupProfileVC: UIViewController {
         })
     }
     
-    func fetchLeaderBoard() {
+    @objc func handleChatRoom() {
+        print("open chat room here!!!")
         
+    }
+    
+    func fetchLeaderBoard() {
+        let group = DispatchGroup()
              guard let groupId = groupIdentifier else { return }
              
              DataService.instance.REF_USER_GROUPS.child(groupId).child("members").observeSingleEvent(of: .value, with: { (snapshot) in
                  
                  if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                     
+                
+                    
                  for snap in snapshots {
-                      
-                     let value = snap.value as! String
-                         //print("this snap represents one group member uid\(value)")
-                     
-                     Database.fetchUser(with: value, completion: { (user) in    // i need to fetch user then the user statisitcs, make sure the username or photo gets transfered and use that data
-                         self.userLeaders.append(user)
+                    group.enter()
+                     let uid = snap.value as! String
+                         print("this snap represents one group member uid \(uid)")
                         
-                        print("This should be a user value \(user)")
-                        self.userLeaders.sort { (user1, user2) -> Bool in
-                            return user1.lastname > user2.lastname
-                        }
+                    Database.fetchLeaderboardUser(with: uid) { (user) in
+                        self.userLeaders.append(user)
+                        print("This should be the user info \(user)")
+                        
+                        self.userLeaders.sort(by: { (user1, user2) -> Bool in
+                            return user1.distance > user2.distance
+                         })
+                        
+                        group.leave()
+                    }
+                    
+                        
+
+                    }
+                    group.notify(queue: DispatchQueue.main) {
                          self.tableView.reloadData()
-                     })
+                        print("This should only be called after the for loop is complete")
+                    
 
                     }
                  }
-                 
              })
-        
+        }
+  /*
+    func fetchActivity(withTripId tripId: String) {
+          
+        Database.fetchActivity(with: tripId) { (post) in
+            
+            self.activities.append(post)
+            
+            self.activities.sort(by: { (activity1, activity2) -> Bool in
+                return activity1.creationDate > activity2.creationDate
+            })
+            self.tableView?.reloadData()
+        }
     }
+   */
     
-
 }
 
 extension GroupProfileVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -324,8 +389,7 @@ extension GroupProfileVC: UICollectionViewDelegateFlowLayout, UICollectionViewDa
     }
     */
     
-    
-    
+
     
     // Mark: - UICollectionView
     
@@ -362,7 +426,7 @@ extension GroupProfileVC: UITableViewDelegate, UITableViewDataSource {
     // MARK: - UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 70
 
     }
     
@@ -375,18 +439,18 @@ extension GroupProfileVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: statisticsIdentifier, for: indexPath) as! GroupStatisticsCell
         
-        var leader: User!
+        //var leader: User!
 
-        leader = userLeaders[indexPath.row]
+        //leader =
         
-        cell.user = leader
+        cell.user = userLeaders[indexPath.row]
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        fetchLeaderBoard()
+            // be carerul not to reload here. will only keep a set amount of spots
     }
     
    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -394,4 +458,62 @@ extension GroupProfileVC: UITableViewDelegate, UITableViewDataSource {
         print("This is where user should be allowed to join")
 
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+            let sectionHeader = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 420))
+
+            /*
+            let sectionText = UILabel()
+            sectionText.frame = CGRect.init(x: 5, y: 5, width: sectionHeader.frame.width-10, height: sectionHeader.frame.height-10)
+            sectionText.text = "Custom Text"
+            sectionText.font = .systemFont(ofSize: 14, weight: .bold) // my custom font
+            sectionText.textColor = .red // my custom colour
+            */
+        
+            //sectionHeader.addSubview(sectionText)
+        sectionHeader.addSubview(headerView)
+        headerView.anchor(top: sectionHeader.topAnchor, left: sectionHeader.leftAnchor, bottom: nil, right: sectionHeader.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 420)
+        headerView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        
+        headerView.addSubview(groupProfileImageView)
+        groupProfileImageView.anchor(top: headerView.topAnchor, left: headerView.leftAnchor, bottom: nil, right: headerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 220)
+        
+        headerView.addSubview(groupnameLabel)
+        groupnameLabel.anchor(top: groupProfileImageView.bottomAnchor, left: headerView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        headerView.addSubview(collectionView)
+        collectionView.anchor(top: groupProfileImageView.bottomAnchor, left: headerView.leftAnchor, bottom: nil, right: headerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 75)
+        
+        headerView.addSubview(groupMemberTitleLabel)
+        groupMemberTitleLabel.anchor(top: nil, left: headerView.leftAnchor, bottom: collectionView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+        
+        headerView.addSubview(groupLeadersLabel)
+        groupLeadersLabel.anchor(top: nil, left: headerView.leftAnchor, bottom: headerView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+        
+        
+        headerView.addSubview(distanceHeaderLabel)
+        distanceHeaderLabel.anchor(top: nil, left: headerView.leftAnchor, bottom: headerView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 175, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+        
+        headerView.addSubview(stepCountHeaderLabel)
+        stepCountHeaderLabel.anchor(top: nil, left: distanceHeaderLabel.rightAnchor, bottom: headerView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+        
+        headerView.addSubview(chatroomContainer)
+        chatroomContainer.anchor(top: nil, left: nil, bottom: collectionView.topAnchor, right: headerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 100, height: 40)
+        chatroomContainer.layer.cornerRadius = 15
+        
+        chatroomContainer.addSubview(chatRoomLabel)
+        chatRoomLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        chatRoomLabel.centerXAnchor.constraint(equalTo: chatroomContainer.centerXAnchor).isActive = true
+        chatRoomLabel.centerYAnchor.constraint(equalTo: chatroomContainer.centerYAnchor).isActive = true
+        
+            return sectionHeader
+        }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+            return 420 // my custom height
+        }
+    
+
 }
+
+

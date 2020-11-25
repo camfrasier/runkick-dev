@@ -17,10 +17,15 @@ class GroupStatisticsCell: UITableViewCell {
             guard let profileImageUrl = user?.profileImageURL else { return }
             guard let username = user?.username else { return }
             guard let firstname = user?.firstname else { return }
+           guard let stepCount = user?.stepCount else { return }
+            guard let distance = user?.distance else { return }
             
             profileImageView.loadImage(with: profileImageUrl)
             self.usernameLabel.text = username
             self.firstnameLabel.text = firstname
+            self.stepCountLabel.text = String(stepCount)
+            self.distanceLabel.text = "\(String(distance))mi"
+            
         }
     }
     
@@ -37,7 +42,7 @@ class GroupStatisticsCell: UITableViewCell {
     let usernameLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont(name: "HelveticaNeue", size: 14)
+        label.font = UIFont(name: "HelveticaNeue", size: 17)
         label.text = "Username"
         return label
     }()
@@ -45,8 +50,26 @@ class GroupStatisticsCell: UITableViewCell {
     let firstnameLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont(name: "HelveticaNeue", size: 14)
+        label.font = UIFont(name: "HelveticaNeue", size: 17)
         label.text = "Firstname"
+        return label
+    }()
+    
+    let distanceLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
+        label.text = "0"
+         label.numberOfLines = 0
+        return label
+    }()
+    
+    let stepCountLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.text = "0"
+        label.numberOfLines = 0
         return label
     }()
     
@@ -82,6 +105,17 @@ class GroupStatisticsCell: UITableViewCell {
         profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: postImageDimension, height: postImageDimension)
         profileImageView.layer.cornerRadius = postImageDimension / 2
         profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        
+        addSubview(usernameLabel)
+        usernameLabel.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //usernameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+        
+        addSubview(distanceLabel)
+        distanceLabel.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 120, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(stepCountLabel)
+        stepCountLabel.anchor(top: topAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 80, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
     }

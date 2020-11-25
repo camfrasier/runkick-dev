@@ -33,7 +33,8 @@ class HomeVC: UIViewController, Alertable {
     var tempCustomAnnotation: CKAnnotationView?
     //var accuracyRangeCircle: MKCircle?
     var rtPolyline: MKPolyline?
-    
+    var totalDistance = 0.0
+    var totalSteps = 0
     
     var locationList: [CLLocation] = []
     //private let locationManager = LocationManager.shared
@@ -3279,6 +3280,7 @@ class HomeVC: UIViewController, Alertable {
         // go to activities and examine the last 20 entries
         // if any of these entries match the date of the latest entry above then find values and add them
         // sum of values will be placed under the current trip
+        
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         DataService.instance.REF_ACTIVITY.child(currentUid).queryLimited(toLast: 20).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -3289,14 +3291,12 @@ class HomeVC: UIViewController, Alertable {
             for snap in snapshots {
                     
                 let snapshotKey = snap.key
-                
                 print("The key value is THIS ONNNNE \(snapshotKey)")
                     
                 DataService.instance.REF_ACTIVITY.child(currentUid).child(snapshotKey).child("creationDate").observeSingleEvent(of: .value) { (snapshot) in
                     
                     guard let creationDateValue = snapshot.value as? Int else { return }
-                    
-                    
+ 
                     // convert Int to Date
                     let timeInterval = TimeInterval(creationDateValue)
                     let myNSDate = Date(timeIntervalSince1970: timeInterval)
@@ -3307,7 +3307,6 @@ class HomeVC: UIViewController, Alertable {
                     let result1 = formatter.string(from: myNSDate)
                     let result2 = formatter.string(from: tripDate)
                     
-                    
                     if result1 == result2 {
                         
                         print("These keys were created equal \(snapshotKey) result1 is \(result1) and result2 is \(result2)")
@@ -3316,18 +3315,27 @@ class HomeVC: UIViewController, Alertable {
                         
                         Database.fetchActivity(with: snapshotKey) { (activity) in
                             
-                            guard let distance = activity.distance else {return }
-                            guard let steps = activity.stepCount else { return }
+                            let distance = Double(activity.distance)
+                            let steps = Int(activity.stepCount)
                             
-                            //let totalPoints = (currentPointVal as! Int? ?? 0) + pointsAdded
+                            self.totalDistance = self.totalDistance + distance
+                            self.totalSteps = self.totalSteps + steps
+                            
+                            print("distance as it increments is \(distance)")
+                            print("total distance as it increments is \(self.totalDistance)")
+                            
+                            // send totals to activity database
+                            DataService.instance.REF_ACTIVITY.child(currentUid).child(tripId).child("daily-activity-total").updateChildValues(["totalDistance": self.totalDistance, "stepCount": self.totalSteps])
+                            
+                            
+                            // send totals temp to the user database
+                            DataService.instance.REF_USERS.child(currentUid).updateChildValues(["dailyDistance": self.totalDistance, "dailyStepCount": self.totalSteps, "dailyActivityDate": result2])
                         }
                     }
-
                 }
-                    
             }
             }
-
+            
         })
     }
      
