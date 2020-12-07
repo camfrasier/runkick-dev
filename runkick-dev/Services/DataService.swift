@@ -54,7 +54,9 @@ class DataService {
     private var _REF_POST_LIKES = DB_BASE.child("post-likes")
     private var _REF_USER_POST_COMMENT = DB_BASE.child("user-comments")
     private var _REF_MESSAGES = DB_BASE.child("messages")
+    private var _REF_GROUP_MESSAGES = DB_BASE.child("group-messages")
     private var _REF_USER_MESSAGES = DB_BASE.child("user-messages")
+    private var _REF_USER_GROUP_MESSAGES = DB_BASE.child("user-group-messages")
     private var _REF_HASHTAG_POST = DB_BASE.child("hashtag-post")
     private var _REF_SHOPPING_CART = DB_BASE.child("shopping-cart")
     
@@ -179,8 +181,17 @@ class DataService {
         return _REF_MESSAGES
     }
     
+    var REF_GROUP_MESSAGES: DatabaseReference {
+        return _REF_GROUP_MESSAGES
+    }
+
+    
     var REF_USER_MESSAGES: DatabaseReference {
         return _REF_USER_MESSAGES
+    }
+    
+    var REF_USER_GROUP_MESSAGES: DatabaseReference {
+        return _REF_USER_GROUP_MESSAGES
     }
     
     var REF_HASHTAG_POST: DatabaseReference {

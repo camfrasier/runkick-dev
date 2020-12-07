@@ -147,7 +147,7 @@ class GroupProfileVC: UIViewController {
         return view
     }()
     
-    let chatRoomLabel: UILabel = {
+    lazy var chatRoomLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
@@ -289,7 +289,16 @@ class GroupProfileVC: UIViewController {
     @objc func handleChatRoom() {
         print("open chat room here!!!")
         
+        //let chatroomVC = ChatroomVC()
+        let chatroomVC = ChatroomVC(collectionViewLayout: UICollectionViewFlowLayout())
+        chatroomVC.groupId = groupIdentifier
+        navigationController?.pushViewController(chatroomVC, animated: true)
+        //chatroomVC.modalPresentationStyle = .fullScreen
+        //present(chatroomVC, animated: true, completion:nil)
+        
+        
     }
+
     
     func fetchLeaderBoard() {
         let group = DispatchGroup()

@@ -90,6 +90,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
         configureNavigationBar()
         
         observeMessages()
+        
+       // setupToHideKeyboardOnTap()
     }
     
     override func viewWillAppear(_ animated: Bool) {

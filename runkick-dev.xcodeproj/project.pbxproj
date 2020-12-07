@@ -64,6 +64,9 @@
 		6937B46D22C2913600446926 /* StoreAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6937B46C22C2913600446926 /* StoreAnnotation.swift */; };
 		6937B46F22CBDF2800446926 /* RunnerAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6937B46E22CBDF2700446926 /* RunnerAnnotation.swift */; };
 		6965531B255F75260027EDB6 /* GroupStatisticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965531A255F75260027EDB6 /* GroupStatisticsCell.swift */; };
+		6965531D2571CB8E0027EDB6 /* ChatroomVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965531C2571CB8C0027EDB6 /* ChatroomVC.swift */; };
+		6965531F2577024B0027EDB6 /* ChatroomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965531E2577024A0027EDB6 /* ChatroomCell.swift */; };
+		69655321257D6EEA0027EDB6 /* ChatroomMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69655320257D6EE90027EDB6 /* ChatroomMessage.swift */; };
 		696A52132495ADB900289C33 /* ActivityHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A52122495ADB900289C33 /* ActivityHistoryCell.swift */; };
 		696A5216249EB4EC00289C33 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A5215249EB4EB00289C33 /* HelperFunctions.swift */; };
 		696A5218249EBDC800289C33 /* StoreItemSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A5217249EBDC800289C33 /* StoreItemSelectionVC.swift */; };
@@ -215,6 +218,9 @@
 		6937B46C22C2913600446926 /* StoreAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreAnnotation.swift; sourceTree = "<group>"; };
 		6937B46E22CBDF2700446926 /* RunnerAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerAnnotation.swift; sourceTree = "<group>"; };
 		6965531A255F75260027EDB6 /* GroupStatisticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupStatisticsCell.swift; sourceTree = "<group>"; };
+		6965531C2571CB8C0027EDB6 /* ChatroomVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatroomVC.swift; sourceTree = "<group>"; };
+		6965531E2577024A0027EDB6 /* ChatroomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatroomCell.swift; sourceTree = "<group>"; };
+		69655320257D6EE90027EDB6 /* ChatroomMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatroomMessage.swift; sourceTree = "<group>"; };
 		696A52122495ADB900289C33 /* ActivityHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityHistoryCell.swift; sourceTree = "<group>"; };
 		696A5215249EB4EB00289C33 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		696A5217249EBDC800289C33 /* StoreItemSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreItemSelectionVC.swift; sourceTree = "<group>"; };
@@ -427,6 +433,7 @@
 				69BC71902512FA8600EA84C8 /* Logos.swift */,
 				69B4116B2516A9D5007C6D2A /* ShareData.swift */,
 				692EDB58253F745100BB86B6 /* UserGroup.swift */,
+				69655320257D6EE90027EDB6 /* ChatroomMessage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -447,6 +454,7 @@
 			children = (
 				692EDB5F25547F8D00BB86B6 /* GroupProfileVC.swift */,
 				692EDB65255C8DEF00BB86B6 /* UserGroupVC.swift */,
+				6965531C2571CB8C0027EDB6 /* ChatroomVC.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -668,6 +676,7 @@
 				696A52122495ADB900289C33 /* ActivityHistoryCell.swift */,
 				69B3E83B250706B1004CD859 /* CircleCell.swift */,
 				692EDB5425352C9A00BB86B6 /* GroupMessageCell.swift */,
+				6965531E2577024A0027EDB6 /* ChatroomCell.swift */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -842,7 +851,9 @@
 				69977C4D2399B6C00057D0A3 /* MenuOption.swift in Sources */,
 				692EDB57253E19AF00BB86B6 /* CreateGroupVC.swift in Sources */,
 				692EDB5525352C9A00BB86B6 /* GroupMessageCell.swift in Sources */,
+				6965531D2571CB8E0027EDB6 /* ChatroomVC.swift in Sources */,
 				692EDB642554968A00BB86B6 /* GroupDetailCell.swift in Sources */,
+				6965531F2577024B0027EDB6 /* ChatroomCell.swift in Sources */,
 				6937B45422A98FE700446926 /* LeftSidePanelVC.swift in Sources */,
 				69365A4E24E7920500AF156F /* MarketplaceVC.swift in Sources */,
 				6937B45022A97B3D00446926 /* CircleView.swift in Sources */,
@@ -935,6 +946,7 @@
 				696A70B82345296800CDD512 /* HashtagController.swift in Sources */,
 				6937B44A22A85D9B00446926 /* GradientView.swift in Sources */,
 				692EDB62255480ED00BB86B6 /* GroupProfileHeader.swift in Sources */,
+				69655321257D6EEA0027EDB6 /* ChatroomMessage.swift in Sources */,
 				69E20BEF22D43D200054BCEE /* RunnerTrip.swift in Sources */,
 				69FE5BC5233017C600039BF5 /* CommentCell.swift in Sources */,
 				696A70BA23452A9F00CDD512 /* HashtagCell.swift in Sources */,
