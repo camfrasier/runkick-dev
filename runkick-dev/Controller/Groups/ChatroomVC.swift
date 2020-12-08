@@ -24,6 +24,7 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
         }
     }
     var messages = [ChatroomMessage]()
+    var currentKey: String?
     
     lazy var containerView: UIView = {
         let containerView = UIView()
@@ -100,6 +101,10 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
         
         setupToHideKeyboardOnTap()
         
+        configureNavigationBar()
+        
+        observeMessages()
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -172,32 +177,116 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
         
     }
     
+    func configureMessage(cell: ChatroomCell, message: ChatroomMessage) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        // accounting for the width of the message bubble based on text
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.messageText).width + 32
+        
+        // accounting for the height of the message bubble based on text
+        cell.frame.size.height = estimateFrameForText(message.messageText).height + 20
+        
+        cell.bubbleViewLeftAnchor?.isActive = true
+        cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        cell.textView.textColor = .black
+        cell.profileImageView.isHidden = false
+        
+    }
+    
+    func observeMessages() {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        
+        if currentKey == nil {
+            DataService.instance.REF_GROUP_MESSAGES.child(groupId).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.collectionView?.refreshControl?.endRefreshing()
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                
+                allObjects.forEach({ (snapshot) in
+                    let chatId = snapshot.key
+
+                    self.fetchMessage(withChatId: chatId, groupIdentifier: self.groupId)  // fix the group id
+                    
+                })
+                self.currentKey = first.key
+            })
+        } else {
+            DataService.instance.REF_GROUP_MESSAGES.child(groupId).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 6).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let chatId = snapshot.key
+                    if chatId != self.currentKey {
+                        self.fetchMessage(withChatId: chatId, groupIdentifier: self.groupId)
+                    }
+                })
+                self.currentKey = first.key
+            })
+        }
+
+            // use helper funtion to pass in the helper id
+        //fetchMessage(withGroupId: groupId)
+        
+    }
+    
+    
+    func fetchMessage(withChatId chatId: String, groupIdentifier: String) {
+        
+        Database.fetchChatroomMessages(with: chatId, groupId: groupIdentifier) { (chat) in
+            
+            self.messages.append(chat)
+            
+
+            self.messages.sort(by: { (chat1, chat2) -> Bool in
+                return chat1.creationDate < chat2.creationDate
+            })
+            
+            self.collectionView?.reloadData()
+            
+        }
+    }
+    
     
     // MARK: - UICollectionView
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //return messages.count
+        return messages.count
         
-        return 5
+        //return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         var height: CGFloat = 80
         
-        //let message = messages[indexPath.item]
+        let message = messages[indexPath.item]
         
-        //height = estimateFrameForText(message.messageText).height + 20
+        height = estimateFrameForText(message.messageText).height + 20
         
         return CGSize(width: view.frame.width, height: height)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if messages.count > 4 {
+            if indexPath.item == messages.count - 1 {
+            observeMessages()
+            }
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ChatroomCell
         
-        //cell.message = messages[indexPath.item]
+        cell.message = messages[indexPath.item]
         
-        //configureMessage(cell: cell, message: messages[indexPath.item])
+        configureMessage(cell: cell, message: messages[indexPath.item])
         
         return cell
     }

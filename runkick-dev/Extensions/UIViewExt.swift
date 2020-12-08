@@ -431,6 +431,24 @@ extension Database {
         }
     }
     
+    static func fetchChatroomMessages(with chatId: String, groupId: String, completion: @escaping(ChatroomMessage) -> ()) {
+        DataService.instance.REF_GROUP_MESSAGES.child(groupId).child(chatId).observeSingleEvent(of: .value) { (snapshot) in
+        
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            guard let fromId = dictionary["fromId"] as? String else { return }  // Parsing through JSON data.
+            
+            print("THIS IS THE OWNER ID \(fromId)")
+            
+            Database.fetchUser(with: fromId, completion: { (user) in
+                
+                
+                let chat = ChatroomMessage(dictionary: dictionary)
+                
+                completion(chat)
+            })
+        }
+    }
+    
     static func fetchSearchPost(with postId: String, completion: @escaping(Post) -> ()) {
         DataService.instance.REF_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
             

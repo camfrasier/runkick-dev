@@ -415,7 +415,6 @@
 				69E20BEE22D43D200054BCEE /* RunnerTrip.swift */,
 				69FE5BC623302F1400039BF5 /* Comment.swift */,
 				69FE5BCD2332D6EB00039BF5 /* Notification.swift */,
-				69FA0826233D94D2002DC00F /* Message.swift */,
 				69FB5F1E245E266D00A02FA1 /* StorePost.swift */,
 				69E8EEB1246771B4006D4AF6 /* MarketCategory.swift */,
 				6919B12D246CB5FF00FDAFE9 /* Category.swift */,
@@ -433,6 +432,7 @@
 				69BC71902512FA8600EA84C8 /* Logos.swift */,
 				69B4116B2516A9D5007C6D2A /* ShareData.swift */,
 				692EDB58253F745100BB86B6 /* UserGroup.swift */,
+				69FA0826233D94D2002DC00F /* Message.swift */,
 				69655320257D6EE90027EDB6 /* ChatroomMessage.swift */,
 			);
 			path = Model;

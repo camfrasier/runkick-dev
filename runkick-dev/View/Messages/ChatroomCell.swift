@@ -17,19 +17,23 @@ class ChatroomCell: UICollectionViewCell {
     var bubbleViewRightAnchor: NSLayoutConstraint?
     var bubbleViewLeftAnchor: NSLayoutConstraint?
     
-    var message: Message? {
+    var message: ChatroomMessage? {
         
         didSet {
             
             guard let messageText = message?.messageText else { return }
             textView.text = messageText
             
-            guard let chatPartnerId = message?.getChatPartnerId() else { return }
+            // need to also fetch the user name or message
             
-            Database.fetchUser(with: chatPartnerId) { (user) in
+            guard let userId = message?.fromId else { return }
+        
+            
+            Database.fetchUser(with: userId) { (user) in
                 guard let profileImageUrl = user.profileImageURL else { return }
                 self.profileImageView.loadImage(with: profileImageUrl)
             }
+            
         }
     }
     
