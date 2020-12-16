@@ -215,13 +215,21 @@ class StoreCell: UITableViewCell {
         
         selectionStyle = .none
 
+        addSubview(imageContainerView)
+        //let dimension: CGFloat = 140
+        imageContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 120)
+        imageContainerView.layer.cornerRadius = 0
+        
+        imageContainerView.addSubview(storeImageView)
+        storeImageView.anchor(top: imageContainerView.topAnchor, left: imageContainerView.leftAnchor, bottom: imageContainerView.bottomAnchor, right: imageContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeImageView.layer.cornerRadius = 0
         
         addSubview(locationTitleLabel)
-        locationTitleLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil
+        locationTitleLabel.anchor(top: topAnchor, left: imageContainerView.rightAnchor, bottom: nil, right: nil
             , paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationDistanceLabel)
-        locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0.5, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationAddressLabel)
         locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil
@@ -233,17 +241,11 @@ class StoreCell: UITableViewCell {
         addSubview(storeHoursLabel)
         storeHoursLabel.anchor(top: categoryLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
-        addSubview(imageContainerView)
-        //let dimension: CGFloat = 140
-        imageContainerView.anchor(top: storeHoursLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 260, height: 160)
-        imageContainerView.layer.cornerRadius = 0
+
         
-        imageContainerView.addSubview(storeImageView)
-        storeImageView.anchor(top: imageContainerView.topAnchor, left: imageContainerView.leftAnchor, bottom: imageContainerView.bottomAnchor, right: imageContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        storeImageView.layer.cornerRadius = 0
-        
+        /*
         storeImageView.addSubview(pointsBlock)
-        pointsBlock.anchor(top: storeImageView.topAnchor, left: storeImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 110, height: 28)
+        pointsBlock.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 110, height: 28)
         pointsBlock.backgroundColor = UIColor.statusBarGreen()
         pointsBlock.layer.cornerRadius = 13
         
@@ -252,7 +254,8 @@ class StoreCell: UITableViewCell {
         pointsLabel.centerYAnchor.constraint(equalTo: pointsBlock.centerYAnchor).isActive = true
         pointsLabel.centerX(inView: pointsBlock)
         pointsLabel.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-    
+        */
+        
         /*
         
         addSubview(saveSegmentButton)

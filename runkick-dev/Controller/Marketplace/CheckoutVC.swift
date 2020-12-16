@@ -10,10 +10,11 @@ import UIKit
 import Firebase
 import FirebaseFunctions
 import Stripe
+import MessageUI
 
 private let reuseIdentifier = "Cell"
 
-class CheckoutVC: UIViewController, CheckoutCellDelegate {
+class CheckoutVC: UIViewController, CheckoutCellDelegate, MFMailComposeViewControllerDelegate {
     
     // Mark: - Variables
     
@@ -235,6 +236,30 @@ class CheckoutVC: UIViewController, CheckoutCellDelegate {
         
     }
     
+    func sendStoreEmail() {
+        
+        // will need to gather all order data from either strip or while collecting from cart
+        
+        // may have to look at strip cart, tableview has the array of cart items. need to find gather items and total and send in email
+        
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["cameron.frasier@gmail.com"])
+            mail.setMessageBody("<p>Here is what was ordered and the user will arrive in 15mins!</p>", isHTML: true)
+
+            present(mail, animated: true)
+        } else {
+            // show failure alert
+            print("this user cannot send email for some reason")
+        }
+        
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+    
     func configureViewComponents() {
         
         view.addSubview(separatorView)
@@ -333,7 +358,11 @@ class CheckoutVC: UIViewController, CheckoutCellDelegate {
         
         print("ORDER SHOULD BE PLACED HERE")
         //shouldPresentLoadingView(true)
+        
+        //sendStoreEmail()
+        
     }
+    
     
     @objc func handlePaymentMethodTapped() {
         print("Handle payment method tapped")
@@ -412,6 +441,8 @@ extension CheckoutVC: STPPaymentContextDelegate {
     
     func paymentContext(_ paymentContext: STPPaymentContext, didCreatePaymentResult paymentResult: STPPaymentResult, completion: @escaping STPPaymentStatusBlock) {
     
+        // we need to also send information to firebase
+        
         print("DEBUG: WE GET HERE AFTER PRESSING PLACE ORDER")
                
                // STEP 1 - send up the total, customer id etc. then go to STEP 2 - Cloud function

@@ -32,6 +32,8 @@ class ChatroomCell: UICollectionViewCell {
             Database.fetchUser(with: userId) { (user) in
                 guard let profileImageUrl = user.profileImageURL else { return }
                 self.profileImageView.loadImage(with: profileImageUrl)
+                
+                guard let username = user.username else { return }
             }
             
         }
@@ -63,6 +65,15 @@ class ChatroomCell: UICollectionViewCell {
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
+    } ()
+    
+    let usernameLabel: UILabel = {
+        let label = UILabel()
+        //label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: "HelveticaNeue", size: 16)
+        label.textAlignment = .center
+        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        return label
     } ()
     
     override init(frame: CGRect) {

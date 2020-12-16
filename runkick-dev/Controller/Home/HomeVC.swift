@@ -999,11 +999,12 @@ class HomeVC: UIViewController, Alertable {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        /*
         tabBarController?.tabBar.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.35).cgColor
         tabBarController?.tabBar.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
         tabBarController?.tabBar.layer.shadowRadius = 4.0
         tabBarController?.tabBar.layer.shadowOffset = CGSize(width: 1, height: 0)
+        */
         
         navigationController?.navigationBar.isHidden = true
     }
@@ -1436,11 +1437,12 @@ class HomeVC: UIViewController, Alertable {
         //self.homeVC?.hideTabBar(tabBarController?.tabBar.isHidden = false
         
         tabBarController?.tabBar.isTranslucent = false
+        /*
         tabBarController?.tabBar.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.35).cgColor
         tabBarController?.tabBar.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
         tabBarController?.tabBar.layer.shadowRadius = 4.0
         tabBarController?.tabBar.layer.shadowOffset = CGSize(width: 1, height: 0)
-        
+        */
         
         /*
         // adding shadow view to the tab bar
@@ -3546,6 +3548,9 @@ extension HomeVC: MKMapViewDelegate {
  
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
+        
+        var imageView = UIImageView()
+        var hotImageView = UIImageView()
         /*
        if let annotation = annotation as? RunnerAnnotation {
             let identifier = "waywalker"
@@ -3571,7 +3576,7 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.canShowCallout = true
             
             
-            annotationView.label = UILabel(frame: CGRect(x: 4.5, y: 6.0, width: 36.0, height: 20.0))
+            annotationView.label = UILabel(frame: CGRect(x: 4, y: 6.0, width: 36.0, height: 20.0))
             
             
             
@@ -3602,7 +3607,7 @@ extension HomeVC: MKMapViewDelegate {
             //let pinImage = UIImage(named: "simpleMarkerActionRed")
             //let pinImage = UIImage(named: "roundedMutedOrangePoints")
             
-            let size = CGSize(width: 45, height: 52)
+            let size = CGSize(width: 43, height: 50)
             //UIGraphicsBeginImageContext(size)
             UIGraphicsBeginImageContextWithOptions(size, false, 10)
             pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
@@ -3625,7 +3630,43 @@ extension HomeVC: MKMapViewDelegate {
             //label.text = title
  
             label.text = "\(subtitle ?? "?")"
-
+                
+                let pointVal = Int(subtitle ?? "?")
+                //guard let pointVal = Int(subtitle) else { return }
+                print("These are the point values \(pointVal)")
+                
+        // if the value is less than 300 points show the low bar
+        //if the value is between 300 and 700 show the middle bar
+        // if the value is above 700 give them a hot bar fire symbol
+                
+                /*
+                if pointVal! >= 200 && pointVal! <= 299 {
+                    
+                }
+                */
+                
+                imageView.frame = CGRect(x: 10, y: 25, width: 23, height: 8)
+                hotImageView.frame = CGRect(x: -2, y: -3, width: 16, height: 16)
+                //imageView.image = UIImage(named: "like_selected-red")
+                
+                switch pointVal! {
+                case 1 ... 249:
+                    print("low range")
+                    imageView.image = UIImage(named: "twentyFivePercentBar")
+                case 250 ... 499:
+                    print("mid range")
+                    imageView.image = UIImage(named: "fiftyPercentBar")
+                case 500 ... 749:
+                    print("high mid range, hot deal")
+                    imageView.image = UIImage(named: "seventyFivePercentBar")
+                case 750 ... 1000:
+                    print("high range, hot deal")
+                    imageView.image = UIImage(named: "oneHundredPercentBar")
+                    hotImageView.image = UIImage(named: "redCircle")
+                default:
+                    print("Integer value not within range")
+                }
+  
             }
             
             /*
@@ -3648,18 +3689,24 @@ extension HomeVC: MKMapViewDelegate {
             storeLabel.text = annotation.title as? String
         
         //annotationView?.addSubview(storeLabel)
-        
+        /*
         let imageView = UIImageView()
         imageView.frame = CGRect(x: 11, y: 25, width: 23, height: 8)
         //imageView.image = UIImage(named: "like_selected-red")
+        
         imageView.image = UIImage(named: "seventyFivePercentBar")
+ 
+ */
+        
         //imageView.image = UIImage(named:"seventyFivePercentBar")!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         //imageView.tintColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
-        annotationView?.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.45).cgColor
+        annotationView?.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.30).cgColor
         annotationView?.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
         annotationView?.layer.shadowRadius = 5.0
         annotationView?.layer.shadowOffset = CGSize(width: 1, height: 3)
       
+        
+        
         
         annotationView?.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
         
@@ -3674,6 +3721,7 @@ extension HomeVC: MKMapViewDelegate {
             }
      
         annotationView?.addSubview(imageView)
+        annotationView?.addSubview(hotImageView)
   
         return annotationView
         
@@ -4237,9 +4285,9 @@ extension HomeVC: MKMapViewDelegate {
             
             storeDetailView = StoreDetailView()
             storeDetailView?.homeVC = self
-            storeDetailView.layer.cornerRadius = 15
+            //storeDetailView.layer.cornerRadius = 15
             storeDetailView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-            storeDetailView.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.30).cgColor
+            storeDetailView.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.15).cgColor
             storeDetailView.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
             storeDetailView.layer.shadowRadius = 5.0
             storeDetailView.layer.shadowOffset = CGSize(width: 1, height: -1)

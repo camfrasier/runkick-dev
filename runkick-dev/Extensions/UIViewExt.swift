@@ -31,6 +31,9 @@ extension UIColor {
         return UIColor.rgb(red: 255, green: 55, blue: 100)
     }
     
+    static func walkzillaRed() -> UIColor {
+        return UIColor.rgb(red: 230, green: 52, blue: 78)
+    }
     
     static func airBnBNew() -> UIColor {
         return UIColor.rgb(red: 236, green: 84, blue: 95)
