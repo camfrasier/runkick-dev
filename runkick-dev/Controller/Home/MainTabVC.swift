@@ -82,7 +82,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // maybe have the below images get smaller when they are unselected.. and can change the tint color
         
         // Mark: - Main feed controller
-        let feedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "EXPLORE", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        let feedVC = constructNavController(unselectedImage: UIImage(named: "feed-notification-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "feed-notification-selected-2x")!, title: "EXPLORE", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
@@ -91,7 +91,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
 
         // Mark: - Search feed controller
-        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "EAT", rootViewController: MarketplaceVC())
+        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "brown-bag-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "brown-bag-selected-2x")!, title: "PICKUP", rootViewController: MarketplaceVC())
         
         
         
@@ -102,15 +102,16 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let userProfileVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), title: "ME", rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Search feed controller
-        let searchVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "FIND", rootViewController: SearchVC())
+        let searchVC = constructNavController(unselectedImage: UIImage(named: "search_unselected")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "search_selected")!, title: "SEARCH", rootViewController: SearchVC())
         
         // Mark: - home feed controller
-        let homeVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "WALK", rootViewController: HomeVC())
+        let homeVC = constructNavController(unselectedImage: UIImage(named: "simple-map-marker-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "simple-map-marker-selected-2x")!, title: "WALK", rootViewController: HomeVC())
         
         let categoryFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Upload image controller
-        let selectImageVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "PHOTO")
+        let selectImageVC = constructNavController(unselectedImage: UIImage(named: "camera_unselected")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "camera_unselected")!, title: "CAPTURE")
+    
         
         // Mark: - Camera view controller
         let cameraVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "CAMERA", rootViewController: CameraVC())

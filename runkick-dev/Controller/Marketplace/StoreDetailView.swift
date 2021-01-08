@@ -93,7 +93,7 @@ class StoreDetailView: UIView {
     configureViewComponents()
     configureGestureRecognizers()
         
-    expansionState = .PartiallyExpanded
+    expansionState = .FullyExpanded
         
         
     }
@@ -159,12 +159,12 @@ class StoreDetailView: UIView {
     func configureTableView() {
         
         tableView = UITableView()
-        tableView.rowHeight = 600
+        tableView.rowHeight = 300
         //tableView.rowHeight = 220
         tableView.delegate = self
         tableView.dataSource = self
         tableView.clipsToBounds = true
-        tableView.layer.cornerRadius = 10
+        // tableView.layer.cornerRadius = 10
         tableView.separatorColor = .none
         //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
@@ -180,9 +180,11 @@ class StoreDetailView: UIView {
         addSubview(tableView)
         tableView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
         
+        /*
         addSubview(indicatorView)
         indicatorView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 5)
         indicatorView.centerX(inView: self)
+        */
         
         //indicatorView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         //indicatorView.layer.borderWidth = 1
@@ -215,16 +217,18 @@ class StoreDetailView: UIView {
             print("not expanded expanded to partially expanded")
         }
         */
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.frame.origin.y =  self.frame.origin.y - 450
+        print("THIS INITIAL STORE VIEW IS BEING SUMMONED")
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.frame.origin.y =  self.frame.origin.y - 340   //450
             
             /*
             self.addSubview(self.indicatorView)
             self.indicatorView.anchor(top: self.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -13, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
             self.indicatorView.centerX(inView: self)
             */
-            self.indicatorView.frame.origin.y = self.frame.origin.y - 450
+            
+            
+            //self.indicatorView.frame.origin.y = self.frame.origin.y - 450
         })
     }
     
@@ -237,7 +241,9 @@ class StoreDetailView: UIView {
         
         if sender.direction == .up {
             
-            print("do nothing")
+             print("do nothing")
+           /*
+           
             
             
             if expansionState == .SubPartiallyExpanded {
@@ -267,20 +273,23 @@ class StoreDetailView: UIView {
                     print("partially expanded to fully expanded")
                 }
             }
-            
+            */
         } else {
             
-            
+          
             if expansionState == .FullyExpanded {
                 
                 self.homeVC?.handleDismissStoreBV()
                 
-                animateInputView(targetPosition: self.frame.origin.y + 350) { (_) in
-                    self.expansionState = .PartiallyExpanded
-                    print("fully expanded to partially expanded")
+                animateInputView(targetPosition: self.frame.origin.y + 340) { (_) in
+                    self.expansionState = .NotExpanded
+                    self.isHidden = true
+                    print("fully expanded to not expanded")
                 }
+                self.homeVC?.storeViewSetToDismissed()
             }
-            
+        
+        /*
             // this is the swipe down segment
             
             if expansionState == .PartiallyExpanded {
@@ -302,8 +311,10 @@ class StoreDetailView: UIView {
                 }
                 self.homeVC?.storeViewSetToDismissed()
             }
-            
+          */
         }
+        
+            
     }
 
     func dismissDetailView() {
@@ -314,7 +325,7 @@ class StoreDetailView: UIView {
         if expansionState == .FullyExpanded {
                 
             self.homeVC?.handleDismissStoreBV()
-            animateInputView(targetPosition: self.frame.origin.y + 650) { (_) in
+            animateInputView(targetPosition: self.frame.origin.y + 340) { (_) in
                 self.expansionState = .NotExpanded
                 print("fully expanded to partially expanded")
                 
@@ -327,7 +338,7 @@ class StoreDetailView: UIView {
             }
         }
         
-        
+        /*
         if expansionState == .PartiallyExpanded {
             
 
@@ -354,7 +365,7 @@ class StoreDetailView: UIView {
                 self.isHidden = true
             }
         }
-         
+         */
         homeVC?.storeViewSetToDismissed()
         
         //homeVC?.tabBarController?.tabBar.isHidden = true

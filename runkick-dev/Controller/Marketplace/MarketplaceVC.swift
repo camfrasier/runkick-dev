@@ -308,6 +308,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        //navigationController?.navigationBar.barTintColor = UIColor.walkzillaRed()
         
         // add or remove nav bar bottom border
         navigationController?.navigationBar.shadowImage = UIImage()

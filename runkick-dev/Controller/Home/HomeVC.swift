@@ -278,7 +278,7 @@ class HomeVC: UIViewController, Alertable {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
         tf.attributedPlaceholder = NSAttributedString(string:"Where to?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
-        tf.font = UIFont.systemFont(ofSize: 22)
+        tf.font = UIFont.systemFont(ofSize: 20)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
         tf.layer.cornerRadius = 0 //25
@@ -294,7 +294,7 @@ class HomeVC: UIViewController, Alertable {
         //view.layer.borderColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1).cgColor
         view.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
         view.layer.borderWidth = 1.75
-        view.layer.cornerRadius = 25
+        view.layer.cornerRadius = 22
         view.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.25).cgColor
         view.layer.shadowRadius = 4.0
@@ -324,12 +324,12 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var cancelSearchButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "simpleCanceXRed"), for: .normal)
+        button.setImage(UIImage(named: "simpleCancelWalkzillaRed"), for: .normal)
         button.addTarget(self, action: #selector(handleCancelSearch), for: .touchUpInside)
         button.backgroundColor = .clear
-        button.layer.cornerRadius = 74 / 2
+        //button.layer.cornerRadius = 74 / 2
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.45).cgColor
+        button.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.30).cgColor
         button.layer.shadowRadius = 5.0
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
         //button.layer.cornerRadius = 25
@@ -348,7 +348,7 @@ class HomeVC: UIViewController, Alertable {
         return label
     }()
     
-    
+
     let indicatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -464,24 +464,9 @@ class HomeVC: UIViewController, Alertable {
         return view
     }()
     
+
     
-    lazy var beBoppActionButton: UIButton = {
-        let button = UIButton(type: .system)
-        //button.setImage(UIImage(named: "whitePlus"), for: .normal)
-        button.setImage(UIImage(named: "simplePlusSignBlack"), for: .normal)
-        button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
-        button.backgroundColor = .clear
-        button.tintColor = UIColor.airBnBNew()
-        //button.tintColor = UIColor.black
-        /*
-        button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.65).cgColor
-        button.layer.shadowRadius = 8.0
-        button.layer.shadowOffset = CGSize(width: 5, height: -5)
-        */
-        button.alpha = 1
-        return button
-    }()
+
     
     
     let simpleRightMenuButton: UIButton = {
@@ -497,8 +482,43 @@ class HomeVC: UIViewController, Alertable {
         button.alpha = 1
         return button
     }()
+
     
-    lazy var simpleActionShadowBackground: UIView = {
+    
+    lazy var groupsButtonBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckGroups))
+        menuTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(menuTap)
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.alpha = 1
+        return view
+    }()
+    
+    lazy var groupsButton: UIButton = {
+        let button = UIButton(type: .system)
+        //button.setImage(UIImage(named: "whitePlus"), for: .normal)
+        button.setImage(UIImage(named: "user-groups-white"), for: .normal)
+        button.addTarget(self, action: #selector(expansionStateCheckGroups), for: .touchUpInside)
+        button.backgroundColor = .clear
+        button.tintColor = UIColor.walkzillaRed()
+        //button.tintColor = UIColor.black
+        /*
+        button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.65).cgColor
+        button.layer.shadowRadius = 8.0
+        button.layer.shadowOffset = CGSize(width: 5, height: -5)
+        */
+        button.alpha = 1
+        return button
+    }()
+    
+    lazy var simpleActionBackground: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckRight))
@@ -506,11 +526,30 @@ class HomeVC: UIViewController, Alertable {
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(menuTap)
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.55).cgColor
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
         view.layer.shadowRadius = 5.0
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         view.alpha = 1
         return view
+    }()
+    
+    
+    lazy var beBoppActionButton: UIButton = {
+        let button = UIButton(type: .system)
+        //button.setImage(UIImage(named: "whitePlus"), for: .normal)
+        button.setImage(UIImage(named: "analytics-bar-simple"), for: .normal)
+        button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
+        button.backgroundColor = .clear
+        button.tintColor = UIColor.walkzillaRed()
+        //button.tintColor = UIColor.black
+        /*
+        button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.65).cgColor
+        button.layer.shadowRadius = 8.0
+        button.layer.shadowOffset = CGSize(width: 5, height: -5)
+        */
+        button.alpha = 1
+        return button
     }()
     
     lazy var simpleRightMenuBackground: GradientActionView = {
@@ -530,6 +569,8 @@ class HomeVC: UIViewController, Alertable {
         view.alpha = 1
         return view
     }()
+    
+    
     
     lazy var rewardsBackgroundSubView: UIView = {
         let view = UIView()
@@ -562,7 +603,7 @@ class HomeVC: UIViewController, Alertable {
         let button = UIButton(type: .system)
         //button.setImage(UIImage(named: "rewardsGiftsIcon"), for: .normal)
         //button.setImage(UIImage(named: "rewardsBox"), for: .normal)
-        button.setImage(UIImage(named: "whiteRewardsIcon"), for: .normal)
+        button.setImage(UIImage(named: "messenger-plane-white"), for: .normal)
         button.addTarget(self, action: #selector(handleHomeRewards), for: .touchUpInside)
         button.tintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         button.alpha = 1
@@ -584,20 +625,11 @@ class HomeVC: UIViewController, Alertable {
     }()
      
     
-    let centerMapButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        //button.setImage(UIImage(named: "centerMapIcon"), for: .normal)
-        //button.setImage(UIImage(named: "centerMapIconSharpInner"), for: .normal)
-        //button.setImage(UIImage(named: "centerMapIconSharpOuter"), for: .normal)
-        button.setImage(UIImage(named: "centerMapIconSharpOuterInner"), for: .normal)
-        button.addTarget(self, action: #selector(handleCenterMapBtnPressed), for: .touchUpInside)
-        button.alpha = 0
-        return button
-    }()
+
     
     let centerMapBackground: UIView = {
         let view = UIView()
-        view.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.75).cgColor
+        view.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.65).cgColor
         let centerMapTap = UITapGestureRecognizer(target: self, action: #selector(handleCenterMapBtnPressed))
         centerMapTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
@@ -605,6 +637,84 @@ class HomeVC: UIViewController, Alertable {
         view.alpha = 0
         return view
     }()
+    
+    let centerMapButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.setImage(UIImage(named: "centerMapIconSharpOuterInner"), for: .normal)
+        button.addTarget(self, action: #selector(handleCenterMapBtnPressed), for: .touchUpInside)
+        button.alpha = 0
+        return button
+    }()
+    
+    lazy var settingsButtonBackground: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.40).cgColor
+        let settingsTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheck))
+        settingsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(settingsTap)
+        return view
+    }()
+    
+    let settingsButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.setImage(UIImage(named: "whiteGear"), for: .normal)
+        //button.setImage(UIImage(named: "simple-gear-white"), for: .normal)
+        button.addTarget(self, action: #selector(expansionStateCheck), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var simpleProfileBackground: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.40).cgColor
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleProfileView))
+        profileTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(profileTap)
+        return view
+    }()
+    
+    let simpleProfileButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.setImage(UIImage(named: "profileCircle"), for: .normal)
+        button.addTarget(self, action: #selector(handleProfileView), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var profileImageView: CustomImageView = {
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.layer.borderWidth = 0.50
+        iv.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
+        iv.image = UIImage(named: "userProfileSilhouetteWhite")
+        let profileTap = UITapGestureRecognizer(target: self, action: #selector(handleProfileView))
+        profileTap.numberOfTapsRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(profileTap)
+        return iv
+    }()
+    
+    lazy var simpleRewardsBackground: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.40).cgColor
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleMessages))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        return view
+    }()
+    
+    let simpleRewardsButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        //button.setImage(UIImage(named: "whiteRewardsIcon2"), for: .normal)
+        button.setImage(UIImage(named: "message-bubble"), for: .normal)
+        button.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    
     /*
     lazy var toggleSaveRemoveSegmentView: UIButton = {
             let button = UIButton(type: .system)
@@ -914,6 +1024,8 @@ class HomeVC: UIViewController, Alertable {
         extendedLayoutIncludesOpaqueBars = true
         */
         
+        fetchCurrentUserData()
+        
         //self.title = "Home"
         navigationController?.navigationBar.isHidden = true
         
@@ -1018,7 +1130,7 @@ class HomeVC: UIViewController, Alertable {
         visualEffectView.frame = bounds
         visualEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         destTextFieldBlurView.addSubview(visualEffectView)
-        visualEffectView.layer.cornerRadius = 25
+        visualEffectView.layer.cornerRadius = 22
         visualEffectView.clipsToBounds = true
 
         // Here you can add visual effects to any UIView control.
@@ -1029,6 +1141,44 @@ class HomeVC: UIViewController, Alertable {
         visualEffectView.removeFromSuperview()
     }
     
+    
+    func fetchCurrentUserData() {
+        
+        
+        
+        if Auth.auth().currentUser != nil {
+            
+            guard let currentUid = Auth.auth().currentUser?.uid else { return }
+            
+            DataService.instance.REF_USERS.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
+                guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+                
+                let uid = snapshot.key
+                let user = User(uid: uid, dictionary: dictionary)
+                
+                guard let profileImageUrl = user.profileImageURL else { return }
+                self.profileImageView.loadImage(with: profileImageUrl)
+                
+                let profileDimension: CGFloat = 40
+                self.mapView.addSubview(self.profileImageView)
+                self.profileImageView.anchor(top: self.mapView.topAnchor, left: nil, bottom: nil, right: self.mapView.rightAnchor, paddingTop: 34, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: profileDimension, height: profileDimension)
+                self.profileImageView.layer.cornerRadius = profileDimension / 2
+            }
+    
+
+                } else {
+        
+                           let profileDimension: CGFloat = 40
+                    mapView.addSubview(simpleProfileBackground)
+                    simpleProfileBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 34, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: profileDimension, height: profileDimension)
+                    simpleProfileBackground.layer.cornerRadius = profileDimension / 2
+                    
+                    mapView.addSubview(simpleProfileButton)
+                    simpleProfileButton.anchor(top: simpleProfileBackground.topAnchor , left: simpleProfileBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 21, height: 23)
+                    
+                }
+
+    }
 
     func configureMapViewComponents() {
         
@@ -1037,9 +1187,11 @@ class HomeVC: UIViewController, Alertable {
         configureMapView()
 
         let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
-        let backgroundDimension: CGFloat = 45
+        
         //let menuDimension: CGFloat = 35
         
+        /*
+        let backgroundDimension: CGFloat = 45
         mapView.addSubview(simpleMenuBackground)
         simpleMenuBackground.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 32, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: backgroundDimension, height: backgroundDimension)
         simpleMenuBackground.layer.cornerRadius = backgroundDimension / 2
@@ -1047,10 +1199,9 @@ class HomeVC: UIViewController, Alertable {
         
         simpleMenuBackground.addSubview(simpleMenuButton)
         simpleMenuButton.anchor(top: simpleMenuBackground.topAnchor, left: simpleMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 5.5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)
+        */
         
-        mapView.addSubview(simpleActionShadowBackground)
-        simpleActionShadowBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 50, height: 50)
-        simpleActionShadowBackground.layer.cornerRadius = 50 / 2
+
         
         /*
         simpleActionShadowBackground.addSubview(simpleRightMenuBackground)
@@ -1061,8 +1212,21 @@ class HomeVC: UIViewController, Alertable {
        //simpleRightMenuBackground.addSubview(simpleRightMenuButton)
        //simpleRightMenuButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
-        simpleActionShadowBackground.addSubview(beBoppActionButton)
-        beBoppActionButton.anchor(top: simpleActionShadowBackground.topAnchor, left: simpleActionShadowBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        mapView.addSubview(simpleActionBackground)
+        simpleActionBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 50, height: 50)
+        simpleActionBackground.layer.cornerRadius = 19
+        
+        simpleActionBackground.addSubview(beBoppActionButton)
+        beBoppActionButton.anchor(top: simpleActionBackground.topAnchor, left: simpleActionBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 28, height: 20)
+        
+        mapView.addSubview(groupsButtonBackground)
+        groupsButtonBackground.anchor(top: nil, left: nil, bottom: simpleActionBackground.topAnchor, right: simpleActionBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 50, height: 50)
+        groupsButtonBackground.layer.cornerRadius = 19
+        
+        
+        
+        groupsButtonBackground.addSubview(groupsButton)
+        groupsButton.anchor(top: groupsButtonBackground.topAnchor, left: groupsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 25, height: 27)
         
         /*
         mapView.addSubview(saveSegmentButton)
@@ -1124,13 +1288,15 @@ class HomeVC: UIViewController, Alertable {
         
         //configureNavigationSubView()
         
+        configureRightMenuView()
+        
         configureMapViewButtons()
         
         configureTabBar()
         
         configureMenuView()
         
-        configureRightMenuView()
+        
         
         
         //configureGestureRecognizers()
@@ -1210,13 +1376,13 @@ class HomeVC: UIViewController, Alertable {
             lineView.isHidden = true
             
             mapView.addSubview(destTextFieldBlurView)
-            destTextFieldBlurView.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 55, paddingBottom: 0, paddingRight: 55, width: 0, height: 50)
+            destTextFieldBlurView.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 105, paddingBottom: 0, paddingRight: 105, width: 0, height: 45)
             
             mapView.addSubview(searchImageView)
-            searchImageView.anchor(top: destTextFieldBlurView.topAnchor, left: destTextFieldBlurView.leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 18, height: 18)
+            searchImageView.anchor(top: destTextFieldBlurView.topAnchor, left: destTextFieldBlurView.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 18, height: 18)
 
             mapView.addSubview(destinationTextField)
-            destinationTextField.anchor(top: mapView.topAnchor, left: searchImageView.rightAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 8, paddingBottom: 0, paddingRight: 55, width: 0, height: 50)
+            destinationTextField.anchor(top: mapView.topAnchor, left: searchImageView.rightAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 8, paddingBottom: 0, paddingRight: 105, width: 0, height: 45)
 
             addBlurEffect()
             
@@ -1386,7 +1552,14 @@ class HomeVC: UIViewController, Alertable {
         print("handle analytics")
     }
 
- 
+  @objc func handleMessages() {
+     
+     print("handle home rewards")
+     
+     let messagesVC = MessagesController()
+     navigationController?.pushViewController(messagesVC, animated: true)
+
+ }
     /*
    func configureSearchBar() {
      
@@ -1424,7 +1597,8 @@ class HomeVC: UIViewController, Alertable {
         mapView.addSubview(searchBarSubView)
         searchBarSubView.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 100)
         
-        mapView.tintColor = UIColor.airBnBRed()
+        //mapView.tintColor = UIColor.airBnBRed()
+        mapView.tintColor = UIColor.walkzillaRed()
         
         //mapView.tintColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
         //mapView.tintColor = UIColor(red: 122/255, green: 206/255, blue: 33/255, alpha: 1) // limer
@@ -1768,12 +1942,33 @@ class HomeVC: UIViewController, Alertable {
         
         let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
         
+        let centerMapDimension: CGFloat = 50
         mapView.addSubview(centerMapBackground)
-        centerMapBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 20, paddingRight: 0, width: 55, height: 55)
-        centerMapBackground.layer.cornerRadius = 55 / 2
+        centerMapBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 20, paddingRight: 0, width: centerMapDimension, height: centerMapDimension)
+        //centerMapBackground.layer.cornerRadius = centerMapDimension / 2
+        centerMapBackground.layer.cornerRadius = 19
         
-        centerMapBackground.addSubview(centerMapButton)
-        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 45, height: 45)
+        mapView.addSubview(centerMapButton)
+        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        
+        
+        let settingsDimension: CGFloat = 40
+        mapView.addSubview(settingsButtonBackground)
+        settingsButtonBackground.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 34, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: settingsDimension, height: settingsDimension)
+        settingsButtonBackground.layer.cornerRadius = 15
+        
+        mapView.addSubview(settingsButton)
+        settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        
+    
+        
+        let rewardsDimension: CGFloat = 40
+        mapView.addSubview(simpleRewardsBackground)
+        simpleRewardsBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 34, paddingLeft: 0, paddingBottom: 0, paddingRight: 56, width: rewardsDimension, height: rewardsDimension)
+        simpleRewardsBackground.layer.cornerRadius = 15
+        
+        mapView.addSubview(simpleRewardsButton)
+        simpleRewardsButton.anchor(top: simpleRewardsBackground.topAnchor , left: simpleRewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
         
         //mapView.addSubview(analyticsButton)
         //analyticsButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
@@ -2115,6 +2310,32 @@ class HomeVC: UIViewController, Alertable {
         }
     }
     
+    
+    
+        @objc func expansionStateCheckGroups() {
+        
+        if expansionState == .FullyExpanded {
+            
+            searchTableView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            
+            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                
+                
+                self.searchTableView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.searchTableView.alpha = 0
+                
+            }) { (_) in
+                self.searchTableView.transform = .identity
+                self.expansionState = .NotExpanded
+            }
+            
+        } else {
+            
+            handleGroupsSlider()
+            //searchTableView.isHidden = true
+        }
+    }
+    
     func configureStoreDetailBV() {
         
         storeDetailBV.anchor(top: self.mapView.topAnchor, left: self.mapView.leftAnchor, bottom: self.mapView.bottomAnchor, right: self.mapView.rightAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -2205,11 +2426,17 @@ class HomeVC: UIViewController, Alertable {
                 //rightMenuVC.view.frame = CGRect(x: (view.frame.width) - 200, y: 0, width: 450, height: window.frame.height)
                 
                 // need to add 16 to the height of the original position to account for the indicator view poking up
-                rightMenuVC.view.frame = CGRect(x: 0, y: view.frame.height + 16, width: view.frame.width, height: 575)
+               
+                
+                
+                rightMenuVC.view.frame = CGRect(x: 0, y: view.frame.height + 16, width: view.frame.width, height: 675)
+               
+                /*
                 window.addSubview(indicatorView)
                 
                 indicatorView.anchor(top: rightMenuVC.view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: -16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 5)
                 indicatorView.centerX(inView: rightMenuVC.view)
+                */
             
                }
            }
@@ -2275,14 +2502,14 @@ class HomeVC: UIViewController, Alertable {
                 //let collectionViewX = window.frame.width - width + 155
                 
                 //let height: CGFloat = 568
-                let height: CGFloat = 525
+                let height: CGFloat = 625
                 let collectionViewY = window.frame.height - height
                 
                 UIView.animate(withDuration: 0.15) {
                     self.rightMenuBV.alpha = 1
                 }
                 
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+                UIView.animate(withDuration: 0.40, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
                 
                     // final starting point of the view
                     //self.rightMenuVC.view.frame = CGRect(x: collectionViewX, y: 0, width: self.rightMenuVC.view.frame.width, height: window.frame.height)
@@ -2310,15 +2537,42 @@ class HomeVC: UIViewController, Alertable {
             
             storeDetailView.dismissDetailView()
             
+            rightMenuVC.collectionView.isHidden = true
+            rightMenuVC.searchBarContainer.isHidden = true
+            
             presentRightSlideMenu()
             
    
         } else {
             
+            rightMenuVC.collectionView.isHidden = true
+            rightMenuVC.searchBarContainer.isHidden = true
+            
             presentRightSlideMenu()
         }
     }
     
+     @objc func handleGroupsSlider() {
+
+         if isStoreDetailViewVisible == true {
+             
+             storeDetailView.dismissDetailView()
+             
+            rightMenuVC.configureSearchBar()
+            rightMenuVC.collectionView.isHidden = false
+            rightMenuVC.searchBarContainer.isHidden = false
+             
+             presentRightSlideMenu()
+             
+    
+         } else {
+            rightMenuVC.configureSearchBar()
+            rightMenuVC.collectionView.isHidden = false
+            rightMenuVC.searchBarContainer.isHidden = false
+             
+             presentRightSlideMenu()
+         }
+     }
     
     @objc func handleNotificationSlider() {
         
@@ -2515,7 +2769,7 @@ class HomeVC: UIViewController, Alertable {
         //showTabBar()
         //self.navigationController?.navigationBar.isHidden = false
     }
-
+    
     
     @objc func handleRightMenuDismiss() {
         
@@ -3662,7 +3916,9 @@ extension HomeVC: MKMapViewDelegate {
                 case 750 ... 1000:
                     print("high range, hot deal")
                     imageView.image = UIImage(named: "oneHundredPercentBar")
-                    hotImageView.image = UIImage(named: "redCircle")
+                    //hotImageView.image = UIImage(named: "redCircle")
+                    hotImageView.image = UIImage(named: "greenDot")
+                    
                 default:
                     print("Integer value not within range")
                 }
@@ -3733,8 +3989,8 @@ extension HomeVC: MKMapViewDelegate {
             // don't anitmate center map button in
             print("DEBUG: Store detail view set to true")
         } else {
-        centerMapButton.fadeTo(alphaValue: 1, withDuration: 0.75)
-        centerMapBackground.fadeTo(alphaValue: 0.75, withDuration: 0.75)
+            centerMapBackground.fadeTo(alphaValue: 0.65, withDuration: 0.75)
+            centerMapButton.fadeTo(alphaValue: 1, withDuration: 0.75)
         }
     }
     
@@ -3748,13 +4004,10 @@ extension HomeVC: MKMapViewDelegate {
         let lineRenderer = MKPolylineRenderer(overlay: self.route.polyline)
 
         //lineRenderer.strokeColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
-        lineRenderer.strokeColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        //lineRenderer.strokeColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+            lineRenderer.strokeColor = UIColor.walkzillaRed()
         
-        //lineRenderer.strokeColor = UIColor(red: 236/255, green: 38/255, blue: 125/255, alpha: 1)
-        //lineRenderer.strokeColor = UIColor(red: 253/255, green: 145/255, blue: 20/255, alpha: 1) // orange
-        //lineRenderer.strokeColor = UIColor(red: 122/255, green: 206/255, blue: 33/255, alpha: 1) // limer
-        //lineRenderer.strokeColor = UIColor(red: 252/255, green: 180/255, blue: 16/255, alpha: 1) // gold coin
-            lineRenderer.lineWidth = 6
+            lineRenderer.lineWidth = 4.5
         lineRenderer.lineCap = .round
         lineRenderer.lineJoin = .bevel
         //lineRenderer.lineJoin = .miter
@@ -4073,17 +4326,17 @@ extension HomeVC: MKMapViewDelegate {
         
         centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-        simpleActionShadowBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             self.centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-            self.simpleActionShadowBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            self.simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             
             self.centerMapBackground.alpha = 0
             self.centerMapButton.alpha = 0
-            self.simpleActionShadowBackground.alpha = 0
+            self.simpleActionBackground.alpha = 0
             self.centerMapBackground.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0).cgColor
             self.centerMapButton.isHidden = true
             
@@ -4091,7 +4344,7 @@ extension HomeVC: MKMapViewDelegate {
         }) { (_) in
             self.centerMapButton.transform = .identity
             self.centerMapBackground.transform = .identity
-            self.simpleActionShadowBackground.transform = .identity
+            self.simpleActionBackground.transform = .identity
         }
 
         
@@ -4172,7 +4425,9 @@ extension HomeVC: MKMapViewDelegate {
             configureStoreViewComponents()
             
             //storeDetailView.isHidden = false
-            storeDetailView.presentIntialStoreView()
+            
+           storeDetailView.presentIntialStoreView()
+            
         
         } else {
             
@@ -4292,12 +4547,11 @@ extension HomeVC: MKMapViewDelegate {
             storeDetailView.layer.shadowRadius = 5.0
             storeDetailView.layer.shadowOffset = CGSize(width: 1, height: -1)
             
-            
-            
+
             window.addSubview(storeDetailView)
-            storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 270), paddingRight: 0, width: 0, height: window.frame.height + 20)
-
-
+           // storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 270), paddingRight: 0, width: 0, height: window.frame.height + 20)
+            
+            storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 160), paddingRight: 0, width: 0, height: window.frame.height + 20)
         }
     }
  
@@ -4334,25 +4588,25 @@ extension HomeVC: MKMapViewDelegate {
         
         centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-        simpleActionShadowBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             self.centerMapButton.isHidden = false
             self.centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.simpleActionShadowBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             
              self.centerMapButton.alpha = 1
-            self.centerMapBackground.alpha = 0.75
-            self.simpleActionShadowBackground.alpha = 1
-            self.centerMapBackground.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.75).cgColor
+            self.centerMapBackground.alpha = 0.65
+            self.simpleActionBackground.alpha = 1
+            self.centerMapBackground.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.65).cgColor
             
             
             
         }) { (_) in
             self.centerMapButton.transform = .identity
             self.centerMapBackground.transform = .identity
-            self.simpleActionShadowBackground.transform = .identity
+            self.simpleActionBackground.transform = .identity
         }
     }
  
@@ -4401,7 +4655,7 @@ extension HomeVC: MKMapViewDelegate {
     }
     
     
-    func handleProfileView() {
+    @objc func handleProfileView() {
         
         /*
         if Auth.auth().currentUser != nil {
@@ -5967,6 +6221,7 @@ extension HomeVC: UITextFieldDelegate {
             searchTableView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             lineView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             
+            
             UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 
                 
@@ -6029,9 +6284,9 @@ extension HomeVC: UITextFieldDelegate {
             UIView.animate(withDuration: 0.25, animations: {
                 
                 self.removeBlurEffect()
-                self.destTextFieldBlurView.transform = CGAffineTransform(scaleX: 1.25, y: 1)
-                self.destTextFieldBlurView.layer.cornerRadius = 22.75
-                self.visualEffectView.layer.cornerRadius = 22.75
+                self.destTextFieldBlurView.transform = CGAffineTransform(scaleX: 1.35, y: 1)
+                self.destTextFieldBlurView.layer.cornerRadius = 20
+                self.visualEffectView.layer.cornerRadius = 20
                 self.destTextFieldBlurView.layer.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250).cgColor
                 //self.destTextFieldBlurView.layer.backgroundColor = UIColor(red: 187/255, green: 216/255, blue: 224/255, alpha: 1).cgColor
                 self.destTextFieldBlurView.layer.shadowColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
@@ -6039,18 +6294,27 @@ extension HomeVC: UITextFieldDelegate {
                 self.destTextFieldBlurView.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
                 //self.searchImageView.frame.origin.x -= 50
                 //self.destinationTextField.frame.origin.x -= 50
+
             })
             
             
             
             mapView.addSubview(cancelSearchButton)
-            cancelSearchButton.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 22, paddingLeft: 0, paddingBottom: 0, paddingRight: 5.5, width: 74, height: 74)
+            cancelSearchButton.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 65, height: 65)
 
             cancelSearchButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             searchBarSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-            simpleMenuBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            settingsButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            settingsButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             simpleRightMenuButton.transform = CGAffineTransform(scaleX: 1, y: 1)
-            rewardsBackgroundSubView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            simpleRewardsBackground.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            simpleRewardsButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            searchImageView.transform = CGAffineTransform(translationX: 0, y: 0)
+            destinationTextField.transform = CGAffineTransform(translationX: 0, y: 0)
+            simpleProfileBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            simpleProfileButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            profileImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            
             
             UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 
@@ -6060,20 +6324,47 @@ extension HomeVC: UITextFieldDelegate {
                 self.searchBarSubView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                 self.searchBarSubView.alpha = 1
                 
-                self.simpleMenuBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                self.simpleMenuBackground.alpha = 0
+                self.settingsButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.settingsButtonBackground.alpha = 0
+                
+                self.settingsButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.settingsButton.alpha = 0
+                
                 
                 self.simpleRightMenuButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
                 self.simpleRightMenuButton.alpha = 0
                 
-                self.rewardsBackgroundSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                self.rewardsBackgroundSubView.alpha = 0
+                self.simpleProfileBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.simpleProfileBackground.alpha = 0
+                
+                self.simpleProfileButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.simpleProfileButton.alpha = 0
+                
+                self.profileImageView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.profileImageView.alpha = 0
+                
+                self.simpleRewardsBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.simpleRewardsBackground.alpha = 0
+                
+                self.simpleRewardsButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                self.simpleRewardsButton.alpha = 0
+                
+                self.searchImageView.transform = CGAffineTransform(translationX: -30, y: 0)
+                self.destinationTextField.transform = CGAffineTransform(translationX: -30, y: 0)
+                
                 
             }) { (_) in
                 self.cancelSearchButton.transform = .identity
-                self.simpleMenuBackground.transform = .identity
+                self.settingsButtonBackground.transform = .identity
+                self.settingsButton.transform = .identity
                 self.simpleRightMenuButton.transform = .identity
-                self.rewardsBackgroundSubView.transform = .identity
+                self.simpleRewardsBackground.transform = .identity
+                self.simpleRewardsButton.transform = .identity
+                self.simpleProfileBackground.transform = .identity
+                self.simpleProfileButton.transform = .identity
+                self.profileImageView.transform = .identity
+                
+                //self.searchImageView.transform = .identity
             }
             
             if isStoreDetailViewVisible == true {
@@ -6118,8 +6409,8 @@ extension HomeVC: UITextFieldDelegate {
             self.addBlurEffect()
             
             self.destTextFieldBlurView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.destTextFieldBlurView.layer.cornerRadius = 25
-            self.visualEffectView.layer.cornerRadius = 25
+            self.destTextFieldBlurView.layer.cornerRadius = 22
+            self.visualEffectView.layer.cornerRadius = 22
             self.destTextFieldBlurView.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
             self.destTextFieldBlurView.layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.25).cgColor
             self.destTextFieldBlurView.layer.borderColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
@@ -6138,10 +6429,15 @@ extension HomeVC: UITextFieldDelegate {
         
         cancelSearchButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         searchBarSubView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-        simpleMenuBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        settingsButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        settingsButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         simpleRightMenuButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         rewardsBackgroundSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-        
+        simpleProfileBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        simpleProfileButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+        profileImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        simpleRewardsBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        simpleRewardsButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
@@ -6152,8 +6448,11 @@ extension HomeVC: UITextFieldDelegate {
             self.searchBarSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             self.searchBarSubView.alpha = 0
             
-            self.simpleMenuBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.simpleMenuBackground.alpha = 1
+            self.settingsButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.settingsButton.alpha = 1
+            
+            self.settingsButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.settingsButtonBackground.alpha = 1
             
             self.simpleRightMenuButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.simpleRightMenuButton.alpha = 1
@@ -6161,11 +6460,35 @@ extension HomeVC: UITextFieldDelegate {
             self.rewardsBackgroundSubView.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.rewardsBackgroundSubView.alpha = 1
             
+            self.searchImageView.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.destinationTextField.transform = CGAffineTransform(translationX: 0, y: 0)
+            
+            self.simpleProfileBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.simpleProfileBackground.alpha = 1
+            
+            self.simpleProfileButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.simpleProfileButton.alpha = 1
+            
+            self.profileImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.profileImageView.alpha = 1
+            
+            self.simpleRewardsBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.simpleRewardsBackground.alpha = 1
+            
+            self.simpleRewardsButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.simpleRewardsButton.alpha = 1
+            
         }) { (_) in
             self.cancelSearchButton.transform = .identity
-            self.simpleMenuBackground.transform = .identity
+            self.settingsButton.transform = .identity
+            self.settingsButtonBackground.transform = .identity
             self.simpleRightMenuButton.transform = .identity
             self.rewardsBackgroundSubView.transform = .identity
+            self.simpleProfileBackground.transform = .identity
+            self.simpleProfileButton.transform = .identity
+             self.profileImageView.transform = .identity
+            self.simpleRewardsBackground.transform = .identity
+            self.simpleRewardsButton.transform = .identity
         }
         
         dismissOnSearch()

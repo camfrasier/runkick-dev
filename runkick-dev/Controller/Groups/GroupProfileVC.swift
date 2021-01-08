@@ -185,6 +185,7 @@ class GroupProfileVC: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+
        
         fetchGroupMembers()
         

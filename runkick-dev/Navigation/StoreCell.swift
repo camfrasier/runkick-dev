@@ -198,7 +198,20 @@ class StoreCell: UITableViewCell {
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         return view
     }()
-
+    
+    lazy var menuButton: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.walkzillaRed()
+        return view
+    }()
+    
+    let menuLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.text = "MENU"
+        return label
+    }()
     
     
     let locationDistanceLabel: UILabel = {
@@ -223,6 +236,14 @@ class StoreCell: UITableViewCell {
         imageContainerView.addSubview(storeImageView)
         storeImageView.anchor(top: imageContainerView.topAnchor, left: imageContainerView.leftAnchor, bottom: imageContainerView.bottomAnchor, right: imageContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         storeImageView.layer.cornerRadius = 0
+        
+        addSubview(menuButton)
+        menuButton.anchor(top: imageContainerView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 60)
+        
+        menuButton.addSubview(menuLabel)
+        menuLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        menuLabel.centerXAnchor.constraint(equalTo: menuButton.centerXAnchor).isActive = true
+        menuLabel.centerYAnchor.constraint(equalTo: menuButton.centerYAnchor).isActive = true
         
         addSubview(locationTitleLabel)
         locationTitleLabel.anchor(top: topAnchor, left: imageContainerView.rightAnchor, bottom: nil, right: nil

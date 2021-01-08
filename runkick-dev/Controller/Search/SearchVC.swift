@@ -35,6 +35,29 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         return label
     }()
     
+    lazy var destinationTextField: UITextField = {
+        let tf = UITextField()
+        //tf.placeholder = "Where to?"
+        tf.attributedPlaceholder = NSAttributedString(string:"Search", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
+        tf.font = UIFont.systemFont(ofSize: 18)
+        tf.keyboardType = UIKeyboardType.default
+        tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
+        tf.layer.cornerRadius = 0 //25
+        tf.clipsToBounds = true
+        tf.autocapitalizationType = .none
+        tf.addTarget(self, action: #selector(HomeVC.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
+        view.isUserInteractionEnabled = true
+        return tf
+    }()
+    
+    lazy var cancelSearchButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "simpleCancelIcon"), for: .normal)
+        button.addTarget(self, action: #selector(handleCancelSearch), for: .touchUpInside)
+        button.alpha = 0
+        return button
+    }()
+    
     enum PostType: String {
 
         case userPost = "userPost"
@@ -46,10 +69,12 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+       //setupToHideKeyboardOnTapOnView()
         // configure search bar
         configureSearchBar()
         
-        
+        destinationTextField.delegate = self
         //edgesForExtendedLayout = .all
         //extendedLayoutIncludesOpaqueBars = true
         
@@ -76,6 +101,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // fetch posts
         fetchPosts()
+        fetchUsers()
         
     }
     
@@ -185,8 +211,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         collectionView.register(SearchPostCell.self, forCellWithReuseIdentifier: reusePostCellIdentifier)
         
         
-        collectionView.addSubview(titleLabel)
-        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //collectionView.addSubview(titleLabel)
+        //titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         tableView.separatorColor = .clear
         
@@ -199,18 +225,32 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 4
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 60, left: 4, bottom: 4, right: 4)
+        return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         //let width = (view.frame.width - 16) / 3
-        let width = (view.frame.width - 16) / 3
-        return CGSize(width: width, height: width)
+        //let searchWidth = (view.frame.width - 4) / 3
+        
+        let width : CGFloat
+        let height : CGFloat
+
+        if indexPath.item == 0 {
+            width = view.frame.width - 3
+            height = 210
+        } else {
+            width = (view.frame.width - 4) / 3
+            height = width
+        }
+    
+        
+        
+        return CGSize(width: width, height: height)
     }
     
     /*func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -277,7 +317,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
 
         
-        searchBar.delegate = self
+        //searchBar.delegate = self
         
         titleView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
        // let frame = CGRect(x: 0, y: 0, width: 100, height: 44)
@@ -285,27 +325,36 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         //searchBar.backgroundImage = UIImage()
         //searchBar.frame = frame
         titleView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        titleView.addSubview(searchBar)
-        searchBar.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: titleView.rightAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 20, width: view.frame.width - 35, height: 40)
+        
+        titleView.addSubview(cancelSearchButton)
+        cancelSearchButton.anchor(top: titleView.topAnchor, left: nil, bottom: nil, right: titleView.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
+        
+        titleView.addSubview(destinationTextField)
+        destinationTextField.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: cancelSearchButton.leftAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 110, height: 40)
+
+        
+        
         
         navigationItem.titleView = titleView
         
         
         //navigationItem.titleView = searchBar
-        
-        searchBar.placeholder = "Search"
+        /*
+        searchBar.placeholder = "Searcher"
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
         searchBar.becomeFirstResponder()
         searchBar.autocapitalizationType = .none
+        */
         
         //searchBar.backgroundColor = .blue
         
-        
+        /*
         // SearchBar text
         let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
         //textFieldInsideUISearchBar?.textColor = UIColor.red
         textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.withSize(18)
+        */
         
         /*
         if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
@@ -317,6 +366,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
            }
         */
         
+        
+        /*
         //navigationItem.titleView = searchBar
         //searchBar.barTintColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         searchBar.isTranslucent = false
@@ -335,6 +386,9 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         } else {
             // Fallback on earlier versions
         }
+ 
+        */
+ 
         //searchBar.searchTextField.layer.borderColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1).cgColor
         //searchBar.searchTextField.layer.borderWidth = 0.25
         
@@ -354,12 +408,15 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        navigationController?.navigationBar.barTintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+    
         
         // add or remove nav bar bottom border
         navigationController?.navigationBar.shadowImage = UIImage()
         let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
-        lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        lineView.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+        
+        
         
         /*
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
@@ -369,9 +426,8 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         navigationItem.title = "Search"
         */
         
-        navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
  
-        configureSearchBarButton()
+    //    configureSearchBarButton()
         //configureLeftBarButton()
     }
     
@@ -445,7 +501,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         } else {
             // Fallback on earlier versions
         }
-        
+        collectionView.isHidden = true
         
         //fetchUsers()
         
@@ -459,7 +515,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         let searchText = searchText.lowercased()
-    
+        
         //let searchText = String(searchText.text!)
         
         
@@ -504,7 +560,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         // added stuff
         navigationItem.titleView = nil
-        configureSearchBarButton()
+        //configureSearchBarButton()
         
         tableView.separatorColor = .clear
         
@@ -570,25 +626,26 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
     
     func configureSearchBarButton() {
         
+        searchBar.showsCancelButton = true
         
          // configuring title button
          let button =  UIButton(type: .custom)
          button.frame = CGRect(x: 0, y: 0, width: 320, height: 35)
-         button.backgroundColor = .clear
+         button.backgroundColor = .red
          button.setTitleColor(.black, for: .normal)
          button.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
          navigationItem.titleView = button
          
-         searchBar.showsCancelButton = true
+         
          
          
                     let searchBarText = UIButton(type: UIButton.ButtonType.custom)
                         
                         searchBarText.frame = CGRect(x: 0, y: 0, width: 120, height: 33)
                         
-                     searchBarText.setTitle("Find friends or invite new ones", for: .normal)
-                     searchBarText.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
-                     searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+                     searchBarText.setTitle("Search", for: .normal)
+                     searchBarText.setTitleColor(UIColor.rgb(red: 140, green: 140, blue: 140), for: .normal)
+                     searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 18)
                         searchBarText.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
                         //searchBarText.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                         searchBarText.backgroundColor = .clear
@@ -596,11 +653,11 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
          
                     let magnifyButton = UIButton(type: UIButton.ButtonType.system)
                         
-                        magnifyButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+                        magnifyButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
                         
                         //using this code to show the true image without rendering color
-                        magnifyButton.setImage(UIImage(named:"searchBar")?.withRenderingMode(.alwaysOriginal), for: .normal)
-                        magnifyButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 16 )
+                        magnifyButton.setImage(UIImage(named:"search_selected")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                        magnifyButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 25, height: 26 )
                         magnifyButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
          magnifyButton.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
                         magnifyButton.backgroundColor = .clear
@@ -655,7 +712,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         navigationItem.titleView = titleView
         navigationItem.leftBarButtonItem = nil
         
-        fetchUsers()
+        //fetchUsers()
         collectionView.isHidden = true
         collectionViewEnabled = false
     
@@ -708,5 +765,106 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
             })
         }
     }
+    
+    
+ /*   override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+*/
+    
 }
+
+extension SearchVC: UITextFieldDelegate {
+    
+
+    func textFieldDidBeginEditing(_ sender: UITextField) {
+
+        
+        collectionView.isHidden = true
+        
+        
+        if sender == destinationTextField {
+  
+            cancelSearchButton.alpha = 1
+           
+        }
+    }
+    
+
+    //func textFieldEditingChanged(_ sender: UITextField, textDidChange searchText: String) {
+    @objc func textFieldDidChange(_ searchText: UITextField) {
+
+        
+        print(searchText)
+
+               //let searchText = searchText
+        let searchText = String(searchText.text!)
+        
+        
+            //let searchText = String(searchText.text!)
+            
+            
+            if searchText.isEmpty || searchText == " " {
+                inSearchMode = false
+                tableView.reloadData()
+            } else {
+                
+                inSearchMode = true
+                
+                // return fitlered users
+                filteredUsers = users.filter({ (user) -> Bool in                // having and issue here <--
+                    
+                    // using the username to filter through
+                    //return user.username.contains(searchText)
+                    
+                    return user.username.localizedCaseInsensitiveContains(searchText)
+
+                })
+                tableView.reloadData()
+            }
+    }
+    
+    @objc func handleCancelSearch() {
+    /*
+            if #available(iOS 13.0, *) {
+                searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            } else {
+                // Fallback on earlier versions
+            }
+        */
+            
+            collectionViewEnabled = true
+            collectionView.isHidden = false
+            
+        cancelSearchButton.alpha = 0
+            // added stuff
+            //navigationItem.titleView = nil
+            //configureSearchBarButton()
+
+        //clears search view
+        destinationTextField.text = nil
+        inSearchMode = false
+        
+        // reloads search table view data
+        tableView.reloadData()
+
+        print("We reach this point so this should allow the keyboard to be cancelllllled")
+        //view.endEditing(true)
+        self.view.endEditing(true)
+        destinationTextField.resignFirstResponder()
+        
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+       // centerMapOnUserLocation()
+        
+        
+        return true
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+}
+
 

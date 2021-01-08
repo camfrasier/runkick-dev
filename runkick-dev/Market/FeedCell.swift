@@ -639,7 +639,7 @@ class FeedCell: UICollectionViewCell {
         // variable constraints
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[image]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-60-[image(450)]-0-[likeCommentBlock]-2-[captionBlock]", options: [], metrics: nil, views: ["image": postImageView, "likeCommentBlock": likeCommentBlock, "captionBlock": captionBlock]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-60-[image(400)]-0-[likeCommentBlock]-2-[captionBlock]", options: [], metrics: nil, views: ["image": postImageView, "likeCommentBlock": likeCommentBlock, "captionBlock": captionBlock]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[caption]-15-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         

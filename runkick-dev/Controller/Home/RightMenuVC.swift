@@ -17,11 +17,14 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
     var activities = [Activity]()
     var activity: Activity?
     var currentKey: String?
-    
+    var userCurrentKey: String?
     var tableView: UITableView!
     var delegate: HomeControllerDelegate?
     var searchBar = UISearchBar()
     var inSearchMode = false
+    var groups = [UserGroup]()
+    var filteredGroups = [UserGroup]()
+    
     //var homeVC: HomeVC?
     
     var collectionView: UICollectionView!
@@ -41,10 +44,18 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         return view
     }()
     
-    let gradientView: UIView = {
+    let headerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        view.backgroundColor = UIColor.white
         return view
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "My Groups"
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "PingFangTC-Semibold", size: 24)
+        return label
     }()
     
     let separatorView: UIView = {
@@ -64,7 +75,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         view.backgroundColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1)
         return view
     }()
-    
+    /*
     lazy var groupsLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
@@ -76,6 +87,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         label.addGestureRecognizer(groupTap)
         return label
     } ()
+    */
     /*
     lazy var messageInboxButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -88,6 +100,8 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         return button
     }()
     */
+    
+    /*
     lazy var activityLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
@@ -100,13 +114,14 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         label.addGestureRecognizer(activityTap)
         return label
     } ()
-    
+    */
     let separatorViewGradient: UIView = {
         let view = UIView()
         view.layer.backgroundColor = UIColor.airBnBNew().cgColor
         return view
     }()
     
+    /*
     lazy var rightTabView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -128,7 +143,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         view.addGestureRecognizer(activityTap)
         return view
     }()
-    
+    */
     
     let searchBarContainer: UIView = {
         let view = UIView()
@@ -260,12 +275,14 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         // configure collection view
         configureCollectionView()
         
+        fetchGroups()
+        
         //configureViewComponents()
 
         // adjust the corner radius of the slide menu view
         let myControlLayer: CALayer = self.view.layer
         myControlLayer.masksToBounds = true
-        myControlLayer.cornerRadius = 10
+        myControlLayer.cornerRadius = 5
         
         //view.addSubview(indicatorView)
         //indicatorView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 7)
@@ -385,8 +402,8 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
             //searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
-            searchBar.searchTextField.layer.cornerRadius = 17
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+            searchBar.searchTextField.layer.cornerRadius = 12
             searchBar.searchTextField.layer.masksToBounds = true
             UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "HelveticaNeue", size: 12)!], for: .normal)
             
@@ -460,6 +477,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         rightMenuCell.animateDistanceCircle()
     }
     
+    /*
     @objc func handleGroupsTapped() {
         //delegate?.handleGridViewTapped(for: self)
         
@@ -520,7 +538,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         
         view.endEditing(true)
     }
-    
+    */
     func handleDissmissKeyboard() {
         view.endEditing(true)
     }
@@ -549,9 +567,11 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 45, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
-        view.addSubview(gradientView)
-        gradientView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+        view.addSubview(headerView)
+        headerView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 10)
         
+        
+        /*
         gradientView.addSubview(leftTabView)
         leftTabView.anchor(top: gradientView.topAnchor, left: gradientView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width / 2, height: 50)
         
@@ -565,7 +585,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         rightTabView.addSubview(groupsLabel)
         groupsLabel.anchor(top: rightTabView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         groupsLabel.centerXAnchor.constraint(equalTo: rightTabView.centerXAnchor).isActive = true
-        
+        */
         //gradientView.addSubview(separatorViewGradient)
         //separatorViewGradient.anchor(top: nil, left: view.leftAnchor, bottom: gradientView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 75, paddingBottom: 1, paddingRight: 0, width: (view.frame.width / 8), height: 3)
         
@@ -610,7 +630,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
            
            //let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - (tabBarController?.tabBar.frame.height)! - (navigationController?.navigationBar.frame.height)!)
            //let frame = CGRect(x: 0, y: 115, width: view.frame.width, height: view.frame.height - 270)
-        let frame = CGRect(x: 0, y: 50, width: view.frame.width, height: view.frame.height - 50)
+        let frame = CGRect(x: 0, y: 10, width: view.frame.width, height: view.frame.height - 50)
 
         
            collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
@@ -629,7 +649,8 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
         //searchBarContainer.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 45, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
         searchBarContainer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-
+        collectionView.addSubview(titleLabel)
+        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
         searchBarContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -653,7 +674,7 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-           return 1
+           return 0
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -662,12 +683,12 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
            
-           return UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+           return UIEdgeInsets(top: 80, left: 18, bottom: 2, right: 18)
        }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            //let width = (view.frame.width - 16) / 3
-           let width = (view.frame.width - 8) / 3
+           let width = (view.frame.width - 40) / 3
            return CGSize(width: width, height: width)
        }
        
@@ -676,26 +697,45 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
        }*/
        
        func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-           /*
-           if posts.count > 20 {
-               if indexPath.item == posts.count - 1 {
-                   fetchPosts()
+           if groups.count > 14 {
+               if indexPath.item == groups.count - 1 {
+                   fetchGroups()
                }
            }
-            */
        }
        
        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
            //return posts.count
-        return 9
+        //return 9
+        
+        if inSearchMode {
+            return filteredGroups.count
+        } else {
+            return groups.count
+        }
        }
        
        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
            
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseGroupsCellIdentifier, for: indexPath) as! GroupsCell
-           /*
-           cell.post = posts[indexPath.item]
-           */
+           
+        
+            var group: UserGroup!
+            
+            //group = groups[indexPath.row]
+            
+            //cell.group = group
+               
+               if inSearchMode {
+                   group = filteredGroups[indexPath.row]
+               } else {
+                   group = groups[indexPath.row]
+               }
+               
+               cell.group = group
+                
+              
+        
            return cell
        }
        
@@ -711,6 +751,67 @@ class RightMenuVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
            
            navigationController?.pushViewController(feedVC, animated: true)
             */
+       }
+    
+      func fetchGroups() {
+          
+          guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+          //guard let observedUserId = uid else { return }
+          
+          self.collectionView.refreshControl?.endRefreshing()
+
+          
+          if self.userCurrentKey == nil {
+              
+          DataService.instance.REF_USERS.child(currentUserId).child("groups").queryLimited(toLast: 15).observeSingleEvent(of: .value, with: { (snapshot) in
+          
+          if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+              guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+         
+          for snap in snapshots {
+                  
+              let groupId = snap.key
+              print("this should bring back all groups the user is apart of \(key)")
+
+                 Database.fetchUserGroups(with: groupId, completion: { (group) in
+                     self.groups.append(group)
+                     self.collectionView.reloadData()
+
+              //self.userCurrentKey = first.key
+                  
+                  })
+              }
+              self.userCurrentKey = first.key
+              }
+          })
+          } else {
+              
+              DataService.instance.REF_USERS.child(currentUserId).child("groups").queryLimited(toLast: 16).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                       guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                   
+                    for snap in snapshots {
+                            
+                        let groupId = snap.key
+                        print("this should bring back all groups the user is apart of \(key)")
+      
+    
+                           if groupId != self.userCurrentKey {
+                               Database.fetchUserGroups(with: groupId, completion: { (group) in
+                                   self.groups.append(group)
+                                   self.collectionView.reloadData()
+                               })
+                           }
+                      
+                      
+                        }
+                      self.userCurrentKey = first.key
+                        }
+                    })
+              
+          }
+
        }
        
     
@@ -892,47 +993,6 @@ extension RightMenuVC: UITableViewDelegate, UITableViewDataSource {
              }
          }
      }
-    
-    
-/*
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return 1
-        activities.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! RightMenuOptionCell
-        
-        //cell.delegate = self
-        cell.activity = activities[indexPath.row]
-          
-   
-        /*
-        // the below will allow us to bring back a value based on the option pressed
-        let rightMenuOption = RightMenuOption(rawValue: indexPath.row)
-        cell.descriptionLabel.text = rightMenuOption?.description
-        cell.iconImageView.image = rightMenuOption?.image
-        cell.iconImageView2.image = rightMenuOption?.image2
-        */
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let rightMenuOption = RightMenuOption(rawValue: indexPath.row)
-        //delegate?.handleRightMenuToggle(shouldDismiss: true, rightMenuOption: rightMenuOption)
-        
-        print("THIS IS SELECTED")
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-            if activities.count > 4 {
-            if indexPath.item == activities.count - 1 {
-                fetchActivityPosts()
-            }
-        }
-    }
-*/
 
 }
 
@@ -945,42 +1005,54 @@ extension RightMenuVC: UISearchBarDelegate {
         handleDissmissKeyboard()
         print("cancel button clicked here")
    
-        /*
-       // configureSearchBarButton()
-        inSearchMode = false
         
-        searchBar.text = nil
-        navigationItem.titleView = nil
-        
-        collectionView.reloadData()
-        
-        configureSearchBarButton()
-        */
+             searchBar.endEditing(true)
+             
+             //configureLeftBarButton()
+             
+        //searchBar.showsCancelButton = false
+             if #available(iOS 13.0, *) {
+                 searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+             } else {
+                 // Fallback on earlier versions
+             }
+             
+             inSearchMode = false
+             
+             searchBar.text = nil
+
+             
+             // added stuff
+             //navigationItem.titleView = nil
+             //configureSearchBarButton()
+             
+             
+             collectionView.reloadData()
     }
     
      
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        print("did beginning editing here")
+            let searchText = searchText.lowercased()
         
-        // text printing out the text real time
-        print(searchText)
-        /*
-        if searchText == "" || searchBar.text == nil {
-            inSearchMode = false
-            collectionView.reloadData()
-            view.endEditing(true)
-        } else {
-            inSearchMode = true
-            // whatever pokemon we are looking at look at there name and see if there name contains that search text, here $0 represnts any categories array
-            filteredCategories = categories.filter({ $0.category?.range(of: searchText) != nil
+            //let searchText = String(searchText.text!)
+            
+            
+            if searchText.isEmpty || searchText == " " {
+                inSearchMode = false
+                collectionView.reloadData()
+            } else {
                 
-                return ($0.category?.localizedCaseInsensitiveContains(searchText))!
-            })
-            collectionView.reloadData()
+                inSearchMode = true
+                
+                // return fitlered users
+                filteredGroups = groups.filter({ (group) -> Bool in                // having and issue here <--
+                    
+                    return group.groupName.localizedCaseInsensitiveContains(searchText)
+                })
+                collectionView.reloadData()
+            }
 
-        }
- */
     }
     
 }

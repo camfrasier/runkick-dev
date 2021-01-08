@@ -29,6 +29,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
     var headerView: UIView = UIView.init(frame: CGRect.init(x: 1, y: 50, width: 276, height: 50))
     var labelView: UILabel = UILabel.init(frame: CGRect.init(x: 4, y: 35, width: 276, height: 38))
     
+    /*
     lazy var userSpecificGroupsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Your Groups", for: .normal)
@@ -39,7 +40,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
         button.addTarget(self, action: #selector(yourGroupsTapped), for: .touchUpInside)
         return button
     } ()
-    
+    */
     /*
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -186,13 +187,15 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
      
     func configureViewComponents() {
         
+        
+        /*
         headerView.addSubview(userSpecificGroupsButton)
         userSpecificGroupsButton.anchor(top: headerView.topAnchor, left: nil, bottom: nil, right: headerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 120, height: 40)
         userSpecificGroupsButton.layer.cornerRadius = 20
         userSpecificGroupsButton.centerXAnchor.constraint(equalTo: userSpecificGroupsButton.centerXAnchor).isActive = true
         userSpecificGroupsButton.layer.borderColor = UIColor.rgb(red: 120, green: 120, blue: 120).cgColor
         userSpecificGroupsButton.layer.borderWidth = 0.5
-        
+    */
     }
     
     
@@ -394,6 +397,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
     
     // MARK: - Handlers
     
+    /*
     @objc func yourGroupsTapped() {
          
         // dismiss after calling delegate
@@ -418,6 +422,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
         }
         */
     }
+    */
     
     // completion block function to run and after the group can be removed
     func firstTask(completion: (_ success: Bool) -> Void) {
