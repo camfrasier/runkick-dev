@@ -3879,7 +3879,7 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.canShowCallout = true
             
             
-            annotationView.label = UILabel(frame: CGRect(x: 4, y: 6.0, width: 36.0, height: 20.0))
+            annotationView.label = UILabel(frame: CGRect(x: 2, y: 7.0, width: 34.0, height: 18.0))
             
             
             
@@ -3910,7 +3910,7 @@ extension HomeVC: MKMapViewDelegate {
             //let pinImage = UIImage(named: "simpleMarkerActionRed")
             //let pinImage = UIImage(named: "roundedMutedOrangePoints")
             
-            let size = CGSize(width: 43, height: 50)
+            let size = CGSize(width: 38, height: 45)
             //UIGraphicsBeginImageContext(size)
             UIGraphicsBeginImageContextWithOptions(size, false, 10)
             pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
@@ -3948,7 +3948,7 @@ extension HomeVC: MKMapViewDelegate {
                 }
                 */
                 
-                imageView.frame = CGRect(x: 10, y: 25, width: 23, height: 8)
+                imageView.frame = CGRect(x: 8.5, y: 25, width: 21, height: 6)
                 hotImageView.frame = CGRect(x: -2, y: -3, width: 16, height: 16)
                 //imageView.image = UIImage(named: "like_selected-red")
                 

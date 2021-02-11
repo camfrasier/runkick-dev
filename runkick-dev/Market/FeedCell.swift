@@ -438,12 +438,9 @@ class FeedCell: UICollectionViewCell {
     
     
     lazy var newLikeButton: UIButton = {
-        let button = UIButton(type: .custom)
-        //button.setImage(UIImage(named: "heartOutline"), for: .normal)
-        button.setTitle("Like", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-        button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
-        button.layer.borderWidth = 1
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "likeHeartWalkzilla"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 225, green: 225, blue: 225)
         button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
     } ()
@@ -746,6 +743,11 @@ class FeedCell: UICollectionViewCell {
         likesLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
+        postImageView.addSubview(newLikeButton)
+        newLikeButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
     
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[imageBlock]-0-[locationBlock(26)]-5-[translucent(40)]-0-[captionBlock(50)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
         
@@ -790,6 +792,10 @@ class FeedCell: UICollectionViewCell {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(30)]-28-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-28-[pressHeart(27)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
         
         
 
