@@ -58,9 +58,9 @@ class UserCarouselCell: UICollectionViewCell {
         // organize by top daily leaders or group leaders - maybe have their cells with their face and stats beneath with all else below
         
         addSubview(profileImageView)
-        let groupDiminsions: CGFloat = 65
-        profileImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: groupDiminsions, height: groupDiminsions)
-        profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        let groupDiminsions: CGFloat = 60
+        profileImageView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: groupDiminsions, height: groupDiminsions)
+        //profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         profileImageView.layer.cornerRadius = groupDiminsions / 2
         

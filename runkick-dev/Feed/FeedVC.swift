@@ -13,9 +13,10 @@ import ActiveLabel
 private let reuseIdentifier = "Cell"
 private let reuseCheckInIdentifier = "CheckInCell"
 private let reuseCarouselIdentifier = "CarouselCell"
+private let reuseScrollIdentifier = "ScrollViewCell"
 
 
-class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
+class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
     
     /*
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -36,9 +37,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     var userProfileController: UserProfileVC?
     var value: String?
     var users = [User]()
+    var tableView: UITableView!
+  
     
     
-    
+    /*
     fileprivate let collectionViewHorizontal: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -47,6 +50,41 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         //cv.register(UserCarouselCell.self, forCellWithReuseIdentifier: reuseCarouselIdentifier)
         return cv
     }()
+    */
+    
+    fileprivate let collectionViewVertical: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        //cv.register(UserCarouselCell.self, forCellWithReuseIdentifier: reuseCarouselIdentifier)
+        return cv
+    }()
+    
+    lazy var collectionViewHorizontal: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        layout.headerReferenceSize = .zero
+        layout.sectionInset = .zero
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.dataSource = self
+        cv.delegate = self
+        cv.contentInset = .zero
+        return cv
+    }()
+    
+    let headerView: UIView = {
+        let view = UIView()
+        //view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    } ()
+    
+    let lineView: UIView = {
+        let view = UIView()
+        //view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    } ()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -245,13 +283,13 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
+
         // adding blur effect with this function at alpha 0 initially
         configureViewComponents()
         
         fetchProfileData()
         
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .top
@@ -262,32 +300,60 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         // self.clearsSelectionOnViewWillAppear = false
         
         //self.collectionView = collectionViewHorizontal
-        collectionViewHorizontal.delegate = self
-        collectionViewHorizontal.dataSource = self
-        collectionViewHorizontal.register(UserCarouselCell.self, forCellWithReuseIdentifier: reuseCarouselIdentifier)
+        //collectionViewHorizontal.delegate = self
+        //collectionViewHorizontal.dataSource = self
         
-        // adjust view background color
-        collectionView.backgroundColor = UIColor.rgb(red: 0, green: 255, blue: 0)
         
+        //collectionViewHorizontal.register(UserCarouselCell.self, forCellWithReuseIdentifier: reuseCarouselIdentifier)
+        collectionViewHorizontal.register(UserCarouselCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseCarouselIdentifier)
+        
+        
+        configureNavigationBar()
         
         // register cell classes
-        self.collectionView!.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        self.collectionView!.register(CheckInCell.self, forCellWithReuseIdentifier: reuseCheckInIdentifier)
-      
         
+        collectionViewVertical.delegate = self
+        collectionViewVertical.dataSource = self
+        collectionViewVertical.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionViewVertical.register(CheckInCell.self, forCellWithReuseIdentifier: reuseCheckInIdentifier)
+      
+
         
         // configure refresh control
         let refreshFeedControl = UIRefreshControl()
         refreshFeedControl.addTarget(self, action: #selector(handleFeedRefresh), for: .valueChanged)
-        collectionView?.refreshControl = refreshFeedControl
+        collectionViewVertical.refreshControl = refreshFeedControl
         
         //collectionView.addSubview(feedTitleLabel)
         //feedTitleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        //collectionView.addSubview(collectionViewHorizontal)
-        //collectionViewHorizontal.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: collectionView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 75)
+        /*
+        view.addSubview(headerView)
+        headerView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
+            headerView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        configureNavigationBar()
+        view.addSubview(lineView)
+        lineView.anchor(top: nil, left: headerView.leftAnchor, bottom: headerView.bottomAnchor, right: headerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        lineView.backgroundColor = UIColor.rgb(red: 210, green: 210, blue: 210)
+        
+        headerView.addSubview(collectionViewHorizontal)
+        collectionViewHorizontal.anchor(top: headerView.topAnchor, left: headerView.leftAnchor, bottom: nil, right: headerView.rightAnchor, paddingTop: -10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: headerView.frame.width, height: 90)
+        collectionViewHorizontal.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        */
+        
+        view.addSubview(collectionViewVertical)
+        collectionViewVertical.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        collectionViewVertical.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        
+
+        
+        /*
+        headerView.frame = CGRect(x: 0, y: 0, width: collectionViewVertical.frame.width, height: collectionViewVertical.frame.height)
+        view.addSubview(headerView)
+        headerView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        headerView.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+        */
         
         configureFeedViewElements()
         
@@ -305,7 +371,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
         configureTabBar()
         
-        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+        if let flowLayout = collectionViewVertical.collectionViewLayout as? UICollectionViewFlowLayout {
             //flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
             flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
         }
@@ -330,9 +396,11 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     override func viewWillAppear(_ animated: Bool) {
            
         configureTabBar()
-        configureNavigationBar()
+        //configureNavigationBar()
     }
     
+
+    // this function ensures the navigation bar is filled after transitioning to a regular nav bar
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.view.layoutSubviews()
@@ -343,71 +411,108 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        //let navigationBarHeight = navigationController?.navigationBar.frame.height ?? 0
-        //let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
-        
+        var bounds = UIScreen.main.bounds
+        var width = bounds.size.width
+        var height = bounds.size.height
         
         /*
-        // if statement safely unwraps status text
-        if let captionText = posts[indexPath.item].caption {
-            
-            let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
-            
-            // the height of all the variables in the cell
-            let knownHeight: CGFloat = 10 + 50 + 180 + 20 + 20 + 15
-            
-            return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 55)
-        }
+           let postUrl = posts[indexPath.item].imageUrl
+           let postId = posts[indexPath.item].postId
+
+
+        let url = URL(string: postUrl!)!
+               
+           Database.fetchDimensions(with: url) { (photoImage) in
+               let imageWidth = photoImage.size.width
+               let imageHeight = photoImage.size.height
+               
+               
+               
+               if imageWidth > imageHeight {
+                    
+                    print("The image width is \(imageWidth) and the image height is \(imageHeight) and the postId is \(postId)")
+
+                   
+               } else {
+                   
+                   print("The image width is \(imageWidth) and the image height is \(imageHeight) and the postId is \(postId)")
+               }
+           }
         */
         
         if collectionView == self.collectionViewHorizontal {
-            let width = 85
+            let width = 70
 
-            return CGSize(width: width, height: width)
+            return CGSize(width: width, height: width + 15)
         }
         
         
         if viewSinglePost {
-            
-        if let post = self.post {
-            if let captionText = post.caption {
-                let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
-                           
-                           // the height of all the variables in the cell
-                          // let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
-                           
-                          // return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
+            if let post = self.post {
+                    
+                if let captionText = posts[indexPath.item].caption {
+                                  
+                    let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
                 
-                    return CGSize(width: view.frame.width, height: (view.frame.height) + rect.height)
+                    return CGSize(width: width, height: (height - 200) + rect.height)
+                }
             }
-            
-        }
-            
+  
         } else {
             
+
+            let postType = posts[indexPath.item].type
+
+               if postType == "checkIn" {
+
+                          if let captionText = posts[indexPath.item].type {
+                 
+                                  print("the post type is \(postType) and we got here")
+                              let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
+                
+                                print("the height value that is added for \(captionText) should be\(rect.height)")
+                                //return CGSize(width: view.frame.width, height: (view.frame.height - 90) + rect.height)
+                            return CGSize(width: width, height: height - 60)
+                              }
+
+               } else {
+                
+                let photoStyle = posts[indexPath.item].photoStyle
+       
+            if photoStyle == "landscape" {
+                    
+            print("Photo is landscape")
             // if statement safely unwraps status text
             if let captionText = posts[indexPath.item].caption {
                 
+
                 let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
-                
-                // the height of all the variables in the cell
-               // let knownHeight: CGFloat = 10 + 40 + 175 + 20 + 30 + 35
-                
-                //return CGSize(width: view.frame.width - 0, height: rect.height + knownHeight + 250)
-                
-                //return CGSize(width: view.frame.width - 0, height: view.frame.height - 50)
-                
-                return CGSize(width: view.frame.width, height: (view.frame.height) + rect.height)
-            }
+   
+                    return CGSize(width: width, height: (height - 300) + rect.height)
             
+                    }
+                } else {
+                    
+                print("Photo is portrait")
+                
+                if let captionText = posts[indexPath.item].caption {
+                        
+
+                        let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
+      
+                    return CGSize(width: width, height: (height - 200) + rect.height)
+                }
+            }
+            }
+             
         }
-        // return CGSize(width: view.frame.width - 0, height: 200)
-        //return CGSize(width: view.frame.width - 0, height: view.frame.height + 50)
-        return CGSize(width: view.frame.width, height: view.frame.height)
+           
+        return CGSize(width: width, height: height - 250)
+        
         
     }
 
-    
+ /*
     // MARK: UICollectionViewDataSource
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -603,7 +708,9 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
       
        
     }
+    */
     
+   
     func fetchUsers() {
 
         if userCurrentKey == nil {
@@ -664,6 +771,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         
     }
     
+
     func configureNotificationComponents() {
 
         let stackView = UIStackView(arrangedSubviews: [messageLabel, stackIndicatorBar, notificationsLabel])
@@ -745,6 +853,22 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             self.profileImageView.loadImage(with: profileImageUrl)
         }
     }
+    
+    /*
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pan = scrollView.panGestureRecognizer
+        let velocity = pan.velocity(in: scrollView).y
+        if velocity < -5 {
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
+            //self.navigationController?.setToolbarHidden(true, animated: true)
+         
+            
+        } else if velocity > 5 {
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
+            //self.navigationController?.setToolbarHidden(false, animated: true)
+        }
+    }
+*/
     
     func configureNavigationBar() {
         /*
@@ -1051,7 +1175,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         if currentKey == nil {
             DataService.instance.REF_FEED.child(currentUid).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                self.collectionView?.refreshControl?.endRefreshing()
+                self.collectionViewVertical.refreshControl?.endRefreshing()
                 
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
@@ -1093,7 +1217,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             self.posts.sort(by: { (post1, post2) -> Bool in
                 return post1.creationDate > post2.creationDate
             })
-            self.collectionView?.reloadData()
+            self.collectionViewVertical.reloadData()
         }
     }
     
@@ -1359,7 +1483,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         let feedCell = FeedCell()
         feedCell.configureLikeButton()
         
-        collectionView?.reloadData()
+        collectionViewVertical.reloadData()
         
 
     }
@@ -1578,4 +1702,210 @@ extension FeedVC: CheckInCellDelegate {
     
 
 }
+
+extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    
+      func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+         
+         if collectionView == collectionViewHorizontal {
+             if users.count > 9 {
+                 if indexPath.item == users.count - 1 {
+                     fetchUsers()
+                     
+                     print("We have actually reach the horizontal collection view")
+                 }
+             }
+         }
+         
+         print("We have actually can't reach the collection view horizontal")
+         
+         if posts.count > 4 {
+             if indexPath.item == posts.count - 1 {
+                 fetchPosts()
+                //self.navigationController?.setNavigationBarHidden(true, animated: true)
+             }
+         }
+     }
+
+     func numberOfSections(in collectionView: UICollectionView) -> Int {
+         return 1
+     }
+
+
+     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+         
+         if collectionView == self.collectionViewHorizontal {
+             
+             return users.count
+             
+         }
+         
+         // this logic will allow us to click on our profile and recieve just that picture that was selected and use the FeedVC code
+         if viewSinglePost {
+             return 1
+         } else {
+             return posts.count
+         }
+             
+         
+     }
+     
+    /*
+     // creates a space between top cell and cell view... right before scrolling is enabled.
+     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+         //return CGSize(width: view.frame.width, height: 10)
+         return CGSize(width: view.frame.width, height: 0)
+     }
+     */
+     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+         // sets the vertical spacing between posts
+         
+         if collectionView == self.collectionViewHorizontal {
+             return 2
+         }
+         return 10
+     }
+     
+     // calling function to give space and insets
+     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+
+         if collectionView == self.collectionViewHorizontal {
+             return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+         }
+         
+         //return UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
+         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+
+        case UICollectionView.elementKindSectionHeader:
+
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeadView", for: indexPath)
+
+            headerView.backgroundColor = UIColor.blue;
+            return headerView
+
+        default:
+
+            fatalError("Unexpected element kind")
+        }
+    }
+     
+
+     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+         print("DEBUG: THE CHECKIN FUNCTION WAS HIT")
+
+     if collectionView == self.collectionViewHorizontal {
+             let cellA = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCarouselIdentifier, for: indexPath) as! UserCarouselCell
+             
+             cellA.user = users[indexPath.item]
+
+             //cell.delegate = self
+             print("Do we reach this point")
+             return cellA
+    }
+         
+         
+         
+         let post = posts[indexPath.item]
+         
+         //let type = PostType.init(rawValue: post.type)
+        let type = PostType.init(rawValue: post.type)
+         
+         switch type {
+             
+         case .checkIn:
+             
+             
+             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCheckInIdentifier, for: indexPath) as! CheckInCell
+             
+             // running through the checkin function to make sure we relaod, however on a second reload it won't work because it will be true
+             
+             //let checkInCell = CheckInCell()
+             //checkInCell.setToTrue(false)
+             //print("Setting the did load funtions")
+         
+             cell.delegate = self
+             cell.post = posts[indexPath.item]
+
+             //value = cell.post?.postId
+             //print("THE VALUE IS EQUAL TO")
+             
+
+             
+             return cell
+             
+         case .userPost:
+             print("DEBUG: show the normal upload cell")
+             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
+             
+             cell.delegate = self
+             
+             // delegate to view long press post
+             cell.altDelegate = self
+             
+             if viewSinglePost {
+                 if let post = self.post {
+                     cell.post = post
+                 }
+             } else {
+                 cell.post = posts[indexPath.item]
+                 
+                /*
+                let dimensionUrl = cell.post?.imageUrl
+ 
+                let url = URL(string: dimensionUrl!)
+                
+                URLSession.shared.dataTask(with: url!) { (data, response, error) in
+                    
+                    // Handle our error
+                    if let error = error {
+                        print("Failed to load image with error", error.localizedDescription)
+                    }
+                    
+                    // Image data.
+                    guard let imageData = data else { return }
+                    
+                    
+                    // Set image using image data.
+                    let photoImage = UIImage(data: imageData)
+                    
+                    let imageWidth = photoImage?.size.width
+                    let imageHeight = photoImage?.size.height
+                    print("this is the photo width \(imageWidth) and this is the height \(imageHeight)")
+                    
+                    // Create key and value for image cache.
+                    //imageCache[url!.absoluteString] = photoImage
+                    
+                    // Set our image.
+                    DispatchQueue.main.async {
+                        //self.image = photoImage
+                        
+                        //print("This is the phot heigjt \(photoImage?.size.height)")
+                    }
+                    }.resume()
+                */
+             }
+             
+             handleHastagTapped(forCell: cell)
+             
+             handleUsernameLabelTapped(forCell: cell)
+             
+             handleMentionedTapped(forCell: cell)
+             
+             return cell
+
+         case .none:
+     
+             return UICollectionViewCell()
+             
+         }
+    }
+
+     
+}
+
+
 

@@ -19,11 +19,12 @@ class CircleCollectionViewLayout: UICollectionViewLayout {
         super.prepare()
 
         guard let collectionView = collectionView else { return }
-
+        
         center = CGPoint(x: collectionView.bounds.midX, y: collectionView.bounds.midY)
         let shortestAxisLength = min(collectionView.bounds.width, collectionView.bounds.height)
         itemSize = CGSize(width: shortestAxisLength * 0.1, height: shortestAxisLength * 0.1)
-        radius = shortestAxisLength * 0.4
+        //radius = shortestAxisLength * 0.4
+        radius = shortestAxisLength * 0.32
         numberOfItems = collectionView.numberOfItems(inSection: 0)
     }
 

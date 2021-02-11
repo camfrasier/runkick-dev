@@ -197,8 +197,7 @@ class SearchVC: UITableViewController, UISearchBarDelegate, UICollectionViewDele
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        
-        //let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - (tabBarController?.tabBar.frame.height)! - (navigationController?.navigationBar.frame.height)!)
+
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)

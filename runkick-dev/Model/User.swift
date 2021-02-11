@@ -26,6 +26,7 @@ class User {
     var isAdmin = false
     var isProfileCompleted = false
     var activityDate: String!
+    var lo1: String!
 
     
     // When we create our user it will ask us for a value
@@ -63,6 +64,10 @@ class User {
         
         if let distance = dictionary["dailyDistance"] as? Double {
             self.distance = distance
+        }
+        
+        if let lo1 = dictionary["lo1"] as? String {
+            self.lo1 = lo1
         }
         
         

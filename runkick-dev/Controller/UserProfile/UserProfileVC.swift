@@ -71,6 +71,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.isHidden = false
         /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .all

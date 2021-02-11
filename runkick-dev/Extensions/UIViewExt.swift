@@ -32,7 +32,7 @@ extension UIColor {
     }
     
     static func walkzillaRed() -> UIColor {
-        return UIColor.rgb(red: 230, green: 52, blue: 78)
+        return UIColor.rgb(red: 246, green: 80, blue: 100)
     }
     
     static func airBnBNew() -> UIColor {
@@ -508,22 +508,79 @@ extension Database {
         }
     }
     
-    /*
-    static func fetchCategoryPost(with postId: String, completion: @escaping(StorePost) -> ()) {
-        DataService.instance.REF_CATEGORIES.child(postId).observeSingleEvent(of: .value) { (snapshot) in
+    static func fetchLogos(with postId: String, completion: @escaping(Logos) -> ()) {
+        
+
             
+        DataService.instance.REF_POSTS.child(postId).child("logoImages").observeSingleEvent(of: .value) { (snapshot) in
+            
+        //DataService.instance.REF_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
-            guard let category = dictionary["category"] as? String else { return }  // Parsing through JSON data.
             
-            Database.fetchUser(with: category, completion: { (user) in
+            print("CAN WE SEE THE LOGOS SNAPSHOT \(snapshot)")
+            let post = Logos(postId: postId, dictionary: dictionary)
+
+            // this value must escape Logos as well
+            completion(post)
+        
+            
+            /*
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            guard let ownerUid = dictionary["ownerUid"] as? String else { return }  // Parsing through JSON data.
+            
+            Database.fetchUser(with: ownerUid, completion: { (user) in
                 
-                let post = StorePost(postId: postId, user: user, dictionary: dictionary)
+                let post = Post(postId: postId, user: user, dictionary: dictionary)
                 
                 completion(post)
             })
+            */
         }
+   
     }
-    */
+    
+    static func sizeOfImageAt(url: URL) -> CGSize? {
+         // with CGImageSource we avoid loading the whole image into memory
+         guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else {
+             return nil
+         }
+
+         let propertiesOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+         guard let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, propertiesOptions) as? [CFString: Any] else {
+             return nil
+         }
+
+         if let width = properties[kCGImagePropertyPixelWidth] as? CGFloat,
+             let height = properties[kCGImagePropertyPixelHeight] as? CGFloat {
+             return CGSize(width: width, height: height)
+         } else {
+             return nil
+         }
+     }
+    
+    
+    static func fetchDimensions(with url: URL, completion: @escaping(UIImage) -> ()) {
+                                
+        URLSession.shared.dataTask(with: url) {data,error,_ in ()
+                    
+                    // Handle our error
+                    if let error = error {
+                        print("Failed to load image with error")
+                    }
+                    // Image data.
+                    guard let imageData = data else { return }
+
+                    // Set image using image data.
+            guard let photoImage = UIImage(data: imageData) else { return }
+            
+                //self.imageWidth = photoImage?.size.width
+                //self.imageHeight = photoImage?.size.height
+                    
+                    completion(photoImage)
+                
+                    }.resume()
+    }
+    
     static func fetchStore(with storeId: String, completion: @escaping(Store) -> ()) {
         
         DataService.instance.REF_STORES.child(storeId).observeSingleEvent(of: .value) { (snapshot) in

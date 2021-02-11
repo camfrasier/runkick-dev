@@ -148,6 +148,7 @@ class HomeVC: UIViewController, Alertable {
     var timeElapsed: TimeInterval = 0.0
     var childByAutoKey: String!
     var didCreateFolder = false
+    var logoNum = 1
 
     
     enum ExpansionState {
@@ -277,8 +278,8 @@ class HomeVC: UIViewController, Alertable {
     lazy var destinationTextField: UITextField = {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
-        tf.attributedPlaceholder = NSAttributedString(string:"Where to?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
-        tf.font = UIFont.systemFont(ofSize: 20)
+        tf.attributedPlaceholder = NSAttributedString(string:"Where to?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)])
+        tf.font = UIFont.systemFont(ofSize: 18)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
         tf.layer.cornerRadius = 0 //25
@@ -324,14 +325,16 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var cancelSearchButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "simpleCancelWalkzillaRed"), for: .normal)
+        button.setImage(UIImage(named: "cancelButtonHeavy"), for: .normal)
         button.addTarget(self, action: #selector(handleCancelSearch), for: .touchUpInside)
-        button.backgroundColor = .clear
+        //button.backgroundColor = .clear
         //button.layer.cornerRadius = 74 / 2
+        /*
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.30).cgColor
         button.layer.shadowRadius = 5.0
         button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        */
         //button.layer.cornerRadius = 25
         button.alpha = 0
         return button
@@ -506,8 +509,8 @@ class HomeVC: UIViewController, Alertable {
         button.setImage(UIImage(named: "user-groups-white"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheckGroups), for: .touchUpInside)
         button.backgroundColor = .clear
-        button.tintColor = UIColor.walkzillaRed()
-        //button.tintColor = UIColor.black
+        //button.tintColor = UIColor.walkzillaRed()
+        button.tintColor = UIColor.black
         /*
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.65).cgColor
@@ -537,11 +540,11 @@ class HomeVC: UIViewController, Alertable {
     lazy var beBoppActionButton: UIButton = {
         let button = UIButton(type: .system)
         //button.setImage(UIImage(named: "whitePlus"), for: .normal)
-        button.setImage(UIImage(named: "analytics-bar-simple"), for: .normal)
+        button.setImage(UIImage(named: "simpleAnalyticsBar"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
         button.backgroundColor = .clear
-        button.tintColor = UIColor.walkzillaRed()
-        //button.tintColor = UIColor.black
+        //button.tintColor = UIColor.walkzillaRed()
+        button.tintColor = UIColor.black
         /*
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.65).cgColor
@@ -627,9 +630,13 @@ class HomeVC: UIViewController, Alertable {
     
 
     
-    let centerMapBackground: UIView = {
+    lazy var centerMapBackground: UIView = {
         let view = UIView()
-        view.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.65).cgColor
+        view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
         let centerMapTap = UITapGestureRecognizer(target: self, action: #selector(handleCenterMapBtnPressed))
         centerMapTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
@@ -639,16 +646,20 @@ class HomeVC: UIViewController, Alertable {
     }()
     
     let centerMapButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.setImage(UIImage(named: "centerMapIconSharpOuterInner"), for: .normal)
+        let button = UIButton(type: UIButton.ButtonType.system)
+        button.setImage(UIImage(named: "centerMapIconWalkzilla"), for: .normal)
+        button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         button.addTarget(self, action: #selector(handleCenterMapBtnPressed), for: .touchUpInside)
-        button.alpha = 0
         return button
     }()
     
     lazy var settingsButtonBackground: UIView = {
         let view = UIView()
-        view.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.40).cgColor
+        view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.25).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
         let settingsTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheck))
         settingsTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
@@ -658,7 +669,7 @@ class HomeVC: UIViewController, Alertable {
     
     let settingsButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
-        button.setImage(UIImage(named: "whiteGear"), for: .normal)
+        button.setImage(UIImage(named: "menu"), for: .normal)
         //button.setImage(UIImage(named: "simple-gear-white"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheck), for: .touchUpInside)
         return button
@@ -673,6 +684,7 @@ class HomeVC: UIViewController, Alertable {
         view.addGestureRecognizer(profileTap)
         return view
     }()
+    
     
     let simpleProfileButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
@@ -735,7 +747,7 @@ class HomeVC: UIViewController, Alertable {
         label.textAlignment = .center
         // add gesture recognizer
         label.text = "SAVE PATH"
-        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
         buttonTap.numberOfTapsRequired = 1
@@ -746,18 +758,21 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var toggleSaveRemoveSegmentView: UIView = {
         let view = UIView()
+        view.backgroundColor = UIColor.walkzillaRed()
+        /*
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
         view.layer.shadowRadius = 5.0
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        */
         let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
         buttonTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(buttonTap)
-        view.alpha = 0
+        view.alpha = 1
         return view
     }()
-    
+    /*
     lazy var saveRemoveSegmentBackground: GradientDiagonalView = {
         let view = GradientDiagonalView()
         let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
@@ -771,7 +786,7 @@ class HomeVC: UIViewController, Alertable {
         view.alpha = 1
         return view
     }()
-    
+    */
        /*
        lazy var removeSegmentButton: UIButton = {
         let button = UIButton(type: .system)
@@ -952,17 +967,26 @@ class HomeVC: UIViewController, Alertable {
     }()
     
     
-    lazy var cancelTripButton: UIButton = {
+    lazy var cancelTripBackground: UIView = {
+        let view = UIView()
+        //view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        view.backgroundColor = UIColor.walkzillaRed()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.25).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        let settingsTap = UITapGestureRecognizer(target: self, action: #selector(handleCancelTrip))
+        settingsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(settingsTap)
+        view.alpha = 0
+        return view
+    }()
+    
+    let cancelTripButton: UIButton = {
         let button = UIButton(type: .system)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        button.titleLabel?.textAlignment = .center
-        button.setTitle("Cancel Trip", for: .normal)
-        button.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
-        //button.layer.borderColor = UIColor.lightGray.cgColor
-        //button.layer.borderWidth = 0.25
-        //button.setTitleColor(UIColor(red: 9/255, green: 171/255, blue: 231/255, alpha: 1), for: .normal)
-        //button.setTitleColor(UIColor(red: 9/255, green: 171/255, blue: 231/255, alpha: 1), for: .normal)
-        button.setTitleColor(UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1), for: .normal)
+        button.setImage(UIImage(named: "cancelButtonHeavy"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         button.addTarget(self, action: #selector(handleCancelTrip), for: .touchUpInside)
         button.alpha = 0
         return button
@@ -1024,7 +1048,7 @@ class HomeVC: UIViewController, Alertable {
         extendedLayoutIncludesOpaqueBars = true
         */
         
-        fetchCurrentUserData()
+        //fetchCurrentUserData()
         
         //self.title = "Home"
         navigationController?.navigationBar.isHidden = true
@@ -1160,14 +1184,15 @@ class HomeVC: UIViewController, Alertable {
                 self.profileImageView.loadImage(with: profileImageUrl)
                 
                 let profileDimension: CGFloat = 40
-                self.mapView.addSubview(self.profileImageView)
-                self.profileImageView.anchor(top: self.mapView.topAnchor, left: nil, bottom: nil, right: self.mapView.rightAnchor, paddingTop: 34, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: profileDimension, height: profileDimension)
+                //self.mapView.addSubview(self.profileImageView)
+                //self.profileImageView.anchor(top: self.mapView.topAnchor, left: nil, bottom: nil, right: self.mapView.rightAnchor, paddingTop: 34, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: profileDimension, height: profileDimension)
                 self.profileImageView.layer.cornerRadius = profileDimension / 2
             }
     
 
                 } else {
         
+            /*
                            let profileDimension: CGFloat = 40
                     mapView.addSubview(simpleProfileBackground)
                     simpleProfileBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 34, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: profileDimension, height: profileDimension)
@@ -1175,7 +1200,7 @@ class HomeVC: UIViewController, Alertable {
                     
                     mapView.addSubview(simpleProfileButton)
                     simpleProfileButton.anchor(top: simpleProfileBackground.topAnchor , left: simpleProfileBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 21, height: 23)
-                    
+            */
                 }
 
     }
@@ -1212,21 +1237,24 @@ class HomeVC: UIViewController, Alertable {
        //simpleRightMenuBackground.addSubview(simpleRightMenuButton)
        //simpleRightMenuButton.anchor(top: simpleRightMenuBackground.topAnchor, left: simpleRightMenuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
+        let analyticsBackgroundDimension: CGFloat = 45
         mapView.addSubview(simpleActionBackground)
-        simpleActionBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: 50, height: 50)
-        simpleActionBackground.layer.cornerRadius = 19
+        simpleActionBackground.anchor(top: nil, left: nil, bottom:  mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 20, width: analyticsBackgroundDimension, height: analyticsBackgroundDimension)
+        simpleActionBackground.layer.cornerRadius = 10
+        //simpleActionBackground.layer.cornerRadius = analyticsBackgroundDimension / 2.6
         
         simpleActionBackground.addSubview(beBoppActionButton)
-        beBoppActionButton.anchor(top: simpleActionBackground.topAnchor, left: simpleActionBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 28, height: 20)
+        beBoppActionButton.anchor(top: simpleActionBackground.topAnchor, left: simpleActionBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 30, height: 26)
         
+        
+        let groupsBackgroundDimension: CGFloat = 45
         mapView.addSubview(groupsButtonBackground)
-        groupsButtonBackground.anchor(top: nil, left: nil, bottom: simpleActionBackground.topAnchor, right: simpleActionBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 50, height: 50)
-        groupsButtonBackground.layer.cornerRadius = 19
-        
-        
+        groupsButtonBackground.anchor(top: nil, left: nil, bottom: simpleActionBackground.topAnchor, right: simpleActionBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
+        groupsButtonBackground.layer.cornerRadius = 10
+        //groupsButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2.6
         
         groupsButtonBackground.addSubview(groupsButton)
-        groupsButton.anchor(top: groupsButtonBackground.topAnchor, left: groupsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 25, height: 27)
+        groupsButton.anchor(top: groupsButtonBackground.topAnchor, left: groupsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 11, paddingBottom: 0, paddingRight: 0, width: 24, height: 24)
         
         /*
         mapView.addSubview(saveSegmentButton)
@@ -1251,7 +1279,7 @@ class HomeVC: UIViewController, Alertable {
         //stepsLabel.anchor(top: milesLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         //stepsLabel.centerXAnchor.constraint(equalTo: pedoDistanceLabel.centerXAnchor).isActive = true
 
-        
+         /*
         mapView.addSubview(toggleSaveRemoveSegmentView)
         toggleSaveRemoveSegmentView.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 150, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 175, height: 50)
         toggleSaveRemoveSegmentView.layer.cornerRadius = 23
@@ -1266,6 +1294,7 @@ class HomeVC: UIViewController, Alertable {
         saveRemovePathLabel.clipsToBounds = true
         saveRemovePathLabel.centerXAnchor.constraint(equalTo: self.saveRemoveSegmentBackground.centerXAnchor).isActive = true
         saveRemovePathLabel.centerYAnchor.constraint(equalTo: self.saveRemoveSegmentBackground.centerYAnchor).isActive = true
+        */
         
         /*
         mapView.addSubview(startStopPedometerButton)
@@ -1382,7 +1411,7 @@ class HomeVC: UIViewController, Alertable {
             searchImageView.anchor(top: destTextFieldBlurView.topAnchor, left: destTextFieldBlurView.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 18, height: 18)
 
             mapView.addSubview(destinationTextField)
-            destinationTextField.anchor(top: mapView.topAnchor, left: searchImageView.rightAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 8, paddingBottom: 0, paddingRight: 105, width: 0, height: 45)
+            destinationTextField.anchor(top: mapView.topAnchor, left: searchImageView.rightAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 32, paddingLeft: 8, paddingBottom: 0, paddingRight: 105, width: 0, height: 45)
 
             addBlurEffect()
             
@@ -1942,33 +1971,40 @@ class HomeVC: UIViewController, Alertable {
         
         let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
         
-        let centerMapDimension: CGFloat = 50
+        let centerMapDimension: CGFloat = 45
         mapView.addSubview(centerMapBackground)
         centerMapBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 20, paddingRight: 0, width: centerMapDimension, height: centerMapDimension)
-        //centerMapBackground.layer.cornerRadius = centerMapDimension / 2
-        centerMapBackground.layer.cornerRadius = 19
+        centerMapBackground.layer.cornerRadius = 10
         
-        mapView.addSubview(centerMapButton)
-        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        centerMapBackground.addSubview(centerMapButton)
+        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 17, height: 16)
         
         
-        let settingsDimension: CGFloat = 40
+        let settingsDimension: CGFloat = 45
         mapView.addSubview(settingsButtonBackground)
-        settingsButtonBackground.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 34, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: settingsDimension, height: settingsDimension)
-        settingsButtonBackground.layer.cornerRadius = 15
+        settingsButtonBackground.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: settingsDimension, height: settingsDimension)
+        settingsButtonBackground.layer.cornerRadius = 10
         
         mapView.addSubview(settingsButton)
-        settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 29, height: 28)
         
-    
+        let cancelTripButtonDimension: CGFloat = 45
+        mapView.addSubview(cancelTripBackground)
+        cancelTripBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: cancelTripButtonDimension, height: cancelTripButtonDimension)
+        cancelTripBackground.layer.cornerRadius = 10
         
+        mapView.addSubview(cancelTripButton)
+        cancelTripButton.anchor(top: cancelTripBackground.topAnchor , left: cancelTripBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 13, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        /*
         let rewardsDimension: CGFloat = 40
         mapView.addSubview(simpleRewardsBackground)
         simpleRewardsBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 34, paddingLeft: 0, paddingBottom: 0, paddingRight: 56, width: rewardsDimension, height: rewardsDimension)
         simpleRewardsBackground.layer.cornerRadius = 15
         
+        
         mapView.addSubview(simpleRewardsButton)
         simpleRewardsButton.anchor(top: simpleRewardsBackground.topAnchor , left: simpleRewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        */
         
         //mapView.addSubview(analyticsButton)
         //analyticsButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: tabBarHeight + 20, paddingRight: 20, width: 60, height: 60)
@@ -2046,12 +2082,12 @@ class HomeVC: UIViewController, Alertable {
         
         // configure search store view table view
         tableView = UITableView()
-        tableView.rowHeight = 60
+        tableView.rowHeight = 50
         tableView.delegate = self
         tableView.dataSource = self
         
         // search table view background
-        tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //tableView.alpha = 0.8
         
         //tableView.register(UITableViewCell.self, forCellReuseIdentifier: "locationCell")
@@ -2160,7 +2196,7 @@ class HomeVC: UIViewController, Alertable {
         getTripKey()
         
         //reanimateStartTripButton()
-        //reanimateCancelTripButton()
+        reanimateCancelTripButton()
         
         /*
          removeStartTripButton()
@@ -2197,6 +2233,18 @@ class HomeVC: UIViewController, Alertable {
         // we don't need to remove the trip at all. just stop the pedometer and replot the route
         let currentUserID = Auth.auth().currentUser?.uid
         DataService.instance.REF_TRIPS.child(currentUserID!).removeValue()
+        
+        cancelTripBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+         
+         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+             
+             self.cancelTripBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+             self.cancelTripBackground.alpha = 0
+
+         }) { (_) in
+
+             self.cancelTripBackground.transform = .identity
+         }
     }
     
     @objc func handleNotifcationVC() {
@@ -2843,19 +2891,19 @@ class HomeVC: UIViewController, Alertable {
         
         centerMapOnUserLocation()
         
-        centerMapButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-        centerMapBackground.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+       //centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+        centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         
-        UIView.animate(withDuration: 1.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             
-            self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-            self.centerMapButton.alpha = 0
+            //self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            //self.centerMapButton.alpha = 0
             
             self.centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             self.centerMapBackground.alpha = 0
         }) { (_) in
-            self.centerMapButton.transform = .identity
+            //self.centerMapButton.transform = .identity
             self.centerMapBackground.transform = .identity
         }
     }
@@ -2878,22 +2926,22 @@ class HomeVC: UIViewController, Alertable {
             
             pedoDistanceLabel.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
             milesLabel.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-            toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            //toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
                            
                            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                             
                             self.pedoDistanceLabel.alpha = 1
                             self.milesLabel.alpha = 1
-                            self.toggleSaveRemoveSegmentView.alpha = 1
+                            //self.toggleSaveRemoveSegmentView.alpha = 1
                             
                             self.pedoDistanceLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
                             self.milesLabel.transform = CGAffineTransform(scaleX: 1, y: 1)
-                            self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                            //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
                                
                            }) { (_) in
                             self.pedoDistanceLabel.transform = .identity
                             self.milesLabel.transform = .identity
-                            self.toggleSaveRemoveSegmentView.transform = .identity
+                            //self.toggleSaveRemoveSegmentView.transform = .identity
                 }
                 
                 print("start trip pressed")
@@ -2920,17 +2968,17 @@ class HomeVC: UIViewController, Alertable {
                 
                 // if we have the select path button showing , remove it before starting
                 if initialCheckpointSelected == true {
-                    self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
 
                 
                     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                     
-                    self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-                        self.toggleSaveRemoveSegmentView.alpha = 0
+                    //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+                    //self.toggleSaveRemoveSegmentView.alpha = 0
 
 
                 }) { (_) in
-                    self.toggleSaveRemoveSegmentView.transform = .identity
+                    //self.toggleSaveRemoveSegmentView.transform = .identity
                     
                     // setting your boolean variable here
                     
@@ -3674,14 +3722,14 @@ class HomeVC: UIViewController, Alertable {
     
     @objc func handleSaveRemoveSegment() {
         
-    toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
+    //toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
                    
                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                        
-                    self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1, y: 1)
                        
                    }) { (_) in
-                    self.toggleSaveRemoveSegmentView.transform = .identity
+                    //self.toggleSaveRemoveSegmentView.transform = .identity
         }
         
         if saveRemovePathLabel.text == "SAVE PATH" {
@@ -3701,12 +3749,13 @@ class HomeVC: UIViewController, Alertable {
             UpdateService.instance.saveTripSegment(forRunnerKey: currentUserID!)
             UpdateService.instance.updateDestinationToNewOrigin(withCoordinate: mapItem.placemark.coordinate)
             
-            dismissStoreDetailView()
+            //at the moment i don't want to dismiss the view on save
+            //dismissStoreDetailView()
             
             // now setting to remove segment
            saveRemovePathLabel.text = "REMOVE PATH"
             saveRemovePathLabel.textColor = .black
-            saveRemovePathLabel.backgroundColor = .white
+            saveRemovePathLabel.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
            //toggleSaveRemoveSegmentView.backgroundColor = stopColor
             
             saveSegmentVisible = false
@@ -3985,12 +4034,15 @@ extension HomeVC: MKMapViewDelegate {
    
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
         
+       
+        
         if isStoreDetailViewVisible == true {
             // don't anitmate center map button in
             print("DEBUG: Store detail view set to true")
         } else {
-            centerMapBackground.fadeTo(alphaValue: 0.65, withDuration: 0.75)
-            centerMapButton.fadeTo(alphaValue: 1, withDuration: 0.75)
+            
+            centerMapBackground.fadeTo(alphaValue: 1, withDuration: 0.25)
+            //centerMapButton.fadeTo(alphaValue: 1, withDuration: 0.75)
         }
     }
     
@@ -4004,8 +4056,8 @@ extension HomeVC: MKMapViewDelegate {
         let lineRenderer = MKPolylineRenderer(overlay: self.route.polyline)
 
         //lineRenderer.strokeColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
-        //lineRenderer.strokeColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-            lineRenderer.strokeColor = UIColor.walkzillaRed()
+        lineRenderer.strokeColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+       //lineRenderer.strokeColor = UIColor.walkzillaRed()
         
             lineRenderer.lineWidth = 4.5
         lineRenderer.lineCap = .round
@@ -4290,19 +4342,19 @@ extension HomeVC: MKMapViewDelegate {
         
         
         if initialCheckpointSelected == false {
-            self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+            //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
             self.startStopButton.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
         
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
-            self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+            //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
                 self.startStopButton.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
             
-            self.toggleSaveRemoveSegmentView.alpha = 1
+            //self.toggleSaveRemoveSegmentView.alpha = 1
                 self.startStopButton.alpha = 1
             self.initialCheckpointSelected = true
         }) { (_) in
-            self.toggleSaveRemoveSegmentView.transform = .identity
+            //self.toggleSaveRemoveSegmentView.transform = .identity
             self.startStopButton.transform = .identity
         }
 
@@ -4324,27 +4376,32 @@ extension HomeVC: MKMapViewDelegate {
              saveRemovePathLabel.backgroundColor = .clear
         }
         
-        centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+        //centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        groupsButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
-            self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            //self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             self.centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             self.simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            self.groupsButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             
             self.centerMapBackground.alpha = 0
-            self.centerMapButton.alpha = 0
+            //self.centerMapButton.alpha = 0
             self.simpleActionBackground.alpha = 0
-            self.centerMapBackground.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0).cgColor
-            self.centerMapButton.isHidden = true
+            self.groupsButtonBackground.alpha = 0
+            
+            //self.centerMapBackground.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
+            //self.centerMapButton.isHidden = true
             
             
         }) { (_) in
-            self.centerMapButton.transform = .identity
+            //self.centerMapButton.transform = .identity
             self.centerMapBackground.transform = .identity
             self.simpleActionBackground.transform = .identity
+            self.groupsButtonBackground.transform = .identity
         }
 
         
@@ -4552,6 +4609,16 @@ extension HomeVC: MKMapViewDelegate {
            // storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 270), paddingRight: 0, width: 0, height: window.frame.height + 20)
             
             storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 160), paddingRight: 0, width: 0, height: window.frame.height + 20)
+            
+            storeDetailView.addSubview(toggleSaveRemoveSegmentView)
+            toggleSaveRemoveSegmentView.anchor(top: storeDetailView.topAnchor, left: storeDetailView.leftAnchor, bottom: nil, right: storeDetailView.rightAnchor, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 60)
+            
+            toggleSaveRemoveSegmentView.addSubview(saveRemovePathLabel)
+            saveRemovePathLabel.anchor(top: toggleSaveRemoveSegmentView.topAnchor, left: toggleSaveRemoveSegmentView.leftAnchor, bottom: toggleSaveRemoveSegmentView.bottomAnchor, right: toggleSaveRemoveSegmentView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            saveRemovePathLabel.centerXAnchor.constraint(equalTo: self.toggleSaveRemoveSegmentView.centerXAnchor).isActive = true
+            saveRemovePathLabel.centerYAnchor.constraint(equalTo: self.toggleSaveRemoveSegmentView.centerYAnchor).isActive = true
+            
+            
         }
     }
  
@@ -4586,52 +4653,48 @@ extension HomeVC: MKMapViewDelegate {
         print("Store view origin is set to false")
         print("Store detail view visable set to false")
         
-        centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        //centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        groupsButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-            self.centerMapButton.isHidden = false
-            self.centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            //self.centerMapButton.isHidden = false
+            //self.centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.groupsButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             
-             self.centerMapButton.alpha = 1
-            self.centerMapBackground.alpha = 0.65
+            // self.centerMapButton.alpha = 1
+            self.centerMapBackground.alpha = 1
             self.simpleActionBackground.alpha = 1
-            self.centerMapBackground.layer.backgroundColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.65).cgColor
+            self.groupsButtonBackground.alpha = 1
+            //self.centerMapBackground.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
             
             
             
         }) { (_) in
-            self.centerMapButton.transform = .identity
+            //self.centerMapButton.transform = .identity
             self.centerMapBackground.transform = .identity
             self.simpleActionBackground.transform = .identity
+            self.groupsButtonBackground.transform = .identity
         }
     }
  
-    func removeStartTripButton() {
-        UIView.animate(withDuration: 0.2, animations:  {
-            self.startTripButton.alpha = 0
-        })
-    }
-    
-    func reanimateStartTripButton() {
-        UIView.animate(withDuration: 0.2, animations:  {
-            self.startTripButton.alpha = 1
-        })
-    }
-    
-    func removeCancelTripButton() {
-        UIView.animate(withDuration: 0.2, animations:  {
-            self.cancelTripButton.alpha = 0
-        })
-    }
     
     func reanimateCancelTripButton() {
-        UIView.animate(withDuration: 0.2, animations:  {
-            self.cancelTripButton.alpha = 1
-        })
+
+        cancelTripBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+         
+         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+             
+             self.cancelTripBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+             self.cancelTripBackground.alpha = 1
+
+         }) { (_) in
+
+             self.cancelTripBackground.transform = .identity
+         }
     }
     
     func dismissStoreDetailView() {
@@ -5083,10 +5146,13 @@ extension HomeVC: MKMapViewDelegate {
         
         // we need to grab the store logos using the logo id, user id, trip id and activity feed.. grab the entire array and place
         //it under your checkin
+        
+        print("the logo id for retrieving store images is \(logoId) trip id is \(tripId) and postId is \(postId)")
 
         DataService.instance.REF_ACTIVITY.child(uid).child(tripId).child(logoId).observeSingleEvent(of: .value) { (snapshot) in
             
-            let snap = snapshot.value as! [String: Dictionary<String, Any>]
+            let snap = snapshot.value //as! [String: Dictionary<String, Any>]
+            
             
             // saving the entire array to the post feed for checkIn
             DataService.instance.REF_POSTS.child(postId).updateChildValues(["postId": postId, "logoImages" :snap])
@@ -5322,6 +5388,7 @@ extension HomeVC: MKMapViewDelegate {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         
+        
         print("DEBUG: able to pass store id but now we must see why the store LOgo url \(storeId)")
         
         
@@ -5331,15 +5398,21 @@ extension HomeVC: MKMapViewDelegate {
             guard let logoUrl = snapshot.value as? String else { return }
             
             // adding this information to the activity folder
-            DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).childByAutoId().childByAutoId().updateChildValues(["logoUrl": logoUrl, "storeId": storeId])
+            //DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).childByAutoId().childByAutoId().updateChildValues(["logoUrl": logoUrl, "storeId": storeId])
+            
+            DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).childByAutoId().updateChildValues(["logo\(self.logoNum)": logoUrl])
             
                 // going back to save the key value for the url value that was just created
             DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).queryLimited(toFirst: 1).observe(.childAdded) { (snapshot) in
             
                         let snap = snapshot.key
                 self.childByAutoKey = snap // we only need to find this once
+ 
                 
-                print("DEBUG: This is the child key \(self.childByAutoKey)")
+                // increment x
+                self.logoNum += 1
+                
+                print("DEBUG: This is the child key \(self.childByAutoKey) and x is now equal = \(self.logoNum)")
                             }
                         }
             
@@ -5350,10 +5423,12 @@ extension HomeVC: MKMapViewDelegate {
             DataService.instance.REF_STORES.child(storeId).child("storeLogoUrl").observeSingleEvent(of: .value) { (snapshot) in
                 guard let logoUrl = snapshot.value as? String else { return }
                 
-                // adding this information to the activity folder
-                //DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child(self.childByAutoKey).childByAutoId().updateChildValues([storeId: logoUrl])
                 
-                DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child(self.childByAutoKey).childByAutoId().updateChildValues(["logoUrl": logoUrl, "storeId": storeId])
+                //DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child(self.childByAutoKey).childByAutoId().updateChildValues(["logoUrl": logoUrl, "storeId": storeId])
+                
+                DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child(self.childByAutoKey).updateChildValues(["logo\(self.logoNum)": logoUrl])
+                
+                self.logoNum += 1
                 
             }
         }
@@ -5904,19 +5979,19 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
          
         
         if initialCheckpointSelected == false {
-                self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+                //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
             self.startStopButton.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 
-                self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
                 self.startStopButton.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
                 
-                self.toggleSaveRemoveSegmentView.alpha = 1
+                //self.toggleSaveRemoveSegmentView.alpha = 1
                 self.startStopButton.alpha = 1
 
             }) { (_) in
-                self.toggleSaveRemoveSegmentView.transform = .identity
+                //self.toggleSaveRemoveSegmentView.transform = .identity
                 self.startStopButton.transform = .identity
             }
         }
@@ -6284,9 +6359,9 @@ extension HomeVC: UITextFieldDelegate {
             UIView.animate(withDuration: 0.25, animations: {
                 
                 self.removeBlurEffect()
-                self.destTextFieldBlurView.transform = CGAffineTransform(scaleX: 1.35, y: 1)
-                self.destTextFieldBlurView.layer.cornerRadius = 20
-                self.visualEffectView.layer.cornerRadius = 20
+                self.destTextFieldBlurView.transform = CGAffineTransform(scaleX: 1.40, y: 1)
+                self.destTextFieldBlurView.layer.cornerRadius = 8
+                self.visualEffectView.layer.cornerRadius = 8
                 self.destTextFieldBlurView.layer.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250).cgColor
                 //self.destTextFieldBlurView.layer.backgroundColor = UIColor(red: 187/255, green: 216/255, blue: 224/255, alpha: 1).cgColor
                 self.destTextFieldBlurView.layer.shadowColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
@@ -6300,7 +6375,7 @@ extension HomeVC: UITextFieldDelegate {
             
             
             mapView.addSubview(cancelSearchButton)
-            cancelSearchButton.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 65, height: 65)
+            cancelSearchButton.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 42, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 20, height: 20)
 
             cancelSearchButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             searchBarSubView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
@@ -6349,8 +6424,8 @@ extension HomeVC: UITextFieldDelegate {
                 self.simpleRewardsButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
                 self.simpleRewardsButton.alpha = 0
                 
-                self.searchImageView.transform = CGAffineTransform(translationX: -30, y: 0)
-                self.destinationTextField.transform = CGAffineTransform(translationX: -30, y: 0)
+                self.searchImageView.transform = CGAffineTransform(translationX: -40, y: 0)
+                self.destinationTextField.transform = CGAffineTransform(translationX: -40, y: 0)
                 
                 
             }) { (_) in

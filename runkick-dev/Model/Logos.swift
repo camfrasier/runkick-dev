@@ -28,6 +28,19 @@ class Logos {
     var price: Double!    // may need to change this value to an integer
     var poppPrice: Double!
     
+    var logo1: String!
+    var logo2: String!
+    var logo3: String!
+    var logo4: String!
+    var logo5: String!
+    var logo6: String!
+    var logo7: String!
+    var logo8: String!
+    var logo9: String!
+    var logo10: String!
+    var logo11: String!
+    var logo12: String!
+    
     var user: User?
     
     init(postId: String!, dictionary: Dictionary<String, AnyObject>) {
@@ -80,7 +93,46 @@ class Logos {
         
         if let points = dictionary["points"] as? Int {
                   self.points = points
-              }
+        }
+        
+        if let logo1 = dictionary["logo1"] as? String {
+            self.logo1 = logo1
+        }
+        if let logo2 = dictionary["logo2"] as? String {
+              self.logo2 = logo2
+          }
+        if let logo3 = dictionary["logo3"] as? String {
+              self.logo3 = logo3
+          }
+        if let logo4 = dictionary["logo4"] as? String {
+              self.logo4 = logo4
+          }
+        if let logo5 = dictionary["logo5"] as? String {
+            self.logo5 = logo5
+        }
+        if let logo6 = dictionary["logo6"] as? String {
+              self.logo6 = logo6
+          }
+        if let logo7 = dictionary["logo7"] as? String {
+              self.logo7 = logo7
+          }
+        if let logo8 = dictionary["logo8"] as? String {
+              self.logo8 = logo8
+          }
+        if let logo9 = dictionary["logo9"] as? String {
+            self.logo9 = logo9
+        }
+        if let logo10 = dictionary["logo10"] as? String {
+              self.logo10 = logo10
+          }
+        if let logo11 = dictionary["logo11"] as? String {
+              self.logo11 = logo11
+          }
+        if let logo12 = dictionary["logo12"] as? String {
+              self.logo12 = logo12
+          }
+
+
     }
     
 }

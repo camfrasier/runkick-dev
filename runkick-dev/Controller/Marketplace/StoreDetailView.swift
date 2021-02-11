@@ -409,9 +409,7 @@ class StoreDetailView: UIView {
         dismissDetailView()
         
     }
- 
- 
- 
+
 }
 
 // MARK: - UITableViewDataSource/Delegate

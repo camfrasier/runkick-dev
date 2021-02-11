@@ -56,6 +56,8 @@ class CustomImageView: UIImageView {
             // Set our image.
             DispatchQueue.main.async {
                 self.image = photoImage
+                
+                //print("This is the phot heigjt \(photoImage?.size.height)")
             }
             }.resume()
     }

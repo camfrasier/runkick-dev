@@ -135,7 +135,8 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
         guard let post = cell.notification?.post else { return }
         
-        let feedController = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        //let feedController = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        let feedController = FeedVC()
         feedController.viewSinglePost = true
         feedController.post = post
         navigationController?.pushViewController(feedController, animated: true)

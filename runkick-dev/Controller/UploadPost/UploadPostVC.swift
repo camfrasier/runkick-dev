@@ -243,6 +243,11 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
                     let postImageUrl = (url?.absoluteString)!
                     print(postImageUrl)
                     
+
+                    
+                    
+                    
+                    
                     let values = ["caption": caption,
                                   "creationDate": creationDate,
                                   "likes": 0,
@@ -272,12 +277,33 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
                             self.uploadMentionNotification(forPostId: postKey, withText: caption, isForComment: false)
                         }
                         
+                        
+                        // confirming image landscape or profile
+                        let convertedUrl = URL(string: postImageUrl)!
+                        Database.fetchDimensions(with: convertedUrl) { (photoImage) in
+                            let imageWidth = photoImage.size.width
+                            let imageHeight = photoImage.size.height
+                            
+                            print("this is the photo width \(imageWidth) and this is the height \(imageHeight)")
+                            if imageWidth > imageHeight {
+                                postId.updateChildValues(["photoStyle": "landscape"])
+                            } else {
+                                 postId.updateChildValues(["photoStyle": "portrait"])
+                            }
+                        }
+                        
+                        
                         // return to home feed.
                         self.dismiss(animated: true, completion: {
                             self.tabBarController?.selectedIndex = 1
                             
                         })
                     })
+                    
+                    
+                    
+                
+
                 }
             })
         }

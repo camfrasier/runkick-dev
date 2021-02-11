@@ -26,7 +26,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // Tab bar tint color
         //tabBar.tintColor = UIColor.rgb(red: 242, green: 96, blue: 98)
         //tabBar.tintColor = UIColor.rgb(red: 243, green: 78, blue: 92)
-        tabBar.tintColor = UIColor.rgb(red: 236, green: 84, blue: 95)
+        //tabBar.tintColor = UIColor.rgb(red: 236, green: 84, blue: 95)
+        tabBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         tabBar.unselectedItemTintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
                 
         // adjusting the tiele Placement after movign the tab bar position
@@ -82,7 +83,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // maybe have the below images get smaller when they are unselected.. and can change the tint color
         
         // Mark: - Main feed controller
-        let feedVC = constructNavController(unselectedImage: UIImage(named: "feed-notification-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "feed-notification-selected-2x")!, title: "EXPLORE", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        //let feedVC = constructNavController(unselectedImage: UIImage(named: "feed-notification-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "feed-notification-selected-2x")!, title: "EXPLORE", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        
+        let feedVC = constructNavController(unselectedImage: UIImage(named: "feed-notification-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "feed-notification-selected-2x")!, title: "EXPLORE", rootViewController: FeedVC())
         
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
@@ -116,7 +119,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // Mark: - Camera view controller
         let cameraVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "CAMERA", rootViewController: CameraVC())
         
-        let circleVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Circle", rootViewController: CircleVC(collectionViewLayout: UICollectionViewFlowLayout()))
+        //let circleVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Circle", rootViewController: CircleVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
         viewControllers = [homeVC, marketplaceVC, selectImageVC, feedVC, searchVC]

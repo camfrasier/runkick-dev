@@ -40,18 +40,21 @@ class CircleCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let storeImageDimension = CGFloat(60)
+        
+        let storeImageDimension = CGFloat(85)
         addSubview(storeImageView)
         storeImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: storeImageDimension, height: storeImageDimension)
         storeImageView.layer.cornerRadius = storeImageDimension / 2
-        storeImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        storeImageView.layer.borderWidth = 1
+        //storeImageView.layer.cornerRadius = (storeImageDimension / 2.5)
+        
+        //storeImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        //storeImageView.layer.borderWidth = 1
         storeImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         storeImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         
         
-        backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+        backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         //addSubview(groupsNameLabel)
         //groupsNameLabel.anchor(top: groupsImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
