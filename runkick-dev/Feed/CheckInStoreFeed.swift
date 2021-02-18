@@ -1,17 +1,18 @@
 //
-//  CategoryFeedVC.swift
+//  CheckInStoreFeed.swift
 //  runkick-dev
 //
-//  Created by Cameron Frasier on 5/11/20.
-//  Copyright © 2020 Cameron Frasier. All rights reserved.
+//  Created by Cameron Frasier on 2/14/21.
+//  Copyright © 2021 Cameron Frasier. All rights reserved.
 //
+
 
 import UIKit
 import Firebase
 
 private let reuseIdentifier = "Cell"
 
-class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, CategoryFeedCellDelegate {
+class CheckInStoreFeed: UICollectionViewController, UICollectionViewDelegateFlowLayout, CategoryFeedCellDelegate {
 
     //var categories = [MarketCategory]() // This need to be a variable so we can mutate it.
     //var category: MarketCategory?
@@ -89,7 +90,11 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         configureNavigationBar()
 
         //fetchPosts()
-    
+        
+        
+        // this is what we need to define. ours will be post and we take the tripid and user id to identify the restaurant store id's then find their title picture. when a user clicks from the checkin feed they can get to the store menu
+        
+        
         
         guard let category = post?.category else { return }
         selectedCategory = post?.category
@@ -425,3 +430,4 @@ class CategoryFeedVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.reloadData()
     }
 }
+

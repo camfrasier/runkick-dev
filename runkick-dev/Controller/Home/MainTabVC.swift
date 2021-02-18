@@ -29,9 +29,15 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         //tabBar.tintColor = UIColor.rgb(red: 236, green: 84, blue: 95)
         tabBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         tabBar.unselectedItemTintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-                
+            
+ 
+        
+        
         // adjusting the tiele Placement after movign the tab bar position
-        UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -5)
+        //UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
+        
+        tabBar.itemPositioning = .centered
+        
         
         /*
         self.tabBar.isTranslucent = false
@@ -51,8 +57,8 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tabBar.frame.size.height = 60
-        tabBar.frame.origin.y = view.frame.height - 60
+        //tabBar.frame.size.height = 60
+        //tabBar.frame.origin.y = view.frame.height - 60
 
 
         if UIScreen.main.nativeBounds.height == 2436 {
@@ -144,7 +150,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = unselectedImage
         navController.tabBarItem.selectedImage = selectedImage
-        navController.tabBarItem.title = title
+        //navController.tabBarItem.title = title
         
         
         return navController

@@ -20,6 +20,7 @@ class Store {
     var storeId: String!
     var category: String?
     var imageUrl: String!
+    var storeLogoUrl: String!
     
     
     init(storeId: String!, dictionary: Dictionary<String, AnyObject>) {
@@ -52,6 +53,10 @@ class Store {
         
         if let imageUrl = dictionary["imageUrl"] as? String {
             self.imageUrl = imageUrl
+        }
+        
+        if let storeLogoUrl = dictionary["storeLogoUrl"] as? String {
+            self.storeLogoUrl = storeLogoUrl
         }
         
     }

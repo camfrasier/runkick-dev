@@ -1363,11 +1363,11 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         guard let post = cell.post else { return }
         
         
-        cell.newLikeButton.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
+        cell.newLikeButton.transform = CGAffineTransform(scaleX: 1, y: 1)
                    
-                   UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                   UIView.animate(withDuration: 0.20, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                        
-                    cell.newLikeButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    cell.newLikeButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                        
                    }) { (_) in
                     cell.newLikeButton.transform = .identity
@@ -1377,23 +1377,23 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
             // handle unlike post
             if !isDoubleTap {
                 post.adjustLikes(addLike: false, completion: { (likes) in
-                    cell.likesLabel.text = "\(likes)"
-                    //cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
-                      //cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
-                    cell.newLikeButton.backgroundColor = UIColor.clear
-                    cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
-                    cell.newLikeButton.alpha = 1
+                    //cell.likesLabel.text = "\(likes)"
+                    cell.newLikeButton.setImage(UIImage(named: "likeHeartWalkzilla"), for: .normal)
+                     // cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
+                    //cell.newLikeButton.backgroundColor = UIColor.clear
+                    //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
+                    //cell.newLikeButton.alpha = 1
                 })
             }
       
         } else {
             // handle like post
             post.adjustLikes(addLike: true, completion: { (likes) in
-                cell.likesLabel.text = "\(likes)"
-                //cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
-                cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-                cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
-                cell.newLikeButton.alpha = 1
+                //cell.likesLabel.text = "\(likes)"
+                cell.newLikeButton.setImage(UIImage(named: "solidHeartWalkzilla"), for: .normal)
+                //cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
+                //cell.newLikeButton.alpha = 1
                 
             })
         }
@@ -1422,16 +1422,16 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
             // check if post id exists in user-like structure
                        if snapshot.hasChild(postId) {
                            post.didLike = true
-                           //cell.newLikeButton.setImage(UIImage(named: "heartOutlineSelected"), for: .normal)
-                        cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-                        cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
-                            cell.newLikeButton.alpha = 1
+                           cell.newLikeButton.setImage(UIImage(named: "solidHeartWalkzilla"), for: .normal)
+                        //cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                        //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
+                            //cell.newLikeButton.alpha = 1
                        } else {
                            post.didLike = false
-                           //cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
-                        cell.newLikeButton.backgroundColor = UIColor.clear
-                        cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
-                        cell.newLikeButton.alpha = 1
+                           cell.newLikeButton.setImage(UIImage(named: "likeHeartWalkzilla"), for: .normal)
+                        //cell.newLikeButton.backgroundColor = UIColor.clear
+                        //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
+                        //cell.newLikeButton.alpha = 1
                        }
             
             /*
@@ -1791,6 +1791,22 @@ extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
 
             fatalError("Unexpected element kind")
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //let categoryFeedVC = CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        //categoryFeedVC.post = categories[indexPath.item]
+        //navigationController?.pushViewController(categoryFeedVC, animated: true)
+        
+        let postType = posts[indexPath.item].type
+
+           if postType == "checkIn" {
+                // we can use the marketplace and categorie feed as an example
+                print("DEBUG: we have selected the cell which will give us details about locations.")
+            }
+        
+
     }
      
 

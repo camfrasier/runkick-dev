@@ -115,12 +115,20 @@ class CheckInCell: UICollectionViewCell {
         return button
     }()
     
-    
+    lazy var favoritesButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 13)
+        button.setTitle("SEE MORE", for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
+        //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
+        return button
+    }()
     
     
     let userLocationBlock: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         return view
     }()
     
@@ -130,23 +138,77 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
+    let mapBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        return view
+    }()
+    
     let statusBarLineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 100, green: 100, blue: 100)
         return view
     }()
     
+    let actionBlock: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     let actionLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
-        label.text = "IRYNA YOU DID IT!"
+        label.text = "Fortune"
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 35)
-        label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 32)
+        label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 38)
+        //label.font = UIFont(name: "PingFangTC-Regular", size: 32)
         label.setLineSpacing(lineSpacing: 1)
+        label.textAlignment = .left
+        //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)
+        //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.setLineHeight(lineHeight: 0)
         label.numberOfLines = 3
         return label
     } ()
+    
+    let actionLabel2: UILabel = { // Will replace later with an action label.
+        let label = UILabel()
+        label.text = "Favors"
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 38)
+        //label.font = UIFont(name: "PingFangTC-Regular", size: 32)
+        label.setLineSpacing(lineSpacing: 1)
+        label.textAlignment = .left
+        //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)
+        //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.setLineHeight(lineHeight: 0)
+        label.numberOfLines = 1
+        return label
+    } ()
+    
+    let actionLabel3: UILabel = { // Will replace later with an action label.
+        let label = UILabel()
+        label.text = " The Brave "
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 38)
+        //label.font = UIFont(name: "PingFangTC-Regular", size: 32)
+        label.setLineSpacing(lineSpacing: 1)
+        label.textAlignment = .left
+        //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)
+        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.backgroundColor = UIColor.walkzillaRed()
+        label.setLineHeight(lineHeight: 0)
+        label.numberOfLines = 1
+        return label
+    } ()
+    
+    let actionLabel3Block: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.walkzillaRed()
+        return view
+    }()
     
     let locationLabel: UILabel = {
         let label = UILabel()
@@ -286,7 +348,7 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
-    lazy var postImageViewBackground: UIView = {
+    lazy var analyticsBlock: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
        
@@ -312,7 +374,7 @@ class CheckInCell: UICollectionViewCell {
 
         // add gesture recognizer for double tap to like
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoTapped))
-        likeTap.numberOfTapsRequired = 2
+        likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
         return iv
@@ -324,8 +386,8 @@ class CheckInCell: UICollectionViewCell {
         iv.clipsToBounds = true
 
         // add gesture recognizer for double tap to like
-        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoTapped))
-        likeTap.numberOfTapsRequired = 2
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleLogo1Tapped))
+        likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
         return iv
@@ -337,8 +399,8 @@ class CheckInCell: UICollectionViewCell {
         iv.clipsToBounds = true
 
         // add gesture recognizer for double tap to like
-        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoTapped))
-        likeTap.numberOfTapsRequired = 2
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleMenuTapped))
+        likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
         return iv
@@ -350,8 +412,8 @@ class CheckInCell: UICollectionViewCell {
         iv.clipsToBounds = true
 
         // add gesture recognizer for double tap to like
-        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoTapped))
-        likeTap.numberOfTapsRequired = 2
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleMenuTapped))
+        likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
         return iv
@@ -656,6 +718,8 @@ class CheckInCell: UICollectionViewCell {
         
         backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
+        //backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        
         //let layout = UICollectionViewFlowLayout()
         //let frame = CGRect(x: 0, y: (frame.height / 2) - 40, width: frame.width, height: frame.height / 2 + 40)
         //let frame = CGRect(x: 0, y: 20, width: frame.width, height: 150)
@@ -715,6 +779,15 @@ class CheckInCell: UICollectionViewCell {
         delegate?.handleConfigureLikeButton(for: self)
     }
     
+    @objc func handleLogo1Tapped() {
+        
+        
+    }
+    
+    @objc func handleMenuTapped() {
+        print("handle see menus tapped")
+    }
+    
     
     // MARK: - Helper Functions
     
@@ -736,26 +809,51 @@ class CheckInCell: UICollectionViewCell {
     
     func configureContraints() {
         
-        addSubview(postImageViewBackground)
-        postImageViewBackground.translatesAutoresizingMaskIntoConstraints = false
-        //postImageViewBackground.layer.cornerRadius = 8
         
-        addSubview(lineView)
-        lineView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(mapBackgroundView)
+        mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        mapBackgroundView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //mapBackgroundView.layer.cornerRadius = 15
+        
+        
+        addSubview(analyticsBlock)
+        analyticsBlock.translatesAutoresizingMaskIntoConstraints = false
+        analyticsBlock.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        //postImageViewBackground.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        //postImageViewBackground.layer.cornerRadius = 15
+
+
+         // photo attributes and constraints
+         mapBackgroundView.addSubview(postImageView)
+         postImageView.translatesAutoresizingMaskIntoConstraints = false
+         //postImageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+         //postImageView.layer.cornerRadius = 40
+         postImageView.clipsToBounds = true
 
         
+        addSubview(actionBlock)
+        actionBlock.translatesAutoresizingMaskIntoConstraints = false
+        actionBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        // date and time attributes and constraints
+        addSubview(postTimeLabel)
+        postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        
 
         
-        addSubview(actionLabel)
-        actionLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // photo attributes and constraints
-        postImageViewBackground.addSubview(postImageView)
-        postImageView.translatesAutoresizingMaskIntoConstraints = false
-        //postImageView.layer.cornerRadius = 8
-        postImageView.clipsToBounds = true
-        //postImageView.layer.borderColor = UIColor.rgb(red: 180, green: 180, blue: 180).cgColor
-        //postImageView.layer.borderWidth = 0.20
+        
+        //addSubview(lineView)
+        //lineView.translatesAutoresizingMaskIntoConstraints = false
+        
+        //addSubview(favoritesButton)
+        //favoritesButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        //addSubview(actionLabel)
+        //actionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+
         
         //addSubview(logoImage1)
         //logoImage1.translatesAutoresizingMaskIntoConstraints = false
@@ -767,19 +865,14 @@ class CheckInCell: UICollectionViewCell {
         gradientProfileView.layer.cornerRadius = gradientDiminsion / 2
         */
        
+     
+
+        
+
+        
+        
+        
         /*
-        addSubview(checkInProfileBlock)
-        checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
-        
-        let profileDiminsion: CGFloat = 100
-        checkInProfileBlock.addSubview(checkInProfileImageView)
-        checkInProfileImageView.translatesAutoresizingMaskIntoConstraints = false
-        checkInProfileImageView.layer.cornerRadius = profileDiminsion / 2
-        //checkInProfileImageView.layer.cornerRadius = (profileDiminsion / 2.5)
-        //checkInProfileImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        //checkInProfileImageView.layer.borderWidth = 2
-        */
-        
         addSubview(imageTranslucentBar)
         imageTranslucentBar.translatesAutoresizingMaskIntoConstraints = false
         
@@ -798,13 +891,14 @@ class CheckInCell: UICollectionViewCell {
         imageTranslucentBar.addSubview(circleDotView)
         circleDotView.translatesAutoresizingMaskIntoConstraints = false
         
-        // date and time attributes and constraints
-        addSubview(postTimeLabel)
-        postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+
         
         // following/follower attributes and constraints
         imageTranslucentBar.addSubview(followFollowingLabel)
         followFollowingLabel.translatesAutoresizingMaskIntoConstraints = false
+        */
+        
+        
         
 
         /*
@@ -831,6 +925,9 @@ class CheckInCell: UICollectionViewCell {
         
          */
         
+        
+        
+        /*
         //options background
         addSubview(backgroundOptionsButton)
         backgroundOptionsButton.translatesAutoresizingMaskIntoConstraints = false
@@ -869,7 +966,9 @@ class CheckInCell: UICollectionViewCell {
         imageTranslucentBar.addSubview(likesLabel)
         likesLabel.translatesAutoresizingMaskIntoConstraints = false
         
-
+       
+        
+        
         
         let profileImageDimension = CGFloat(30)
         profileImageView.anchor(top: imageTranslucentBar.topAnchor, left: imageTranslucentBar.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 28, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
@@ -880,9 +979,7 @@ class CheckInCell: UICollectionViewCell {
         circleDotView.anchor(top: usernameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
 
         followFollowingLabel.anchor(top: usernameButton.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
- 
-        
-
+         */
  
  
  
@@ -898,31 +995,55 @@ class CheckInCell: UICollectionViewCell {
 
   
 
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[background]-0-|", options: [], metrics: nil, views: ["background": postImageViewBackground]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[background]-0-|", options: [], metrics: nil, views: ["background": analyticsBlock]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[lineView]-0-|", options: [], metrics: nil, views: ["lineView": lineView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[actionBlock]-0-[mapBackground(205)]-0-|", options: [], metrics: nil, views: ["actionBlock": actionBlock, "mapBackground": mapBackgroundView]))
+
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-32-[actionBlock(190)]", options: [], metrics: nil, views: ["actionBlock": actionBlock]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-32-[mapBackground(180)]-20-[background]-0-|", options: [], metrics: nil, views: ["mapBackground": mapBackgroundView, "background": analyticsBlock]))
+        
+        postImageView.anchor(top: mapBackgroundView.topAnchor, left: nil, bottom: nil, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 180, height: 180)
+        //postImageView.layer.cornerRadius = 180 / 2
         
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[translucent]-0-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
+        
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[image(200)]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
+        
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[image(200)]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
+        
+        postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[lineView]-0-|", options: [], metrics: nil, views: ["lineView": lineView]))
+        
+        
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[translucent]-0-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[translucent(54)]-0-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-28-[lineView(0.17)]-0-[background(220)]-0-[locationBlock(40)]-0-[translucent(48)]", options: [], metrics: nil, views: ["lineView": lineView, "background": postImageViewBackground,"locationBlock": userLocationBlock, "translucent": imageTranslucentBar]))
-                
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[locationBlock]-5-|", options: [], metrics: nil, views: ["locationBlock": userLocationBlock]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[favoritesButton(50)]-0-[lineView(0.15)]-0-[background(220)]-0-[locationBlock(40)]-0-[translucent(48)]-0-|", options: [], metrics: nil, views: ["lineView": lineView, "background": postImageViewBackground,"locationBlock": userLocationBlock, "translucent": imageTranslucentBar, "favoritesButton": favoritesButton]))
+        
+
+        
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[favoritesButton]-0-|", options: [], metrics: nil, views: ["favoritesButton": favoritesButton]))
+        
+       // addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[locationBlock]-0-|", options: [], metrics: nil, views: ["locationBlock": userLocationBlock]))
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[profileBlock]-0-|", options: [], metrics: nil, views: ["profileBlock": checkInProfileBlock]))
         
         // variable constraints
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[image]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
+
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(0.25)-[image]-50-[logo(200)]-(0.25)-|", options: [], metrics: nil, views: ["image": postImageView, "logo": logoImage1]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[image]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
+
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[logo(200)]-0-|", options: [], metrics: nil, views: ["logo": logoImage1]))
         
         
+        
+        
+        /*
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[optionsButton(20)]-30-|", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
          
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[optionsButton(20)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
@@ -931,19 +1052,24 @@ class CheckInCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[location]", options: [], metrics: nil, views: ["location": locationLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
-        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
+        */
+ 
+ 
+ 
         /*
         contentView.addSubview(circleVC.view)
         circleVC.view.anchor(top: postImageViewBackground.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 35, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 0, height: 0)
         */
         //likeCommentBlock.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 2, height: 35)
         
+        
+        /*
         newLikeHeart.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 17, height: 15)
         
         newCommentBubble.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 17, height: 16)
         
-        postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
         
         
 
@@ -970,6 +1096,7 @@ class CheckInCell: UICollectionViewCell {
         stackView2.anchor(top: imageTranslucentBar.topAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor , paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
 
         stackView.anchor(top: stackView2.topAnchor, left: nil, bottom: nil, right: stackView2.leftAnchor , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
+        */
     }
     
     
@@ -1148,7 +1275,8 @@ class CheckInCell: UICollectionViewCell {
                             self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
                             self.logoImage2.anchor(top: self.imageTranslucentBar.bottomAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 25, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
                             self.logoImage2.layer.cornerRadius = 150 / 2
-       
+                            
+
                           }
                     
                     
@@ -1160,6 +1288,8 @@ class CheckInCell: UICollectionViewCell {
                     
                  self.checkInProfileBlock.removeFromSuperview()
                  self.checkInProfileBlock.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
+                    
+                    //self.checkInProfileBlock.backgroundColor = UIColor.walkzillaRed()
                  
                        Database.fetchLogos(with: postId) { (post) in
                            
@@ -1172,64 +1302,50 @@ class CheckInCell: UICollectionViewCell {
                              guard let logoImageUrl3 = post.logo3 else { return }
                              self.logoImage3.loadImage(with: logoImageUrl3)
                            
+                        
+                       
                            self.addSubview(self.checkInProfileBlock)
                            self.checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
-                           self.checkInProfileBlock.anchor(top: self.imageTranslucentBar.bottomAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                        self.checkInProfileBlock.anchor(top: self.topAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: (self.frame.height / 2) + 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                          
-                         let logo1Dim: CGFloat = 100
-                         self.checkInProfileBlock.addSubview(self.logoImage1)
-                         self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
-                        self.logoImage1.anchor(top: self.imageTranslucentBar.bottomAnchor, left: nil, bottom: nil, right: self.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 35, width: logo1Dim, height: logo1Dim)
-                         self.logoImage1.layer.cornerRadius = logo1Dim / 2
-                         
-                         
-                        let logo2Dim: CGFloat = 120
-                         self.checkInProfileBlock.addSubview(self.logoImage2)
-                         self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
-                         self.logoImage2.anchor(top: self.imageTranslucentBar.bottomAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: logo2Dim, height: logo2Dim)
-                         self.logoImage2.layer.cornerRadius = logo2Dim / 2
-                        
-                        let logo3Dim: CGFloat = 95
-                        self.checkInProfileBlock.addSubview(self.logoImage3)
-                        self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
-                        self.logoImage3.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 95, paddingBottom: 5, paddingRight: 0, width: logo3Dim, height: logo3Dim)
-                        self.logoImage3.layer.cornerRadius = logo3Dim / 2
-                        
-                        
-                        
-                        let stackView = UIStackView(arrangedSubviews: [self.actionLabel, self.checkInButton1])
-                        
-                        self.checkInButton1.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
-                        
-                        stackView.axis = .horizontal
-                        stackView.distribution = .fillProportionally
-                        stackView.alignment = .fill
-                        stackView.spacing = 0
-                        stackView.translatesAutoresizingMaskIntoConstraints = false
-                        self.checkInProfileBlock.addSubview(stackView)
-                        stackView.anchor(top: nil, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 0, paddingLeft: 60, paddingBottom: 0, paddingRight: 60, width: 0, height: 0)
-
-                        stackView.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                        stackView.centerYAnchor.constraint(equalTo: self.checkInProfileBlock.centerYAnchor).isActive = true
-                        
-                        
-                        let checkInProfileDim: CGFloat = 80
+                        let profileImageDim: CGFloat = 140
                         self.checkInProfileBlock.addSubview(self.checkInProfileImageView)
                         self.checkInProfileImageView.translatesAutoresizingMaskIntoConstraints = false
-                        self.checkInProfileImageView.anchor(top: nil, left: nil, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 35, paddingRight: 70, width: checkInProfileDim, height: checkInProfileDim)
-                        self.checkInProfileImageView.layer.cornerRadius = checkInProfileDim / 2
+                        self.checkInProfileImageView.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: self.checkInProfileBlock.rightAnchor, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 105, width: profileImageDim, height: profileImageDim)
+                        self.checkInProfileImageView.layer.cornerRadius = profileImageDim / 2
                         
-                        /*
+        
+                         let logo1Dim: CGFloat = 110
+                         self.checkInProfileBlock.addSubview(self.logoImage1)
+                         self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
+                        self.logoImage1.anchor(top: self.checkInProfileImageView.topAnchor, left: nil, bottom: nil, right: self.checkInProfileImageView.leftAnchor, paddingTop: 75, paddingLeft: 0, paddingBottom: 0, paddingRight: -10, width: logo1Dim, height: logo1Dim)
+                         self.logoImage1.layer.cornerRadius = logo1Dim / 2
                          
-                        self.checkInProfileBlock.addSubview(self.actionLabel)
-                        self.actionLabel.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                        self.actionLabel.centerYAnchor.constraint(equalTo: self.checkInProfileBlock.centerYAnchor).isActive = true
-                         
-                        self.checkInProfileBlock.addSubview(self.checkInButton1)
-                        self.checkInButton1.translatesAutoresizingMaskIntoConstraints = false
-                        self.checkInButton1.anchor(top: nil, left: self.actionLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
-                        self.checkInButton1.centerYAnchor.constraint(equalTo: self.actionLabel.centerYAnchor).isActive = true
-                        */
+                            
+                        let logo2Dim: CGFloat = 80
+                         self.checkInProfileBlock.addSubview(self.logoImage2)
+                         self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
+                        self.logoImage2.anchor(top: self.checkInProfileImageView.bottomAnchor, left: nil, bottom: nil, right: self.checkInProfileImageView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 70, width: logo2Dim, height: logo2Dim)
+                         self.logoImage2.layer.cornerRadius = logo2Dim / 2
+                        
+                        
+                        let logo3Dim: CGFloat = 100
+                        self.checkInProfileBlock.addSubview(self.logoImage3)
+                        self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
+                        self.logoImage3.anchor(top: self.checkInProfileImageView.bottomAnchor, left: self.checkInProfileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: -5, paddingLeft: -60, paddingBottom: 0, paddingRight: 0, width: logo3Dim, height: logo3Dim)
+                        self.logoImage3.layer.cornerRadius = logo3Dim / 2
+                        
+
+                        self.actionBlock.addSubview(self.actionLabel)
+                        self.actionLabel.anchor(top: self.actionBlock.topAnchor, left: self.actionBlock.leftAnchor, bottom: nil, right: nil, paddingTop: 32, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
+                        
+                        self.actionBlock.addSubview(self.actionLabel2)
+                        self.actionLabel2.anchor(top: self.actionLabel.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
+                        
+                        
+                        self.actionBlock.addSubview(self.actionLabel3)
+                        self.actionLabel3.anchor(top: self.actionLabel2.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: -2, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
+
                        }
                     
                         print("choose function 3")
@@ -1339,12 +1455,7 @@ class CheckInCell: UICollectionViewCell {
             self.didLoad = false
         }
         
-         
      }
-    
-    
-    
- 
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -1397,4 +1508,6 @@ extension CheckInCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataS
     
 
 }
+
+
 

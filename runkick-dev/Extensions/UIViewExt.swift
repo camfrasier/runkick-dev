@@ -602,6 +602,7 @@ extension Database {
         }
     }
     
+    
     static func fetchCategory(with categoryId: String, completion: @escaping(MarketCategory) -> ()) {
         
         DataService.instance.REF_MARKETPLACE.child(categoryId).observeSingleEvent(of: .value) { (snapshot) in

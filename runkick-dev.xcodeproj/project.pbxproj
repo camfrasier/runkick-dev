@@ -78,6 +78,7 @@
 		696A70B62343E33D00CDD512 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A70B52343E33C00CDD512 /* Store.swift */; };
 		696A70B82345296800CDD512 /* HashtagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A70B72345296800CDD512 /* HashtagController.swift */; };
 		696A70BA23452A9F00CDD512 /* HashtagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A70B923452A9F00CDD512 /* HashtagCell.swift */; };
+		696EA8ED25D8FD6A0036DB28 /* CheckInStoreFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696EA8EC25D8FD690036DB28 /* CheckInStoreFeed.swift */; };
 		69757C3D24CB59C100956D53 /* GradientDiagonalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69757C3C24CB59C000956D53 /* GradientDiagonalView.swift */; };
 		69777BA2248C1F8D005EC4E6 /* GradientClearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69777BA1248C1F8B005EC4E6 /* GradientClearView.swift */; };
 		6980617924D8E30A00628077 /* Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6980617824D8E30A00628077 /* Rewards.swift */; };
@@ -235,6 +236,7 @@
 		696A70B52343E33C00CDD512 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		696A70B72345296800CDD512 /* HashtagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagController.swift; sourceTree = "<group>"; };
 		696A70B923452A9F00CDD512 /* HashtagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagCell.swift; sourceTree = "<group>"; };
+		696EA8EC25D8FD690036DB28 /* CheckInStoreFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInStoreFeed.swift; sourceTree = "<group>"; };
 		69757C3C24CB59C000956D53 /* GradientDiagonalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientDiagonalView.swift; sourceTree = "<group>"; };
 		69777BA1248C1F8B005EC4E6 /* GradientClearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientClearView.swift; sourceTree = "<group>"; };
 		6980617824D8E30A00628077 /* Rewards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rewards.swift; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 				696A70B72345296800CDD512 /* HashtagController.swift */,
 				69FBDCE5243D4F5300709E21 /* PhotoFeedView.swift */,
 				69B3E8372506E5F3004CD859 /* CircleCollectionViewLayout.swift */,
+				696EA8EC25D8FD690036DB28 /* CheckInStoreFeed.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -614,6 +617,7 @@
 			children = (
 				69C5EDA2247CE48A006A22B1 /* ActivityHistoryCell.swift */,
 				6937B46E22CBDF2700446926 /* RunnerAnnotation.swift */,
+				69B3E83124FF2DDA004CD859 /* CheckInCell.swift */,
 				69D7C79F2356841200AF2736 /* SearchStoreCell.swift */,
 				69EB6A4922DD69BF000C764E /* StoreCell.swift */,
 				69977C482398905D0057D0A3 /* MenuOptionCell.swift */,
@@ -671,7 +675,6 @@
 				69D8CCCC24A99BD9001432FD /* StripeCart.swift */,
 				69D8CCCE24AD75CA001432FD /* StripeApi.swift */,
 				69FE5BC02326D8A700039BF5 /* FeedCell.swift */,
-				69B3E83124FF2DDA004CD859 /* CheckInCell.swift */,
 			);
 			path = Market;
 			sourceTree = "<group>";
@@ -924,6 +927,7 @@
 				69B4116C2516A9D5007C6D2A /* ShareData.swift in Sources */,
 				6923674023039257002FCA4D /* CLService.swift in Sources */,
 				691A8711231E278100EBB64A /* CustomImageView.swift in Sources */,
+				696EA8ED25D8FD6A0036DB28 /* CheckInStoreFeed.swift in Sources */,
 				6937B44C22A977E300446926 /* RoundImageView.swift in Sources */,
 				6937B44E22A979B000446926 /* RoundedShadowView.swift in Sources */,
 				69236749230B7BCC002FCA4D /* MainTabVC.swift in Sources */,
