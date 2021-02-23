@@ -80,7 +80,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
         tableView?.reloadData()
     }
     
-    func configureTableView()  {
+    func configureTableView() {
   
         tableView = UITableView()
         tableView.rowHeight = 70
@@ -110,8 +110,6 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
         labelView.anchor(top: headerView.topAnchor, left: headerView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         self.tableView.tableHeaderView = headerView
 
-
-  
     }
  
     // MARK: - Handlers
@@ -148,8 +146,6 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
             // because I expect more per view i increased the toLast count to 8
             DataService.instance.REF_USER_GROUPS.queryLimited(toLast: 8).observeSingleEvent(of: .value) { (snapshot) in
                  
-                
-                
                  guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                  guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                  

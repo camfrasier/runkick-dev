@@ -18,6 +18,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate 
     
     var users = [User]()
     var filteredUsers = [User]()
+    var tableView: UITableView!
     var searchBar = UISearchBar()
     var inSearchMode = false
     var collectionView: UICollectionView!
@@ -26,7 +27,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate 
     var currentKey: String?
     var userCurrentKey: String?
     var titleView: UIView!
-    var tableView: UITableView!
+    
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -80,62 +81,31 @@ class SearchVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
        //setupToHideKeyboardOnTapOnView()
 
-        
         destinationTextField.delegate = self
-        //edgesForExtendedLayout = .all
-        //extendedLayoutIncludesOpaqueBars = true
-        
-        tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        // register cell classes
-        tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier)
-        
-        // seperator insets.
-        //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
-        
-        view.addSubview(tableView)
- 
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
 
-        //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
-        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        configureTableView()
 
-        configureCollectionView()
+        //configureCollectionView()
         
-        
-        //configureNavigationBar
         configureNavigationBar()
         
-        fetchUsers()
-        
-        
-        // configure collection view
-        
-        
-
         
         // configure search bar
-         configureSearchBar()
-         
-        // configure refresh control
-        //configureRefreshControl()
-        
-        
-        
+        configureSearchBar()
+                 
         configureTabBar()
         
         // fetch posts
         //fetchPosts()
         
-      
+        fetchUsers()
+        
+        // configure refresh control
+        configureRefreshControl()
     }
-    
+    /*
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.setHidesBackButton(true, animated: true)
         
@@ -144,13 +114,124 @@ class SearchVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate 
         configureTabBar()
         
     }
+    */
+    override func viewWillAppear(_ animated: Bool) {
+           
+        configureTabBar()
+        tableView?.reloadData()
+    }
     
     // this function ensures the navigation bar is filled after transitioning to a regular nav bar
+    /*
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.view.layoutSubviews()
     }
+    */
+    func configureTableView() {
+        
+        tableView = UITableView()
+        tableView.rowHeight = 80
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.isScrollEnabled = true
+        //tableView.separatorColor = .clear
+        
+        // register cell classes
+        tableView.register(SearchUserCell.self, forCellReuseIdentifier: reuseIdentifier)
+        
+        
+        // seperator insets.
+        //tableView.separatorInset = UIEdgeInsets(top: 50, left: 20, bottom: 0, right: 0)
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 0, width: 0, height: 0)
 
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        /*
+         tableView = UITableView()
+         tableView.rowHeight = 70
+         tableView.delegate = self
+         tableView.dataSource = self
+         tableView.isScrollEnabled = true
+         tableView.separatorColor = .clear
+
+         tableView.register(GroupMessageCell.self, forCellReuseIdentifier: reuseIdentifier)
+         
+         
+         view.addSubview(tableView)
+         tableView.translatesAutoresizingMaskIntoConstraints = false
+         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+         tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+         */
+        
+    }
+    
+    func configureNavigationBar() {
+        
+        //view.addSubview(navigationController!.navigationBar)
+        
+        //navigationController?.navigationBar.prefersLargeTitles = true
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+    
+        
+        // add or remove nav bar bottom border
+        navigationController?.navigationBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
+        lineView.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+        
+    }
+    
+    
+    // MARK: - API
+    
+    func fetchUsers() {
+
+        //self.tableView.refreshControl?.endRefreshing()
+        
+        self.tableView.refreshControl?.endRefreshing()
+        
+        if userCurrentKey == nil {
+            DataService.instance.REF_USERS.queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                    
+                allObjects.forEach({ (snapshot) in
+                    let uid = snapshot.key
+                    
+                    Database.fetchUser(with: uid, completion: { (user) in
+                        self.users.append(user)
+                        self.tableView.reloadData()
+                    })
+                })
+                self.userCurrentKey = first.key
+            }
+        } else {
+            DataService.instance.REF_USERS.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let uid = snapshot.key
+                    
+                    if uid != self.userCurrentKey {
+                        Database.fetchUser(with: uid, completion: { (user) in
+                            self.users.append(user)
+                            self.tableView.reloadData()
+                        })
+                    }
+                })
+                self.userCurrentKey = first.key
+            })
+        }
+    }
   
     
     
@@ -180,12 +261,14 @@ class SearchVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate 
         
         collectionView.register(SearchPostCell.self, forCellWithReuseIdentifier: reusePostCellIdentifier)
         
-        //tableView.separatorColor = .clear
+
         
     }
     
     
     // MARK: - Handlers
+    
+
     
     func configureSearchBar() {
         
@@ -211,23 +294,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate 
         
     }
     
-    func configureNavigationBar() {
-        
-        //view.addSubview(navigationController!.navigationBar)
-        
-        //navigationController?.navigationBar.prefersLargeTitles = true
-        
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-    
-        
-        // add or remove nav bar bottom border
-        navigationController?.navigationBar.shadowImage = UIImage()
-        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
-        lineView.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-        
-    }
+
     
     func configureTabBar() {
         // removing shadow from tab bar
@@ -370,8 +437,9 @@ class SearchVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate 
     @objc func handleRefresh() {
         users.removeAll(keepingCapacity: false)
         self.currentKey = nil
-        //fetchUsers()
-        //tableView.reloadData()
+        fetchUsers()
+        tableView?.reloadData()
+        
         //fetchPosts()
         //collectionView.reloadData()
     }
@@ -383,51 +451,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate 
         self.tableView?.refreshControl = refreshControl
     }
     
-    // MARK: - API
-    
-    func fetchUsers() {
-
-        //self.tableView.refreshControl?.endRefreshing()
-        
-        if userCurrentKey == nil {
-            DataService.instance.REF_USERS.queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
-                
-                
-                
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                    
-                
-                allObjects.forEach({ (snapshot) in
-                    let uid = snapshot.key
-                    
-                    Database.fetchUser(with: uid, completion: { (user) in
-                        self.users.append(user)
-                        self.tableView.reloadData()
-                    })
-                })
-                self.userCurrentKey = first.key
-            }
-        } else {
-            DataService.instance.REF_USERS.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
-                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                
-                allObjects.forEach({ (snapshot) in
-                    let uid = snapshot.key
-                    
-                    if uid != self.userCurrentKey {
-                        Database.fetchUser(with: uid, completion: { (user) in
-                            self.users.append(user)
-                            self.tableView.reloadData()
-                        })
-                    }
-                })
-                self.userCurrentKey = first.key
-            })
-        }
-    }
+ 
     
     func configureSearchBarButton() {
         
@@ -648,7 +672,7 @@ extension SearchVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
     
 }
 
-extension SearchVC: UITableViewDelegate, UITableViewDataSource {
+extension SearchVC: UITableViewDataSource, UITableViewDelegate  {
     
     // MARK: - Table view data source
       
@@ -656,10 +680,12 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
           return 80
       }
 
+    /*
       func numberOfSections(in tableView: UITableView) -> Int {
           return 1
       }
-
+     */
+    
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
           if inSearchMode {
               return filteredUsers.count
@@ -807,10 +833,11 @@ extension SearchVC: UITextFieldDelegate {
         
         return true
     }
-    
+    /*
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.view.endEditing(true)
     }
+    */
 }
 
 
