@@ -27,11 +27,14 @@ class GradientClearView: UIView {
     func setupGradientView(){
         
         gradient.frame = bounds
-        gradient.colors = [UIColor.black.withAlphaComponent(0.25).cgColor,
-        UIColor.black.withAlphaComponent(0.0).cgColor]
-        gradient.locations = [0.0, 0.65]
-        gradient.startPoint = CGPoint(x: 1.0, y: 1.0)
-        gradient.endPoint = CGPoint(x: 1.0, y: 0.0)
+        //gradient.colors = [UIColor.black.withAlphaComponent(0.25).cgColor,
+        //gradient.colors = [UIColor.rgb(red: 235, green: 235, blue: 235).withAlphaComponent(1).cgColor,
+        //UIColor.rgb(red: 235, green: 235, blue: 235).withAlphaComponent(0.0).cgColor]
+        gradient.colors = [UIColor.rgb(red: 180, green: 180, blue: 180).withAlphaComponent(0.25).cgColor,
+                           UIColor.rgb(red: 255, green: 255, blue: 255).withAlphaComponent(0.25).cgColor]
+        gradient.locations = [0.0, 0.85]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 0.0, y: 0.0)
         self.layer.addSublayer(gradient)
         self.clipsToBounds = true
     }

@@ -47,6 +47,11 @@ extension UIColor {
         return UIColor.rgb(red: 41, green: 205, blue: 48)
     }
     
+    static func newWalkzillaRed() -> UIColor {
+        return UIColor.rgb(red: 247, green: 0, blue: 59)
+    }
+    
+    
     
     static func actionRed() -> UIColor {
         return UIColor.rgb(red: 236, green: 38, blue: 125)
@@ -503,6 +508,25 @@ extension Database {
                            
                 let post = Logos(postId: postId, dictionary: dictionary)
             print("The image URL IS GOING TO BE \(post.logoUrl)")
+                completion(post)
+    
+        }
+    }
+    
+    
+    static func fetchAnimatedLogo(with postId: String, logoNum: String, completion: @escaping(Logos) -> ()) {
+    
+        
+        
+        DataService.instance.REF_POSTS.child(postId).child("logoImages").child(logoNum).observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+     
+            //print("The logo number value is  \(logoNum)")
+            
+            let post = Logos(postId: postId, dictionary: dictionary)
+        
+            
                 completion(post)
     
         }

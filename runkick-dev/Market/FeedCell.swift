@@ -654,9 +654,11 @@ class FeedCell: UICollectionViewCell {
         addSubview(self.postImageBlock)
         postImageBlock.translatesAutoresizingMaskIntoConstraints = false
         //postImageBlock.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+        postImageBlock.layer.cornerRadius = 12
         
         postImageBlock.addSubview(postImageView)
         postImageView.translatesAutoresizingMaskIntoConstraints = false
+        postImageView.layer.cornerRadius = 12
 
         addSubview(captionBlock)
         captionBlock.translatesAutoresizingMaskIntoConstraints = false
@@ -753,11 +755,11 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[imageBlock]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[captionBlock]-20-|", options: [], metrics: nil, views: ["captionBlock": captionBlock]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[captionBlock]-25-|", options: [], metrics: nil, views: ["captionBlock": captionBlock]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[translucent]-20-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[translucent]-25-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[locationBlock]-5-|", options: [], metrics: nil, views: ["locationBlock": userLocationBlock]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[locationBlock]-10-|", options: [], metrics: nil, views: ["locationBlock": userLocationBlock]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[backgroundOptionsButton(30)]", options: [], metrics: nil, views: ["backgroundOptionsButton": backgroundOptionsButton]))
         
@@ -789,7 +791,7 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[postImage]-20-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
@@ -849,7 +851,6 @@ class FeedCell: UICollectionViewCell {
         guard let caption = post.caption else { return }  // Safely unwrap so we don't get this as an optional anymore.
         
         
-        print("Do we get the post caption to generate here \(caption)")
         guard let username = post.user?.username else { return }
         usernameLabel.text = post.user?.username
         

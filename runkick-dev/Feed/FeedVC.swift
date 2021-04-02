@@ -464,7 +464,11 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
             let postType = posts[indexPath.item].type
 
                if postType == "checkIn" {
-
+                        
+                let checkInWidth = view.frame.width
+                let checkInHeight = view.frame.height
+                let navigationBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
+                
                           if let captionText = posts[indexPath.item].type {
                  
                                   print("the post type is \(postType) and we got here")
@@ -472,7 +476,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
                 
                                 print("the height value that is added for \(captionText) should be\(rect.height)")
                                 //return CGSize(width: view.frame.width, height: (view.frame.height - 90) + rect.height)
-                            return CGSize(width: width, height: height - 50)
+                            return CGSize(width: checkInWidth, height: checkInHeight)
                               }
 
                } else {

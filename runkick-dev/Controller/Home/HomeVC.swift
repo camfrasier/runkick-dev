@@ -956,7 +956,8 @@ class HomeVC: UIViewController, Alertable {
         //button.titleLabel?.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 24)
         button.titleLabel?.font = UIFont(name: "AvenirNextCondensed-BoldItalic", size: 24)
         button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        button.setTitleColor(UIColor.airBnBNew(), for: .normal)
+        //button.setTitleColor(UIColor.airBnBNew(), for: .normal)
+        button.setTitleColor(UIColor.newWalkzillaRed(), for: .normal)
         button.addTarget(self, action: #selector(handleStartStopTrip), for: .touchUpInside)
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor

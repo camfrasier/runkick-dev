@@ -19,6 +19,10 @@ class CheckInCell: UICollectionViewCell {
     var logos = [Logos]()
     let reuseCircleCellIdentifier = "CircleCell"
     var didLoad = false
+    var isTransitioned = false
+    var isWildCardSet = false
+    var timerStarted = false
+    
     
     
     var post: Post? {
@@ -98,15 +102,23 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
-    lazy var locationButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
-        let button = UIButton(type: .system)
-        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 15)
-        button.setImage(UIImage(named: "locationMarker"), for: .normal)
-        button.tintColor = UIColor.walkzillaRed()
-        button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
-        return button
+    let foregroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        return view
     }()
     
+    let foregroundTopView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        return view
+    }()
+    
+    let foregroundGradientView: GradientClearView = {
+        let view = GradientClearView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     lazy var checkInButton1: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .custom)
@@ -118,19 +130,38 @@ class CheckInCell: UICollectionViewCell {
     lazy var favoritesButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .system)
         button.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 13)
-        button.setTitle("SEE MORE", for: .normal)
+        button.titleLabel?.font =  UIFont(name: "Arial-BoldMT", size: 15)
+        button.setTitle("View Menus", for: .normal)
         button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
     }()
     
+    lazy var locationButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
+        let button = UIButton(type: .system)
+        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 15)
+        button.setImage(UIImage(named: "locationMarker"), for: .normal)
+        button.tintColor = UIColor.walkzillaRed()
+        //button.tintColor = UIColor.white
+        button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
+        return button
+    }()
     
     let userLocationBlock: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         return view
     }()
+    
+    let locationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        //label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.textAlignment = .center
+        label.text = "Union Market DC"
+        return label
+    } ()
     
     let lineView: UIView = {
         let view = UIView()
@@ -140,7 +171,7 @@ class CheckInCell: UICollectionViewCell {
     
     let mapBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //view.backgroundColor = UIColor.rgb(red: 238, green: 238, blue: 238)
         //view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         //view.layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 0/255, alpha: 0.35).cgColor
         //view.layer.shadowRadius = 10.0
@@ -161,14 +192,14 @@ class CheckInCell: UICollectionViewCell {
     
     let actionLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
+        //label.text = "FORTUNE"
         label.text = "Fortune"
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        //label.font = UIFont(name: "HelveticaNeue-Medium", size: 28)
-        //label.font = UIFont(name: "NotoSansKannada-Bold", size: 32)
-        label.font = UIFont(name: "PingFangTC-Semibold", size: 28)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        //label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 30)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
+        //label.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
         //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 32)
         //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.setLineHeight(lineHeight: 0)
@@ -178,14 +209,17 @@ class CheckInCell: UICollectionViewCell {
     
     let actionLabel2: UILabel = { // Will replace later with an action label.
         let label = UILabel()
+        //abel.text = "FAVORS"
         label.text = "Favors"
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 32)
         //label.font = UIFont(name: "ArialHebrew", size: 32)
-        label.font = UIFont(name: "PingFangTC-Semibold", size: 28)
+        label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 30)
+        //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
+        //label.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
         //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 32)
         //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.setLineHeight(lineHeight: 0)
@@ -197,13 +231,13 @@ class CheckInCell: UICollectionViewCell {
         let label = UILabel()
         label.text = " The Brave. "
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 28)
-        label.font = UIFont(name: "PingFangTC-Semibold", size: 28)
+        label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 30)
+        //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
         //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)
-        label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 250, green: 250, blue: 250)
         label.backgroundColor = UIColor.walkzillaRed()
         label.setLineHeight(lineHeight: 0)
         label.numberOfLines = 1
@@ -216,14 +250,7 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
-    let locationLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        label.textAlignment = .center
-        label.text = "Union Market DC"
-        return label
-    } ()
+
     
     lazy var newLikeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -236,11 +263,44 @@ class CheckInCell: UICollectionViewCell {
     
     let checkInProfileBlock: UIView = {
         let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        return view
+    }()
+    
+    let checkInProfileBlockLeft: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        return view
+    }()
+    
+    let checkInProfileBlockRight: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        return view
+    }()
+    
+    let checkInWildcardBlock: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.alpha = 0
         return view
     }()
     
     let spacerBlock: UIView = {
         let view = UIView()
+        view.backgroundColor = UIColor.walkzillaRed()
         return view
     }()
     
@@ -277,7 +337,7 @@ class CheckInCell: UICollectionViewCell {
     
     lazy var followFollowingLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        label.font = UIFont(name: "ArialMT", size: 15)
         label.text = "follow"
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
@@ -295,6 +355,13 @@ class CheckInCell: UICollectionViewCell {
         view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         return view
     }()
+    
+    let circleDotView1: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 2 / 2
+        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        return view
+    }()
 
     lazy var captionBlock: UIView = {
         let view = UIView()
@@ -304,7 +371,7 @@ class CheckInCell: UICollectionViewCell {
     
     
     
-    lazy var addCommentBlock: UIView = {
+    lazy var userCommentBlock: UIView = {
         let view = UIView()
         view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         let addCommentTapped = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
@@ -325,7 +392,7 @@ class CheckInCell: UICollectionViewCell {
         button.setTitle("Username", for: .normal)
         button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 15)
         //button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 100, green: 100, blue: 100), for: .normal)
         button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
     }()
@@ -390,9 +457,55 @@ class CheckInCell: UICollectionViewCell {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
+        
+        
+        // add gesture recognizer for double tap to like
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
+        likeTap.numberOfTapsRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(likeTap)
+        return iv
+    } ()
+    
+    let logoBackground1: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        return view
+    }()
+    
+    lazy var logoImage: CustomImageView = {  // Using the Custom image view class.
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
 
         // add gesture recognizer for double tap to like
-        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoTapped))
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleLogo1Tapped))
+        likeTap.numberOfTapsRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(likeTap)
+        return iv
+    } ()
+    
+    lazy var logoImageRight: CustomImageView = {  // Using the Custom image view class.
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+
+        // add gesture recognizer for double tap to like
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleLogo1Tapped))
+        likeTap.numberOfTapsRequired = 1
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(likeTap)
+        return iv
+    } ()
+    
+    lazy var logoImageFarRight: CustomImageView = {  // Using the Custom image view class.
+        let iv = CustomImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+
+        // add gesture recognizer for double tap to like
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleLogo1Tapped))
         likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
@@ -410,6 +523,100 @@ class CheckInCell: UICollectionViewCell {
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
         return iv
+    } ()
+    
+    let pointsLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 35)
+        label.text = "675"
+        return label
+    } ()
+    
+    let pointsLabelRight: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 35)
+        label.text = "475"
+        return label
+    } ()
+    
+    let pointsLabelFarRight: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 35)
+        label.text = "975"
+        return label
+    } ()
+    
+    
+    let plusLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 25)
+        label.text = "+"
+        return label
+    } ()
+    
+    let plusLabelRight: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 25)
+        label.text = "+"
+        return label
+    } ()
+    
+    let plusLabelFarRight: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 25)
+        label.text = "+"
+        return label
+    } ()
+    
+    let pointsLabel1: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 35)
+        label.text = "675"
+        return label
+    } ()
+    
+
+    
+    let logoLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 20, green: 20, blue: 20)
+        label.font = UIFont(name: "Arial-BoldMT", size: 17)
+        label.text = "Bandit Taco"
+        return label
+    } ()
+    
+    let logoLabelRight: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 20, green: 20, blue: 20)
+        label.font = UIFont(name: "Arial-BoldMT", size: 17)
+        label.text = "Bandit Taco"
+        return label
+    } ()
+    
+    let logoLabelFarRight: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 20, green: 20, blue: 20)
+        label.font = UIFont(name: "Arial-BoldMT", size: 17)
+        label.text = "Bandit Taco"
+        return label
+    } ()
+    
+    
+    
+    
+    let logoLabel1: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 20, green: 20, blue: 20)
+        label.font = UIFont(name: "Arial-BoldMT", size: 17)
+        label.text = "Bandit Taco"
+        return label
     } ()
     
     lazy var logoImage2: CustomImageView = {  // Using the Custom image view class.
@@ -513,9 +720,10 @@ class CheckInCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue", size: 14)
+        //label.font = UIFont(name: "HelveticaNeue", size: 14)
+        label.font = UIFont(name: "Arial-BoldMT", size: 14)
         label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
-        label.text = "2 days ago"
+        label.text = "2d"
         return label
     } ()
     
@@ -527,72 +735,156 @@ class CheckInCell: UICollectionViewCell {
     
     let distanceBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
         return view
     }()
     
     lazy var distanceMarker: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "markerWalkzilla"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        button.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         //button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
     }()
     
-    let distanceLabel: UILabel = {
+    let distanceTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 13)
-        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        //label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.font = UIFont(name: "ArialMT", size: 15)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
-        label.text = "9.31mi"
+        label.text = "Miles"
         return label
     } ()
     
-    let stepsBackground: UIView = {
+    let calorieTitleLabel: UILabel = {
+        let label = UILabel()
+        //label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.font = UIFont(name: "ArialMT", size: 15)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        label.textAlignment = .center
+        label.text = "Cals"
+        return label
+    } ()
+    
+    let timeTitleLabel: UILabel = {
+        let label = UILabel()
+        //label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.font = UIFont(name: "ArialMT", size: 15)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        label.textAlignment = .center
+        label.text = "Hours"
+        return label
+    } ()
+    
+    let stepsTitleLabel: UILabel = {
+        let label = UILabel()
+        //label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.font = UIFont(name: "ArialMT", size: 15)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        label.textAlignment = .center
+        label.text = "Steps"
+        return label
+    } ()
+    
+    
+    let calorieBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
         return view
     }()
     
-    lazy var stepsMarker: UIButton = {
+    lazy var calorieButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "dasherWalkzilla"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        button.setImage(UIImage(named: "flameSimple"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         //button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
     }()
     
     let stepsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 13)
+        label.font = UIFont(name: "Arial-BoldMT", size: 19)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         label.textAlignment = .center
-        label.text = "4.1K"
+        label.text = "4253"
         return label
     } ()
     
-    let durationBackground: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
-        return view
-    }()
+    let distanceLabel: UILabel = {
+        let label = UILabel()
+        //label.font = UIFont.boldSystemFont(ofSize: 13)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.textAlignment = .center
+        label.font = UIFont(name: "Arial-BoldMT", size: 19)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
+        //"AvenirNextCondensed-BoldItalic"
+        label.text = "9.3"
+        return label
+    } ()
+    
+    let calorieLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Arial-BoldMT", size: 19)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.textAlignment = .center
+        label.text = "920"
+        return label
+    } ()
+    
+    let durationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Arial-BoldMT", size: 19)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.textAlignment = .center
+        label.text = "0.48"
+        return label
+    } ()
     
     lazy var durationMarker: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "activityWalkzilla"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        button.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         //button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
     }()
     
-    let durationLabel: UILabel = {
+
+    
+    let stepsBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
+        return view
+    }()
+    
+    lazy var stepsMarker: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "dasherWalkzilla"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        //button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
+        return button
+    }()
+    
+
+    
+    let durationBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
+        return view
+    }()
+    
+    let titleLable: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 13)
-        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        label.textAlignment = .center
-        label.text = "00:48h"
+        label.font = UIFont(name: "HelveticaNeue", size: 14)
+        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        label.text = "Walkzilla"
         return label
     } ()
+    
+
     
     /*
     lazy var newLikeButton: UIButton = {
@@ -801,15 +1093,20 @@ class CheckInCell: UICollectionViewCell {
     let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
     var collectionView: UICollectionView!
     
+    
+    
+    
+    
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+    
+        print("THE timer set IS to FALSE NOW")
         
         configureContraints()
-        
-        backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 235)
-        
-        //backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+
+        backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         //let layout = UICollectionViewFlowLayout()
         //let frame = CGRect(x: 0, y: (frame.height / 2) - 40, width: frame.width, height: frame.height / 2 + 40)
@@ -901,10 +1198,14 @@ class CheckInCell: UICollectionViewCell {
     func configureContraints() {
         
         
-        //addSubview(mapBackgroundView)
-        //mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        //mapBackgroundView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        //mapBackgroundView.layer.cornerRadius = 15
+       addSubview(mapBackgroundView)
+       mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        mapBackgroundView.layer.cornerRadius = 12
+      
+        mapBackgroundView.addSubview(mapImageView)
+        mapImageView.translatesAutoresizingMaskIntoConstraints = false
+        mapImageView.clipsToBounds = true
+        mapImageView.layer.cornerRadius = 12
         
         
         addSubview(analyticsBlock)
@@ -915,8 +1216,7 @@ class CheckInCell: UICollectionViewCell {
 
 /*
          // photo attributes and constraints
-         mapBackgroundView.addSubview(mapImageView)
-         mapImageView.translatesAutoresizingMaskIntoConstraints = false
+
          //postImageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
          //postImageView.layer.cornerRadius = 40
          mapImageView.clipsToBounds = true
@@ -924,44 +1224,237 @@ class CheckInCell: UICollectionViewCell {
         
         addSubview(actionBlock)
         actionBlock.translatesAutoresizingMaskIntoConstraints = false
+        //actionBlock.backgroundColor = UIColor.walkzillaRed()
         actionBlock.backgroundColor = UIColor.clear
         
         
         
-        addSubview(spacerBlock)
-        spacerBlock.translatesAutoresizingMaskIntoConstraints = false
-        spacerBlock.backgroundColor = UIColor.rgb(red: 235, green: 235, blue: 235)
+        //addSubview(spacerBlock)
+        //spacerBlock.translatesAutoresizingMaskIntoConstraints = false
+        //spacerBlock.backgroundColor = UIColor.rgb(red: 0, green: 235, blue: 235)
         
         // date and time attributes and constraints
         addSubview(postTimeLabel)
         postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        addSubview(foregroundView)
+        foregroundView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(foregroundTopView)
+        foregroundView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(foregroundGradientView)
+        foregroundGradientView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
 
         
+        
+        addSubview(userCommentBlock)
+        userCommentBlock.translatesAutoresizingMaskIntoConstraints = false
+
+        //addSubview(lineView)
+        //lineView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        imageTranslucentBar.addSubview(userLocationBlock)
+        userLocationBlock.translatesAutoresizingMaskIntoConstraints = false
+     
+        
+        userLocationBlock.addSubview(locationButton)
+        locationButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        userLocationBlock.addSubview(locationLabel)
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+    
         addSubview(imageTranslucentBar)
         imageTranslucentBar.translatesAutoresizingMaskIntoConstraints = false
-        
-        addSubview(lineView)
-        lineView.translatesAutoresizingMaskIntoConstraints = false
+        imageTranslucentBar.backgroundColor = UIColor.white
         
         // profile attributes and constraints
-        imageTranslucentBar.addSubview(profileImageView)
+        mapImageView.addSubview(profileImageView)
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        // username attributes and constraints
-        imageTranslucentBar.addSubview(usernameButton)
-        usernameButton.translatesAutoresizingMaskIntoConstraints = false
-        
         // separator attributes and constraints
-        imageTranslucentBar.addSubview(circleDotView)
+        addSubview(circleDotView)
         circleDotView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        /*
+        // username attributes and constraints
+        userLocationBlock.addSubview(usernameButton)
+        usernameButton.translatesAutoresizingMaskIntoConstraints = false
         
 
         
-        // following/follower attributes and constraints
-        imageTranslucentBar.addSubview(followFollowingLabel)
-        followFollowingLabel.translatesAutoresizingMaskIntoConstraints = false
-         
+        userLocationBlock.addSubview(circleDotView1)
+        circleDotView1.translatesAutoresizingMaskIntoConstraints = false
+         */
+         // following/follower attributes and constraints
+          addSubview(followFollowingLabel)
+         followFollowingLabel.translatesAutoresizingMaskIntoConstraints = false
+       
+        
+        imageTranslucentBar.addSubview(mapBackgroundView)
+        mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(favoritesButton)
+        favoritesButton.translatesAutoresizingMaskIntoConstraints = false
+    
+        
+        
+        
+
+        userCommentBlock.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 15)
+        
+       // userLocationBlock.anchor(top: nil, left: leftAnchor, bottom: userCommentBlock.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 28)
+
+        
+        imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: userCommentBlock.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: (frame.height / 3) + 65)
+        
+        let profileImageDimension = CGFloat(30)
+        profileImageView.anchor(top: mapImageView.topAnchor, left: mapImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
+        profileImageView.layer.cornerRadius = profileImageDimension / 2
+        
+        
+        userLocationBlock.anchor(top: mapBackgroundView.bottomAnchor, left: mapBackgroundView.leftAnchor, bottom: nil, right: imageTranslucentBar.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 34)
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[marker(12)]-4-[location]", options: [], metrics: nil, views: ["marker": locationButton,"location": locationLabel]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[location]", options: [], metrics: nil, views: ["location": locationLabel]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
+        
+        
+        /*
+        circleDotView1.anchor(top: locationLabel.topAnchor, left: locationLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
+        
+        usernameButton.anchor(top: locationLabel.topAnchor, left: circleDotView1.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 6, paddingBottom: 0, paddingRight: 0, width: 0, height: 16)
+        
+        circleDotView.anchor(top: usernameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
+
+       followFollowingLabel.anchor(top: usernameButton.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+ 
+        
+
+        
+        */
+        mapBackgroundView.anchor(top: imageTranslucentBar.topAnchor, left: imageTranslucentBar.leftAnchor, bottom: imageTranslucentBar.bottomAnchor, right: imageTranslucentBar.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 85, paddingRight: 20, width: 0, height: 0)
+     
+        
+        mapImageView.anchor(top: mapBackgroundView.topAnchor, left: mapBackgroundView.leftAnchor, bottom: mapBackgroundView.bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        favoritesButton.anchor(top: nil, left: nil, bottom: mapBackgroundView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 24, paddingRight: 0, width: frame.width - 80, height: 45)
+        favoritesButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        favoritesButton.layer.cornerRadius = 10
+    
+        
+        
+        
+         // addSubview(distanceBackground)
+          //distanceBackground.translatesAutoresizingMaskIntoConstraints = false
+        
+          addSubview(distanceLabel)
+          distanceLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(distanceTitleLabel)
+        distanceTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+          
+         // addSubview(distanceMarker)
+         // distanceMarker.translatesAutoresizingMaskIntoConstraints = false
+          
+          //addSubview(stepsBackground)
+          //stepsBackground.translatesAutoresizingMaskIntoConstraints = false
+          
+          addSubview(stepsLabel)
+          translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stepsTitleLabel)
+       stepsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+          
+         // addSubview(stepsMarker)
+         // stepsMarker.translatesAutoresizingMaskIntoConstraints = false
+          
+         // addSubview(durationBackground)
+          //durationBackground.translatesAutoresizingMaskIntoConstraints = false
+          
+          addSubview(durationLabel)
+          durationLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(timeTitleLabel)
+        timeTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+          
+         // addSubview(durationMarker)
+         // durationMarker.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+          //addSubview(calorieBackground)
+          //calorieBackground.translatesAutoresizingMaskIntoConstraints = false
+        
+          addSubview(calorieLabel)
+          calorieLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(calorieTitleLabel)
+        calorieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+          
+         // addSubview(calorieButton)
+        //  calorieButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        /*
+        let stackView3 =  UIStackView(arrangedSubviews: [distanceBackground, stepsBackground, durationBackground])
+
+        stackView3.axis = .horizontal
+        stackView3.distribution = .equalSpacing
+        stackView3.alignment = .center
+        stackView3.spacing = 1
+        stackView3.translatesAutoresizingMaskIntoConstraints = false
+        //mapBackgroundView.addSubview(stackView3)
+        
+        
+        stackView3.anchor(top: nil, left: spacerBlock.leftAnchor, bottom: nil, right: spacerBlock.rightAnchor, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        stackView3.centerYAnchor.constraint(equalTo: spacerBlock.centerYAnchor).isActive = true
+        */
+
+        
+       // durationMarker.anchor(top: nil, left: imageTranslucentBar.leftAnchor, bottom: imageTranslucentBar.topAnchor, right: nil, paddingTop: 0, paddingLeft: 140, paddingBottom: 30, paddingRight: 0, width: 17, height: 17)
+        
+        timeTitleLabel.anchor(top: nil, left: imageTranslucentBar.leftAnchor, bottom: imageTranslucentBar.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 35, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+        
+        durationLabel.anchor(top: nil, left: nil, bottom: timeTitleLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        durationLabel.centerXAnchor.constraint(equalTo: timeTitleLabel.centerXAnchor).isActive = true
+        
+        
+        
+        distanceTitleLabel.anchor(top: nil, left: timeTitleLabel.leftAnchor, bottom: timeTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 100, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        distanceLabel.anchor(top: nil, left: nil, bottom: distanceTitleLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        distanceLabel.centerXAnchor.constraint(equalTo: distanceTitleLabel.centerXAnchor).isActive = true
+        
+        
+     //   calorieButton.anchor(top: durationMarker.topAnchor, left: durationMarker.rightAnchor, bottom:  nil, right: nil, paddingTop: 0, paddingLeft: 100, paddingBottom: 0, paddingRight: 0, width: 16, height: 19)
+        
+        calorieTitleLabel.anchor(top: nil, left: distanceTitleLabel.leftAnchor, bottom: timeTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 100, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        calorieLabel.anchor(top: nil, left: nil, bottom: calorieTitleLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        calorieLabel.centerXAnchor.constraint(equalTo: calorieTitleLabel.centerXAnchor).isActive = true
+        
+        
+       // distanceMarker.anchor(top: nil, left: durationMarker.leftAnchor, bottom: durationMarker.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 50, paddingRight: 0, width: 13, height: 18)
+
+        
+      //  stepsMarker.anchor(top: nil, left: calorieButton.leftAnchor, bottom: calorieButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 50, paddingRight: 0, width: 18, height: 20)
+
+        stepsTitleLabel.anchor(top: nil, left: calorieTitleLabel.leftAnchor, bottom: timeTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 100, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        stepsLabel.anchor(top: nil, left: nil, bottom: stepsTitleLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stepsLabel.centerXAnchor.constraint(equalTo: stepsTitleLabel.centerXAnchor).isActive = true
+        
+        
+        /*
+
          imageTranslucentBar.addSubview(newCommentBubble)
          newCommentBubble.translatesAutoresizingMaskIntoConstraints = false
 
@@ -974,47 +1467,15 @@ class CheckInCell: UICollectionViewCell {
          imageTranslucentBar.addSubview(likesLabel)
          likesLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        
-        spacerBlock.addSubview(distanceBackground)
-        distanceBackground.translatesAutoresizingMaskIntoConstraints = false
-        
-        distanceBackground.addSubview(distanceLabel)
-        distanceLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        distanceBackground.addSubview(distanceMarker)
-        distanceMarker.translatesAutoresizingMaskIntoConstraints = false
-        
-        spacerBlock.addSubview(stepsBackground)
-        distanceBackground.translatesAutoresizingMaskIntoConstraints = false
-        
-        stepsBackground.addSubview(stepsLabel)
-        stepsLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        stepsBackground.addSubview(stepsMarker)
-        stepsMarker.translatesAutoresizingMaskIntoConstraints = false
-        
-        spacerBlock.addSubview(durationBackground)
-        distanceBackground.translatesAutoresizingMaskIntoConstraints = false
-        
-        durationBackground.addSubview(durationLabel)
-        durationLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        durationBackground.addSubview(durationMarker)
-        durationMarker.translatesAutoresizingMaskIntoConstraints = false
+        */
         
         
-        addSubview(userLocationBlock)
-        userLocationBlock.translatesAutoresizingMaskIntoConstraints = false
-        //userLocationBlock.backgroundColor = UIColor.walkzillaRed()
+        /*
         
-        userLocationBlock.addSubview(locationButton)
-        locationButton.translatesAutoresizingMaskIntoConstraints = false
         
-        userLocationBlock.addSubview(locationLabel)
-        locationLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(newLikeButton)
-        newLikeButton.translatesAutoresizingMaskIntoConstraints = false
+
+        */
         
 
         
@@ -1044,25 +1505,13 @@ class CheckInCell: UICollectionViewCell {
 
        
         
+  /*
         
+ 
         
-        let profileImageDimension = CGFloat(30)
-        profileImageView.anchor(top: imageTranslucentBar.topAnchor, left: imageTranslucentBar.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 28, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
-        profileImageView.layer.cornerRadius = profileImageDimension / 2
-        
-        usernameButton.anchor(top: imageTranslucentBar.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 16)
-        
-        circleDotView.anchor(top: usernameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
 
-       followFollowingLabel.anchor(top: usernameButton.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        userLocationBlock.anchor(top: nil, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 26)
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[marker(12)]-4-[location]", options: [], metrics: nil, views: ["marker": locationButton,"location": locationLabel]))
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[location]", options: [], metrics: nil, views: ["location": locationLabel]))
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-12-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
+    
  
         //mapBackgroundView.anchor(top: nil, left: leftAnchor, bottom: locationLabel.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 220)
  
@@ -1071,33 +1520,33 @@ class CheckInCell: UICollectionViewCell {
 
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[background]-0-|", options: [], metrics: nil, views: ["background": analyticsBlock]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[actionBlock(200)]", options: [], metrics: nil, views: ["actionBlock": actionBlock]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[actionBlock(200)]", options: [], metrics: nil, views: ["actionBlock": actionBlock]))
 
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-42-[actionBlock(120)]", options: [], metrics: nil, views: ["actionBlock": actionBlock]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-200-[actionBlock(125)]", options: [], metrics: nil, views: ["actionBlock": actionBlock]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[lineView]-0-|", options: [], metrics: nil, views: ["lineView": lineView]))
         
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(30)]-38-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(30)]-38-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-38-[pressHeart(27)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-38-[pressHeart(27)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[lineView(0.20)]-0-[mapBackground]", options: [], metrics: nil, views: ["lineView": lineView, "mapBackground": mapBackgroundView]))
         
-        spacerBlock.anchor(top: actionBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
+        //spacerBlock.anchor(top: actionBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 140)
         
-        distanceBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 45)
-        distanceBackground.layer.cornerRadius = 20
+        distanceBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
+        //distanceBackground.layer.cornerRadius = 15
         //distanceBackground.layer.borderWidth = 0.50
         //distanceBackground.layer.borderColor = UIColor.rgb(red: 200, green: 200, blue: 200).cgColor
         
-        stepsBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 45)
-        stepsBackground.layer.cornerRadius = 20
+        stepsBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
+        //stepsBackground.layer.cornerRadius = 15
         //stepsBackground.layer.borderWidth = 0.50
         //stepsBackground.layer.borderColor = UIColor.rgb(red: 200, green: 200, blue: 200).cgColor
         
-        durationBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 45)
-        durationBackground.layer.cornerRadius = 20
+        durationBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
+        //durationBackground.layer.cornerRadius = 15
         //checkinBackground.layer.borderWidth = 0.50
         //checkinBackground.layer.borderColor = UIColor.rgb(red: 200, green: 200, blue: 200).cgColor
         
@@ -1112,7 +1561,7 @@ class CheckInCell: UICollectionViewCell {
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[image(200)]-0-|", options: [], metrics: nil, views: ["image": postImageView]))
         
-        postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
         
 
         
@@ -1190,29 +1639,59 @@ class CheckInCell: UICollectionViewCell {
         stackView.anchor(top: stackView2.topAnchor, left: nil, bottom: nil, right: stackView2.leftAnchor , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
         
         
-        let stackView3 =  UIStackView(arrangedSubviews: [distanceBackground, stepsBackground, durationBackground])
 
-        stackView3.axis = .horizontal
-        stackView3.distribution = .equalSpacing
-        stackView3.alignment = .center
-        stackView3.spacing = 5
-        stackView3.translatesAutoresizingMaskIntoConstraints = false
-        spacerBlock.addSubview(stackView3)
         
-        stackView3.anchor(top: spacerBlock.topAnchor, left: spacerBlock.leftAnchor, bottom: nil, right: spacerBlock.rightAnchor, paddingTop: 25, paddingLeft: 30, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
-        //stackView3.centerYAnchor.constraint(equalTo: spacerBlock.centerYAnchor).isActive = true
-        
-        distanceMarker.anchor(top: distanceBackground.topAnchor, left: distanceBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 19, paddingBottom: 0, paddingRight: 0, width: 13, height: 17)
-        distanceLabel.anchor(top: distanceMarker.topAnchor, left: distanceMarker.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+*/
         
         
-        stepsMarker.anchor(top: stepsBackground.topAnchor, left: stepsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 23, paddingBottom: 0, paddingRight: 0, width: 17, height: 17)
-        stepsLabel.anchor(top: stepsMarker.topAnchor, left: stepsMarker.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        circleDotView.anchor(top: nil, left: postTimeLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
+        circleDotView.centerYAnchor.constraint(equalTo: self.postTimeLabel.centerYAnchor).isActive = true
+        
+        followFollowingLabel.anchor(top: postTimeLabel.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+         //circleDotView.anchor(top: postTimeLabel.topAnchor, left: postTimeLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
+
+        //followFollowingLabel.anchor(top: postTimeLabel.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        //foregroundView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 32, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
-        durationMarker.anchor(top: durationBackground.topAnchor, left: durationBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 17, height: 17)
-        durationLabel.anchor(top: durationMarker.topAnchor, left: durationMarker.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        /*
+        foregroundTopView.anchor(top: topAnchor, left: leftAnchor, bottom: foregroundView.topAnchor, right: rightAnchor, paddingTop: 32, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        foregroundTopView.addSubview(foregroundGradientView)
+        foregroundGradientView.anchor(top: foregroundTopView.topAnchor, left: foregroundTopView.leftAnchor, bottom: foregroundTopView.bottomAnchor, right: foregroundTopView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        let mapImageDim: CGFloat = 190
+        foregroundView.addSubview(mapBackgroundView)
+        mapBackgroundView.backgroundColor = UIColor.walkzillaRed()
+        mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        mapBackgroundView.anchor(top: foregroundView.topAnchor, left: foregroundView.leftAnchor, bottom: foregroundView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: mapImageDim, height: 0)
+        //mapBackgroundView.layer.cornerRadius = mapImageDim / 8
+        //mapBackgroundView.layer.borderWidth = 0.25
+        //mapBackgroundView.layer.borderColor = UIColor.rgb(red: 140, green: 140, blue: 140).cgColor
+        
+       
+
+
+        
+        */
+        
+        
+        /*
+       // mapImageView.addSubview(gradientImageView)
+       // gradientImageView.anchor(top: mapImageView.topAnchor, left: mapImageView.leftAnchor, bottom: mapImageView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 0)
+        
+        */
+ 
+        
+
+ 
+ 
     }
     
     
@@ -1285,11 +1764,14 @@ class CheckInCell: UICollectionViewCell {
              
              if followed {
                  self.followFollowingLabel.text = "following"
-                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 15)
+                //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 15)
+                self.followFollowingLabel.font = UIFont(name: "ArialMT", size: 15)
+                
                 self.circleDotView.backgroundColor =  UIColor.rgb(red: 0, green: 0, blue: 0)
              } else {
                  self.followFollowingLabel.text = "follow"
-                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+                //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+                self.followFollowingLabel.font = UIFont(name: "Arial-BoldMT", size: 16)
                 self.circleDotView.backgroundColor =  UIColor.rgb(red: 0, green: 0, blue: 0)
              }
          })
@@ -1308,7 +1790,7 @@ class CheckInCell: UICollectionViewCell {
     }
     
     func circleView2() {
-        
+        /*
         addSubview(logoImage1)
         logoImage1.translatesAutoresizingMaskIntoConstraints = false
         logoImage1.anchor(top: imageTranslucentBar.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 60, paddingLeft: 170, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
@@ -1318,7 +1800,7 @@ class CheckInCell: UICollectionViewCell {
         logoImage2.translatesAutoresizingMaskIntoConstraints = false
         logoImage2.anchor(top: imageTranslucentBar.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 50, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
         logoImage2.layer.cornerRadius = 100 / 2
-        
+        */
     }
     
     func countUserLogos() {
@@ -1340,13 +1822,15 @@ class CheckInCell: UICollectionViewCell {
                     case 1: numberOfLogos = 1
                     
                     self.checkInProfileBlock.removeFromSuperview()
-                    self.checkInProfileBlock.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
+                    //self.checkInProfileBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                        self.checkInProfileBlock.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
                     
                     Database.fetchLogos(with: postId) { (post) in
                         
                         guard let logoImageUrl1 = post.logo1 else { return }
                         self.logoImage1.loadImage(with: logoImageUrl1)
                         
+                        /*
                         self.addSubview(self.checkInProfileBlock)
                         self.checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
                         self.checkInProfileBlock.anchor(top: self.imageTranslucentBar.bottomAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -1356,6 +1840,7 @@ class CheckInCell: UICollectionViewCell {
                         self.logoImage1.anchor(top: self.imageTranslucentBar.bottomAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 150, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
                         self.logoImage1.layer.cornerRadius = 200 / 2
                         
+ */
                     }
                     
                     //self.circleView1()
@@ -1365,6 +1850,8 @@ class CheckInCell: UICollectionViewCell {
                     
                     case 2: numberOfLogos = 2
                     
+                        
+                        
                     self.checkInProfileBlock.removeFromSuperview()
                     self.checkInProfileBlock.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
                     
@@ -1375,7 +1862,7 @@ class CheckInCell: UICollectionViewCell {
                             
                                 guard let logoImageUrl2 = post.logo2 else { return }
                                 self.logoImage2.loadImage(with: logoImageUrl2)
-                              
+                              /*
                               self.addSubview(self.checkInProfileBlock)
                               self.checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
                               self.checkInProfileBlock.anchor(top: self.imageTranslucentBar.bottomAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -1391,7 +1878,7 @@ class CheckInCell: UICollectionViewCell {
                             self.logoImage2.anchor(top: self.imageTranslucentBar.bottomAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 25, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
                             self.logoImage2.layer.cornerRadius = 150 / 2
                             
-
+                                        */
                           }
                     
                     
@@ -1401,12 +1888,403 @@ class CheckInCell: UICollectionViewCell {
                     
                     case 3: numberOfLogos = 3
                     
-                 self.checkInProfileBlock.removeFromSuperview()
-                //self.checkInProfileBlock.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
-                    self.checkInProfileBlock.backgroundColor = UIColor.clear
                     
-                    //self.checkInProfileBlock.backgroundColor = UIColor.walkzillaRed()
+                    
+                    
+                    self.checkInProfileBlock.removeFromSuperview()
+                    self.checkInProfileBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                    
+                    self.checkInProfileBlockLeft.removeFromSuperview()
+                    self.checkInProfileBlockLeft.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                    
+                    self.checkInProfileBlockRight.removeFromSuperview()
+                    self.checkInProfileBlockRight.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                    
+                    self.checkInWildcardBlock.removeFromSuperview()
+                    self.checkInWildcardBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                    
+                    
+                    
+                    self.logoLabel.removeFromSuperview()
+                    self.pointsLabel.removeFromSuperview()
+                    self.plusLabel.removeFromSuperview()
+                    
+                    self.logoLabelRight.removeFromSuperview()
+                    self.pointsLabelRight.removeFromSuperview()
+                    self.plusLabelRight.removeFromSuperview()
+                    
+                    self.logoLabelFarRight.removeFromSuperview()
+                    self.pointsLabelFarRight.removeFromSuperview()
+                    self.plusLabelFarRight.removeFromSuperview()
+                    
+                    
+                    self.addSubview(self.checkInProfileBlock)
+                    self.checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
+
+                   self.checkInProfileBlock.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 25, paddingLeft: 85, paddingBottom: 0, paddingRight: 85, width: 0, height: 200)
+                   self.checkInProfileBlock.layer.cornerRadius = 15
+                    
+                    
+                    
+                     self.addSubview(self.checkInProfileBlockLeft)
+                     self.checkInProfileBlockLeft.translatesAutoresizingMaskIntoConstraints = false
+
+                    self.checkInProfileBlockLeft.anchor(top: self.postTimeLabel.bottomAnchor, left: nil, bottom: nil, right: self.checkInProfileBlock.leftAnchor, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 45, width: self.frame.width - 170, height: 200)
+                    self.checkInProfileBlockLeft.layer.cornerRadius = 15
+                    
+                    
+                     self.addSubview(self.checkInProfileBlockRight)
+                     self.checkInProfileBlockRight.translatesAutoresizingMaskIntoConstraints = false
+
+                    self.checkInProfileBlockRight.anchor(top: self.postTimeLabel.bottomAnchor, left: self.checkInProfileBlock.rightAnchor, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 45, paddingBottom: 0, paddingRight: 0, width: self.frame.width - 170, height: 200)
+                    self.checkInProfileBlockRight.layer.cornerRadius = 15
+                    
+                     self.addSubview(self.checkInWildcardBlock)
+                     self.checkInWildcardBlock.translatesAutoresizingMaskIntoConstraints = false
+
+                    self.checkInWildcardBlock.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 15, paddingLeft: 45, paddingBottom: 0, paddingRight: 45, width: 0, height: 200)
+                    self.checkInWildcardBlock.layer.cornerRadius = 15
+
+                    
+                    
+                // profile block initial
+                  
+                    /*
+                let logoDim: CGFloat = 70
+                self.checkInProfileBlock.addSubview(self.checkInProfileImageView)
+                self.checkInProfileImageView.translatesAutoresizingMaskIntoConstraints = false
+                self.checkInProfileImageView.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                self.checkInProfileImageView.layer.cornerRadius = logoDim / 2
+                self.checkInProfileImageView.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                    
+                self.checkInProfileBlock.addSubview(self.usernameButton)
+                self.usernameButton.translatesAutoresizingMaskIntoConstraints = false
+                self.usernameButton.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
+                self.usernameButton.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                    */
+                    
+                    var i = 1
+                    //var isTransitioned = false
+            
+                    
+                    
+            
+                    
+                    
+                    if self.timerStarted {
+                        print("Do nothing")
+                    } else {
+                    
+                        self.timerStarted = true
+                        print("Timer started set to true")
+                    
+       // let timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true){ t in
+                    
+            let timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true){ t in
+            
+
+                
+                        // if this is true then we remove all blocks and transition the other cards in. then wildcard is false
+               
+           
+            print("the value of i is \(i)")
+                        
+                        let logo = "logo\(i)"
+                        
+            
+                        
+                       
+                        //self.checkInProfileBlock.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 15, paddingLeft: 85, paddingBottom: 0, paddingRight: 85, width: 0, height: 200)
+                        //self.checkInProfileBlock.layer.cornerRadius = 15
+                        
                  
+            /*
+
+                    if i == 4 {
+                                       
+                                print("WE HIT THE CLOSE SESME FUNCTION the value of i is \(i)")
+                                self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                                                    
+                                                                                                                  
+                           UIView.animate(withDuration: 1 , delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                                                                                      
+                                                                                                                      
+                                self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                                                                                                      
+                                self.checkInProfileBlock.alpha = 1
+                                self.checkInProfileBlockLeft.alpha = 1
+                                self.checkInProfileBlockRight.alpha = 1
+                                self.checkInWildcardBlock.alpha = 0
+                                                                                                                      
+                 }) { (_) in
+                   
+                        //i = 1
+                    }
+                }
+                
+            */
+                
+                   
+
+                 
+            
+                        Database.fetchAnimatedLogo(with: postId, logoNum: logo) { (post) in
+                            guard let logoImageUrl1 = post.logoUrl else { return }
+                            self.logoImage.loadImage(with: logoImageUrl1)
+                            self.logoImageRight.loadImage(with: logoImageUrl1)
+                            self.logoImageFarRight.loadImage(with: logoImageUrl1)
+                            
+                            //print("THIS IS A VALUE OF logo URL \(post.logoUrl)")
+                            
+
+                            
+                            
+                            self.logoImage.removeFromSuperview()
+                            self.usernameButton.removeFromSuperview()
+                            
+                            // left attributes
+                            let logoDim: CGFloat = 70
+                            self.checkInProfileBlock.addSubview(self.logoImage)
+                            self.logoImage.translatesAutoresizingMaskIntoConstraints = false
+                            self.logoImage.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                            self.logoImage.layer.cornerRadius = logoDim / 2
+                            self.logoImage.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                        
+                            self.checkInProfileBlock.addSubview(self.logoLabel)
+                            self.logoLabel.translatesAutoresizingMaskIntoConstraints = false
+                            self.logoLabel.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
+                            self.logoLabel.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                            
+                            self.checkInProfileBlock.addSubview(self.pointsLabel)
+                            self.pointsLabel.translatesAutoresizingMaskIntoConstraints = false
+                            self.pointsLabel.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 0, height: 0)
+                            self.pointsLabel.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                            
+                            self.checkInProfileBlock.addSubview(self.plusLabel)
+                            self.plusLabel.translatesAutoresizingMaskIntoConstraints = false
+                            self.plusLabel.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 3, width: 0, height: 0)
+                            self.plusLabel.centerYAnchor.constraint(equalTo: self.pointsLabel.centerYAnchor).isActive = true
+                            
+                            
+                            // right attributes
+
+                            self.checkInProfileBlockRight.addSubview(self.logoImageRight)
+                            self.logoImageRight.translatesAutoresizingMaskIntoConstraints = false
+                            self.logoImageRight.anchor(top: self.checkInProfileBlockRight.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                            self.logoImageRight.layer.cornerRadius = logoDim / 2
+                            self.logoImageRight.centerXAnchor.constraint(equalTo: self.checkInProfileBlockRight.centerXAnchor).isActive = true
+                            
+                            self.checkInProfileBlockRight.addSubview(self.logoLabelRight)
+                            self.logoLabelRight.translatesAutoresizingMaskIntoConstraints = false
+                            self.logoLabelRight.anchor(top: nil, left: nil, bottom: self.checkInProfileBlockRight.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
+                            self.logoLabelRight.centerXAnchor.constraint(equalTo: self.checkInProfileBlockRight.centerXAnchor).isActive = true
+                            
+                            self.checkInProfileBlockRight.addSubview(self.pointsLabelRight)
+                            self.pointsLabelRight.translatesAutoresizingMaskIntoConstraints = false
+                            self.pointsLabelRight.anchor(top: nil, left: nil, bottom: self.checkInProfileBlockRight.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 0, height: 0)
+                            self.pointsLabelRight.centerXAnchor.constraint(equalTo: self.checkInProfileBlockRight.centerXAnchor).isActive = true
+                            
+                            self.checkInProfileBlockRight.addSubview(self.plusLabelRight)
+                            self.plusLabelRight.translatesAutoresizingMaskIntoConstraints = false
+                            self.plusLabelRight.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabelRight.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 3, width: 0, height: 0)
+                            self.plusLabelRight.centerYAnchor.constraint(equalTo: self.pointsLabelRight.centerYAnchor).isActive = true
+                            
+                
+                            
+ 
+                                
+                      
+                            
+                                    if self.isTransitioned {
+                                        
+                                        //self.checkInProfileBlock.transform = CGAffineTransform(translationX: 0, y: 0)
+                                        
+                                        UIView.animate(withDuration: 0.40 , delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                            
+                                            
+                                            self.checkInProfileBlock.transform = CGAffineTransform(translationX: 0, y: 0)
+                                            self.checkInProfileBlockLeft.transform = CGAffineTransform(translationX: 0, y: 0)
+                                            self.checkInProfileBlockRight.transform = CGAffineTransform(translationX: 0, y: 0)
+                                           // self.checkInWildcardBlock.transform = CGAffineTransform(translationX: 0, y: 0)
+                                            
+                                        }) { (_) in
+                                            //self.checkInProfileBlock.transform = .identity
+                                            
+                                            self.isTransitioned = false
+                                            //print("is transitioned set to false and i = \(i)")
+                                        }
+                                        
+                                        
+                                    } else {
+                                        
+                                        //self.checkInProfileBlock.transform = CGAffineTransform(translationX: 275, y: 0)
+                                        
+                                        UIView.animate(withDuration: 0.40, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                            
+                                                
+                                                self.checkInProfileBlock.transform = CGAffineTransform(translationX: -290, y: 0)
+                                                self.checkInProfileBlockLeft.transform = CGAffineTransform(translationX: -290, y: 0)
+                                                self.checkInProfileBlockRight.transform = CGAffineTransform(translationX: -290, y: 0)
+                                                //self.checkInWildcardBlock.transform = CGAffineTransform(translationX: -290, y: 0)
+
+                  
+                                            
+                                        }) { (_) in
+                                            //self.checkInProfileBlock.transform = .identity
+                                            
+                                           // self.checkInWildcardBlock.alpha = 0
+                                        
+                                               self.isTransitioned = true
+                                            //print("is transitioned set to true and i = \(i)")
+                                            
+                                        
+                                
+                                        }
+    
+                                    }
+                                
+                                       
+                            
+                            /*
+                            
+                                         // this function only hits on 4 and if the wildcard is set to false
+                                        if i == 4  {
+                                            
+                                            print("WE HIT THE OPEN SESME FUNCTION")
+                                          
+                                            
+                                         self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                         self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                         self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                         self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                    
+                                                                                  
+                                         UIView.animate(withDuration: 1 , delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                                                      
+                                                                                      
+                                            self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                            self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                            self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                            self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                                                      
+                                            self.checkInProfileBlock.alpha = 0
+                                            self.checkInProfileBlockLeft.alpha = 0
+                                            self.checkInProfileBlockRight.alpha = 0
+                                            self.checkInWildcardBlock.alpha = 1
+                                            
+                                            // reset to original prosition
+                                            self.checkInProfileBlock.transform = CGAffineTransform(translationX: 0, y: 0)
+                                            self.checkInProfileBlockLeft.transform = CGAffineTransform(translationX: 0, y: 0)
+                                            self.checkInProfileBlockRight.transform = CGAffineTransform(translationX: 0, y: 0)
+                                            
+
+                                                                                      
+                                         }) { (_) in
+                                            
+
+                            
+                                            //self.isWildCardSet = true
+                                            
+                                            self.isTransitioned = false
+                                            i = 0
+                                          }
+                                        }
+                            
+                                */
+                            
+                            
+                            
+                        }
+                         i += 1
+       
+                        
+                        if i > 3 {
+                            
+                            self.timerStarted = false
+                            
+                            print("Timer stopped!")
+                            t.invalidate()
+                            
+                            
+                            
+                            
+                            /*
+                                          
+                                                           // if this is true then we remove all blocks and transition the other cards in. then wildcard is false
+                                                           
+                                                           self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                           self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                           self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                           self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 0, y: 0)
+                             
+                                                           
+                                                           UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                               
+                                                               
+                                                               self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                                               self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                                               self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                                               self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                               
+                                                               self.checkInProfileBlock.alpha = 0
+                                                               self.checkInProfileBlockLeft.alpha = 0
+                                                               self.checkInProfileBlockRight.alpha = 0
+                                                               self.checkInWildcardBlock.alpha = 1
+                                                               
+                                                           }) { (_) in
+                                                               //self.checkInProfileBlock.transform = .identity
+                                                               
+                                                               self.checkInProfileBlock.transform = .identity
+                                                               self.checkInProfileBlockLeft.transform = .identity
+                                                               self.checkInProfileBlockRight.transform = .identity
+                                                               self.checkInWildcardBlock.transform = .identity
+                                                               
+                                                               self.checkInProfileBlock.alpha = 1
+                                                               self.checkInProfileBlockLeft.alpha = 1
+                                                               self.checkInProfileBlockRight.alpha = 1
+                                                               self.checkInWildcardBlock.alpha = 0
+                                                               
+                                                               
+                                                               self.isTransitioned = false // may need to be true
+                                                               self.isWildCard = false
+                                                           }
+                             */
+                        }
+            
+                    }
+                }
+                    //RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
+                    
+                   /*
+                        for i in stride(from: 1, through: 3, by: 1) {
+                        
+                        
+                            
+                            let logo = "logo\(i)"
+                            
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                
+                        Database.fetchAnimatedLogo(with: postId, logoNum: logo) { (post) in
+                            guard let logoImageUrl1 = post.logoUrl else { return }
+                            self.logoImage.loadImage(with: logoImageUrl1)
+                           
+                            
+                            
+                            }
+                        }
+                    }
+    */
+ 
+ 
+ 
+                    /*
+                    
                        Database.fetchLogos(with: postId) { (post) in
                            
                              guard let logoImageUrl1 = post.logo1 else { return }
@@ -1418,78 +2296,96 @@ class CheckInCell: UICollectionViewCell {
                              guard let logoImageUrl3 = post.logo3 else { return }
                              self.logoImage3.loadImage(with: logoImageUrl3)
                            
-
+                        //let backgroundDim: CGFloat = 200
                         self.addSubview(self.checkInProfileBlock)
                         self.checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
-                        self.checkInProfileBlock.anchor(top: self.spacerBlock.bottomAnchor, left: self.leftAnchor, bottom: self.userLocationBlock.topAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-
-                        let mapImageDim: CGFloat = 210
-                        self.checkInProfileBlock.addSubview(self.mapBackgroundView)
-                        self.mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-                        self.mapBackgroundView.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: self.checkInProfileBlock.rightAnchor, paddingTop: 35, paddingLeft: 0, paddingBottom: 0, paddingRight: 60, width: mapImageDim, height: mapImageDim)
-                        self.mapBackgroundView.layer.cornerRadius = mapImageDim / 2
-                        self.mapBackgroundView.layer.borderWidth = 4
-                        self.mapBackgroundView.layer.borderColor = UIColor.rgb(red: 253, green: 253, blue: 253).cgColor
-                       //self.mapBackgroundView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+                        self.checkInProfileBlock.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 15, paddingLeft: 85, paddingBottom: 0, paddingRight: 85, width: 0, height: 200)
+                        self.checkInProfileBlock.layer.cornerRadius = 15
+                        //self.checkInProfileBlock.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                        /*
+                        let logoBackDim: CGFloat = 150
+                        self.addSubview(self.logoBackground1)
+                        self.logoBackground1.anchor(top: self.checkInProfileBlock.topAnchor, left: self.checkInProfileBlock.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: logoBackDim, height: logoBackDim)
+                        self.logoBackground1.layer.cornerRadius =  logoBackDim / 2.7
+                        */
                         
                         
-                        self.mapBackgroundView.addSubview(self.mapImageView)
-                        self.mapImageView.translatesAutoresizingMaskIntoConstraints = false
-                        self.mapImageView.clipsToBounds = true
-                        self.mapImageView.layer.cornerRadius = mapImageDim / 2
-                        self.mapImageView.anchor(top: self.mapBackgroundView.topAnchor, left: self.mapBackgroundView.leftAnchor, bottom: self.mapBackgroundView.bottomAnchor, right: self.mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                        self.mapImageView.layer.borderWidth = 2
-                        self.mapImageView.layer.borderColor = UIColor.rgb(red: 80, green: 80, blue: 80).cgColor
-
-                        
-                         let logo1Dim: CGFloat = 120
-                         self.checkInProfileBlock.addSubview(self.logoImage1)
-                         self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
-                        self.logoImage1.anchor(top: self.mapBackgroundView.topAnchor, left: nil, bottom: nil, right: self.mapBackgroundView.leftAnchor, paddingTop: 150, paddingLeft: 0, paddingBottom: 0, paddingRight: -30, width: logo1Dim, height: logo1Dim)
-                         self.logoImage1.layer.cornerRadius = logo1Dim / 2
-                        //self.logoImage1.layer.borderWidth = 3
-                        //self.logoImage1.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+                        for i in stride(from: 1, to: 3, by: 1) {
+                               print(i)
+                               
+                               DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                               
+                                   
+                                   let logo1Dim: CGFloat = 70
+                                   self.checkInProfileBlock.addSubview(self.logoImage1)
+                                   self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
+                                   self.logoImage1.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logo1Dim, height: logo1Dim)
+                                   self.logoImage1.layer.cornerRadius = logo1Dim / 2
+                                   self.logoImage1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                                   
+                                   self.checkInProfileBlock.addSubview(self.logoLabel1)
+                                   self.logoLabel1.translatesAutoresizingMaskIntoConstraints = false
+                                   self.logoLabel1.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
+                                   self.logoLabel1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                                   
+                                   self.checkInProfileBlock.addSubview(self.pointsLabel1)
+                                   self.pointsLabel1.translatesAutoresizingMaskIntoConstraints = false
+                                   self.pointsLabel1.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 0, height: 0)
+                                   self.pointsLabel1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                                   
+                                   self.checkInProfileBlock.addSubview(self.plusLabel)
+                                   self.plusLabel.translatesAutoresizingMaskIntoConstraints = false
+                                   self.plusLabel.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel1.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 3, width: 0, height: 0)
+                                   self.plusLabel.centerYAnchor.constraint(equalTo: self.pointsLabel1.centerYAnchor).isActive = true
+                               
+                               }
                          
-                            
-                        let logo2Dim: CGFloat = 105
-                         self.checkInProfileBlock.addSubview(self.logoImage2)
-                         self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
-                        self.logoImage2.anchor(top: self.mapBackgroundView.bottomAnchor, left: nil, bottom: nil, right: self.mapBackgroundView.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 70, width: logo2Dim, height: logo2Dim)
-                         self.logoImage2.layer.cornerRadius = logo2Dim / 2
-                        //self.logoImage2.layer.borderWidth = 3
-                        //self.logoImage2.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-                        
-                        
-                        let logo3Dim: CGFloat = 90
-                        self.checkInProfileBlock.addSubview(self.logoImage3)
-                        self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
-                        self.logoImage3.anchor(top: self.mapBackgroundView.bottomAnchor, left: self.mapBackgroundView.rightAnchor, bottom: nil, right: nil, paddingTop: -15, paddingLeft: -60, paddingBottom: 0, paddingRight: 0, width: logo3Dim, height: logo3Dim)
-                        self.logoImage3.layer.cornerRadius = logo3Dim / 2
-                        //self.logoImage3.layer.borderWidth = 3
-                        //self.logoImage3.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-                        
-                        let profileImageDim: CGFloat = 70
-                        self.checkInProfileBlock.addSubview(self.checkInProfileImageView)
-                        self.checkInProfileImageView.translatesAutoresizingMaskIntoConstraints = false
-                        self.checkInProfileImageView.anchor(top: nil, left: nil, bottom: self.logoImage1.topAnchor, right: self.mapBackgroundView.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 8, width: profileImageDim, height: profileImageDim)
-                        self.checkInProfileImageView.layer.cornerRadius = profileImageDim / 2
-                        //self.checkInProfileImageView.layer.borderWidth = 3
-                        //self.checkInProfileImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-                        
-
-                        self.actionBlock.addSubview(self.actionLabel)
-                        self.actionLabel.anchor(top: self.actionBlock.topAnchor, left: self.actionBlock.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
-                        
-                        self.actionBlock.addSubview(self.actionLabel2)
-                        self.actionLabel2.anchor(top: self.actionLabel.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
-                    
-                        self.actionBlock.addSubview(self.actionLabel3)
-                        self.actionLabel3.anchor(top: self.actionLabel2.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: -2, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
-
-
+                        }
  
+ 
+
+                        /*
+                        let logo1Dim: CGFloat = 70
+                        self.checkInProfileBlock.addSubview(self.logoImage1)
+                        self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
+                        self.logoImage1.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logo1Dim, height: logo1Dim)
+                        self.logoImage1.layer.cornerRadius = logo1Dim / 2
+                        self.logoImage1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                        
+                        self.checkInProfileBlock.addSubview(self.logoLabel1)
+                        self.logoLabel1.translatesAutoresizingMaskIntoConstraints = false
+                        self.logoLabel1.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
+                        self.logoLabel1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                        
+                        self.checkInProfileBlock.addSubview(self.pointsLabel1)
+                        self.pointsLabel1.translatesAutoresizingMaskIntoConstraints = false
+                        self.pointsLabel1.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 0, height: 0)
+                        self.pointsLabel1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                        
+                        self.checkInProfileBlock.addSubview(self.plusLabel)
+                        self.plusLabel.translatesAutoresizingMaskIntoConstraints = false
+                        self.plusLabel.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel1.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 3, width: 0, height: 0)
+                        self.plusLabel.centerYAnchor.constraint(equalTo: self.pointsLabel1.centerYAnchor).isActive = true
+                        */
+                        
+                        
+                        /*
+                        searchTableView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                        
+                        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                            
+                            
+                            self.searchTableView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                            self.searchTableView.alpha = 0
+                            
+                        }) { (_) in
+                            self.searchTableView.transform = .identity
+                            self.expansionState = .NotExpanded
+                        }
+                        */
+                        
                        }
-                    
+                    */
                         print("choose function 3")
                         
                     case 4: numberOfLogos = 4

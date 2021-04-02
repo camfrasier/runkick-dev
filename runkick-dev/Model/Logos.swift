@@ -28,6 +28,7 @@ class Logos {
     var price: Double!    // may need to change this value to an integer
     var poppPrice: Double!
     
+    
     var logo1: String!
     var logo2: String!
     var logo3: String!
