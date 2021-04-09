@@ -19,10 +19,16 @@ class CheckInCell: UICollectionViewCell {
     var logos = [Logos]()
     let reuseCircleCellIdentifier = "CircleCell"
     var didLoad = false
+    var toggle1 = false
+    var toggle2 = false
+    var toggle3 = false
+    var shiftVal: CGFloat!
     var isTransitioned = false
     var isWildCardSet = false
     var timerStarted = false
     
+    var willLoop = false
+    var toggleSet = false
     
     
     var post: Post? {
@@ -71,13 +77,14 @@ class CheckInCell: UICollectionViewCell {
             
             //self.collectionView?.refreshControl?.endRefreshing()
             
-            print("Debug: the value of didload is \(self.didLoad)")
+            //print("Debug: the value of didload is \(self.didLoad)")
 
             //fetchPosts(postId)
             countUserLogos()
             
             
 
+      
         }
     }
     
@@ -194,14 +201,11 @@ class CheckInCell: UICollectionViewCell {
         let label = UILabel()
         //label.text = "FORTUNE"
         label.text = "Fortune"
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        //label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 30)
+        //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
-        //label.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
-        //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 32)
-        //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.setLineHeight(lineHeight: 0)
         label.numberOfLines = 3
         return label
@@ -212,16 +216,14 @@ class CheckInCell: UICollectionViewCell {
         //abel.text = "FAVORS"
         label.text = "Favors"
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 32)
         //label.font = UIFont(name: "ArialHebrew", size: 32)
-        label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 30)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
         //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
-        //label.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
-        //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 32)
-        //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         label.setLineHeight(lineHeight: 0)
         label.numberOfLines = 1
         return label
@@ -232,13 +234,13 @@ class CheckInCell: UICollectionViewCell {
         label.text = " The Brave. "
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 28)
-        label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 30)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
         //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
         //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)
         label.textColor = UIColor.rgb(red: 250, green: 250, blue: 250)
-        label.backgroundColor = UIColor.walkzillaRed()
+        label.backgroundColor = UIColor.red
         label.setLineHeight(lineHeight: 0)
         label.numberOfLines = 1
         return label
@@ -259,10 +261,10 @@ class CheckInCell: UICollectionViewCell {
         button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
     } ()
-    
-    
-    let checkInProfileBlock: UIView = {
+
+    let checkInBackground: UIView = {
         let view = UIView()
+        //view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
         view.layer.shadowRadius = 10
@@ -270,31 +272,74 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
-    let checkInProfileBlockLeft: UIView = {
+    let centerCard: UIView = {
         let view = UIView()
-        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
-        view.layer.shadowRadius = 10
-        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        //view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        //view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        //view.layer.shadowRadius = 10
+        //view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.alpha = 0
         return view
     }()
     
-    let checkInProfileBlockRight: UIView = {
-        let view = UIView()
-        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
-        view.layer.shadowRadius = 10
-        view.layer.shadowOffset = CGSize(width: 0, height: 6)
-        return view
-    }()
-    
-    let checkInWildcardBlock: UIView = {
+    let leftCard: UIView = {
         let view = UIView()
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
         view.layer.shadowRadius = 10
         view.layer.shadowOffset = CGSize(width: 0, height: 6)
         view.alpha = 0
+        return view
+    }()
+    
+    let rightCard1: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.alpha = 0
+        return view
+    }()
+    
+    let rightCard2: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.alpha = 1
+        return view
+    }()
+    
+    let rightCard3: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.alpha = 1
+        return view
+    }()
+    
+    let rightCard4: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.alpha = 1
+        return view
+    }()
+    
+    let wildCard: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.alpha = 1
         return view
     }()
     
@@ -368,6 +413,33 @@ class CheckInCell: UICollectionViewCell {
         view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         return view
     }()
+    
+    let line1: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        view.alpha = 0
+        return view
+    }()
+    
+    let line2: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        view.alpha = 0
+        return view
+    }()
+    
+    let line3: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        return view
+    }()
+    
+    let line4: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        return view
+    }()
+    
     
     
     
@@ -522,6 +594,7 @@ class CheckInCell: UICollectionViewCell {
         likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
+        iv.alpha = 0
         return iv
     } ()
     
@@ -629,6 +702,7 @@ class CheckInCell: UICollectionViewCell {
         likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
+        iv.alpha = 0
         return iv
     } ()
     
@@ -642,6 +716,7 @@ class CheckInCell: UICollectionViewCell {
         likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
+        iv.alpha = 0
         return iv
     } ()
     
@@ -1125,8 +1200,6 @@ class CheckInCell: UICollectionViewCell {
         
         //collectionView.layer.backgroundColor = UIColor.clear.cgColor
         collectionViewHorizontal.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        
-        
         
     }
     
@@ -1821,14 +1894,14 @@ class CheckInCell: UICollectionViewCell {
                 switch numberOfLogos! {
                     case 1: numberOfLogos = 1
                     
-                    self.checkInProfileBlock.removeFromSuperview()
+                    self.centerCard.removeFromSuperview()
                     //self.checkInProfileBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-                        self.checkInProfileBlock.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+                        self.centerCard.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
                     
                     Database.fetchLogos(with: postId) { (post) in
                         
-                        guard let logoImageUrl1 = post.logo1 else { return }
-                        self.logoImage1.loadImage(with: logoImageUrl1)
+                        //guard let logoImageUrl1 = post.logo1 else { return }
+                        //self.logoImage1.loadImage(with: logoImageUrl1)
                         
                         /*
                         self.addSubview(self.checkInProfileBlock)
@@ -1852,16 +1925,16 @@ class CheckInCell: UICollectionViewCell {
                     
                         
                         
-                    self.checkInProfileBlock.removeFromSuperview()
-                    self.checkInProfileBlock.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
+                    self.centerCard.removeFromSuperview()
+                    self.centerCard.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
                     
                           Database.fetchLogos(with: postId) { (post) in
                               
-                                guard let logoImageUrl1 = post.logo1 else { return }
-                                self.logoImage1.loadImage(with: logoImageUrl1)
+                                //guard let logoImageUrl1 = post.logo1 else { return }
+                                //self.logoImage1.loadImage(with: logoImageUrl1)
                             
-                                guard let logoImageUrl2 = post.logo2 else { return }
-                                self.logoImage2.loadImage(with: logoImageUrl2)
+                                //guard let logoImageUrl2 = post.logo2 else { return }
+                                //self.logoImage2.loadImage(with: logoImageUrl2)
                               /*
                               self.addSubview(self.checkInProfileBlock)
                               self.checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
@@ -1884,508 +1957,371 @@ class CheckInCell: UICollectionViewCell {
                     
                         print("choose function 2")
                     
-                    //self.circleView2()
+                  
                     
                     case 3: numberOfLogos = 3
                     
                     
+                    self.checkInBackground.removeFromSuperview()
+                    self.checkInBackground.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
                     
-                    
-                    self.checkInProfileBlock.removeFromSuperview()
-                    self.checkInProfileBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-                    
-                    self.checkInProfileBlockLeft.removeFromSuperview()
-                    self.checkInProfileBlockLeft.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-                    
-                    self.checkInProfileBlockRight.removeFromSuperview()
-                    self.checkInProfileBlockRight.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-                    
-                    self.checkInWildcardBlock.removeFromSuperview()
-                    self.checkInWildcardBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-                    
-                    
-                    
-                    self.logoLabel.removeFromSuperview()
-                    self.pointsLabel.removeFromSuperview()
-                    self.plusLabel.removeFromSuperview()
-                    
-                    self.logoLabelRight.removeFromSuperview()
-                    self.pointsLabelRight.removeFromSuperview()
-                    self.plusLabelRight.removeFromSuperview()
-                    
-                    self.logoLabelFarRight.removeFromSuperview()
-                    self.pointsLabelFarRight.removeFromSuperview()
-                    self.plusLabelFarRight.removeFromSuperview()
-                    
-                    
-                    self.addSubview(self.checkInProfileBlock)
-                    self.checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
-
-                   self.checkInProfileBlock.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 25, paddingLeft: 85, paddingBottom: 0, paddingRight: 85, width: 0, height: 200)
-                   self.checkInProfileBlock.layer.cornerRadius = 15
-                    
-                    
-                    
-                     self.addSubview(self.checkInProfileBlockLeft)
-                     self.checkInProfileBlockLeft.translatesAutoresizingMaskIntoConstraints = false
-
-                    self.checkInProfileBlockLeft.anchor(top: self.postTimeLabel.bottomAnchor, left: nil, bottom: nil, right: self.checkInProfileBlock.leftAnchor, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 45, width: self.frame.width - 170, height: 200)
-                    self.checkInProfileBlockLeft.layer.cornerRadius = 15
-                    
-                    
-                     self.addSubview(self.checkInProfileBlockRight)
-                     self.checkInProfileBlockRight.translatesAutoresizingMaskIntoConstraints = false
-
-                    self.checkInProfileBlockRight.anchor(top: self.postTimeLabel.bottomAnchor, left: self.checkInProfileBlock.rightAnchor, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 45, paddingBottom: 0, paddingRight: 0, width: self.frame.width - 170, height: 200)
-                    self.checkInProfileBlockRight.layer.cornerRadius = 15
-                    
-                     self.addSubview(self.checkInWildcardBlock)
-                     self.checkInWildcardBlock.translatesAutoresizingMaskIntoConstraints = false
-
-                    self.checkInWildcardBlock.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 15, paddingLeft: 45, paddingBottom: 0, paddingRight: 45, width: 0, height: 200)
-                    self.checkInWildcardBlock.layer.cornerRadius = 15
 
                     
                     
-                // profile block initial
-                  
-                    /*
-                let logoDim: CGFloat = 70
-                self.checkInProfileBlock.addSubview(self.checkInProfileImageView)
-                self.checkInProfileImageView.translatesAutoresizingMaskIntoConstraints = false
-                self.checkInProfileImageView.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
-                self.checkInProfileImageView.layer.cornerRadius = logoDim / 2
-                self.checkInProfileImageView.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
+                    self.addSubview(self.checkInBackground)
+                    self.checkInBackground.translatesAutoresizingMaskIntoConstraints = false
                     
-                self.checkInProfileBlock.addSubview(self.usernameButton)
-                self.usernameButton.translatesAutoresizingMaskIntoConstraints = false
-                self.usernameButton.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
-                self.usernameButton.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                    */
+                    self.checkInBackground.addSubview(self.line1)
+                    self.line1.translatesAutoresizingMaskIntoConstraints = false
                     
-                    var i = 1
-                    //var isTransitioned = false
-            
-                    
-                    
-            
-                    
-                    
-                    if self.timerStarted {
-                        print("Do nothing")
-                    } else {
-                    
-                        self.timerStarted = true
-                        print("Timer started set to true")
-                    
-       // let timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true){ t in
-                    
-            let timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true){ t in
-            
+                    self.checkInBackground.addSubview(self.line2)
+                    self.line2.translatesAutoresizingMaskIntoConstraints = false
 
+                     self.addSubview(self.centerCard)
+                     self.centerCard.translatesAutoresizingMaskIntoConstraints = false
+
+                    self.centerCard.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 35, paddingBottom: 0, paddingRight: 35, width: 0, height: 200)
+                    self.centerCard.layer.cornerRadius = 15
+                    
+                    self.centerCard.addSubview(self.actionLabel)
+                    self.actionLabel.anchor(top: self.centerCard.topAnchor, left: self.centerCard.leftAnchor, bottom: nil, right: nil   , paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    
+                    self.centerCard.addSubview(self.actionLabel2)
+                    self.actionLabel2.anchor(top: self.actionLabel.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil   , paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    
+                    self.centerCard.addSubview(self.actionLabel3)
+                    self.actionLabel3.anchor(top: self.actionLabel2.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil   , paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    
+
+                    self.checkInBackground.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 25, width: 0, height: 200)
+                    
+
+                    
+                    
+                    
+                    DataService.instance.REF_POSTS.child(postId).observe(.childAdded) {(snapshot: DataSnapshot) in
+                         
+                    guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                        
+                        allObjects.forEach({ (snapshot) in
+                            let logo = snapshot.key
+
+                           
+                            
+                           
+                               
+                           Database.fetchAnimatedLogo(with: postId, logoNum: logo) { (post) in   // i = 4 this guard statement stops
+                               
+                            if logo == "logo1" {
+                            guard let logoImageUrl1 = post.logoUrl1 else { return }
+                            self.logoImage1.loadImage(with: logoImageUrl1)
+                            }
+                            
+                            if logo == "logo2" {
+                            guard let logoImageUrl2 = post.logoUrl2 else { return }
+                            self.logoImage2.loadImage(with: logoImageUrl2)
+                            }
+                            
+                            if logo == "logo3" {
+                            guard let logoImageUrl3 = post.logoUrl3 else { return }
+                            self.logoImage3.loadImage(with: logoImageUrl3)
+                            }
+                          
                 
-                        // if this is true then we remove all blocks and transition the other cards in. then wildcard is false
-               
-           
-            print("the value of i is \(i)")
-                        
-                        let logo = "logo\(i)"
-                        
-            
-                        
-                       
-                        //self.checkInProfileBlock.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 15, paddingLeft: 85, paddingBottom: 0, paddingRight: 85, width: 0, height: 200)
-                        //self.checkInProfileBlock.layer.cornerRadius = 15
-                        
-                 
-            /*
 
-                    if i == 4 {
-                                       
-                                print("WE HIT THE CLOSE SESME FUNCTION the value of i is \(i)")
-                                self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                                                    
-                                                                                                                  
-                           UIView.animate(withDuration: 1 , delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                                                                                      
-                                                                                                                      
-                                self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                                                                                                      
-                                self.checkInProfileBlock.alpha = 1
-                                self.checkInProfileBlockLeft.alpha = 1
-                                self.checkInProfileBlockRight.alpha = 1
-                                self.checkInWildcardBlock.alpha = 0
-                                                                                                                      
-                 }) { (_) in
-                   
-                        //i = 1
-                    }
-                }
-                
-            */
-                
-                   
+                               
+                               
+                               let logoDim: CGFloat = 75
+                               self.checkInBackground.addSubview(self.logoImage1)
+                               self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
+                            self.logoImage1.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                                   self.logoImage1.layer.cornerRadius = logoDim / 2
+                            self.logoImage1.alpha = 0
 
-                 
-            
-                        Database.fetchAnimatedLogo(with: postId, logoNum: logo) { (post) in
-                            guard let logoImageUrl1 = post.logoUrl else { return }
-                            self.logoImage.loadImage(with: logoImageUrl1)
-                            self.logoImageRight.loadImage(with: logoImageUrl1)
-                            self.logoImageFarRight.loadImage(with: logoImageUrl1)
+                               self.checkInBackground.addSubview(self.logoImage2)
+                               self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
+                            self.logoImage2.anchor(top: self.checkInBackground.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                                   self.logoImage2.layer.cornerRadius = logoDim / 2
+                            self.logoImage2.centerXAnchor.constraint(equalTo: self.checkInBackground.centerXAnchor).isActive = true
+                            self.logoImage2.alpha = 0
                             
-                            //print("THIS IS A VALUE OF logo URL \(post.logoUrl)")
+                               self.checkInBackground.addSubview(self.logoImage3)
+                               self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
+                            self.logoImage3.anchor(top: self.checkInBackground.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: logoDim, height: logoDim)
+                                   self.logoImage3.layer.cornerRadius = logoDim / 2
+                            self.logoImage3.alpha = 0
                             
-
+                            let lineRadius: CGFloat = 2
+                            self.line1.anchor(top: nil, left: self.logoImage1.rightAnchor, bottom: nil, right: self.logoImage2.leftAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: -5, width: 0, height: 4)
+                            self.line1.centerYAnchor.constraint(equalTo: self.logoImage1.centerYAnchor).isActive = true
+                            self.line1.layer.cornerRadius = lineRadius
+                            self.line1.alpha = 0
                             
-                            
-                            self.logoImage.removeFromSuperview()
-                            self.usernameButton.removeFromSuperview()
-                            
-                            // left attributes
-                            let logoDim: CGFloat = 70
-                            self.checkInProfileBlock.addSubview(self.logoImage)
-                            self.logoImage.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
-                            self.logoImage.layer.cornerRadius = logoDim / 2
-                            self.logoImage.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                        
-                            self.checkInProfileBlock.addSubview(self.logoLabel)
-                            self.logoLabel.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoLabel.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
-                            self.logoLabel.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                            
-                            self.checkInProfileBlock.addSubview(self.pointsLabel)
-                            self.pointsLabel.translatesAutoresizingMaskIntoConstraints = false
-                            self.pointsLabel.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 0, height: 0)
-                            self.pointsLabel.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                            
-                            self.checkInProfileBlock.addSubview(self.plusLabel)
-                            self.plusLabel.translatesAutoresizingMaskIntoConstraints = false
-                            self.plusLabel.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 3, width: 0, height: 0)
-                            self.plusLabel.centerYAnchor.constraint(equalTo: self.pointsLabel.centerYAnchor).isActive = true
+                            self.line2.anchor(top: nil, left: self.logoImage2.rightAnchor, bottom: nil, right: self.logoImage3.leftAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: -5, width: 0, height: 4)
+                            self.line2.centerYAnchor.constraint(equalTo: self.logoImage1.centerYAnchor).isActive = true
+                            self.line2.layer.cornerRadius = lineRadius
+                            self.line2.alpha = 0
                             
                             
-                            // right attributes
-
-                            self.checkInProfileBlockRight.addSubview(self.logoImageRight)
-                            self.logoImageRight.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImageRight.anchor(top: self.checkInProfileBlockRight.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
-                            self.logoImageRight.layer.cornerRadius = logoDim / 2
-                            self.logoImageRight.centerXAnchor.constraint(equalTo: self.checkInProfileBlockRight.centerXAnchor).isActive = true
                             
-                            self.checkInProfileBlockRight.addSubview(self.logoLabelRight)
-                            self.logoLabelRight.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoLabelRight.anchor(top: nil, left: nil, bottom: self.checkInProfileBlockRight.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
-                            self.logoLabelRight.centerXAnchor.constraint(equalTo: self.checkInProfileBlockRight.centerXAnchor).isActive = true
+                            var i = 1
+                            var x = 1
+                            var cycle = 1
                             
-                            self.checkInProfileBlockRight.addSubview(self.pointsLabelRight)
-                            self.pointsLabelRight.translatesAutoresizingMaskIntoConstraints = false
-                            self.pointsLabelRight.anchor(top: nil, left: nil, bottom: self.checkInProfileBlockRight.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 0, height: 0)
-                            self.pointsLabelRight.centerXAnchor.constraint(equalTo: self.checkInProfileBlockRight.centerXAnchor).isActive = true
-                            
-                            self.checkInProfileBlockRight.addSubview(self.plusLabelRight)
-                            self.plusLabelRight.translatesAutoresizingMaskIntoConstraints = false
-                            self.plusLabelRight.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabelRight.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 3, width: 0, height: 0)
-                            self.plusLabelRight.centerYAnchor.constraint(equalTo: self.pointsLabelRight.centerYAnchor).isActive = true
-                            
-                
-                            
- 
+                            if self.timerStarted {
+                                print("Do nothing")
                                 
-                      
+                                
+                            } else {
+                                                    
+                                
+                                self.timerStarted = true
+                                print("Timer started set to true")
                             
-                                    if self.isTransitioned {
+                            
+                                let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true){ t in
+                    let logo = "logo\(i)"
+                                
+                            if logo == "logo1" {
+                                
+                                if self.toggle1 == false {
+                                
+                                self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                
+                                    UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                    
+                                    self.logoImage1.alpha = 1
+                                    self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
                                         
-                                        //self.checkInProfileBlock.transform = CGAffineTransform(translationX: 0, y: 0)
                                         
-                                        UIView.animate(withDuration: 0.40 , delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                            
-                                            
-                                            self.checkInProfileBlock.transform = CGAffineTransform(translationX: 0, y: 0)
-                                            self.checkInProfileBlockLeft.transform = CGAffineTransform(translationX: 0, y: 0)
-                                            self.checkInProfileBlockRight.transform = CGAffineTransform(translationX: 0, y: 0)
-                                           // self.checkInWildcardBlock.transform = CGAffineTransform(translationX: 0, y: 0)
-                                            
+                                        
+                                        // Nested line generation
+                                         self.line1.transform = CGAffineTransform(translationX: 1, y: 1)
+                                           
+                                        UIView.animate(withDuration: 0.45 , delay: 0.35, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                                              
+                                           self.line1.alpha = 1
+                                           self.line1.transform = CGAffineTransform(translationX: 0, y: 1)
+                                                                              
+                                           
                                         }) { (_) in
-                                            //self.checkInProfileBlock.transform = .identity
-                                            
-                                            self.isTransitioned = false
-                                            //print("is transitioned set to false and i = \(i)")
+
                                         }
+                                    
+ 
+                                }) { (_) in
+
+                                    self.logoImage1.transform = .identity
+                                    self.toggle1 = true
+                                
+
+                                }
+                                
+                                } else {
+                                    print("Toggle is set to true")
+                                    
+                                    self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                                   
+                                    UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                                       
+                                                                       self.logoImage1.alpha = 1
+                                        self.logoImage1.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                                                       
+                                    
+                                                                   }) { (_) in
+
+                                                                       self.logoImage1.transform = .identity
+                                                                       //self.toggle1 = false
+                                                                   }
+                                    
+                                    
+                                }
+                                
+                                
+                            }
+                                if logo == "logo2" {
+                                    
+                                    if self.toggle2 == false {
+                                    
+                                    self.logoImage2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                    
+                                    UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                     
+                                    self.logoImage2.alpha = 1
+                                      self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
                                         
+                                        
+                                        // Nested line generation
+                                         self.line2.transform = CGAffineTransform(translationX: 1, y: 1)
+                                           
+                                        UIView.animate(withDuration: 0.45 , delay: 0.35, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                                              
+                                           self.line2.alpha = 1
+                                            self.line2.transform = CGAffineTransform(translationX: 0, y: 1)
+                                                                              
+                                           
+                                        }) { (_) in
+
+                                        }
+                                                                       
+                                    }) { (_) in
+
+                                   self.logoImage2.transform = .identity
+                                        self.toggle2 = true
+                                        
+                                   }
+                                    
+                                    } else {
+                                        
+                                        self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                                       
+                                        UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                                           
+                                                                           self.logoImage2.alpha = 1
+                                            self.logoImage2.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                                                           
+                                        
+                                                                       }) { (_) in
+
+                                                                           self.logoImage2.transform = .identity
+                                                                           //self.toggleSet = false
+                                                                       }
+                                        
+                                    }
+                              }
+                                
+                        
+                                  if logo == "logo3" {
+                        
+                                    if self.toggle3 == false {
+                                    self.logoImage3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                    
+                                        UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                       
+                                        self.logoImage3.alpha = 1
+                                        self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                                         
+                                      }) { (_) in
+
+                                     self.logoImage3.transform = .identity
+                                        self.toggle3 = true
+                                     }
                                         
                                     } else {
                                         
-                                        //self.checkInProfileBlock.transform = CGAffineTransform(translationX: 275, y: 0)
+                                        self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                                       
+                                        UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                                           
+                                                                           self.logoImage3.alpha = 1
+                                            self.logoImage3.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                                                           
                                         
-                                        UIView.animate(withDuration: 0.40, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                            
-                                                
-                                                self.checkInProfileBlock.transform = CGAffineTransform(translationX: -290, y: 0)
-                                                self.checkInProfileBlockLeft.transform = CGAffineTransform(translationX: -290, y: 0)
-                                                self.checkInProfileBlockRight.transform = CGAffineTransform(translationX: -290, y: 0)
-                                                //self.checkInWildcardBlock.transform = CGAffineTransform(translationX: -290, y: 0)
+                                                                       }) { (_) in
 
-                  
-                                            
-                                        }) { (_) in
-                                            //self.checkInProfileBlock.transform = .identity
-                                            
-                                           // self.checkInWildcardBlock.alpha = 0
+                                                                           self.logoImage3.transform = .identity
+                                                                           //self.toggleSet = false
+                                                                       }
                                         
-                                               self.isTransitioned = true
-                                            //print("is transitioned set to true and i = \(i)")
-                                            
                                         
-                                
-                                        }
-    
+                                        
                                     }
+                                }
+                                                           
+                                i += 1
+                                    
+                                   
                                 
-                                       
+                                if i > 3 {
+                                    if cycle < 4 {
+                                        i = 1
+                                        cycle += 1
+                                        
+                                        print("the value of i has been reset to 1 and cycle value is \(cycle)")
+                                    } else {
+                                            self.timerStarted = false
+                                            print("Timer stopped!")
+                                        self.toggle1 = false
+                                        self.toggle2 = false
+                                        self.toggle3 = false
+                                        
+                                    
+                                        
+                                            t.invalidate()
+                                        
+                                         print("the FINAL value of i is equal to \(i)")
+                                        
+                                        
+                                        // now run center card function
+                                         print("Timer 2 started!")
+                                                                     // present center card
+                                         self.centerCard.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                        self.checkInBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                                     
+                                          UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                            
+                                        
+                                            self.checkInBackground.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+                                            self.checkInBackground.alpha = 0
+                                            
+                                         self.centerCard.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                          self.centerCard.alpha = 1
                             
-                            /*
-                            
-                                         // this function only hits on 4 and if the wildcard is set to false
-                                        if i == 4  {
+                                       }) { (_) in
+                                                                     
+                                         }
+                                        
+                                        let timer2 = Timer.scheduledTimer(withTimeInterval: 3, repeats: true){ t2 in
                                             
-                                            print("WE HIT THE OPEN SESME FUNCTION")
-                                          
-                                            
-                                         self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                         self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                         self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                         self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                    
-                                                                                  
-                                         UIView.animate(withDuration: 1 , delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                                                      
-                                                                                      
-                                            self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                            self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                            self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                            self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                                                      
-                                            self.checkInProfileBlock.alpha = 0
-                                            self.checkInProfileBlockLeft.alpha = 0
-                                            self.checkInProfileBlockRight.alpha = 0
-                                            self.checkInWildcardBlock.alpha = 1
-                                            
-                                            // reset to original prosition
-                                            self.checkInProfileBlock.transform = CGAffineTransform(translationX: 0, y: 0)
-                                            self.checkInProfileBlockLeft.transform = CGAffineTransform(translationX: 0, y: 0)
-                                            self.checkInProfileBlockRight.transform = CGAffineTransform(translationX: 0, y: 0)
-                                            
-
-                                                                                      
-                                         }) { (_) in
-                                            
-
-                            
-                                            //self.isWildCardSet = true
-                                            
-                                            self.isTransitioned = false
-                                            i = 0
-                                          }
+                                            x += 1
+                                            if x > 2 {
+                                                
+                                                print("The value of x is greater than 2 \(x)")
+                                                
+                                                self.checkInBackground.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                self.centerCard.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                
+                                               
+                                                // close center card
+                                            UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                                
+                                            self.checkInBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                self.checkInBackground.alpha = 1
+                                                
+                                                self.centerCard.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+                                               self.centerCard.alpha = 0
+                                                
+                                              }) { (_) in
+                                                                                         
+                                            }
+                                                
+                                                
+                                                print("Timer 2 stopped!")
+                                                t2.invalidate()
+                                            }
                                         }
-                            
-                                */
-                            
-                            
-                            
-                        }
-                         i += 1
-       
-                        
-                        if i > 3 {
-                            
-                            self.timerStarted = false
-                            
-                            print("Timer stopped!")
-                            t.invalidate()
-                            
-                            
-                            
-                            
-                            /*
-                                          
-                                                           // if this is true then we remove all blocks and transition the other cards in. then wildcard is false
-                                                           
-                                                           self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                           self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                           self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                           self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 0, y: 0)
-                             
-                                                           
-                                                           UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                               
-                                                               
-                                                               self.checkInProfileBlock.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                                               self.checkInProfileBlockLeft.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                                               self.checkInProfileBlockRight.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                                               self.checkInWildcardBlock.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                               
-                                                               self.checkInProfileBlock.alpha = 0
-                                                               self.checkInProfileBlockLeft.alpha = 0
-                                                               self.checkInProfileBlockRight.alpha = 0
-                                                               self.checkInWildcardBlock.alpha = 1
-                                                               
-                                                           }) { (_) in
-                                                               //self.checkInProfileBlock.transform = .identity
-                                                               
-                                                               self.checkInProfileBlock.transform = .identity
-                                                               self.checkInProfileBlockLeft.transform = .identity
-                                                               self.checkInProfileBlockRight.transform = .identity
-                                                               self.checkInWildcardBlock.transform = .identity
-                                                               
-                                                               self.checkInProfileBlock.alpha = 1
-                                                               self.checkInProfileBlockLeft.alpha = 1
-                                                               self.checkInProfileBlockRight.alpha = 1
-                                                               self.checkInWildcardBlock.alpha = 0
-                                                               
-                                                               
-                                                               self.isTransitioned = false // may need to be true
-                                                               self.isWildCard = false
-                                                           }
-                             */
-                        }
-            
-                    }
-                }
-                    //RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
-                    
-                   /*
-                        for i in stride(from: 1, through: 3, by: 1) {
-                        
-                        
-                            
-                            let logo = "logo\(i)"
-                            
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                        
+                                    }
+                                }
                                 
-                        Database.fetchAnimatedLogo(with: postId, logoNum: logo) { (post) in
-                            guard let logoImageUrl1 = post.logoUrl else { return }
-                            self.logoImage.loadImage(with: logoImageUrl1)
-                           
-                            
+                            }
+                               
+                           }
                             
                             }
-                        }
-                    }
-    */
- 
- 
- 
-                    /*
-                    
-                       Database.fetchLogos(with: postId) { (post) in
-                           
-                             guard let logoImageUrl1 = post.logo1 else { return }
-                             self.logoImage1.loadImage(with: logoImageUrl1)
-                         
-                             guard let logoImageUrl2 = post.logo2 else { return }
-                             self.logoImage2.loadImage(with: logoImageUrl2)
-                        
-                             guard let logoImageUrl3 = post.logo3 else { return }
-                             self.logoImage3.loadImage(with: logoImageUrl3)
-                           
-                        //let backgroundDim: CGFloat = 200
-                        self.addSubview(self.checkInProfileBlock)
-                        self.checkInProfileBlock.translatesAutoresizingMaskIntoConstraints = false
-                        self.checkInProfileBlock.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 15, paddingLeft: 85, paddingBottom: 0, paddingRight: 85, width: 0, height: 200)
-                        self.checkInProfileBlock.layer.cornerRadius = 15
-                        //self.checkInProfileBlock.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                        /*
-                        let logoBackDim: CGFloat = 150
-                        self.addSubview(self.logoBackground1)
-                        self.logoBackground1.anchor(top: self.checkInProfileBlock.topAnchor, left: self.checkInProfileBlock.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: logoBackDim, height: logoBackDim)
-                        self.logoBackground1.layer.cornerRadius =  logoBackDim / 2.7
-                        */
-                        
-                        
-                        for i in stride(from: 1, to: 3, by: 1) {
-                               print(i)
-                               
-                               DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-                               
-                                   
-                                   let logo1Dim: CGFloat = 70
-                                   self.checkInProfileBlock.addSubview(self.logoImage1)
-                                   self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
-                                   self.logoImage1.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logo1Dim, height: logo1Dim)
-                                   self.logoImage1.layer.cornerRadius = logo1Dim / 2
-                                   self.logoImage1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                                   
-                                   self.checkInProfileBlock.addSubview(self.logoLabel1)
-                                   self.logoLabel1.translatesAutoresizingMaskIntoConstraints = false
-                                   self.logoLabel1.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
-                                   self.logoLabel1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                                   
-                                   self.checkInProfileBlock.addSubview(self.pointsLabel1)
-                                   self.pointsLabel1.translatesAutoresizingMaskIntoConstraints = false
-                                   self.pointsLabel1.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 0, height: 0)
-                                   self.pointsLabel1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                                   
-                                   self.checkInProfileBlock.addSubview(self.plusLabel)
-                                   self.plusLabel.translatesAutoresizingMaskIntoConstraints = false
-                                   self.plusLabel.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel1.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 3, width: 0, height: 0)
-                                   self.plusLabel.centerYAnchor.constraint(equalTo: self.pointsLabel1.centerYAnchor).isActive = true
-                               
-                               }
-                         
-                        }
- 
- 
 
-                        /*
-                        let logo1Dim: CGFloat = 70
-                        self.checkInProfileBlock.addSubview(self.logoImage1)
-                        self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
-                        self.logoImage1.anchor(top: self.checkInProfileBlock.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logo1Dim, height: logo1Dim)
-                        self.logoImage1.layer.cornerRadius = logo1Dim / 2
-                        self.logoImage1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                        
-                        self.checkInProfileBlock.addSubview(self.logoLabel1)
-                        self.logoLabel1.translatesAutoresizingMaskIntoConstraints = false
-                        self.logoLabel1.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 0)
-                        self.logoLabel1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                        
-                        self.checkInProfileBlock.addSubview(self.pointsLabel1)
-                        self.pointsLabel1.translatesAutoresizingMaskIntoConstraints = false
-                        self.pointsLabel1.anchor(top: nil, left: nil, bottom: self.checkInProfileBlock.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 0, height: 0)
-                        self.pointsLabel1.centerXAnchor.constraint(equalTo: self.checkInProfileBlock.centerXAnchor).isActive = true
-                        
-                        self.checkInProfileBlock.addSubview(self.plusLabel)
-                        self.plusLabel.translatesAutoresizingMaskIntoConstraints = false
-                        self.plusLabel.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel1.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 3, width: 0, height: 0)
-                        self.plusLabel.centerYAnchor.constraint(equalTo: self.pointsLabel1.centerYAnchor).isActive = true
-                        */
-                        
-                        
-                        /*
-                        searchTableView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                        
-                        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                            
-                            
-                            self.searchTableView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                            self.searchTableView.alpha = 0
-                            
-                        }) { (_) in
-                            self.searchTableView.transform = .identity
-                            self.expansionState = .NotExpanded
-                        }
-                        */
-                        
-                       }
-                    */
+                        })
+                                       
+                    }
+                    
+                    
+                
+
+                    
+                    
+
+                    
+    
                         print("choose function 3")
                         
                     case 4: numberOfLogos = 4
@@ -2423,7 +2359,7 @@ class CheckInCell: UICollectionViewCell {
             } else {
                 numberOfLogos = 0
             }
-                print("the post id \(postId) yeilds this number of user logos here should be \(numberOfLogos)")
+                
         
         }
     }

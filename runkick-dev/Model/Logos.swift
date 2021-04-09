@@ -29,18 +29,22 @@ class Logos {
     var poppPrice: Double!
     
     
-    var logo1: String!
-    var logo2: String!
-    var logo3: String!
-    var logo4: String!
-    var logo5: String!
-    var logo6: String!
-    var logo7: String!
-    var logo8: String!
-    var logo9: String!
-    var logo10: String!
-    var logo11: String!
-    var logo12: String!
+    var logoUrl1: String!
+    
+    var logoUrl2: String!
+    
+    var logoUrl3: String!
+    var logoUrl4: String!
+    var logoUrl5: String!
+    var logoUrl6: String!
+    var logoUrl7: String!
+    var logoUrl8: String!
+    var logoUrl9: String!
+    var logoUrl10: String!
+    var logoUrl11: String!
+    var logoUrl12: String!
+    var logoUrl13: String!
+    var logoUrl14: String!
     
     var user: User?
     
@@ -56,6 +60,7 @@ class Logos {
             self.logoUrl = logoUrl
         }
         
+
         if let ownerUid = dictionary["ownerUid"] as? String {
             self.ownerUid = ownerUid
         }
@@ -96,41 +101,49 @@ class Logos {
                   self.points = points
         }
         
-        if let logo1 = dictionary["logo1"] as? String {
-            self.logo1 = logo1
+        if let logoUrl1 = dictionary["logoUrl1"] as? String {
+            self.logoUrl1 = logoUrl1
         }
-        if let logo2 = dictionary["logo2"] as? String {
-              self.logo2 = logo2
-          }
-        if let logo3 = dictionary["logo3"] as? String {
-              self.logo3 = logo3
-          }
-        if let logo4 = dictionary["logo4"] as? String {
-              self.logo4 = logo4
-          }
-        if let logo5 = dictionary["logo5"] as? String {
-            self.logo5 = logo5
+        
+        if let logoUrl2 = dictionary["logoUrl2"] as? String {
+            self.logoUrl2 = logoUrl2
         }
-        if let logo6 = dictionary["logo6"] as? String {
-              self.logo6 = logo6
-          }
-        if let logo7 = dictionary["logo7"] as? String {
-              self.logo7 = logo7
-          }
-        if let logo8 = dictionary["logo8"] as? String {
-              self.logo8 = logo8
-          }
-        if let logo9 = dictionary["logo9"] as? String {
-            self.logo9 = logo9
+        
+        if let logoUrl3 = dictionary["logoUrl3"] as? String {
+            self.logoUrl3 = logoUrl3
         }
-        if let logo10 = dictionary["logo10"] as? String {
-              self.logo10 = logo10
+        if let logoUrl4 = dictionary["logoUrl4"] as? String {
+              self.logoUrl4 = logoUrl4
           }
-        if let logo11 = dictionary["logo11"] as? String {
-              self.logo11 = logo11
+        if let logoUrl5 = dictionary["logoUrl5"] as? String {
+              self.logoUrl5 = logoUrl5
           }
-        if let logo12 = dictionary["logo12"] as? String {
-              self.logo12 = logo12
+        if let logoUrl6 = dictionary["logoUrl6"] as? String {
+              self.logoUrl6 = logoUrl6
+          }
+        if let logoUrl7 = dictionary["logoUrl7"] as? String {
+            self.logoUrl7 = logoUrl7
+        }
+        if let logoUrl8 = dictionary["logoUrl8"] as? String {
+              self.logoUrl8 = logoUrl8
+          }
+        if let logoUrl9 = dictionary["logoUrl9"] as? String {
+              self.logoUrl9 = logoUrl9
+          }
+        if let logoUrl10 = dictionary["logoUrl10"] as? String {
+              self.logoUrl10 = logoUrl10
+          }
+        if let logoUrl11 = dictionary["logoUrl11"] as? String {
+            self.logoUrl11 = logoUrl11
+        }
+        if let logoUrl12 = dictionary["logoUrl12"] as? String {
+              self.logoUrl12 = logoUrl12
+          }
+        if let logoUrl13 = dictionary["logoUrl13"] as? String {
+              self.logoUrl13 = logoUrl13
+          }
+        if let logoUrl14 = dictionary["logoUrl14"] as? String {
+              self.logoUrl14 = logoUrl14
           }
 
 
