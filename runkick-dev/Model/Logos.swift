@@ -46,6 +46,22 @@ class Logos {
     var logoUrl13: String!
     var logoUrl14: String!
     
+    
+    var points1: Int!
+    var points2: Int!
+    var points3: Int!
+    var points4: Int!
+    var points5: Int!
+    var points6: Int!
+    var points7: Int!
+    var points8: Int!
+    var points9: Int!
+    var points10: Int!
+    var points11: Int!
+    var points12: Int!
+    var points13: Int!
+    var points14: Int!
+    
     var user: User?
     
     init(postId: String!, dictionary: Dictionary<String, AnyObject>) {
@@ -145,6 +161,50 @@ class Logos {
         if let logoUrl14 = dictionary["logoUrl14"] as? String {
               self.logoUrl14 = logoUrl14
           }
+        
+        if let points1 = dictionary["points1"] as? Int {
+                  self.points1 = points1
+        }
+        if let points2 = dictionary["points2"] as? Int {
+                  self.points2 = points2
+        }
+        if let points3 = dictionary["points3"] as? Int {
+                  self.points3 = points3
+        }
+        if let points4 = dictionary["points4"] as? Int {
+                  self.points4 = points4
+        }
+        if let points5 = dictionary["points5"] as? Int {
+                  self.points5 = points5
+        }
+        if let points6 = dictionary["points6"] as? Int {
+                  self.points6 = points6
+        }
+        if let points7 = dictionary["points7"] as? Int {
+                  self.points7 = points7
+        }
+        if let points8 = dictionary["points8"] as? Int {
+                  self.points8 = points8
+        }
+        if let points9 = dictionary["points9"] as? Int {
+                  self.points9 = points9
+        }
+        if let points10 = dictionary["points10"] as? Int {
+                  self.points10 = points10
+        }
+        if let points11 = dictionary["points11"] as? Int {
+                  self.points11 = points11
+        }
+        if let points12 = dictionary["points12"] as? Int {
+                  self.points12 = points12
+        }
+        if let points13 = dictionary["points13"] as? Int {
+                  self.points13 = points13
+        }
+        if let points14 = dictionary["points14"] as? Int {
+                  self.points14 = points14
+        }
+
 
 
     }

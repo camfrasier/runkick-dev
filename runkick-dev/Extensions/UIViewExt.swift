@@ -522,7 +522,7 @@ extension Database {
             
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
      
-            //print("The logo number value is  \(logoNum)")
+            //print("The logo snapshot value is  \(snapshot.value)")
             
             let post = Logos(postId: postId, dictionary: dictionary)
         

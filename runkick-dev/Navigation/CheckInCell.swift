@@ -109,6 +109,13 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
+    let profileImageBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 238, green: 238, blue: 238)
+        view.layer.cornerRadius = 30 / 2
+        return view
+    }()
+    
     let foregroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
@@ -136,7 +143,9 @@ class CheckInCell: UICollectionViewCell {
     
     lazy var favoritesButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        //button.layer.borderWidth = 0.75
+        //button.layer.borderColor = UIColor.rgb(red: 80, green: 80, blue: 80).cgColor
+        button.backgroundColor = UIColor.black
         button.titleLabel?.font =  UIFont(name: "Arial-BoldMT", size: 15)
         button.setTitle("View Menus", for: .normal)
         button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
@@ -203,7 +212,8 @@ class CheckInCell: UICollectionViewCell {
         label.text = "Fortune"
         //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 28)
+        //label.font = UIFont(name: "HelveticaNeue-Bold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
         label.setLineHeight(lineHeight: 0)
@@ -220,7 +230,7 @@ class CheckInCell: UICollectionViewCell {
         label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 32)
         //label.font = UIFont(name: "ArialHebrew", size: 32)
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 28)
         //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
@@ -234,7 +244,7 @@ class CheckInCell: UICollectionViewCell {
         label.text = " The Brave. "
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 28)
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 28)
         //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
@@ -265,10 +275,10 @@ class CheckInCell: UICollectionViewCell {
     let checkInBackground: UIView = {
         let view = UIView()
         //view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
-        view.layer.shadowRadius = 10
-        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        //view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        //view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        //view.layer.shadowRadius = 5
+        //view.layer.shadowOffset = CGSize(width: 0, height: 6)
         return view
     }()
     
@@ -650,8 +660,55 @@ class CheckInCell: UICollectionViewCell {
     let pointsLabel1: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.statusBarGreen()
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 35)
+        label.font = UIFont(name: "Avenir-Black", size: 17)
         label.text = "675"
+        label.alpha = 0
+        return label
+    } ()
+    
+    let pointsLabel2: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "Avenir-Black", size: 17)
+        //label.font = UIFont(name: "Arial-BoldMT", size: 17)
+        label.text = "675"
+        label.alpha = 0
+        return label
+    } ()
+    
+    let pointsLabel3: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "Avenir-Black", size: 17)
+        label.text = "675"
+        label.alpha = 0
+        return label
+    } ()
+    
+    let plus1: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "Avenir-Black", size: 17)
+        label.text = "+"
+        label.alpha = 0
+        return label
+    } ()
+    
+    let plus2: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "Avenir-Black", size: 17)
+        label.text = "+"
+        label.alpha = 0
+        return label
+    } ()
+    
+    let plus3: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.statusBarGreen()
+        label.font = UIFont(name: "Avenir-Black", size: 17)
+        label.text = "+"
+        label.alpha = 0
         return label
     } ()
     
@@ -796,7 +853,7 @@ class CheckInCell: UICollectionViewCell {
     let postTimeLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont(name: "HelveticaNeue", size: 14)
-        label.font = UIFont(name: "Arial-BoldMT", size: 14)
+        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
         label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         label.text = "2d"
         return label
@@ -821,11 +878,11 @@ class CheckInCell: UICollectionViewCell {
         //button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
     }()
-    
+
     let distanceTitleLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.font = UIFont(name: "ArialMT", size: 15)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 14)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
         label.text = "Miles"
@@ -835,7 +892,8 @@ class CheckInCell: UICollectionViewCell {
     let calorieTitleLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.font = UIFont(name: "ArialMT", size: 15)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
+        //label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
         label.text = "Cals"
@@ -845,7 +903,8 @@ class CheckInCell: UICollectionViewCell {
     let timeTitleLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.font = UIFont(name: "ArialMT", size: 15)
+        //label.font = UIFont(name: "Arial-BoldMT", size: 15)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 14)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
         label.text = "Hours"
@@ -855,7 +914,8 @@ class CheckInCell: UICollectionViewCell {
     let stepsTitleLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.font = UIFont(name: "ArialMT", size: 15)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
+        //label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
         label.text = "Steps"
@@ -879,7 +939,7 @@ class CheckInCell: UICollectionViewCell {
     
     let stepsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Arial-BoldMT", size: 19)
+        label.font = UIFont(name: "Avenir-Black", size: 17)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         label.textAlignment = .center
@@ -892,7 +952,7 @@ class CheckInCell: UICollectionViewCell {
         //label.font = UIFont.boldSystemFont(ofSize: 13)
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         label.textAlignment = .center
-        label.font = UIFont(name: "Arial-BoldMT", size: 19)
+        label.font = UIFont(name: "Avenir-Black", size: 17)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
         //"AvenirNextCondensed-BoldItalic"
         label.text = "9.3"
@@ -901,7 +961,7 @@ class CheckInCell: UICollectionViewCell {
     
     let calorieLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Arial-BoldMT", size: 19)
+        label.font = UIFont(name: "Avenir-Black", size: 17)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         label.textAlignment = .center
@@ -911,8 +971,8 @@ class CheckInCell: UICollectionViewCell {
     
     let durationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Arial-BoldMT", size: 19)
-        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 19)
+        label.font = UIFont(name: "Avenir-Black", size: 17)
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         label.textAlignment = .center
         label.text = "0.48"
@@ -958,6 +1018,20 @@ class CheckInCell: UICollectionViewCell {
         label.text = "Walkzilla"
         return label
     } ()
+    
+    let checkInTitleLabel: UILabel = { // Will replace later with an action label.
+        let label = UILabel()
+        //abel.text = "FAVORS"
+        label.text = "Walkzilla"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "Arial-BoldMT", size: 17)
+        label.setLineSpacing(lineSpacing: 1)
+        label.textAlignment = .left
+        label.setLineHeight(lineHeight: 0)
+        label.numberOfLines = 1
+        return label
+    } ()
+    
     
 
     
@@ -1273,12 +1347,12 @@ class CheckInCell: UICollectionViewCell {
         
        addSubview(mapBackgroundView)
        mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        mapBackgroundView.layer.cornerRadius = 12
+        mapBackgroundView.layer.cornerRadius = 1
       
         mapBackgroundView.addSubview(mapImageView)
         mapImageView.translatesAutoresizingMaskIntoConstraints = false
         mapImageView.clipsToBounds = true
-        mapImageView.layer.cornerRadius = 12
+        mapImageView.layer.cornerRadius = 1
         
         
         addSubview(analyticsBlock)
@@ -1345,9 +1419,17 @@ class CheckInCell: UICollectionViewCell {
         imageTranslucentBar.translatesAutoresizingMaskIntoConstraints = false
         imageTranslucentBar.backgroundColor = UIColor.white
         
+
+        
+        
+        addSubview(profileImageBackground)
+        profileImageBackground.translatesAutoresizingMaskIntoConstraints = false
+        
         // profile attributes and constraints
-        mapImageView.addSubview(profileImageView)
+        profileImageBackground.addSubview(profileImageView)
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
         
         // separator attributes and constraints
         addSubview(circleDotView)
@@ -1386,8 +1468,11 @@ class CheckInCell: UICollectionViewCell {
         
         imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: userCommentBlock.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: (frame.height / 3) + 65)
         
+        
+        profileImageBackground.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 35, width: 30, height: 30)
+        
         let profileImageDimension = CGFloat(30)
-        profileImageView.anchor(top: mapImageView.topAnchor, left: mapImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
+        profileImageView.anchor(top: profileImageBackground.topAnchor, left: nil, bottom: profileImageBackground.bottomAnchor, right: profileImageBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         profileImageView.layer.cornerRadius = profileImageDimension / 2
         
         
@@ -1419,9 +1504,9 @@ class CheckInCell: UICollectionViewCell {
         mapImageView.anchor(top: mapBackgroundView.topAnchor, left: mapBackgroundView.leftAnchor, bottom: mapBackgroundView.bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
-        favoritesButton.anchor(top: nil, left: nil, bottom: mapBackgroundView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 24, paddingRight: 0, width: frame.width - 80, height: 45)
+        favoritesButton.anchor(top: nil, left: nil, bottom: mapBackgroundView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 26, paddingRight: 0, width: frame.width - 170, height: 50)
         favoritesButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        favoritesButton.layer.cornerRadius = 10
+        favoritesButton.layer.cornerRadius = 24
     
         
         
@@ -1524,6 +1609,10 @@ class CheckInCell: UICollectionViewCell {
         
         stepsLabel.anchor(top: nil, left: nil, bottom: stepsTitleLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         stepsLabel.centerXAnchor.constraint(equalTo: stepsTitleLabel.centerXAnchor).isActive = true
+        
+        
+        
+        
         
         
         /*
@@ -1719,6 +1808,8 @@ class CheckInCell: UICollectionViewCell {
         
         
         postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
         
         circleDotView.anchor(top: nil, left: postTimeLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
         circleDotView.centerYAnchor.constraint(equalTo: self.postTimeLabel.centerYAnchor).isActive = true
@@ -1964,12 +2055,14 @@ class CheckInCell: UICollectionViewCell {
                     
                     self.checkInBackground.removeFromSuperview()
                     self.checkInBackground.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
-                    
 
                     
                     
                     self.addSubview(self.checkInBackground)
                     self.checkInBackground.translatesAutoresizingMaskIntoConstraints = false
+                    
+                    //self.checkInBackground.addSubview(self.checkInTitleLabel)
+                    //self.checkInTitleLabel.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                     
                     self.checkInBackground.addSubview(self.line1)
                     self.line1.translatesAutoresizingMaskIntoConstraints = false
@@ -1980,20 +2073,22 @@ class CheckInCell: UICollectionViewCell {
                      self.addSubview(self.centerCard)
                      self.centerCard.translatesAutoresizingMaskIntoConstraints = false
 
-                    self.centerCard.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 35, paddingBottom: 0, paddingRight: 35, width: 0, height: 200)
-                    self.centerCard.layer.cornerRadius = 15
+                    self.centerCard.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 35, paddingBottom: 0, paddingRight: 35, width: 0, height: 190)
+                    self.centerCard.layer.cornerRadius = 8
                     
                     self.centerCard.addSubview(self.actionLabel)
-                    self.actionLabel.anchor(top: self.centerCard.topAnchor, left: self.centerCard.leftAnchor, bottom: nil, right: nil   , paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    self.actionLabel.anchor(top: self.centerCard.topAnchor, left: self.centerCard.leftAnchor, bottom: nil, right: nil   , paddingTop: 45, paddingLeft: 45, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                     
                     self.centerCard.addSubview(self.actionLabel2)
-                    self.actionLabel2.anchor(top: self.actionLabel.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil   , paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    self.actionLabel2.anchor(top: self.actionLabel.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil   , paddingTop: -4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                     
                     self.centerCard.addSubview(self.actionLabel3)
-                    self.actionLabel3.anchor(top: self.actionLabel2.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil   , paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    self.actionLabel3.anchor(top: self.actionLabel2.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                     
 
                     self.checkInBackground.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 25, width: 0, height: 200)
+                    
+                    
                     
 
                     
@@ -2015,16 +2110,21 @@ class CheckInCell: UICollectionViewCell {
                             if logo == "logo1" {
                             guard let logoImageUrl1 = post.logoUrl1 else { return }
                             self.logoImage1.loadImage(with: logoImageUrl1)
+                            //self.pointsLabel1.text = "+\(String(post.points1))"
+                             self.pointsLabel1.text = String(post.points1)
+                            print("the logo 1 point val is \(self.pointsLabel1)")
                             }
                             
                             if logo == "logo2" {
                             guard let logoImageUrl2 = post.logoUrl2 else { return }
                             self.logoImage2.loadImage(with: logoImageUrl2)
+                                self.pointsLabel2.text = String(post.points2)
                             }
                             
                             if logo == "logo3" {
                             guard let logoImageUrl3 = post.logoUrl3 else { return }
                             self.logoImage3.loadImage(with: logoImageUrl3)
+                                self.pointsLabel3.text = String(post.points3)
                             }
                           
                 
@@ -2034,22 +2134,64 @@ class CheckInCell: UICollectionViewCell {
                                let logoDim: CGFloat = 75
                                self.checkInBackground.addSubview(self.logoImage1)
                                self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage1.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                            self.logoImage1.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
                                    self.logoImage1.layer.cornerRadius = logoDim / 2
+                            self.logoImage1.centerYAnchor.constraint(equalTo: self.checkInBackground.centerYAnchor).isActive = true
                             self.logoImage1.alpha = 0
+                            
+                            
+                            self.checkInBackground.addSubview(self.pointsLabel1)
+                            self.pointsLabel1.anchor(top: self.logoImage1.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                            self.pointsLabel1.centerXAnchor.constraint(equalTo: self.logoImage1.centerXAnchor).isActive = true
+                            self.pointsLabel1.alpha = 0
+                            
+                            self.checkInBackground.addSubview(self.plus1)
+                            self.plus1.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel1.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
+                            self.plus1.centerYAnchor.constraint(equalTo: self.pointsLabel1.centerYAnchor).isActive = true
+                            self.plus1.alpha = 0
+                            
+                            
+                            
 
                                self.checkInBackground.addSubview(self.logoImage2)
                                self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage2.anchor(top: self.checkInBackground.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                            self.logoImage2.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
                                    self.logoImage2.layer.cornerRadius = logoDim / 2
                             self.logoImage2.centerXAnchor.constraint(equalTo: self.checkInBackground.centerXAnchor).isActive = true
                             self.logoImage2.alpha = 0
                             
+                            self.checkInBackground.addSubview(self.pointsLabel2)
+                            self.pointsLabel2.anchor(top: self.logoImage2.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                            self.pointsLabel2.centerXAnchor.constraint(equalTo: self.logoImage2.centerXAnchor).isActive = true
+                            self.pointsLabel2.alpha = 0
+                            
+                            self.checkInBackground.addSubview(self.plus2)
+                            self.plus2.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel2.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
+                            self.plus2.centerYAnchor.constraint(equalTo: self.pointsLabel2.centerYAnchor).isActive = true
+                            self.plus2.alpha = 0
+                            
+                            
+                            
+                            
+                      
                                self.checkInBackground.addSubview(self.logoImage3)
                                self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage3.anchor(top: self.checkInBackground.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: logoDim, height: logoDim)
+                            self.logoImage3.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: logoDim, height: logoDim)
                                    self.logoImage3.layer.cornerRadius = logoDim / 2
                             self.logoImage3.alpha = 0
+                            
+                            self.checkInBackground.addSubview(self.pointsLabel3)
+                            self.pointsLabel3.anchor(top: self.logoImage3.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                            self.pointsLabel3.centerXAnchor.constraint(equalTo: self.logoImage3.centerXAnchor).isActive = true
+                            self.pointsLabel3.alpha = 0
+                            
+                            self.checkInBackground.addSubview(self.plus3)
+                            self.plus3.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel3.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
+                            self.plus3.centerYAnchor.constraint(equalTo: self.pointsLabel3.centerYAnchor).isActive = true
+                            self.plus3.alpha = 0
+                            
+                            
+                            
                             
                             let lineRadius: CGFloat = 2
                             self.line1.anchor(top: nil, left: self.logoImage1.rightAnchor, bottom: nil, right: self.logoImage2.leftAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: -5, width: 0, height: 4)
@@ -2086,14 +2228,22 @@ class CheckInCell: UICollectionViewCell {
                                 
                                 if self.toggle1 == false {
                                 
-                                self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                
-                                    UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                    self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                    self.pointsLabel1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                    self.plus1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                    
+                                UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                     
                                     self.logoImage1.alpha = 1
                                     self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
                                         
+                                    self.pointsLabel1.alpha = 1
+                                    self.pointsLabel1.transform = CGAffineTransform(scaleX: 1, y: 1)
                                         
+                                    self.plus1.alpha = 1
+                                    self.plus1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                    
+    
                                         
                                         // Nested line generation
                                          self.line1.transform = CGAffineTransform(translationX: 1, y: 1)
@@ -2112,6 +2262,10 @@ class CheckInCell: UICollectionViewCell {
                                 }) { (_) in
 
                                     self.logoImage1.transform = .identity
+                                    self.pointsLabel1.transform = .identity
+                                    self.plus1.transform = .identity
+                                    
+                                    
                                     self.toggle1 = true
                                 
 
@@ -2121,18 +2275,30 @@ class CheckInCell: UICollectionViewCell {
                                     print("Toggle is set to true")
                                     
                                     self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                    self.pointsLabel1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                    self.plus1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                    
+
                                                                    
                                     UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                                                        
-                                                                       self.logoImage1.alpha = 1
+                                        self.logoImage1.alpha = 1
                                         self.logoImage1.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                                                       
-                                    
-                                                                   }) { (_) in
+                                        
+                                        self.pointsLabel1.alpha = 1
+                                        self.pointsLabel1.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                        
+                                        self.plus1.alpha = 1
+                                        self.plus1.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
 
-                                                                       self.logoImage1.transform = .identity
-                                                                       //self.toggle1 = false
-                                                                   }
+                                        
+                                        }) { (_) in
+
+                                                                    self.logoImage1.transform = .identity
+                                                                    self.pointsLabel1.transform = .identity
+                                                                    self.plus1.transform = .identity
+
+                                         }
                                     
                                     
                                 }
@@ -2144,11 +2310,20 @@ class CheckInCell: UICollectionViewCell {
                                     if self.toggle2 == false {
                                     
                                     self.logoImage2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                 
+                                    self.pointsLabel2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                    self.plus2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
                                     
                                     UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                      
                                     self.logoImage2.alpha = 1
                                       self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                            
+                                        self.pointsLabel2.alpha = 1
+                                        self.pointsLabel2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                            
+                                        self.plus2.alpha = 1
+                                        self.plus2.transform = CGAffineTransform(scaleX: 1, y: 1)
                                         
                                         
                                         // Nested line generation
@@ -2168,22 +2343,38 @@ class CheckInCell: UICollectionViewCell {
 
                                    self.logoImage2.transform = .identity
                                         self.toggle2 = true
+                                    
+                                        self.pointsLabel2.transform = .identity
+                                        self.plus2.transform = .identity
+                                        
+
                                         
                                    }
                                     
                                     } else {
                                         
                                         self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        self.pointsLabel2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        self.plus2.transform = CGAffineTransform(scaleX: 1, y: 1)
                                                                        
                                         UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                                                            
-                                                                           self.logoImage2.alpha = 1
+                                            self.logoImage2.alpha = 1
                                             self.logoImage2.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                            
+                                            self.logoImage2.alpha = 1
+                                            self.pointsLabel2.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                            
+                                            self.plus2.alpha = 1
+                                            self.plus2.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                            
                                                                            
                                         
                                                                        }) { (_) in
 
                                                                            self.logoImage2.transform = .identity
+                                                                         self.pointsLabel2.transform = .identity
+                                                                         self.plus2.transform = .identity
                                                                            //self.toggleSet = false
                                                                        }
                                         
@@ -2195,31 +2386,53 @@ class CheckInCell: UICollectionViewCell {
                         
                                     if self.toggle3 == false {
                                     self.logoImage3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                  
+                                        self.pointsLabel3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                        self.plus3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
                                     
                                         UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                       
-                                        self.logoImage3.alpha = 1
-                                        self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                            
+                                            self.logoImage3.alpha = 1
+                                            self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                
+                                            self.pointsLabel3.alpha = 1
+                                            self.pointsLabel3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                
+                                            self.plus3.alpha = 1
+                                            self.plus3.transform = CGAffineTransform(scaleX: 1, y: 1)
                                                                          
                                       }) { (_) in
 
                                      self.logoImage3.transform = .identity
+                                        self.pointsLabel3.transform = .identity
+                                        self.plus3.transform = .identity
                                         self.toggle3 = true
                                      }
                                         
                                     } else {
                                         
                                         self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        self.pointsLabel3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        self.plus3.transform = CGAffineTransform(scaleX: 1, y: 1)
                                                                        
                                         UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                                                            
-                                                                           self.logoImage3.alpha = 1
+                                            self.logoImage3.alpha = 1
                                             self.logoImage3.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                                
+                                                self.pointsLabel3.alpha = 1
+                                                self.pointsLabel3.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                                                
+                                                self.plus3.alpha = 1
+                                                self.plus3.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                                                                            
                                         
                                                                        }) { (_) in
 
                                                                            self.logoImage3.transform = .identity
+                                                                         self.pointsLabel3.transform = .identity
+                                                                         self.plus3.transform = .identity
+                                                                                            
                                                                            //self.toggleSet = false
                                                                        }
                                         
@@ -2251,18 +2464,49 @@ class CheckInCell: UICollectionViewCell {
                                         
                                          print("the FINAL value of i is equal to \(i)")
                                         
+                                 
+                                       
+                                        // present center card
+                                        self.centerCard.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+                                      //  self.checkInBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
                                         
-                                        // now run center card function
-                                         print("Timer 2 started!")
-                                                                     // present center card
-                                         self.centerCard.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                        self.checkInBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                            self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                            self.pointsLabel1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                             self.plus1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        
+                                        self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        self.pointsLabel2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                         self.plus2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        
+                                        self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        self.pointsLabel3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                         self.plus3.transform = CGAffineTransform(scaleX: 1, y: 1)
                                                                      
                                           UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                             
                                         
-                                            self.checkInBackground.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-                                            self.checkInBackground.alpha = 0
+                                          //  self.checkInBackground.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+                                          //  self.checkInBackground.alpha = 0
+                                            
+                                            
+                                            
+                                            
+                                           //     self.pointsLabel1.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+                                              //  self.plus1.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+                                            // self.logoImage1.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
+                                            
+                                            
+                                            self.logoImage1.alpha = 0
+                                            self.pointsLabel1.alpha = 0
+                                            self.plus1.alpha = 0
+                                            
+                                            self.logoImage2.alpha = 0
+                                            self.pointsLabel2.alpha = 0
+                                            self.plus2.alpha = 0
+                                            
+                                            self.logoImage3.alpha = 0
+                                            self.pointsLabel3.alpha = 0
+                                            self.plus3.alpha = 0
                                             
                                          self.centerCard.transform = CGAffineTransform(scaleX: 1, y: 1)
                                           self.centerCard.alpha = 1
@@ -2278,15 +2522,59 @@ class CheckInCell: UICollectionViewCell {
                                                 
                                                 print("The value of x is greater than 2 \(x)")
                                                 
-                                                self.checkInBackground.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                             //   self.checkInBackground.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                               
+                                                
+                                                
+                                                self.logoImage1.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                self.pointsLabel1.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                self.plus1.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                
+                                                self.logoImage2.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                self.pointsLabel2.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                self.plus2.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                
+                                                self.logoImage3.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                self.pointsLabel3.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                self.plus3.transform = CGAffineTransform(scaleX: 0, y: 0)
+                                                
                                                 self.centerCard.transform = CGAffineTransform(scaleX: 1, y: 1)
                                                 
                                                
                                                 // close center card
                                             UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                                 
-                                            self.checkInBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                self.checkInBackground.alpha = 1
+                                             //  self.checkInBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                              // self.checkInBackground.alpha = 1
+                                                
+                                                
+                                                self.logoImage1.alpha = 1
+                                                 self.pointsLabel1.alpha = 1
+                                                    self.plus1.alpha = 1
+                                                
+                                                self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                    self.pointsLabel1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                    self.plus1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                
+                                                
+                                                self.logoImage2.alpha = 1
+                                                 self.pointsLabel2.alpha = 1
+                                                    self.plus2.alpha = 1
+                                                
+                                                self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                    self.pointsLabel2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                    self.plus2.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                
+                                                
+                                                self.logoImage3.alpha = 1
+                                                 self.pointsLabel3.alpha = 1
+                                                    self.plus3.alpha = 1
+                                                
+                                                self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                    self.pointsLabel3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                    self.plus3.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                                
+                                            
                                                 
                                                 self.centerCard.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
                                                self.centerCard.alpha = 0

@@ -634,8 +634,8 @@ class HomeVC: UIViewController, Alertable {
         let view = UIView()
         view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
-        view.layer.shadowRadius = 5.0
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
+        view.layer.shadowRadius = 6.0
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         let centerMapTap = UITapGestureRecognizer(target: self, action: #selector(handleCenterMapBtnPressed))
         centerMapTap.numberOfTapsRequired = 1
@@ -657,7 +657,7 @@ class HomeVC: UIViewController, Alertable {
         let view = UIView()
         view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.25).cgColor
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
         view.layer.shadowRadius = 5.0
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         let settingsTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheck))
@@ -1980,7 +1980,7 @@ class HomeVC: UIViewController, Alertable {
         centerMapBackground.layer.cornerRadius = 45 / 2
         
         centerMapBackground.addSubview(centerMapButton)
-        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 16, height: 15)
+        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 17.5, paddingLeft: 14.5, paddingBottom: 0, paddingRight: 0, width: 14, height: 13)
         
         
         let settingsDimension: CGFloat = 45
@@ -1989,7 +1989,7 @@ class HomeVC: UIViewController, Alertable {
         settingsButtonBackground.layer.cornerRadius = settingsDimension / 2
         
         mapView.addSubview(settingsButton)
-        settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 9, paddingBottom: 0, paddingRight: 0, width: 28, height: 27)
+        settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11.5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 25, height: 24)
         
         let cancelTripButtonDimension: CGFloat = 45
         mapView.addSubview(cancelTripBackground)
@@ -3882,15 +3882,16 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.canShowCallout = true
             
             
-            annotationView.label = UILabel(frame: CGRect(x: 2, y: 7.0, width: 34.0, height: 18.0))
+            annotationView.label = UILabel(frame: CGRect(x: 8.0, y: 3.5, width: 34.0, height: 18.0))
             
             
             
             if let label = annotationView.label {
-                //label.font = UIFont(name: "Arial Rounded MT Bold", size: 15.0)
-                label.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)
-                //label.font = UIFont(name: "HelveticaNeue", size: 13.0)
-                //label.font = UIFont(name: "PingFangSC-Semibold", size: 13)
+                //label.font = UIFont(name: "AvenirNext", size: 13.0)
+                label.font = UIFont(name: "Avenir-Black", size: 13)
+                //label.font = UIFont.boldSystemFont(ofSize: 13)
+                //label.font = UIFont(name: "AvenirNext-Bold", size: 13.0)
+  
                
               label.textAlignment = .center
              //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
@@ -3909,13 +3910,11 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.image = UIImage(named: "whiteCircleGreenSmall-60x60")
             
             //let pinImage = UIImage(named: "simpleMarkerTrueBlue")
-            let pinImage = UIImage(named: "simpleMarkerWhite")
-    
-            //let pinImage = UIImage(named: "simpleMarkerWhiteOutline")
-            //let pinImage = UIImage(named: "simpleMarkerActionRed")
-            //let pinImage = UIImage(named: "roundedMutedOrangePoints")
+            //let pinImage = UIImage(named: "simpleMarkerWhite")
+            let pinImage = UIImage(named: "roundedMarkerShort")
             
-            let size = CGSize(width: 38, height: 45)
+
+            let size = CGSize(width: 54.5, height: 31)
             //UIGraphicsBeginImageContext(size)
             UIGraphicsBeginImageContextWithOptions(size, false, 10)
             pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
@@ -3937,7 +3936,7 @@ extension HomeVC: MKMapViewDelegate {
 
             //label.text = title
  
-            label.text = "\(subtitle ?? "?")"
+            label.text = "+\(subtitle ?? "?")"
                 
                 let pointVal = Int(subtitle ?? "?")
                 //guard let pointVal = Int(subtitle) else { return }
@@ -3953,8 +3952,8 @@ extension HomeVC: MKMapViewDelegate {
                 }
                 */
                 
-                imageView.frame = CGRect(x: 8.5, y: 25, width: 21, height: 6)
-                hotImageView.frame = CGRect(x: -2, y: -3, width: 16, height: 16)
+                imageView.frame = CGRect(x: 17.5, y: 19.5, width: 21.5, height: 5.5)
+                hotImageView.frame = CGRect(x: -4, y: -4, width: 16, height: 16)
                 //imageView.image = UIImage(named: "like_selected-red")
                 
                 switch pointVal! {
@@ -4010,10 +4009,10 @@ extension HomeVC: MKMapViewDelegate {
         
         //imageView.image = UIImage(named:"seventyFivePercentBar")!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         //imageView.tintColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
-        annotationView?.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.28).cgColor
+        annotationView?.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
         annotationView?.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
-        annotationView?.layer.shadowRadius = 5.0
-        annotationView?.layer.shadowOffset = CGSize(width: 0, height: 0)
+        annotationView?.layer.shadowRadius = 6.0
+        annotationView?.layer.shadowOffset = CGSize(width: 0, height: 3)
       
         
         
@@ -5402,10 +5401,15 @@ extension HomeVC: MKMapViewDelegate {
             
             guard let logoUrl = snapshot.value as? String else { return }
             
+            // retrieving points for that store that day
+            DataService.instance.REF_STORES.child(storeId).child("points").observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let dailyPointVal = snapshot.value as? String else { return }
+            
             // adding this information to the activity folder
             //DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).childByAutoId().childByAutoId().updateChildValues(["logoUrl": logoUrl, "storeId": storeId])
             
-            DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).childByAutoId().updateChildValues(["logo\(self.logoNum)": logoUrl])
+                DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).childByAutoId().child("logo\(self.logoNum)").updateChildValues(["logoUrl\(self.logoNum)": logoUrl, "points\(self.logoNum)": dailyPointVal])
             //DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child("storeIdentifiers").updateChildValues(["storeId\(self.logoNum)": storeId])
             
                 // going back to save the key value for the url value that was just created
@@ -5422,26 +5426,31 @@ extension HomeVC: MKMapViewDelegate {
                             }
                         }
         
-            
+            }
             self.didCreateFolder = true
-            
+        
     } else {
             
             DataService.instance.REF_STORES.child(storeId).child("storeLogoUrl").observeSingleEvent(of: .value) { (snapshot) in
                 guard let logoUrl = snapshot.value as? String else { return }
                 
+                // retrieving points for that store that day
+                DataService.instance.REF_STORES.child(storeId).child("points").observeSingleEvent(of: .value) { (snapshot) in
+                    
+                    guard let dailyPointVal = snapshot.value as? String else { return }
+            
+                
+                    DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).childByAutoId().child("logo\(self.logoNum)").updateChildValues(["logoUrl\(self.logoNum)": logoUrl, "points\(self.logoNum)": dailyPointVal])
                 
                 //DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child(self.childByAutoKey).childByAutoId().updateChildValues(["logoUrl": logoUrl, "storeId": storeId])
-                
-                DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child(self.childByAutoKey).updateChildValues(["logo\(self.logoNum)": logoUrl])
+
                 //DataService.instance.REF_ACTIVITY.child(currentUid).child(self.tripHolder).child("storeIdentifiers").updateChildValues(["storeId\(self.logoNum)": storeId])
                 
                 self.logoNum += 1
                 
             }
         }
-        
-        
+    }
         /*
          let logosKey = snapshot.value as! [String: Dictionary<String, String>]
          for (key, value) in logosKey {

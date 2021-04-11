@@ -654,11 +654,11 @@ class FeedCell: UICollectionViewCell {
         addSubview(self.postImageBlock)
         postImageBlock.translatesAutoresizingMaskIntoConstraints = false
         //postImageBlock.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
-        postImageBlock.layer.cornerRadius = 12
+        postImageBlock.layer.cornerRadius = 3
         
         postImageBlock.addSubview(postImageView)
         postImageView.translatesAutoresizingMaskIntoConstraints = false
-        postImageView.layer.cornerRadius = 12
+        postImageView.layer.cornerRadius = 3
 
         addSubview(captionBlock)
         captionBlock.translatesAutoresizingMaskIntoConstraints = false
