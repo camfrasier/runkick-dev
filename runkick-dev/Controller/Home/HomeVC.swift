@@ -246,6 +246,27 @@ class HomeVC: UIViewController, Alertable {
         label.alpha = 0
         return label
     }()
+    
+    let analyticsLabel: UILabel = {
+        let label = UILabel()
+        //label.text = "Distance: None"
+        label.text = "Activity"
+        //label.font = UIFont(name: "Avenir-Black", size: 15)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 12)
+        label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let boltButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "bolt2"), for: .normal)
+        //button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
+        button.tintColor = UIColor.walkzillaRed()
+        button.alpha = 1
+        return button
+    }()
     /*
     lazy var screenshotMapView: UIView = {
         let view = UIView()
@@ -496,7 +517,7 @@ class HomeVC: UIViewController, Alertable {
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(menuTap)
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
         view.layer.shadowRadius = 5.0
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         view.alpha = 1
@@ -506,7 +527,7 @@ class HomeVC: UIViewController, Alertable {
     lazy var groupsButton: UIButton = {
         let button = UIButton(type: .system)
         //button.setImage(UIImage(named: "whitePlus"), for: .normal)
-        button.setImage(UIImage(named: "tribeWalkzilla"), for: .normal)
+        button.setImage(UIImage(named: "analytics_icon_simple"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheckGroups), for: .touchUpInside)
         button.backgroundColor = .clear
         //button.tintColor = UIColor.walkzillaRed()
@@ -1252,12 +1273,17 @@ class HomeVC: UIViewController, Alertable {
         
         let groupsBackgroundDimension: CGFloat = 45
         mapView.addSubview(groupsButtonBackground)
-        groupsButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
-        groupsButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2
-        //groupsButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2.6
+        groupsButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: 120, height: groupsBackgroundDimension)
+        //groupsButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2
+        groupsButtonBackground.layer.cornerRadius = 23
         
-        groupsButtonBackground.addSubview(groupsButton)
-        groupsButton.anchor(top: groupsButtonBackground.topAnchor, left: groupsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 14.5, paddingBottom: 0, paddingRight: 0, width: 16, height: 15)
+        groupsButtonBackground.addSubview(analyticsLabel)
+        analyticsLabel.anchor(top: nil, left: groupsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 36, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        analyticsLabel.centerYAnchor.constraint(equalTo: groupsButtonBackground.centerYAnchor).isActive = true
+        
+        groupsButtonBackground.addSubview(boltButton)
+        boltButton.anchor(top: nil, left: analyticsLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 11, height: 15)
+        boltButton.centerYAnchor.constraint(equalTo: analyticsLabel.centerYAnchor).isActive = true
         
         /*
         mapView.addSubview(saveSegmentButton)
@@ -1980,7 +2006,7 @@ class HomeVC: UIViewController, Alertable {
         centerMapBackground.layer.cornerRadius = 45 / 2
         
         centerMapBackground.addSubview(centerMapButton)
-        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 17.5, paddingLeft: 14.5, paddingBottom: 0, paddingRight: 0, width: 14, height: 13)
+        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 17.5, paddingLeft: 15.5, paddingBottom: 0, paddingRight: 0, width: 12, height: 11)
         
         
         let settingsDimension: CGFloat = 45
@@ -1989,7 +2015,7 @@ class HomeVC: UIViewController, Alertable {
         settingsButtonBackground.layer.cornerRadius = settingsDimension / 2
         
         mapView.addSubview(settingsButton)
-        settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 11.5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 25, height: 24)
+        settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 22, height: 23)
         
         let cancelTripButtonDimension: CGFloat = 45
         mapView.addSubview(cancelTripBackground)

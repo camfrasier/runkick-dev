@@ -35,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         navController.navigationBar.isHidden = true
         
 
+        
+
    
         /*
         window?.makeKeyAndVisible()

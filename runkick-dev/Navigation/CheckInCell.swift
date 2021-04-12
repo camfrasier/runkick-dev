@@ -146,7 +146,7 @@ class CheckInCell: UICollectionViewCell {
         //button.layer.borderWidth = 0.75
         //button.layer.borderColor = UIColor.rgb(red: 80, green: 80, blue: 80).cgColor
         button.backgroundColor = UIColor.black
-        button.titleLabel?.font =  UIFont(name: "Arial-BoldMT", size: 15)
+        button.titleLabel?.font =  UIFont(name: "Arial-BoldMT", size: 12)
         button.setTitle("View Menus", for: .normal)
         button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
@@ -209,10 +209,10 @@ class CheckInCell: UICollectionViewCell {
     let actionLabel: UILabel = { // Will replace later with an action label.
         let label = UILabel()
         //label.text = "FORTUNE"
-        label.text = "Fortune"
+        label.text = "Fortune favors the"
         //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 28)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
         //label.font = UIFont(name: "HelveticaNeue-Bold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
@@ -224,13 +224,13 @@ class CheckInCell: UICollectionViewCell {
     let actionLabel2: UILabel = { // Will replace later with an action label.
         let label = UILabel()
         //abel.text = "FAVORS"
-        label.text = "Favors"
+        label.text = " brave."
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.textColor = UIColor.rgb(red: 255, green: 0, blue: 0)
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 32)
         //label.font = UIFont(name: "ArialHebrew", size: 32)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 28)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
         //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
@@ -392,7 +392,7 @@ class CheckInCell: UICollectionViewCell {
     
     lazy var followFollowingLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "ArialMT", size: 15)
+        label.font = UIFont(name: "HelveticaNeue", size: 14)
         label.text = "follow"
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
@@ -852,9 +852,9 @@ class CheckInCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        //label.font = UIFont(name: "HelveticaNeue", size: 14)
-        label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
-        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.text = "2d"
         return label
     } ()
@@ -882,7 +882,7 @@ class CheckInCell: UICollectionViewCell {
     let distanceTitleLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 14)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
         label.text = "Miles"
@@ -892,7 +892,7 @@ class CheckInCell: UICollectionViewCell {
     let calorieTitleLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         //label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
@@ -904,7 +904,7 @@ class CheckInCell: UICollectionViewCell {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
         //label.font = UIFont(name: "Arial-BoldMT", size: 15)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 14)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
         label.text = "Hours"
@@ -914,7 +914,7 @@ class CheckInCell: UICollectionViewCell {
     let stepsTitleLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         //label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.textAlignment = .center
@@ -1347,12 +1347,12 @@ class CheckInCell: UICollectionViewCell {
         
        addSubview(mapBackgroundView)
        mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        mapBackgroundView.layer.cornerRadius = 1
+        mapBackgroundView.layer.cornerRadius = 2
       
         mapBackgroundView.addSubview(mapImageView)
         mapImageView.translatesAutoresizingMaskIntoConstraints = false
         mapImageView.clipsToBounds = true
-        mapImageView.layer.cornerRadius = 1
+        mapImageView.layer.cornerRadius = 2
         
         
         addSubview(analyticsBlock)
@@ -1929,13 +1929,13 @@ class CheckInCell: UICollectionViewCell {
              if followed {
                  self.followFollowingLabel.text = "following"
                 //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 15)
-                self.followFollowingLabel.font = UIFont(name: "ArialMT", size: 15)
+                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 14)
                 
                 self.circleDotView.backgroundColor =  UIColor.rgb(red: 0, green: 0, blue: 0)
              } else {
                  self.followFollowingLabel.text = "follow"
                 //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
-                self.followFollowingLabel.font = UIFont(name: "Arial-BoldMT", size: 16)
+                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
                 self.circleDotView.backgroundColor =  UIColor.rgb(red: 0, green: 0, blue: 0)
              }
          })
@@ -2064,33 +2064,57 @@ class CheckInCell: UICollectionViewCell {
                     //self.checkInBackground.addSubview(self.checkInTitleLabel)
                     //self.checkInTitleLabel.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                     
-                    self.checkInBackground.addSubview(self.line1)
-                    self.line1.translatesAutoresizingMaskIntoConstraints = false
-                    
-                    self.checkInBackground.addSubview(self.line2)
-                    self.line2.translatesAutoresizingMaskIntoConstraints = false
+
 
                      self.addSubview(self.centerCard)
                      self.centerCard.translatesAutoresizingMaskIntoConstraints = false
 
-                    self.centerCard.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 35, paddingBottom: 0, paddingRight: 35, width: 0, height: 190)
+                    self.centerCard.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 30, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 0, height: 185)
                     self.centerCard.layer.cornerRadius = 8
                     
-                    self.centerCard.addSubview(self.actionLabel)
-                    self.actionLabel.anchor(top: self.centerCard.topAnchor, left: self.centerCard.leftAnchor, bottom: nil, right: nil   , paddingTop: 45, paddingLeft: 45, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    //self.centerCard.addSubview(self.actionLabel)
+                    //self.actionLabel.anchor(top: nil, left: nil, bottom: nil, right: nil   , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    //self.actionLabel.centerXAnchor.constraint(equalTo: self.centerCard.centerXAnchor).isActive = true
+                    //self.actionLabel.centerYAnchor.constraint(equalTo: self.centerCard.centerYAnchor).isActive = true
                     
-                    self.centerCard.addSubview(self.actionLabel2)
-                    self.actionLabel2.anchor(top: self.actionLabel.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil   , paddingTop: -4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                     
-                    self.centerCard.addSubview(self.actionLabel3)
-                    self.actionLabel3.anchor(top: self.actionLabel2.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    let stackView1 =  UIStackView(arrangedSubviews: [self.actionLabel, self.actionLabel2])
+
+                    stackView1.axis = .horizontal
+                    stackView1.distribution = .fillEqually
+                    stackView1.alignment = .center
+                    stackView1.spacing = 1
+                    stackView1.translatesAutoresizingMaskIntoConstraints = false
+                        
+                    
+                    self.centerCard.addSubview(stackView1)
+                    stackView1.anchor(top: nil, left: self.centerCard.leftAnchor, bottom: nil, right: nil   , paddingTop: 0, paddingLeft: 55, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    //stackView1.centerXAnchor.constraint(equalTo: self.centerCard.centerXAnchor).isActive = true
+                    stackView1.centerYAnchor.constraint(equalTo: self.centerCard.centerYAnchor).isActive = true
+                    
+                    //self.centerCard.addSubview(self.actionLabel3)
+                    //self.actionLabel3.anchor(top: self.actionLabel2.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                     
 
                     self.checkInBackground.anchor(top: self.postTimeLabel.bottomAnchor, left: self.leftAnchor, bottom: nil, right: self.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 25, width: 0, height: 200)
                     
                     
+                    /*
+                    self.logoImage1.alpha = 0
+                    self.logoImage2.alpha = 0
+                    self.logoImage3.alpha = 0
                     
-
+                    self.pointsLabel1.alpha = 0
+                    self.pointsLabel2.alpha = 0
+                    self.pointsLabel3.alpha = 0
+                    
+                    self.plus1.alpha = 0
+                    self.plus2.alpha = 0
+                    self.plus3.alpha = 0
+                    
+                    self.line1.alpha = 0
+                    self.line2.alpha = 0
+                    */
                     
                     
                     
@@ -2129,7 +2153,9 @@ class CheckInCell: UICollectionViewCell {
                           
                 
 
-                               
+                            
+
+                            
                                
                                let logoDim: CGFloat = 75
                                self.checkInBackground.addSubview(self.logoImage1)
@@ -2137,20 +2163,21 @@ class CheckInCell: UICollectionViewCell {
                             self.logoImage1.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
                                    self.logoImage1.layer.cornerRadius = logoDim / 2
                             self.logoImage1.centerYAnchor.constraint(equalTo: self.checkInBackground.centerYAnchor).isActive = true
-                            self.logoImage1.alpha = 0
+                            //self.logoImage1.alpha = 0
                             
                             
                             self.checkInBackground.addSubview(self.pointsLabel1)
                             self.pointsLabel1.anchor(top: self.logoImage1.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                             self.pointsLabel1.centerXAnchor.constraint(equalTo: self.logoImage1.centerXAnchor).isActive = true
-                            self.pointsLabel1.alpha = 0
+                            //self.pointsLabel1.alpha = 0
                             
                             self.checkInBackground.addSubview(self.plus1)
                             self.plus1.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel1.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
                             self.plus1.centerYAnchor.constraint(equalTo: self.pointsLabel1.centerYAnchor).isActive = true
-                            self.plus1.alpha = 0
+                            //self.plus1.alpha = 0
                             
                             
+
                             
 
                                self.checkInBackground.addSubview(self.logoImage2)
@@ -2158,19 +2185,19 @@ class CheckInCell: UICollectionViewCell {
                             self.logoImage2.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
                                    self.logoImage2.layer.cornerRadius = logoDim / 2
                             self.logoImage2.centerXAnchor.constraint(equalTo: self.checkInBackground.centerXAnchor).isActive = true
-                            self.logoImage2.alpha = 0
+                            //self.logoImage2.alpha = 0
                             
                             self.checkInBackground.addSubview(self.pointsLabel2)
                             self.pointsLabel2.anchor(top: self.logoImage2.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                             self.pointsLabel2.centerXAnchor.constraint(equalTo: self.logoImage2.centerXAnchor).isActive = true
-                            self.pointsLabel2.alpha = 0
+                           // self.pointsLabel2.alpha = 0
                             
                             self.checkInBackground.addSubview(self.plus2)
                             self.plus2.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel2.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
                             self.plus2.centerYAnchor.constraint(equalTo: self.pointsLabel2.centerYAnchor).isActive = true
-                            self.plus2.alpha = 0
+                            //self.plus2.alpha = 0
                             
-                            
+
                             
                             
                       
@@ -2178,31 +2205,36 @@ class CheckInCell: UICollectionViewCell {
                                self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
                             self.logoImage3.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: logoDim, height: logoDim)
                                    self.logoImage3.layer.cornerRadius = logoDim / 2
-                            self.logoImage3.alpha = 0
+                           // self.logoImage3.alpha = 0
                             
                             self.checkInBackground.addSubview(self.pointsLabel3)
                             self.pointsLabel3.anchor(top: self.logoImage3.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                             self.pointsLabel3.centerXAnchor.constraint(equalTo: self.logoImage3.centerXAnchor).isActive = true
-                            self.pointsLabel3.alpha = 0
+                           // self.pointsLabel3.alpha = 0
                             
                             self.checkInBackground.addSubview(self.plus3)
                             self.plus3.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel3.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
                             self.plus3.centerYAnchor.constraint(equalTo: self.pointsLabel3.centerYAnchor).isActive = true
-                            self.plus3.alpha = 0
+                            //self.plus3.alpha = 0
                             
                             
                             
-                            
+                            self.checkInBackground.addSubview(self.line1)
+                            self.line1.translatesAutoresizingMaskIntoConstraints = false
                             let lineRadius: CGFloat = 2
                             self.line1.anchor(top: nil, left: self.logoImage1.rightAnchor, bottom: nil, right: self.logoImage2.leftAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: -5, width: 0, height: 4)
                             self.line1.centerYAnchor.constraint(equalTo: self.logoImage1.centerYAnchor).isActive = true
                             self.line1.layer.cornerRadius = lineRadius
-                            self.line1.alpha = 0
+                            //self.line1.alpha = 0
                             
+
+                            self.checkInBackground.addSubview(self.line2)
+                            self.line2.translatesAutoresizingMaskIntoConstraints = false
                             self.line2.anchor(top: nil, left: self.logoImage2.rightAnchor, bottom: nil, right: self.logoImage3.leftAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: -5, width: 0, height: 4)
                             self.line2.centerYAnchor.constraint(equalTo: self.logoImage1.centerYAnchor).isActive = true
                             self.line2.layer.cornerRadius = lineRadius
-                            self.line2.alpha = 0
+                           // self.line2.alpha = 0
+
                             
                             
                             
@@ -2452,11 +2484,11 @@ class CheckInCell: UICollectionViewCell {
                                         
                                         print("the value of i has been reset to 1 and cycle value is \(cycle)")
                                     } else {
-                                            self.timerStarted = false
+                                           
                                             print("Timer stopped!")
-                                        self.toggle1 = false
-                                        self.toggle2 = false
-                                        self.toggle3 = false
+                                        //self.toggle1 = false
+                                        //self.toggle2 = false
+                                        //self.toggle3 = false
                                         
                                     
                                         
@@ -2583,7 +2615,7 @@ class CheckInCell: UICollectionViewCell {
                                                                                          
                                             }
                                                 
-                                                
+                                                 self.timerStarted = false
                                                 print("Timer 2 stopped!")
                                                 t2.invalidate()
                                             }

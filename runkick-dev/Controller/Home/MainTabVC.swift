@@ -28,7 +28,9 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         //tabBar.tintColor = UIColor.rgb(red: 243, green: 78, blue: 92)
         //tabBar.tintColor = UIColor.rgb(red: 236, green: 84, blue: 95)
         tabBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        tabBar.unselectedItemTintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        tabBar.unselectedItemTintColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -4)
+        
             
  
         
@@ -57,8 +59,12 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        //tabBar.frame.size.height = 60
-        //tabBar.frame.origin.y = view.frame.height - 60
+        
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
+        
+        tabBar.frame.size.height = (navBarHeight + 12)// (statusBarHeight + 44)
+        tabBar.frame.origin.y = view.frame.height - (navBarHeight + 12) // (statusBarHeight + 44)
 
 
         if UIScreen.main.nativeBounds.height == 2436 {
@@ -91,7 +97,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         // Mark: - Main feed controller
         //let feedVC = constructNavController(unselectedImage: UIImage(named: "feed-notification-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "feed-notification-selected-2x")!, title: "EXPLORE", rootViewController: FeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
-        let feedVC = constructNavController(unselectedImage: UIImage(named: "feed-notification-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "feed-notification-selected-2x")!, title: "EXPLORE", rootViewController: FeedVC())
+        let feedVC = constructNavController(unselectedImage: UIImage(named: "feed-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "feed-unselected-2x")!, title: "Explore", rootViewController: FeedVC())
         
         let userFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
@@ -100,7 +106,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
 
         // Mark: - Search feed controller
-        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "brown-bag-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "brown-bag-selected-2x")!, title: "PICKUP", rootViewController: MarketplaceVC())
+        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "knifeFork_unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "knifeFork_unselected-2x")!, title: "Pickup", rootViewController: MarketplaceVC())
         
         
         
@@ -111,15 +117,15 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let userProfileVC = constructNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), title: "ME", rootViewController: UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Search feed controller
-        let searchVC = constructNavController(unselectedImage: UIImage(named: "search_unselected")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "search_selected")!, title: "SEARCH", rootViewController: SearchVC())
+        let searchVC = constructNavController(unselectedImage: UIImage(named: "search_unselected")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "search_selected")!, title: "Search", rootViewController: SearchVC())
         
         // Mark: - home feed controller
-        let homeVC = constructNavController(unselectedImage: UIImage(named: "simple-map-marker-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "simple-map-marker-selected-2x")!, title: "WALK", rootViewController: HomeVC())
+        let homeVC = constructNavController(unselectedImage: UIImage(named: "mapPin_unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "mapPin_unselected-2x")!, title: "Walk", rootViewController: HomeVC())
         
         let categoryFeedVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "User Posts", rootViewController: CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Mark: - Upload image controller
-        let selectImageVC = constructNavController(unselectedImage: UIImage(named: "camera_unselected")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "camera_unselected")!, title: "CAPTURE")
+        let selectImageVC = constructNavController(unselectedImage: UIImage(named: "cam-unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "cam-unselected-2x")!, title: "Capture")
     
         
         // Mark: - Camera view controller
@@ -150,7 +156,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = unselectedImage
         navController.tabBarItem.selectedImage = selectedImage
-        //navController.tabBarItem.title = title
+        navController.tabBarItem.title = title
         
         
         return navController
