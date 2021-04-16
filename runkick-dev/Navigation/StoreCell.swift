@@ -145,7 +145,8 @@ class StoreCell: UITableViewCell {
     
     let locationTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 19)
+        //label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
         label.textColor = UIColor.rgb(red: 20, green: 20, blue: 20)
         return label
     } ()
@@ -162,7 +163,8 @@ class StoreCell: UITableViewCell {
     
     let locationAddressLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        //label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 14)
         label.textColor = UIColor.rgb(red: 45, green: 45, blue: 45)
         return label
     } ()
@@ -170,7 +172,7 @@ class StoreCell: UITableViewCell {
     let storeHoursLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 13)
         label.text = "Hours: 8am-9pm"
         return label
     }()
@@ -178,7 +180,7 @@ class StoreCell: UITableViewCell {
     let categoryLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 13)
         label.text = "All American"
         return label
     }()
@@ -216,7 +218,8 @@ class StoreCell: UITableViewCell {
     
     let locationDistanceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        //label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 14)
         label.textColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1)
         return label
     } ()
@@ -230,12 +233,12 @@ class StoreCell: UITableViewCell {
 
         addSubview(imageContainerView)
         //let dimension: CGFloat = 140
-        imageContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 120)
-        imageContainerView.layer.cornerRadius = 0
+        imageContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
+        imageContainerView.layer.cornerRadius = 3
         
         imageContainerView.addSubview(storeImageView)
         storeImageView.anchor(top: imageContainerView.topAnchor, left: imageContainerView.leftAnchor, bottom: imageContainerView.bottomAnchor, right: imageContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        storeImageView.layer.cornerRadius = 0
+        storeImageView.layer.cornerRadius = 3
         
         //addSubview(menuButton)
         //menuButton.anchor(top: imageContainerView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 60)
@@ -246,11 +249,11 @@ class StoreCell: UITableViewCell {
         menuLabel.centerYAnchor.constraint(equalTo: menuButton.centerYAnchor).isActive = true
         
         addSubview(locationTitleLabel)
-        locationTitleLabel.anchor(top: topAnchor, left: imageContainerView.rightAnchor, bottom: nil, right: nil
-            , paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationTitleLabel.anchor(top: imageContainerView.topAnchor, left: imageContainerView.rightAnchor, bottom: nil, right: nil
+            , paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationDistanceLabel)
-        locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0.5, paddingRight: 0, width: 0, height: 0)
+        locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0.75, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationAddressLabel)
         locationAddressLabel.anchor(top: locationTitleLabel.bottomAnchor, left: locationTitleLabel.leftAnchor, bottom: nil, right: nil

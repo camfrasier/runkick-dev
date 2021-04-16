@@ -247,7 +247,7 @@ class HomeVC: UIViewController, Alertable {
         return label
     }()
     
-    let analyticsLabel: UILabel = {
+    let activityLabel: UILabel = {
         let label = UILabel()
         //label.text = "Distance: None"
         label.text = "Activity"
@@ -267,6 +267,9 @@ class HomeVC: UIViewController, Alertable {
         button.alpha = 1
         return button
     }()
+    
+
+    
     /*
     lazy var screenshotMapView: UIView = {
         let view = UIView()
@@ -767,8 +770,9 @@ class HomeVC: UIViewController, Alertable {
         label.numberOfLines = 0
         label.textAlignment = .center
         // add gesture recognizer
-        label.text = "SAVE PATH"
-        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.text = "Save Path"
+        //label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
         label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
         buttonTap.numberOfTapsRequired = 1
@@ -779,7 +783,7 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var toggleSaveRemoveSegmentView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.walkzillaRed()
+        view.backgroundColor = UIColor.statusBarGreen()
         /*
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
@@ -1277,13 +1281,13 @@ class HomeVC: UIViewController, Alertable {
         //groupsButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2
         groupsButtonBackground.layer.cornerRadius = 23
         
-        groupsButtonBackground.addSubview(analyticsLabel)
-        analyticsLabel.anchor(top: nil, left: groupsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 36, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        analyticsLabel.centerYAnchor.constraint(equalTo: groupsButtonBackground.centerYAnchor).isActive = true
+        groupsButtonBackground.addSubview(activityLabel)
+        activityLabel.anchor(top: nil, left: groupsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 36, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityLabel.centerYAnchor.constraint(equalTo: groupsButtonBackground.centerYAnchor).isActive = true
         
         groupsButtonBackground.addSubview(boltButton)
-        boltButton.anchor(top: nil, left: analyticsLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 11, height: 15)
-        boltButton.centerYAnchor.constraint(equalTo: analyticsLabel.centerYAnchor).isActive = true
+        boltButton.anchor(top: nil, left: activityLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 11, height: 15)
+        boltButton.centerYAnchor.constraint(equalTo: activityLabel.centerYAnchor).isActive = true
         
         /*
         mapView.addSubview(saveSegmentButton)
@@ -2143,11 +2147,11 @@ class HomeVC: UIViewController, Alertable {
         dismissOnSearch()
         
         self.customMenuButton.isHidden = false
-        self.customMenuButtonArrow.isHidden = false
-        self.customProfileButton.isHidden = false
+        //self.customMenuButtonArrow.isHidden = false
+        //self.customProfileButton.isHidden = false
         
         self.customMenuButton.alpha = 1
-        self.customProfileButton.alpha = 1
+        //self.customProfileButton.alpha = 1
         
         /*
         UIView.animate(withDuration: 0.15) {
@@ -2628,6 +2632,8 @@ class HomeVC: UIViewController, Alertable {
             presentRightSlideMenu()
         }
     }
+    
+
     
      @objc func handleGroupsSlider() {
 
@@ -3761,7 +3767,7 @@ class HomeVC: UIViewController, Alertable {
                     //self.toggleSaveRemoveSegmentView.transform = .identity
         }
         
-        if saveRemovePathLabel.text == "SAVE PATH" {
+        if saveRemovePathLabel.text == "Save Path" {
             
             print("Save segment pressed")
                    let currentUserID = Auth.auth().currentUser?.uid
@@ -3782,9 +3788,10 @@ class HomeVC: UIViewController, Alertable {
             //dismissStoreDetailView()
             
             // now setting to remove segment
-           saveRemovePathLabel.text = "REMOVE PATH"
-            saveRemovePathLabel.textColor = .black
-            saveRemovePathLabel.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
+           saveRemovePathLabel.text = "Remove Path"
+            saveRemovePathLabel.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+            saveRemovePathLabel.backgroundColor = UIColor.clear
+            toggleSaveRemoveSegmentView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
            //toggleSaveRemoveSegmentView.backgroundColor = stopColor
             
             saveSegmentVisible = false
@@ -3801,9 +3808,10 @@ class HomeVC: UIViewController, Alertable {
 
            //toggleSaveRemoveSegmentView.backgroundColor = startColor
             
-           saveRemovePathLabel.text = "SAVE PATH"
+           saveRemovePathLabel.text = "Save Path"
             saveRemovePathLabel.textColor = .white
              saveRemovePathLabel.backgroundColor = .clear
+            toggleSaveRemoveSegmentView.backgroundColor = UIColor.statusBarGreen()
             saveSegmentVisible = true
         }
     }
@@ -3908,7 +3916,7 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.canShowCallout = true
             
             
-            annotationView.label = UILabel(frame: CGRect(x: 8.0, y: 3.5, width: 34.0, height: 18.0))
+            annotationView.label = UILabel(frame: CGRect(x: 9.0, y: 5.5, width: 34.0, height: 18.0))
             
             
             
@@ -3940,7 +3948,7 @@ extension HomeVC: MKMapViewDelegate {
             let pinImage = UIImage(named: "roundedMarkerShort")
             
 
-            let size = CGSize(width: 54.5, height: 31)
+            let size = CGSize(width: 58, height: 35.5)
             //UIGraphicsBeginImageContext(size)
             UIGraphicsBeginImageContextWithOptions(size, false, 10)
             pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
@@ -3978,7 +3986,7 @@ extension HomeVC: MKMapViewDelegate {
                 }
                 */
                 
-                imageView.frame = CGRect(x: 17.5, y: 19.5, width: 21.5, height: 5.5)
+                imageView.frame = CGRect(x: 18.5, y: 21.5, width: 21.5, height: 5.5)
                 hotImageView.frame = CGRect(x: -4, y: -4, width: 16, height: 16)
                 //imageView.image = UIImage(named: "like_selected-red")
                 
@@ -4094,7 +4102,7 @@ extension HomeVC: MKMapViewDelegate {
         lineRenderer.lineJoin = .bevel
         //lineRenderer.lineJoin = .miter
         //lineRenderer.fillColor = UIColor(red: 160/255, green: 170/255, blue: 250/255, alpha: 1)
-        lineRenderer.lineDashPattern = [NSNumber(value: 0.1), NSNumber(value: 10)]
+        lineRenderer.lineDashPattern = [NSNumber(value: 0.1), NSNumber(value: 8)]
         
         
         return lineRenderer
@@ -4401,7 +4409,7 @@ extension HomeVC: MKMapViewDelegate {
             // toggle back to saved segment
             //toggleSaveRemoveSegmentView.backgroundColor = startColor
             
-            saveRemovePathLabel.text = "SAVE PATH"
+            saveRemovePathLabel.text = "Save Path"
             saveRemovePathLabel.textColor = .white
              saveRemovePathLabel.backgroundColor = .clear
         }
@@ -4638,10 +4646,12 @@ extension HomeVC: MKMapViewDelegate {
             window.addSubview(storeDetailView)
            // storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 270), paddingRight: 0, width: 0, height: window.frame.height + 20)
             
-            storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 160), paddingRight: 0, width: 0, height: window.frame.height + 20)
+            storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 165), paddingRight: 0, width: 0, height: window.frame.height + 20)
             
             storeDetailView.addSubview(toggleSaveRemoveSegmentView)
-            toggleSaveRemoveSegmentView.anchor(top: storeDetailView.topAnchor, left: storeDetailView.leftAnchor, bottom: nil, right: storeDetailView.rightAnchor, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 60)
+            toggleSaveRemoveSegmentView.anchor(top: storeDetailView.topAnchor, left: storeDetailView.leftAnchor, bottom: nil, right: storeDetailView.rightAnchor, paddingTop: 125, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 50)
+            toggleSaveRemoveSegmentView.centerXAnchor.constraint(equalTo: self.storeDetailView.centerXAnchor).isActive = true
+            toggleSaveRemoveSegmentView.layer.cornerRadius = 3
             
             toggleSaveRemoveSegmentView.addSubview(saveRemovePathLabel)
             saveRemovePathLabel.anchor(top: toggleSaveRemoveSegmentView.topAnchor, left: toggleSaveRemoveSegmentView.leftAnchor, bottom: toggleSaveRemoveSegmentView.bottomAnchor, right: toggleSaveRemoveSegmentView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -6045,7 +6055,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             // toggle back to saved segment
             //toggleSaveRemoveSegmentView.backgroundColor = startColor
             
-            saveRemovePathLabel.text = "SAVE PATH"
+            saveRemovePathLabel.text = "Save Path"
             saveRemovePathLabel.textColor = .white
              saveRemovePathLabel.backgroundColor = .clear
         }
@@ -6315,14 +6325,14 @@ extension HomeVC: UITextFieldDelegate {
         
         searchTableView.isHidden = false
         
-        lineView.isHidden = false
+        //lineView.isHidden = false
         
         if sender == destinationTextField {
   
             
         customMenuButton.isHidden = true
         customMenuButtonArrow.isHidden = true
-        customProfileButton.isHidden = true
+        //customProfileButton.isHidden = true
                //searchBar.sizeToFit()
               
            
@@ -6337,7 +6347,7 @@ extension HomeVC: UITextFieldDelegate {
             */
             
             searchTableView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-            lineView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            //lineView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             
             
             UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
@@ -6346,13 +6356,13 @@ extension HomeVC: UITextFieldDelegate {
                 self.searchTableView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 self.searchTableView.alpha = 1
                 
-                self.lineView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                self.lineView.alpha = 1
+               // self.lineView.transform = CGAffineTransform(scaleX: 1, y: 1)
+              //  self.lineView.alpha = 1
                 
                 
             }) { (_) in
                 self.searchTableView.transform = .identity
-                self.lineView.transform = .identity
+               // self.lineView.transform = .identity
                 self.expansionState = .FullyExpanded
                 self.isSearchTableViewVisible = true
             }

@@ -190,7 +190,7 @@ class StoreDetailView: UIView {
         //indicatorView.layer.borderWidth = 1
         
         addSubview(backgroundCancelViewBtn)
-        backgroundCancelViewBtn.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 35, height: 35)
+        backgroundCancelViewBtn.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 35, height: 35)
         
         backgroundCancelViewBtn.addSubview(cancelViewButton)
         cancelViewButton.anchor(top: backgroundCancelViewBtn.topAnchor, left: nil, bottom: nil, right: backgroundCancelViewBtn.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 15, height: 15)
@@ -219,7 +219,7 @@ class StoreDetailView: UIView {
         */
         print("THIS INITIAL STORE VIEW IS BEING SUMMONED")
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.frame.origin.y =  self.frame.origin.y - 340   //450
+            self.frame.origin.y =  self.frame.origin.y - 380   //450
             
             /*
             self.addSubview(self.indicatorView)
@@ -281,7 +281,7 @@ class StoreDetailView: UIView {
                 
                 self.homeVC?.handleDismissStoreBV()
                 
-                animateInputView(targetPosition: self.frame.origin.y + 340) { (_) in
+                animateInputView(targetPosition: self.frame.origin.y + 380) { (_) in
                     self.expansionState = .NotExpanded
                     self.isHidden = true
                     print("fully expanded to not expanded")
@@ -325,7 +325,7 @@ class StoreDetailView: UIView {
         if expansionState == .FullyExpanded {
                 
             self.homeVC?.handleDismissStoreBV()
-            animateInputView(targetPosition: self.frame.origin.y + 340) { (_) in
+            animateInputView(targetPosition: self.frame.origin.y + 380) { (_) in
                 self.expansionState = .NotExpanded
                 print("fully expanded to partially expanded")
                 

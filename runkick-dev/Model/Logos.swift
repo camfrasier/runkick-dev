@@ -30,9 +30,7 @@ class Logos {
     
     
     var logoUrl1: String!
-    
     var logoUrl2: String!
-    
     var logoUrl3: String!
     var logoUrl4: String!
     var logoUrl5: String!
@@ -61,6 +59,39 @@ class Logos {
     var points12: Int!
     var points13: Int!
     var points14: Int!
+    
+    
+    var storeImageUrl1: String!
+    var storeImageUrl2: String!
+    var storeImageUrl3: String!
+    var storeImageUrl4: String!
+    var storeImageUrl5: String!
+    var storeImageUrl6: String!
+    var storeImageUrl7: String!
+    var storeImageUrl8: String!
+    var storeImageUrl9: String!
+    var storeImageUrl10: String!
+    var storeImageUrl11: String!
+    var storeImageUrl12: String!
+    var storeImageUrl13: String!
+    var storeImageUrl14: String!
+    
+    
+    var title1: String!
+    var title2: String!
+    var title3: String!
+    var title4: String!
+    var title5: String!
+    var title6: String!
+    var title7: String!
+    var title8: String!
+    var title9: String!
+    var title10: String!
+    var title11: String!
+    var title12: String!
+    var title13: String!
+    var title14: String!
+    
     
     var user: User?
     
@@ -204,8 +235,96 @@ class Logos {
         if let points14 = dictionary["points14"] as? Int {
                   self.points14 = points14
         }
+        
+        
+        if let storeImageUrl1 = dictionary["storeImageUrl1"] as? String {
+            self.storeImageUrl1 = storeImageUrl1
+        }
+        
+        if let storeImageUrl2 = dictionary["storeImageUrl2"] as? String {
+            self.storeImageUrl2 = storeImageUrl2
+        }
+        
+        if let storeImageUrl3 = dictionary["storeImageUrl3"] as? String {
+            self.storeImageUrl3 = storeImageUrl3
+        }
+        if let storeImageUrl4 = dictionary["storeImageUrl4"] as? String {
+              self.storeImageUrl4 = storeImageUrl4
+          }
+        if let storeImageUrl5 = dictionary["storeImageUrl5"] as? String {
+              self.storeImageUrl5 = storeImageUrl5
+          }
+        if let storeImageUrl6 = dictionary["storeImageUrl6"] as? String {
+              self.storeImageUrl6 = storeImageUrl6
+          }
+        if let storeImageUrl7 = dictionary["storeImageUrl7"] as? String {
+            self.storeImageUrl7 = storeImageUrl7
+        }
+        if let storeImageUrl8 = dictionary["storeImageUrl8"] as? String {
+              self.storeImageUrl8 = storeImageUrl8
+          }
+        if let storeImageUrl9 = dictionary["storeImageUrl9"] as? String {
+              self.storeImageUrl9 = storeImageUrl9
+          }
+        if let storeImageUrl10 = dictionary["storeImageUrl10"] as? String {
+              self.storeImageUrl10 = storeImageUrl10
+          }
+        if let storeImageUrl11 = dictionary["storeImageUrl11"] as? String {
+            self.storeImageUrl11 = storeImageUrl11
+        }
+        if let storeImageUrl12 = dictionary["storeImageUrl12"] as? String {
+              self.storeImageUrl12 = storeImageUrl12
+          }
+        if let storeImageUrl13 = dictionary["storeImageUrl13"] as? String {
+              self.storeImageUrl13 = storeImageUrl13
+          }
+        if let storeImageUrl14 = dictionary["storeImageUrl14"] as? String {
+              self.storeImageUrl14 = storeImageUrl14
+          }
 
 
+        if let title1 = dictionary["title1"] as? String {
+                  self.title1 = title1
+        }
+        if let title2 = dictionary["title2"] as? String {
+                  self.title2 = title2
+        }
+        if let title3 = dictionary["title3"] as? String {
+                  self.title3 = title3
+        }
+        if let title4 = dictionary["title4"] as? String {
+                  self.title4 = title4
+        }
+        if let title5 = dictionary["title5"] as? String {
+                  self.title5 = title5
+        }
+        if let title6 = dictionary["title6"] as? String {
+                  self.title6 = title6
+        }
+        if let title7 = dictionary["title7"] as? String {
+                  self.title7 = title7
+        }
+        if let title8 = dictionary["title8"] as? String {
+                  self.title8 = title8
+        }
+        if let title9 = dictionary["title9"] as? String {
+                  self.title9 = title9
+        }
+        if let title10 = dictionary["title10"] as? String {
+                  self.title10 = title10
+        }
+        if let title11 = dictionary["title11"] as? String {
+                  self.title11 = title11
+        }
+        if let title12 = dictionary["title12"] as? String {
+                  self.title12 = title12
+        }
+        if let title13 = dictionary["title13"] as? String {
+                  self.title13 = title13
+        }
+        if let title14 = dictionary["title14"] as? String {
+                  self.title14 = title14
+        }
 
     }
     
