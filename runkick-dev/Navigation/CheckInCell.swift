@@ -274,7 +274,7 @@ class CheckInCell: UICollectionViewCell {
 
     let checkInBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
         view.layer.shadowRadius = 5
@@ -284,7 +284,7 @@ class CheckInCell: UICollectionViewCell {
     
     let centerCard: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
+        view.backgroundColor = UIColor.rgb(red: 252, green: 252, blue: 252)
        // view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         //view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
         //view.layer.shadowRadius = 6
@@ -426,27 +426,48 @@ class CheckInCell: UICollectionViewCell {
     
     let line1: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        view.alpha = 0
+        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        return view
+    }()
+    let line1Fill: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.statusBarGreen()
         return view
     }()
     
     let line2: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        view.alpha = 0
+        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        return view
+    }()
+    
+    let line2Fill: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.statusBarGreen()
         return view
     }()
     
     let line3: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        return view
+    }()
+    
+    let line3Fill: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.statusBarGreen()
         return view
     }()
     
     let line4: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        return view
+    }()
+    
+    let line4Fill: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.statusBarGreen()
         return view
     }()
     
@@ -783,6 +804,7 @@ class CheckInCell: UICollectionViewCell {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
+        iv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         // add gesture recognizer for double tap to like
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleMenuTapped))
         likeTap.numberOfTapsRequired = 1
@@ -1551,7 +1573,7 @@ class CheckInCell: UICollectionViewCell {
         
         
 
-        userCommentBlock.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 15)
+        userCommentBlock.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 20)
         //userCommentBlock.backgroundColor = .red
 
         
@@ -1559,7 +1581,7 @@ class CheckInCell: UICollectionViewCell {
        // userLocationBlock.anchor(top: nil, left: leftAnchor, bottom: userCommentBlock.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 28)
 
         
-        imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 0, height: (frame.height / 3) + 60)
+        imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 0, height: (frame.height / 3) + 65)
         
         userLocationBlock.anchor(top: mapBackgroundView.bottomAnchor, left: mapBackgroundView.leftAnchor, bottom: nil, right: mapBackgroundView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 34)
         
@@ -2083,7 +2105,7 @@ class CheckInCell: UICollectionViewCell {
                     
                     self.centerCard.removeFromSuperview()
                     //self.checkInProfileBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-                        self.centerCard.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+                        self.centerCard.backgroundColor = UIColor.rgb(red: 252, green: 252, blue: 252)
                     
                     Database.fetchLogos(with: postId) { (post) in
                         
@@ -2151,12 +2173,12 @@ class CheckInCell: UICollectionViewCell {
                     
                      
                      
-                   
+                   //self.centerCard.removeFromSuperview()
+                   //self.checkInBackground.removeFromSuperview()
                      
                      
     /*
-                     
-                    self.checkInBackground.removeFromSuperview()
+
                     //self.checkInBackground.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
                     
 
@@ -2179,7 +2201,7 @@ class CheckInCell: UICollectionViewCell {
                      self.centerCard.translatesAutoresizingMaskIntoConstraints = false
 
         
-                    self.centerCard.anchor(top: self.topAnchor, left: self.mapBackgroundView.leftAnchor, bottom: self.mapBackgroundView.topAnchor, right: self.mapBackgroundView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 0, height: 0)
+                    self.centerCard.anchor(top: self.topAnchor, left: self.mapBackgroundView.leftAnchor, bottom: self.mapBackgroundView.topAnchor, right: self.mapBackgroundView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: 0, height: 0)
                     self.centerCard.layer.cornerRadius = 3
       
                     
@@ -2214,16 +2236,17 @@ class CheckInCell: UICollectionViewCell {
                     
                     
                     
-                    
-    /*
-                    self.checkInBackground.anchor(top: self.topAnchor, left: self.mapBackgroundView.leftAnchor, bottom: self.mapBackgroundView.topAnchor, right: self.mapBackgroundView.rightAnchor, paddingTop: 35, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+                    self.addSubview(self.checkInBackground)
+                    self.checkInBackground.translatesAutoresizingMaskIntoConstraints = false
+    
+                    self.checkInBackground.anchor(top: self.centerCard.topAnchor, left: self.centerCard.rightAnchor, bottom: self.centerCard.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: self.frame.width - 40, height: 0)
               
                     
                     
-                    self.favoritesButton.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: self.checkInBackground.bottomAnchor, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 50)
+                    //self.favoritesButton.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: self.checkInBackground.bottomAnchor, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 50)
                 
-                    self.self.favoritesButton.layer.cornerRadius = 3
-  */
+                    //self.self.favoritesButton.layer.cornerRadius = 3
+  
                     
                     
                     DataService.instance.REF_POSTS.child(postId).observe(.childAdded) {(snapshot: DataSnapshot) in
@@ -2277,108 +2300,93 @@ class CheckInCell: UICollectionViewCell {
                           
                 
                             self.centerCard.addSubview(self.storeImage1)
-                            self.storeImage1.anchor(top: self.centerCard.topAnchor, left: self.centerCard.leftAnchor, bottom: self.centerCard.bottomAnchor, right: self.centerCard.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                            self.storeImage1.anchor(top: self.centerCard.topAnchor, left: self.centerCard.leftAnchor, bottom: self.centerCard.bottomAnchor, right: self.centerCard.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 0, height: 0)
                             self.storeImage1.layer.cornerRadius = 3
 
-                            self.addSubview(self.title1)
-                            self.title1.anchor(top: self.centerCard.bottomAnchor, left: self.centerCard.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                            self.centerCard.addSubview(self.title1)
+                            self.title1.anchor(top: self.storeImage1.bottomAnchor, left: self.storeImage1.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                             
-                            self.addSubview(self.categoryLabel1)
+                            self.centerCard.addSubview(self.categoryLabel1)
                             self.categoryLabel1.anchor(top: self.title1.bottomAnchor, left: self.title1.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                             
                             
                         
-                            self.addSubview(self.walkzillaScore)
-                            self.walkzillaScore.anchor(top: self.centerCard.bottomAnchor, left: nil, bottom: nil, right:  self.centerCard.rightAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 0, paddingRight: 9, width: 20, height: 20)
+                            self.centerCard.addSubview(self.walkzillaScore)
+                            self.walkzillaScore.anchor(top: self.storeImage1.bottomAnchor, left: nil, bottom: nil, right:  self.centerCard.rightAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 20, height: 20)
                             
-                            self.addSubview(self.walkzillaScoreLabel)
-                            self.walkzillaScoreLabel.anchor(top: self.centerCard.bottomAnchor, left: nil, bottom: nil, right:  self.walkzillaScore.leftAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 5, paddingRight: 8, width: 0, height: 0)
+                            self.centerCard.addSubview(self.walkzillaScoreLabel)
+                            self.walkzillaScoreLabel.anchor(top: self.storeImage1.bottomAnchor, left: nil, bottom: nil, right:  self.walkzillaScore.leftAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 5, paddingRight: 8, width: 0, height: 0)
                             
                             
                             
 
-                            /*
+                            
                                
-                               let logoDim: CGFloat = 75
+                               let logoDim: CGFloat = 80
                                self.checkInBackground.addSubview(self.logoImage1)
                                self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage1.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 35, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                            self.logoImage1.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 35, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
                                    self.logoImage1.layer.cornerRadius = logoDim / 2
-                            //self.logoImage1.centerYAnchor.constraint(equalTo: self.checkInBackground.centerYAnchor).isActive = true
-                            //self.logoImage1.alpha = 0
-                            
-                            
-                            self.checkInBackground.addSubview(self.pointsLabel1)
-                            self.pointsLabel1.anchor(top: self.logoImage1.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                            self.pointsLabel1.centerXAnchor.constraint(equalTo: self.logoImage1.centerXAnchor).isActive = true
-                            //self.pointsLabel1.alpha = 0
-                            
-                            self.checkInBackground.addSubview(self.plus1)
-                            self.plus1.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel1.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
-                            self.plus1.centerYAnchor.constraint(equalTo: self.pointsLabel1.centerYAnchor).isActive = true
-                            //self.plus1.alpha = 0
-                            
-                            
 
-                            
 
                                self.checkInBackground.addSubview(self.logoImage2)
                                self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
                             self.logoImage2.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
                                    self.logoImage2.layer.cornerRadius = logoDim / 2
                             self.logoImage2.centerXAnchor.constraint(equalTo: self.checkInBackground.centerXAnchor).isActive = true
-                            //self.logoImage2.alpha = 0
-                            
-                            self.checkInBackground.addSubview(self.pointsLabel2)
-                            self.pointsLabel2.anchor(top: self.logoImage2.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                            self.pointsLabel2.centerXAnchor.constraint(equalTo: self.logoImage2.centerXAnchor).isActive = true
-                           // self.pointsLabel2.alpha = 0
-                            
-                            self.checkInBackground.addSubview(self.plus2)
-                            self.plus2.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel2.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
-                            self.plus2.centerYAnchor.constraint(equalTo: self.pointsLabel2.centerYAnchor).isActive = true
-                            //self.plus2.alpha = 0
-                            
-
-                            
+                      
                             
                       
                                self.checkInBackground.addSubview(self.logoImage3)
                                self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage3.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: logoDim, height: logoDim)
+                            self.logoImage3.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: logoDim, height: logoDim)
                                    self.logoImage3.layer.cornerRadius = logoDim / 2
-                           // self.logoImage3.alpha = 0
-                            
-                            self.checkInBackground.addSubview(self.pointsLabel3)
-                            self.pointsLabel3.anchor(top: self.logoImage3.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                            self.pointsLabel3.centerXAnchor.constraint(equalTo: self.logoImage3.centerXAnchor).isActive = true
-                           // self.pointsLabel3.alpha = 0
-                            
-                            self.checkInBackground.addSubview(self.plus3)
-                            self.plus3.anchor(top: nil, left: nil, bottom: nil, right: self.pointsLabel3.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 1, width: 0, height: 0)
-                            self.plus3.centerYAnchor.constraint(equalTo: self.pointsLabel3.centerYAnchor).isActive = true
-                            //self.plus3.alpha = 0
                             
                             
                             
                             self.checkInBackground.addSubview(self.line1)
                             self.line1.translatesAutoresizingMaskIntoConstraints = false
-                            let lineRadius: CGFloat = 2
-                            self.line1.anchor(top: nil, left: self.logoImage1.rightAnchor, bottom: nil, right: self.logoImage2.leftAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: -5, width: 0, height: 4)
-                            self.line1.centerYAnchor.constraint(equalTo: self.logoImage1.centerYAnchor).isActive = true
-                            self.line1.layer.cornerRadius = lineRadius
-                            //self.line1.alpha = 0
+                            self.line1.anchor(top: self.logoImage1.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
+                            self.line1.layer.cornerRadius = 3
+                            self.line1.centerXAnchor.constraint(equalTo: self.logoImage1.centerXAnchor).isActive = true
                             
-
+                            
+                            self.checkInBackground.addSubview(self.line1Fill)
+                            self.line1Fill.translatesAutoresizingMaskIntoConstraints = false
+                            self.line1Fill.anchor(top: self.logoImage1.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
+                            self.line1Fill.layer.cornerRadius = 3
+                            self.line1Fill.centerXAnchor.constraint(equalTo: self.logoImage1.centerXAnchor).isActive = true
+                            self.line1Fill.alpha = 0
+                            
                             self.checkInBackground.addSubview(self.line2)
                             self.line2.translatesAutoresizingMaskIntoConstraints = false
-                            self.line2.anchor(top: nil, left: self.logoImage2.rightAnchor, bottom: nil, right: self.logoImage3.leftAnchor, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: -5, width: 0, height: 4)
-                            self.line2.centerYAnchor.constraint(equalTo: self.logoImage1.centerYAnchor).isActive = true
-                            self.line2.layer.cornerRadius = lineRadius
-                           // self.line2.alpha = 0
+                            self.line2.anchor(top: self.logoImage2.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
+                            self.line2.layer.cornerRadius = 3
+                            self.line2.centerXAnchor.constraint(equalTo: self.logoImage2.centerXAnchor).isActive = true
+                            
+                            self.checkInBackground.addSubview(self.line2Fill)
+                            self.line2Fill.translatesAutoresizingMaskIntoConstraints = false
+                            self.line2Fill.anchor(top: self.logoImage2.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
+                            self.line2Fill.layer.cornerRadius = 3
+                            self.line2Fill.centerXAnchor.constraint(equalTo: self.logoImage2.centerXAnchor).isActive = true
+                            self.line2Fill.alpha = 0
+                            
+                            
+                            self.checkInBackground.addSubview(self.line3)
+                            self.line3.translatesAutoresizingMaskIntoConstraints = false
+                            self.line3.anchor(top: self.logoImage3.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
+                            self.line3.layer.cornerRadius = 3
+                            self.line3.centerXAnchor.constraint(equalTo: self.logoImage3.centerXAnchor).isActive = true
+                     
+                            
+                            self.checkInBackground.addSubview(self.line3Fill)
+                            self.line3Fill.translatesAutoresizingMaskIntoConstraints = false
+                            self.line3Fill.anchor(top: self.logoImage3.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
+                            self.line3Fill.layer.cornerRadius = 3
+                            self.line3Fill.centerXAnchor.constraint(equalTo: self.logoImage3.centerXAnchor).isActive = true
+                            self.line3Fill.alpha = 0
+                        
 
-                            
-                            
                             
                             var i = 1
                             var x = 1
@@ -2393,165 +2401,108 @@ class CheckInCell: UICollectionViewCell {
                                 
                                 self.timerStarted = true
                                 print("Timer started set to true")
-                            
-                            
-                                let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true){ t in
-                    let logo = "logo\(i)"
+         
                                 
+    UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+
+                    self.centerCard.transform = CGAffineTransform(translationX: -(self.frame.width), y: 0)
+                     self.checkInBackground.transform = CGAffineTransform(translationX: -(self.frame.width), y: 0)
+            
+                       }) { (_) in
+                        
+                        
+                            
+                let timer = Timer.scheduledTimer(withTimeInterval: 0.50, repeats: true){ t in
+                    let logo = "logo\(i)"
+                            
+                        if self.isWildCardSet == true {
+                            UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+
+                                            self.centerCard.transform = CGAffineTransform(translationX: -(self.frame.width), y: 0)
+                                             self.checkInBackground.transform = CGAffineTransform(translationX: -(self.frame.width), y: 0)
+                                    
+                            }) { (_) in
+                                self.isWildCardSet = false
+                            }
+                        }
+         
+        
                             if logo == "logo1" {
                                 
                                 if self.toggle1 == false {
                                 
                                     self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                    self.pointsLabel1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                    self.plus1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                    self.line1Fill.transform = CGAffineTransform(translationX: 1, y: 1)
                                     
-                                UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                    UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                     
                                     self.logoImage1.alpha = 1
                                     self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
                                         
-                                    self.pointsLabel1.alpha = 1
-                                    self.pointsLabel1.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                    self.line1Fill.alpha = 1
+                                        self.line1Fill.transform = CGAffineTransform(translationX: 0, y: 1)
                                         
-                                    self.plus1.alpha = 1
-                                    self.plus1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                    
-    
-                                        
-                                        // Nested line generation
-                                         self.line1.transform = CGAffineTransform(translationX: 1, y: 1)
-                                           
-                                        UIView.animate(withDuration: 0.45 , delay: 0.35, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                                              
-                                           self.line1.alpha = 1
-                                           self.line1.transform = CGAffineTransform(translationX: 0, y: 1)
-                                                                              
-                                           
-                                        }) { (_) in
-
-                                        }
-                                    
- 
                                 }) { (_) in
 
                                     self.logoImage1.transform = .identity
-                                    self.pointsLabel1.transform = .identity
-                                    self.plus1.transform = .identity
-                                    
-                                    
                                     self.toggle1 = true
-                                
-
-                                }
+                                    
+                        }
                                 
                                 } else {
                                     print("Toggle is set to true")
                                     
                                     self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                    self.pointsLabel1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                    self.plus1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                    
 
-                                                                   
                                     UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                                                        
                                         self.logoImage1.alpha = 1
                                         self.logoImage1.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                        
-                                        self.pointsLabel1.alpha = 1
-                                        self.pointsLabel1.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                        
-                                        self.plus1.alpha = 1
-                                        self.plus1.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
 
-                                        
                                         }) { (_) in
 
-                                                                    self.logoImage1.transform = .identity
-                                                                    self.pointsLabel1.transform = .identity
-                                                                    self.plus1.transform = .identity
+                                            self.logoImage1.transform = .identity
 
                                          }
-                                    
-                                    
                                 }
-                                
-                                
                             }
                                 if logo == "logo2" {
                                     
                                     if self.toggle2 == false {
                                     
                                     self.logoImage2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                 
-                                    self.pointsLabel2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                    self.plus2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                        self.line2Fill.transform = CGAffineTransform(translationX: 1, y: 1)
                                     
                                     UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                      
                                     self.logoImage2.alpha = 1
                                       self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                            
-                                        self.pointsLabel2.alpha = 1
-                                        self.pointsLabel2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                            
-                                        self.plus2.alpha = 1
-                                        self.plus2.transform = CGAffineTransform(scaleX: 1, y: 1)
                                         
-                                        
-                                        // Nested line generation
-                                         self.line2.transform = CGAffineTransform(translationX: 1, y: 1)
-                                           
-                                        UIView.animate(withDuration: 0.45 , delay: 0.35, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                                              
-                                           self.line2.alpha = 1
-                                            self.line2.transform = CGAffineTransform(translationX: 0, y: 1)
-                                                                              
-                                           
-                                        }) { (_) in
+                                        self.line2Fill.alpha = 1
+                                            self.line2Fill.transform = CGAffineTransform(translationX: 0, y: 1)
 
-                                        }
-                                                                       
+
+                                        
                                     }) { (_) in
 
                                    self.logoImage2.transform = .identity
                                         self.toggle2 = true
-                                    
-                                        self.pointsLabel2.transform = .identity
-                                        self.plus2.transform = .identity
-                                        
-
-                                        
                                    }
                                     
                                     } else {
                                         
                                         self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        self.pointsLabel2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        self.plus2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                                       
+              
                                         UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                                                            
                                             self.logoImage2.alpha = 1
                                             self.logoImage2.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                            
-                                            self.logoImage2.alpha = 1
-                                            self.pointsLabel2.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                            
-                                            self.plus2.alpha = 1
-                                            self.plus2.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                            
-                                                                           
-                                        
-                                                                       }) { (_) in
 
-                                                                           self.logoImage2.transform = .identity
-                                                                         self.pointsLabel2.transform = .identity
-                                                                         self.plus2.transform = .identity
-                                                                           //self.toggleSet = false
-                                                                       }
-                                        
+                                                }) { (_) in
+
+                                            self.logoImage2.transform = .identity
+
+                                            }
                                     }
                               }
                                 
@@ -2560,221 +2511,162 @@ class CheckInCell: UICollectionViewCell {
                         
                                     if self.toggle3 == false {
                                     self.logoImage3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                  
-                                        self.pointsLabel3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                        self.plus3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                    
+                                        self.line3Fill.transform = CGAffineTransform(translationX: 1, y: 1)
+
                                         UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                             
                                             self.logoImage3.alpha = 1
                                             self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                
-                                            self.pointsLabel3.alpha = 1
-                                            self.pointsLabel3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                
-                                            self.plus3.alpha = 1
-                                            self.plus3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                                         
+                                            
+                                            self.line3Fill.alpha = 1
+                                                self.line3Fill.transform = CGAffineTransform(translationX: 0, y: 1)
+                         
                                       }) { (_) in
 
                                      self.logoImage3.transform = .identity
-                                        self.pointsLabel3.transform = .identity
-                                        self.plus3.transform = .identity
-                                        self.toggle3 = true
+                                    self.toggle3 = true
                                      }
                                         
                                     } else {
                                         
                                         self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        self.pointsLabel3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        self.plus3.transform = CGAffineTransform(scaleX: 1, y: 1)
                                                                        
                                         UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                                                                            
                                             self.logoImage3.alpha = 1
                                             self.logoImage3.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                                
-                                                self.pointsLabel3.alpha = 1
-                                                self.pointsLabel3.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                                
-                                                self.plus3.alpha = 1
-                                                self.plus3.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                                                                           
-                                        
-                                                                       }) { (_) in
 
-                                                                           self.logoImage3.transform = .identity
-                                                                         self.pointsLabel3.transform = .identity
-                                                                         self.plus3.transform = .identity
-                                                                                            
-                                                                           //self.toggleSet = false
-                                                                       }
-                                        
-                                        
-                                        
-                                    }
-                                }
-                                                           
-                                i += 1
+                               }) { (_) in
+
+                                    self.logoImage3.transform = .identity
+
+                              }
+  
+                          }
+                      }
+                     
+   
                                     
-                                   
-                                
-                                if i > 3 {
-                                    if cycle < 4 {
-                                        i = 1
-                                        cycle += 1
+                                    
+                  i += 1
+
+                    
+                    
+                
+            /*
+                    
+                        if i > 3 {
+                           if cycle < 4 {
+                               i = 1
+                            cycle += 1
                                         
-                                        print("the value of i has been reset to 1 and cycle value is \(cycle)")
-                                    } else {
+                          print("the value of i has been reset to 1 and cycle value is \(cycle)")
+                      } else {
                                            
-                                            print("Timer stopped!")
-                                        //self.toggle1 = false
-                                        //self.toggle2 = false
-                                        //self.toggle3 = false
+                            print("Timer stopped!")
+
+                           t.invalidate()
                                         
-                                    
-                                        
-                                            t.invalidate()
-                                        
-                                         print("the FINAL value of i is equal to \(i)")
-                                        
-                                 
-                                       
-                                        // present center card
-                                        self.centerCard.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-                                      //  self.checkInBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        
-                                            self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                            self.pointsLabel1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                             self.plus1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        
-                                        self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        self.pointsLabel2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                         self.plus2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        
-                                        self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        self.pointsLabel3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                         self.plus3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                                     
-                                          UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                            
-                                        
-                                          //  self.checkInBackground.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-                                          //  self.checkInBackground.alpha = 0
-                                            
-                                            
-                                            
-                                            
-                                           //     self.pointsLabel1.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-                                              //  self.plus1.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-                                            // self.logoImage1.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-                                            
-                                            
-                                            self.logoImage1.alpha = 0
-                                            self.pointsLabel1.alpha = 0
-                                            self.plus1.alpha = 0
-                                            
-                                            self.logoImage2.alpha = 0
-                                            self.pointsLabel2.alpha = 0
-                                            self.plus2.alpha = 0
-                                            
-                                            self.logoImage3.alpha = 0
-                                            self.pointsLabel3.alpha = 0
-                                            self.plus3.alpha = 0
-                                            
-                                         self.centerCard.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                          self.centerCard.alpha = 1
+                           print("the FINAL value of i is equal to \(i)")
+
+             
+
+                                UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+
+                                    self.centerCard.transform = CGAffineTransform(translationX: 0, y: 0)
+                                    self.checkInBackground.transform = CGAffineTransform(translationX: 0, y: 0)
                             
                                        }) { (_) in
+                                        
+                                        self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                        self.logoImage2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                        self.logoImage3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                        
+                                        self.logoImage1.alpha = 0
+                                        self.logoImage2.alpha = 0
+                                        self.logoImage3.alpha = 0
+                                        
+                                        self.line1Fill.alpha = 0
+                                        self.line2Fill.alpha = 0
+                                        self.line3Fill.alpha = 0
                                                                      
-                                         }
-                                        
-                                        let timer2 = Timer.scheduledTimer(withTimeInterval: 3, repeats: true){ t2 in
-                                            
-                                            x += 1
-                                            if x > 2 {
-                                                
-                                                print("The value of x is greater than 2 \(x)")
-                                                
-                                             //   self.checkInBackground.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                               
-                                                
-                                                
-                                                self.logoImage1.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                self.pointsLabel1.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                self.plus1.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                
-                                                self.logoImage2.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                self.pointsLabel2.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                self.plus2.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                
-                                                self.logoImage3.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                self.pointsLabel3.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                self.plus3.transform = CGAffineTransform(scaleX: 0, y: 0)
-                                                
-                                                self.centerCard.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                
-                                               
-                                                // close center card
-                                            UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                
-                                             //  self.checkInBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                              // self.checkInBackground.alpha = 1
-                                                
-                                                
-                                                self.logoImage1.alpha = 1
-                                                 self.pointsLabel1.alpha = 1
-                                                    self.plus1.alpha = 1
-                                                
-                                                self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                    self.pointsLabel1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                    self.plus1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                
-                                                
-                                                self.logoImage2.alpha = 1
-                                                 self.pointsLabel2.alpha = 1
-                                                    self.plus2.alpha = 1
-                                                
-                                                self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                    self.pointsLabel2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                    self.plus2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                
-                                                
-                                                self.logoImage3.alpha = 1
-                                                 self.pointsLabel3.alpha = 1
-                                                    self.plus3.alpha = 1
-                                                
-                                                self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                    self.pointsLabel3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                    self.plus3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                
-                                            
-                                                
-                                                self.centerCard.transform = CGAffineTransform(scaleX: 0.05, y: 0.05)
-                                               self.centerCard.alpha = 0
-                                                
-                                              }) { (_) in
-                                                                                         
-                                            }
-                                                
-                                                 self.timerStarted = false
-                                                print("Timer 2 stopped!")
-                                                t2.invalidate()
-                                            }
                                         }
-                                        
                                     }
                                 }
+                    
+        */
+                                    if i > 3 {
+                                         if cycle < 4 {
+                                          i = 1  // starting new cycle after 3 revolutions through timer
+                                          cycle += 1
+                                         } else if x <= 3 {  // when the above condition isn't met and cycle is equal to 4
+                                          
+                                          // returning to original position
+                                          
+                                              UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+
+                                                  self.centerCard.transform = CGAffineTransform(translationX: 0, y: 0)
+                                                  self.checkInBackground.transform = CGAffineTransform(translationX: 0, y: 0)
+                                          
+                                                     }) { (_) in
+                                                      
+                                                      self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                                      self.logoImage2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                                      self.logoImage3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+                                                      
+                                                      self.logoImage1.alpha = 0
+                                                      self.logoImage2.alpha = 0
+                                                      self.logoImage3.alpha = 0
+                                                      
+                                                      self.line1Fill.alpha = 0
+                                                      self.line2Fill.alpha = 0
+                                                      self.line3Fill.alpha = 0
+                                                       
+                                                        self.isWildCardSet = true
+                                                        print("wildcard is set to \(self.isWildCardSet)")
+                                                  }
+                                          
+                                          self.toggle1 = false
+                                          self.toggle2 = false
+                                          self.toggle3 = false
+                                          
+                                          
+                                          cycle = 0 // return the view back to the original transform position and set cycle back to 1
+                                          x += 1  //  increase the value of x
+                                          
+                                          print("the cycle value is \(cycle) and the new value of x is \(x)")
+                                          
+                                         } else {
+                                             
+                                           print("Timer stopped!")
+                                          t.invalidate()
+                    
+                                          }
+                                      }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                                 
                             }
                                
                            }
                             
- */
+
                             }
 
                              
-                             
+                            
+                            
+                            
+                            }
                         })
                                
                     }
