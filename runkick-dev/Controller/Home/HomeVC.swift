@@ -1282,12 +1282,15 @@ class HomeVC: UIViewController, Alertable {
         groupsButtonBackground.layer.cornerRadius = 23
         
         groupsButtonBackground.addSubview(activityLabel)
-        activityLabel.anchor(top: nil, left: groupsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 36, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         activityLabel.centerYAnchor.constraint(equalTo: groupsButtonBackground.centerYAnchor).isActive = true
+        activityLabel.centerXAnchor.constraint(equalTo: groupsButtonBackground.centerXAnchor).isActive = true
         
+        /*
         groupsButtonBackground.addSubview(boltButton)
         boltButton.anchor(top: nil, left: activityLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 11, height: 15)
         boltButton.centerYAnchor.constraint(equalTo: activityLabel.centerYAnchor).isActive = true
+        */
         
         /*
         mapView.addSubview(saveSegmentButton)
@@ -3916,7 +3919,7 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.canShowCallout = true
             
             
-            annotationView.label = UILabel(frame: CGRect(x: 11, y: 5.5, width: 34.0, height: 18.0))
+            annotationView.label = UILabel(frame: CGRect(x: 6, y: 7.5, width: 34.0, height: 18.0))
             
             
             
@@ -3948,7 +3951,7 @@ extension HomeVC: MKMapViewDelegate {
             let pinImage = UIImage(named: "roundedRecMarker")
             
 
-            let size = CGSize(width: 62, height: 35)
+            let size = CGSize(width: 62, height: 32)
             //UIGraphicsBeginImageContext(size)
             UIGraphicsBeginImageContextWithOptions(size, false, 10)
             pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
@@ -3963,14 +3966,16 @@ extension HomeVC: MKMapViewDelegate {
             
             annotationView.image = resizedImage
             
-            
+            let button = UIButton(type: .system)
+            button.setImage(UIImage(named: "bolt2"), for: .normal)
 
             if let subtitle = annotation.subtitle,
                 let label = annotationView.label {
 
             //label.text = title
  
-            label.text = "+\(subtitle ?? "?")"
+            //label.text = "+\(subtitle ?? "?")"
+                label.text = "\(subtitle ?? "?")"  // using question mark for optional value
                 
                 let pointVal = Int(subtitle ?? "?")
                 //guard let pointVal = Int(subtitle) else { return }
@@ -3986,25 +3991,60 @@ extension HomeVC: MKMapViewDelegate {
                 }
                 */
                 
-                imageView.frame = CGRect(x: 20, y: 22, width: 24, height: 6)
-                hotImageView.frame = CGRect(x: -4, y: -4, width: 16, height: 16)
+                // types of annotations marker
+                // virtual check in
+                // favorites
+                // hot deal
+                
+                
+                imageView.frame = CGRect(x: 40, y: 9, width: 11, height: 14 ) // lightening bolt
+                hotImageView.frame = CGRect(x: 39, y: 10.5, width: 11, height: 10.5)   // favorites heart
                 //imageView.image = UIImage(named: "like_selected-red")
                 
                 switch pointVal! {
                 case 1 ... 249:
                     print("low range")
-                    imageView.image = UIImage(named: "twentyFivePercentBar")
+                    let pinImage = UIImage(named: "roundedRecMarker")
+                    let size = CGSize(width: 52, height: 32)
+                    UIGraphicsBeginImageContextWithOptions(size, false, 10)
+                    pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    UIGraphicsEndImageContext()
+                    
+                    annotationView.image = resizedImage
+                    
+                    // when zooming in and out some annotations will disappear accordingly
+                    //annotationView.displayPriority = .defaultHigh
+                    
+               
+                    
+                    //imageView.image = UIImage(named: "twentyFivePercentBar")
                 case 250 ... 499:
                     print("mid range")
-                    imageView.image = UIImage(named: "fiftyPercentBar")
+                    //imageView.image = UIImage(named: "solidHeartWalkzilla")
+                    hotImageView.image = UIImage(named: "solidHeartWalkzilla")   // this is used for favorites
                 case 500 ... 749:
                     print("high mid range, hot deal")
-                    imageView.image = UIImage(named: "seventyFivePercentBar")
+                    //imageView.image = UIImage(named: "seventyFivePercentBar")
+                    
+                    let pinImage = UIImage(named: "roundedRecMarkerShort")
+                    let size = CGSize(width: 52, height: 31)
+                    UIGraphicsBeginImageContextWithOptions(size, false, 10)
+                    pinImage!.draw(in: CGRect(x: -6, y: 0, width: size.width, height: size.height))
+                    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                    UIGraphicsEndImageContext()
+            
+                    annotationView.image = resizedImage
+                    
+                    
+                    
+         
                 case 750 ... 1000:
                     print("high range, hot deal")
-                    imageView.image = UIImage(named: "oneHundredPercentBar")
+                    imageView.image = UIImage(named: "boltWalkzillaRed")
                     //hotImageView.image = UIImage(named: "redCircle")
-                    hotImageView.image = UIImage(named: "greenDot")
+                    //hotImageView.image = UIImage(named: "greenDot")
+                    
                     
                 default:
                     print("Integer value not within range")

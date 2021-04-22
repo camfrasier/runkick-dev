@@ -134,10 +134,12 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
-    lazy var checkInButton1: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "oneHundredWalkzilla"), for: .normal)
+    lazy var walkzillaLogo: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "zillaLogo2"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
+        button.alpha = 0
         return button
     }()
     
@@ -145,9 +147,9 @@ class CheckInCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         //button.layer.borderWidth = 0.75
         //button.layer.borderColor = UIColor.rgb(red: 80, green: 80, blue: 80).cgColor
-        button.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        button.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
         button.titleLabel?.font =  UIFont(name: "ArialRoundedMTBold", size: 15)
-        button.setTitle("View Menus", for: .normal)
+        button.setTitle("View Check Ins", for: .normal)
         button.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
@@ -206,53 +208,75 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
-    let actionLabel: UILabel = { // Will replace later with an action label.
+    let actionLabel1: UILabel = { // Will replace later with an action label.
         let label = UILabel()
         //label.text = "FORTUNE"
-        label.text = "Fortune favors the"
+        label.text = "Fortune"
         //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 38)
         //label.font = UIFont(name: "HelveticaNeue-Bold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
         label.setLineHeight(lineHeight: 0)
         label.numberOfLines = 3
+        label.alpha = 0
         return label
     } ()
     
     let actionLabel2: UILabel = { // Will replace later with an action label.
         let label = UILabel()
         //abel.text = "FAVORS"
-        label.text = " brave."
+        label.text = " Favors"
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        label.textColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 32)
         //label.font = UIFont(name: "ArialHebrew", size: 32)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 38)
         //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
         label.setLineHeight(lineHeight: 0)
         label.numberOfLines = 1
+        label.alpha = 0
         return label
     } ()
     
     let actionLabel3: UILabel = { // Will replace later with an action label.
         let label = UILabel()
-        label.text = " The Brave. "
+        label.text = " The"
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 28)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 28)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 38)
         //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
         label.setLineSpacing(lineSpacing: 1)
         label.textAlignment = .left
         //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)
-        label.textColor = UIColor.rgb(red: 250, green: 250, blue: 250)
-        label.backgroundColor = UIColor.red
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //label.backgroundColor = UIColor.red
         label.setLineHeight(lineHeight: 0)
         label.numberOfLines = 1
+        label.alpha = 0
+        return label
+    } ()
+    
+    
+    let actionLabel4: UILabel = { // Will replace later with an action label.
+        let label = UILabel()
+        label.text = "Brave."
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        //label.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 28)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 38)
+        //label.font = UIFont(name: "PingFangTC-Semibold", size: 32)
+        label.setLineSpacing(lineSpacing: 1)
+        label.textAlignment = .left
+        //label.font = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)
+        label.textColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+        //label.backgroundColor = UIColor.red
+        label.setLineHeight(lineHeight: 0)
+        label.numberOfLines = 1
+        label.alpha = 0
         return label
     } ()
     
@@ -267,18 +291,19 @@ class CheckInCell: UICollectionViewCell {
     lazy var newLikeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "likeHeartWalkzilla"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 253, green: 253, blue: 253)
+        button.tintColor = UIColor.rgb(red: 225, green: 225, blue: 225)
         button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
     } ()
 
     let checkInBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
-        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
-        view.layer.shadowRadius = 5
-        view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        //view.backgroundColor = UIColor.rgb(red: 200, green: 200, blue: 200)
+        //view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        //view.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 0.15).cgColor
+        //view.layer.shadowRadius = 5
+        //view.layer.shadowOffset = CGSize(width: 0, height: 6)
+        view.alpha = 0
         return view
     }()
     
@@ -392,7 +417,7 @@ class CheckInCell: UICollectionViewCell {
     
     lazy var followFollowingLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue", size: 14)
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
         label.text = "follow"
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
@@ -968,10 +993,19 @@ class CheckInCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 15)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
         label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
         label.text = "2d"
+        return label
+    } ()
+    
+    let checkInLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        label.text = "3 Check Ins"
         return label
     } ()
     
@@ -1461,14 +1495,20 @@ class CheckInCell: UICollectionViewCell {
     func configureContraints() {
         
         
-       addSubview(mapBackgroundView)
-       mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        mapBackgroundView.layer.cornerRadius = 2
+        
+        addSubview(self.checkInBackground)
+        checkInBackground.translatesAutoresizingMaskIntoConstraints = false
+        checkInBackground.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        checkInBackground.layer.cornerRadius = 3
+        
+        addSubview(mapBackgroundView)
+        mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        mapBackgroundView.layer.cornerRadius = 3
       
         mapBackgroundView.addSubview(mapImageView)
         mapImageView.translatesAutoresizingMaskIntoConstraints = false
         mapImageView.clipsToBounds = true
-        mapImageView.layer.cornerRadius = 2
+        mapImageView.layer.cornerRadius = 3
         
     
 
@@ -1496,6 +1536,9 @@ class CheckInCell: UICollectionViewCell {
         addSubview(postTimeLabel)
         postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        addSubview(checkInLabel)
+        checkInLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         
         /*
         addSubview(foregroundView)
@@ -1509,7 +1552,7 @@ class CheckInCell: UICollectionViewCell {
         */
         
 
-        
+
         
         addSubview(userCommentBlock)
         userCommentBlock.translatesAutoresizingMaskIntoConstraints = false
@@ -1519,7 +1562,7 @@ class CheckInCell: UICollectionViewCell {
         
         addSubview(imageTranslucentBar)
         imageTranslucentBar.translatesAutoresizingMaskIntoConstraints = false
-        imageTranslucentBar.backgroundColor = UIColor.white
+        //imageTranslucentBar.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
         
         
         imageTranslucentBar.addSubview(userLocationBlock)
@@ -1562,18 +1605,17 @@ class CheckInCell: UICollectionViewCell {
           addSubview(followFollowingLabel)
          followFollowingLabel.translatesAutoresizingMaskIntoConstraints = false
        
+
         
-        imageTranslucentBar.addSubview(mapBackgroundView)
-        mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        
-       // addSubview(favoritesButton)
-       // favoritesButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(favoritesButton)
+        favoritesButton.translatesAutoresizingMaskIntoConstraints = false
     
-        
+        checkInBackground.addSubview(newLikeButton)
+        newLikeButton.translatesAutoresizingMaskIntoConstraints = false
         
         
 
-        userCommentBlock.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 20)
+        userCommentBlock.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 30)
         //userCommentBlock.backgroundColor = .red
 
         
@@ -1581,7 +1623,7 @@ class CheckInCell: UICollectionViewCell {
        // userLocationBlock.anchor(top: nil, left: leftAnchor, bottom: userCommentBlock.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 28)
 
         
-        imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 0, height: (frame.height / 3) + 65)
+        imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: profileImageBackground.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 150)
         
         userLocationBlock.anchor(top: mapBackgroundView.bottomAnchor, left: mapBackgroundView.leftAnchor, bottom: nil, right: mapBackgroundView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 34)
         
@@ -1603,6 +1645,10 @@ class CheckInCell: UICollectionViewCell {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
         
         
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(30)]-38-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-38-[pressHeart(27)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        
         /*
         circleDotView1.anchor(top: locationLabel.topAnchor, left: locationLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
         
@@ -1616,16 +1662,26 @@ class CheckInCell: UICollectionViewCell {
 
         
         */
-        mapBackgroundView.anchor(top: imageTranslucentBar.topAnchor, left: imageTranslucentBar.leftAnchor, bottom: imageTranslucentBar.bottomAnchor, right: imageTranslucentBar.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 85, paddingRight: 20, width: 0, height: 0)
+        
+
+        
+        checkInBackground.anchor(top: topAnchor, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 28, paddingLeft: 20, paddingBottom: 5, paddingRight: 20, width: 0, height: 0)
+        
+        checkInBackground.addSubview(walkzillaLogo)
+        walkzillaLogo.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 60)
+        walkzillaLogo.centerXAnchor.constraint(equalTo: checkInBackground.centerXAnchor).isActive = true
+        walkzillaLogo.centerYAnchor.constraint(equalTo: checkInBackground.centerYAnchor).isActive = true
+        
+        mapBackgroundView.anchor(top: topAnchor, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 28, paddingLeft: 20, paddingBottom: 5, paddingRight: 20, width: 0, height: 0)
      
         
         mapImageView.anchor(top: mapBackgroundView.topAnchor, left: mapBackgroundView.leftAnchor, bottom: mapBackgroundView.bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        /*
-        favoritesButton.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 50)
-        favoritesButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        favoritesButton.layer.cornerRadius = 3
-    */
+        
+        favoritesButton.anchor(top: userLocationBlock.bottomAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor, paddingTop: 65, paddingLeft: 0, paddingBottom: 0, paddingRight: 40, width: 180, height: 50)
+        //favoritesButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        favoritesButton.layer.cornerRadius = 23
+    
         
         
         
@@ -1696,7 +1752,7 @@ class CheckInCell: UICollectionViewCell {
         
        // durationMarker.anchor(top: nil, left: imageTranslucentBar.leftAnchor, bottom: imageTranslucentBar.topAnchor, right: nil, paddingTop: 0, paddingLeft: 140, paddingBottom: 30, paddingRight: 0, width: 17, height: 17)
         
-        timeTitleLabel.anchor(top: nil, left: imageTranslucentBar.leftAnchor, bottom: imageTranslucentBar.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 35, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+        timeTitleLabel.anchor(top: userLocationBlock.bottomAnchor, left: imageTranslucentBar.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 35, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         durationLabel.anchor(top: nil, left: nil, bottom: timeTitleLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         durationLabel.centerXAnchor.constraint(equalTo: timeTitleLabel.centerXAnchor).isActive = true
@@ -1807,9 +1863,7 @@ class CheckInCell: UICollectionViewCell {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[lineView]-0-|", options: [], metrics: nil, views: ["lineView": lineView]))
         
         
-        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(30)]-38-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
-        
-        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-38-[pressHeart(27)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[lineView(0.20)]-0-[mapBackground]", options: [], metrics: nil, views: ["lineView": lineView, "mapBackground": mapBackgroundView]))
         
@@ -1927,12 +1981,17 @@ class CheckInCell: UICollectionViewCell {
         
         postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        checkInLabel.anchor(top: postTimeLabel.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 0, height: 0)
         
         
-        circleDotView.anchor(top: nil, left: postTimeLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
-        circleDotView.centerYAnchor.constraint(equalTo: self.postTimeLabel.centerYAnchor).isActive = true
         
-        followFollowingLabel.anchor(top: postTimeLabel.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        circleDotView.anchor(top: nil, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
+        circleDotView.centerYAnchor.constraint(equalTo: self.profileImageBackground.centerYAnchor).isActive = true
+        
+        followFollowingLabel.anchor(top: nil, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        followFollowingLabel.centerYAnchor.constraint(equalTo: self.profileImageBackground.centerYAnchor).isActive = true
         
          //circleDotView.anchor(top: postTimeLabel.topAnchor, left: postTimeLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
 
@@ -2047,13 +2106,13 @@ class CheckInCell: UICollectionViewCell {
              if followed {
                  self.followFollowingLabel.text = "following"
                 //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 15)
-                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 14)
+                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 15)
                 
                 self.circleDotView.backgroundColor =  UIColor.rgb(red: 0, green: 0, blue: 0)
              } else {
                  self.followFollowingLabel.text = "follow"
                 //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
-                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15)
                 self.circleDotView.backgroundColor =  UIColor.rgb(red: 0, green: 0, blue: 0)
              }
          })
@@ -2170,514 +2229,169 @@ class CheckInCell: UICollectionViewCell {
                     
                     case 3: numberOfLogos = 3
                     
-                    
-                     
-                     
-                   //self.centerCard.removeFromSuperview()
-                   //self.checkInBackground.removeFromSuperview()
-                     
-                     
-    /*
 
-                    //self.checkInBackground.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
-                    
-
-                    
-                    
-                    self.addSubview(self.checkInBackground)
-                    self.checkInBackground.translatesAutoresizingMaskIntoConstraints = false
-                    
-                    self.checkInBackground.addSubview(self.favoritesButton)
-                    self.favoritesButton.translatesAutoresizingMaskIntoConstraints = false
-                    
-     */
-                    //self.checkInBackground.addSubview(self.checkInTitleLabel)
-                    //self.checkInTitleLabel.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                    
-                    
-                    
-
-                     self.addSubview(self.centerCard)
-                     self.centerCard.translatesAutoresizingMaskIntoConstraints = false
-
-        
-                    self.centerCard.anchor(top: self.topAnchor, left: self.mapBackgroundView.leftAnchor, bottom: self.mapBackgroundView.topAnchor, right: self.mapBackgroundView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: 0, height: 0)
-                    self.centerCard.layer.cornerRadius = 3
-      
-                    
-    
-                    //self.centerCard.addSubview(self.actionLabel)
-                    //self.actionLabel.anchor(top: nil, left: nil, bottom: nil, right: nil   , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                    //self.actionLabel.centerXAnchor.constraint(equalTo: self.centerCard.centerXAnchor).isActive = true
-                    //self.actionLabel.centerYAnchor.constraint(equalTo: self.centerCard.centerYAnchor).isActive = true
-                    
-                    
-                    
-                    /*
-                    let stackView1 =  UIStackView(arrangedSubviews: [self.actionLabel, self.actionLabel2])
-
-                    stackView1.axis = .horizontal
-                    stackView1.distribution = .fillEqually
-                    stackView1.alignment = .center
-                    stackView1.spacing = 1
-                    stackView1.translatesAutoresizingMaskIntoConstraints = false
+                    // var i = 1
                         
-                    
-                    self.centerCard.addSubview(stackView1)
-                    stackView1.anchor(top: nil, left: self.centerCard.leftAnchor, bottom: nil, right: nil   , paddingTop: 0, paddingLeft: 55, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                    //stackView1.centerXAnchor.constraint(equalTo: self.centerCard.centerXAnchor).isActive = true
-                    stackView1.centerYAnchor.constraint(equalTo: self.centerCard.centerYAnchor).isActive = true
-                    */
-                    //self.centerCard.addSubview(self.actionLabel3)
-                    //self.actionLabel3.anchor(top: self.actionLabel2.bottomAnchor, left: self.actionLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                    
-    
-                    
-                    
-                    
-                    
-                    self.addSubview(self.checkInBackground)
-                    self.checkInBackground.translatesAutoresizingMaskIntoConstraints = false
-    
-                    self.checkInBackground.anchor(top: self.centerCard.topAnchor, left: self.centerCard.rightAnchor, bottom: self.centerCard.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: self.frame.width - 40, height: 0)
-              
-                    
-                    
-                    //self.favoritesButton.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: self.checkInBackground.bottomAnchor, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 50)
-                
-                    //self.self.favoritesButton.layer.cornerRadius = 3
-  
-                    
-                    
                     DataService.instance.REF_POSTS.child(postId).observe(.childAdded) {(snapshot: DataSnapshot) in
-                         
-                    guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                        
-                        allObjects.forEach({ (snapshot) in
-                            let logo = snapshot.key
-
-                           
-                            
-                           
-                               
-                           Database.fetchAnimatedLogo(with: postId, logoNum: logo) { (post) in   // i = 4 this guard statement stops
-                               
-                            if logo == "logo1" {
-                            guard let logoImageUrl1 = post.logoUrl1 else { return }
-                            self.logoImage1.loadImage(with: logoImageUrl1)
-                                
-                            guard let storeImageUrl1 = post.storeImageUrl1 else { return }
-                            self.storeImage1.loadImage(with: storeImageUrl1)
-                                
-                                self.title1.text = post.title1
-                            
-                                //self.pointsLabel1.text = "+\(String(post.points1))"
-                             self.pointsLabel1.text = String(post.points1)
-                            print("the logo 1 point val is \(self.pointsLabel1)")
-                            }
-                            
-                            if logo == "logo2" {
-                            guard let logoImageUrl2 = post.logoUrl2 else { return }
-                            self.logoImage2.loadImage(with: logoImageUrl2)
-                                self.pointsLabel2.text = String(post.points2)
-                                
-                                self.title2.text = post.title2
-                                
-                            guard let storeImageUrl2 = post.storeImageUrl2 else { return }
-                            self.storeImage2.loadImage(with: storeImageUrl2)
-                            }
-                            
-                            if logo == "logo3" {
-                            guard let logoImageUrl3 = post.logoUrl3 else { return }
-                            self.logoImage3.loadImage(with: logoImageUrl3)
-                                self.pointsLabel3.text = String(post.points3)
-                
-                                
-                                self.title3.text = post.title3
-                            guard let storeImageUrl3 = post.storeImageUrl3 else { return }
-                            self.storeImage3.loadImage(with: storeImageUrl3)
-                            }
-                          
-                
-                            self.centerCard.addSubview(self.storeImage1)
-                            self.storeImage1.anchor(top: self.centerCard.topAnchor, left: self.centerCard.leftAnchor, bottom: self.centerCard.bottomAnchor, right: self.centerCard.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 60, paddingRight: 0, width: 0, height: 0)
-                            self.storeImage1.layer.cornerRadius = 3
-
-                            self.centerCard.addSubview(self.title1)
-                            self.title1.anchor(top: self.storeImage1.bottomAnchor, left: self.storeImage1.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                            
-                            self.centerCard.addSubview(self.categoryLabel1)
-                            self.categoryLabel1.anchor(top: self.title1.bottomAnchor, left: self.title1.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-                            
-                            
-                        
-                            self.centerCard.addSubview(self.walkzillaScore)
-                            self.walkzillaScore.anchor(top: self.storeImage1.bottomAnchor, left: nil, bottom: nil, right:  self.centerCard.rightAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 20, height: 20)
-                            
-                            self.centerCard.addSubview(self.walkzillaScoreLabel)
-                            self.walkzillaScoreLabel.anchor(top: self.storeImage1.bottomAnchor, left: nil, bottom: nil, right:  self.walkzillaScore.leftAnchor, paddingTop: 9, paddingLeft: 0, paddingBottom: 5, paddingRight: 8, width: 0, height: 0)
-                            
-                            
-                            
-
-                            
-                               
-                               let logoDim: CGFloat = 80
-                               self.checkInBackground.addSubview(self.logoImage1)
-                               self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage1.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 35, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
-                                   self.logoImage1.layer.cornerRadius = logoDim / 2
-
-
-                               self.checkInBackground.addSubview(self.logoImage2)
-                               self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage2.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
-                                   self.logoImage2.layer.cornerRadius = logoDim / 2
-                            self.logoImage2.centerXAnchor.constraint(equalTo: self.checkInBackground.centerXAnchor).isActive = true
-                      
-                            
-                      
-                               self.checkInBackground.addSubview(self.logoImage3)
-                               self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
-                            self.logoImage3.anchor(top: self.logoImage1.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: logoDim, height: logoDim)
-                                   self.logoImage3.layer.cornerRadius = logoDim / 2
-                            
-                            
-                            
-                            self.checkInBackground.addSubview(self.line1)
-                            self.line1.translatesAutoresizingMaskIntoConstraints = false
-                            self.line1.anchor(top: self.logoImage1.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
-                            self.line1.layer.cornerRadius = 3
-                            self.line1.centerXAnchor.constraint(equalTo: self.logoImage1.centerXAnchor).isActive = true
-                            
-                            
-                            self.checkInBackground.addSubview(self.line1Fill)
-                            self.line1Fill.translatesAutoresizingMaskIntoConstraints = false
-                            self.line1Fill.anchor(top: self.logoImage1.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
-                            self.line1Fill.layer.cornerRadius = 3
-                            self.line1Fill.centerXAnchor.constraint(equalTo: self.logoImage1.centerXAnchor).isActive = true
-                            self.line1Fill.alpha = 0
-                            
-                            self.checkInBackground.addSubview(self.line2)
-                            self.line2.translatesAutoresizingMaskIntoConstraints = false
-                            self.line2.anchor(top: self.logoImage2.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
-                            self.line2.layer.cornerRadius = 3
-                            self.line2.centerXAnchor.constraint(equalTo: self.logoImage2.centerXAnchor).isActive = true
-                            
-                            self.checkInBackground.addSubview(self.line2Fill)
-                            self.line2Fill.translatesAutoresizingMaskIntoConstraints = false
-                            self.line2Fill.anchor(top: self.logoImage2.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
-                            self.line2Fill.layer.cornerRadius = 3
-                            self.line2Fill.centerXAnchor.constraint(equalTo: self.logoImage2.centerXAnchor).isActive = true
-                            self.line2Fill.alpha = 0
-                            
-                            
-                            self.checkInBackground.addSubview(self.line3)
-                            self.line3.translatesAutoresizingMaskIntoConstraints = false
-                            self.line3.anchor(top: self.logoImage3.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
-                            self.line3.layer.cornerRadius = 3
-                            self.line3.centerXAnchor.constraint(equalTo: self.logoImage3.centerXAnchor).isActive = true
-                     
-                            
-                            self.checkInBackground.addSubview(self.line3Fill)
-                            self.line3Fill.translatesAutoresizingMaskIntoConstraints = false
-                            self.line3Fill.anchor(top: self.logoImage3.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 8)
-                            self.line3Fill.layer.cornerRadius = 3
-                            self.line3Fill.centerXAnchor.constraint(equalTo: self.logoImage3.centerXAnchor).isActive = true
-                            self.line3Fill.alpha = 0
-                        
-
-                            
-                            var i = 1
-                            var x = 1
-                            var cycle = 1
-                            
-                            if self.timerStarted {
-                                print("Do nothing")
-                                
-                                
-                            } else {
-                                                    
-                                
-                                self.timerStarted = true
-                                print("Timer started set to true")
-         
-                                
-    UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-
-                    self.centerCard.transform = CGAffineTransform(translationX: -(self.frame.width), y: 0)
-                     self.checkInBackground.transform = CGAffineTransform(translationX: -(self.frame.width), y: 0)
-            
-                       }) { (_) in
-                        
-                        
-                            
-                let timer = Timer.scheduledTimer(withTimeInterval: 0.50, repeats: true){ t in
-                    let logo = "logo\(i)"
-                            
-                        if self.isWildCardSet == true {
-                            UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-
-                                            self.centerCard.transform = CGAffineTransform(translationX: -(self.frame.width), y: 0)
-                                             self.checkInBackground.transform = CGAffineTransform(translationX: -(self.frame.width), y: 0)
-                                    
-                            }) { (_) in
-                                self.isWildCardSet = false
-                            }
-                        }
-         
-        
-                            if logo == "logo1" {
-                                
-                                if self.toggle1 == false {
-                                
-                                    self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                    self.line1Fill.transform = CGAffineTransform(translationX: 1, y: 1)
-                                    
-                                    UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                    
-                                    self.logoImage1.alpha = 1
-                                    self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        
-                                    self.line1Fill.alpha = 1
-                                        self.line1Fill.transform = CGAffineTransform(translationX: 0, y: 1)
-                                        
-                                }) { (_) in
-
-                                    self.logoImage1.transform = .identity
-                                    self.toggle1 = true
-                                    
-                        }
-                                
-                                } else {
-                                    print("Toggle is set to true")
-                                    
-                                    self.logoImage1.transform = CGAffineTransform(scaleX: 1, y: 1)
-
-                                    UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                                       
-                                        self.logoImage1.alpha = 1
-                                        self.logoImage1.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-
-                                        }) { (_) in
-
-                                            self.logoImage1.transform = .identity
-
-                                         }
-                                }
-                            }
-                                if logo == "logo2" {
-                                    
-                                    if self.toggle2 == false {
-                                    
-                                    self.logoImage2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                        self.line2Fill.transform = CGAffineTransform(translationX: 1, y: 1)
-                                    
-                                    UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                     
-                                    self.logoImage2.alpha = 1
-                                      self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                        
-                                        self.line2Fill.alpha = 1
-                                            self.line2Fill.transform = CGAffineTransform(translationX: 0, y: 1)
-
-
-                                        
-                                    }) { (_) in
-
-                                   self.logoImage2.transform = .identity
-                                        self.toggle2 = true
-                                   }
-                                    
-                                    } else {
-                                        
-                                        self.logoImage2.transform = CGAffineTransform(scaleX: 1, y: 1)
-              
-                                        UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                                           
-                                            self.logoImage2.alpha = 1
-                                            self.logoImage2.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-
-                                                }) { (_) in
-
-                                            self.logoImage2.transform = .identity
-
-                                            }
-                                    }
-                              }
-                                
-                        
-                                  if logo == "logo3" {
-                        
-                                    if self.toggle3 == false {
-                                    self.logoImage3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                        self.line3Fill.transform = CGAffineTransform(translationX: 1, y: 1)
-
-                                        UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                            
-                                            self.logoImage3.alpha = 1
-                                            self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                            
-                                            self.line3Fill.alpha = 1
-                                                self.line3Fill.transform = CGAffineTransform(translationX: 0, y: 1)
-                         
-                                      }) { (_) in
-
-                                     self.logoImage3.transform = .identity
-                                    self.toggle3 = true
-                                     }
-                                        
-                                    } else {
-                                        
-                                        self.logoImage3.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                                                       
-                                        UIView.animate(withDuration: 1 , delay: 0, usingSpringWithDamping: 0.25, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                                                                           
-                                            self.logoImage3.alpha = 1
-                                            self.logoImage3.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-
-                               }) { (_) in
-
-                                    self.logoImage3.transform = .identity
-
-                              }
-  
-                          }
-                      }
-                     
-   
-                                    
-                                    
-                  i += 1
-
-                    
-                    
-                
-            /*
-                    
-                        if i > 3 {
-                           if cycle < 4 {
-                               i = 1
-                            cycle += 1
-                                        
-                          print("the value of i has been reset to 1 and cycle value is \(cycle)")
-                      } else {
-                                           
-                            print("Timer stopped!")
-
-                           t.invalidate()
-                                        
-                           print("the FINAL value of i is equal to \(i)")
-
-             
-
-                                UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-
-                                    self.centerCard.transform = CGAffineTransform(translationX: 0, y: 0)
-                                    self.checkInBackground.transform = CGAffineTransform(translationX: 0, y: 0)
-                            
-                                       }) { (_) in
-                                        
-                                        self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                        self.logoImage2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                        self.logoImage3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                        
-                                        self.logoImage1.alpha = 0
-                                        self.logoImage2.alpha = 0
-                                        self.logoImage3.alpha = 0
-                                        
-                                        self.line1Fill.alpha = 0
-                                        self.line2Fill.alpha = 0
-                                        self.line3Fill.alpha = 0
-                                                                     
-                                        }
-                                    }
-                                }
-                    
-        */
-                                    if i > 3 {
-                                         if cycle < 4 {
-                                          i = 1  // starting new cycle after 3 revolutions through timer
-                                          cycle += 1
-                                         } else if x <= 3 {  // when the above condition isn't met and cycle is equal to 4
-                                          
-                                          // returning to original position
-                                          
-                                              UIView.animate(withDuration: 1 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-
-                                                  self.centerCard.transform = CGAffineTransform(translationX: 0, y: 0)
-                                                  self.checkInBackground.transform = CGAffineTransform(translationX: 0, y: 0)
-                                          
-                                                     }) { (_) in
-                                                      
-                                                      self.logoImage1.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                                      self.logoImage2.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                                      self.logoImage3.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-                                                      
-                                                      self.logoImage1.alpha = 0
-                                                      self.logoImage2.alpha = 0
-                                                      self.logoImage3.alpha = 0
-                                                      
-                                                      self.line1Fill.alpha = 0
-                                                      self.line2Fill.alpha = 0
-                                                      self.line3Fill.alpha = 0
-                                                       
-                                                        self.isWildCardSet = true
-                                                        print("wildcard is set to \(self.isWildCardSet)")
-                                                  }
-                                          
-                                          self.toggle1 = false
-                                          self.toggle2 = false
-                                          self.toggle3 = false
-                                          
-                                          
-                                          cycle = 0 // return the view back to the original transform position and set cycle back to 1
-                                          x += 1  //  increase the value of x
-                                          
-                                          print("the cycle value is \(cycle) and the new value of x is \(x)")
-                                          
-                                         } else {
-                                             
-                                           print("Timer stopped!")
-                                          t.invalidate()
-                    
-                                          }
-                                      }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                                
-                            }
-                               
-                           }
-                            
-
-                            }
-
                              
+                        guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
                             
+                            allObjects.forEach({ (snapshot) in
+                                let logo = snapshot.key
+
+                                 Database.fetchAnimatedLogo(with: postId, logoNum: logo) { (post) in   // i = 4 this guard statement stops
+                                       
+                                    if logo == "logo1" {
+                                    guard let logoImageUrl1 = post.logoUrl1 else { return }
+                                    self.logoImage1.loadImage(with: logoImageUrl1)
+                                    }
+                                    
+                                    if logo == "logo2" {
+                                    guard let logoImageUrl2 = post.logoUrl2 else { return }
+                                    self.logoImage2.loadImage(with: logoImageUrl2)
+                                    }
+                                    
+                                    if logo == "logo3" {
+                                    guard let logoImageUrl3 = post.logoUrl3 else { return }
+                                    self.logoImage3.loadImage(with: logoImageUrl3)
+                                    }
+                                    
+                                    
+                                    self.checkInBackground.addSubview(self.actionLabel1)  // fortune
+                                    self.actionLabel1.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                                    
+                                    self.checkInBackground.addSubview(self.actionLabel2)  // favors
+                                    self.actionLabel2.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: self.checkInBackground.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 140, paddingBottom: 10, paddingRight: 0, width: 0, height: 0)
+                                    
+                                    self.checkInBackground.addSubview(self.actionLabel3)  // the
+                                    self.actionLabel3.anchor(top: self.checkInBackground.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 100, paddingLeft: 0, paddingBottom: 0, paddingRight: 80, width: 0, height: 0)
+                                    
+                                    self.checkInBackground.addSubview(self.actionLabel4)  // the brave
+                                    self.actionLabel4.anchor(top: self.checkInBackground.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 180, paddingLeft: 0, paddingBottom: 0, paddingRight: 150, width: 0, height: 0)
+                                    
+                                    
+                                    
+                                let logoDim: CGFloat = 80
+                                self.checkInBackground.addSubview(self.logoImage1)
+                                self.logoImage1.translatesAutoresizingMaskIntoConstraints = false
+                                self.logoImage1.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                                self.logoImage1.layer.cornerRadius = logoDim / 2
+                                self.logoImage1.centerYAnchor.constraint(equalTo: self.checkInBackground.centerYAnchor).isActive = true
+
+
+                                self.checkInBackground.addSubview(self.logoImage2)
+                                self.logoImage2.translatesAutoresizingMaskIntoConstraints = false
+                                self.logoImage2.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: logoDim, height: logoDim)
+                                self.logoImage2.layer.cornerRadius = logoDim / 2
+                                self.logoImage2.centerXAnchor.constraint(equalTo: self.checkInBackground.centerXAnchor).isActive = true
+                                    self.logoImage2.centerYAnchor.constraint(equalTo: self.checkInBackground.centerYAnchor).isActive = true
+                                
+                                    
+                                self.checkInBackground.addSubview(self.logoImage3)
+                                self.logoImage3.translatesAutoresizingMaskIntoConstraints = false
+                                self.logoImage3.anchor(top: nil, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: logoDim, height: logoDim)
+                                self.logoImage3.layer.cornerRadius = logoDim / 2
+                                    self.logoImage3.centerYAnchor.constraint(equalTo: self.checkInBackground.centerYAnchor).isActive = true
+
+                                }
+                            })
+                        
+                        }
                             
-                            
+                    var i = 1
+                    
+                    
+                    if self.timerStarted {
+                        print("Do nothing")
+                        
+                        
+                    } else {
+                        
+                        print("Timer started set to true")
+                    
+                    self.mapBackgroundView.alpha = 1
+                    self.checkInBackground.alpha = 1
+                    self.checkInBackground.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+                    self.logoImage1.alpha = 0
+                    self.logoImage2.alpha = 0
+                    self.logoImage3.alpha = 0
+                        
+                    UIView.animate(withDuration: 0 , delay: 5, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+
+                        self.mapBackgroundView.alpha = 0
+                        self.checkInBackground.alpha = 1
+                        
+                    }) { (_) in
+                        
+                        UIView.animate(withDuration: 0 , delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+
+                            let timer = Timer.scheduledTimer(withTimeInterval: 0.75, repeats: true){ t in
+                                
+                                print("timer started")
+                                if i == 1 {
+                                    self.actionLabel1.alpha = 1
+                                }
+                                if i == 2 {
+                                    self.actionLabel2.alpha = 1
+                                    self.actionLabel1.alpha = 0
+                                }
+                                if i == 3 {
+                                    self.actionLabel3.alpha = 1
+                                    self.actionLabel2.alpha = 0
+                                    
+                                    UIView.animate(withDuration: 0 , delay: 0.25, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                        self.actionLabel4.alpha = 1
+                                        self.actionLabel3.alpha = 0
+                                    })
+                                }
+                                
+                                if i == 4 {
+                                    
+                                    
+                                    self.walkzillaLogo.alpha = 1
+                                    self.actionLabel1.alpha = 0
+                                    self.actionLabel2.alpha = 0
+                                    self.actionLabel3.alpha = 0
+                                    self.actionLabel4.alpha = 0
+                                }
+                                
+                                if i == 5 {
+                                    
+                                    
+                                    UIView.animate(withDuration: 0 , delay: 0.75, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                        
+                                        self.walkzillaLogo.tintColor = UIColor.rgb(red: 255, green: 0, blue: 0)
+                                        self.checkInBackground.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                                    })
+                                }
+                                
+                                if i == 6 {
+                                    
+                                    UIView.animate(withDuration: 0 , delay: 0.50, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                                        
+                                        self.walkzillaLogo.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+                                        self.walkzillaLogo.alpha = 0
+                                        
+                                        self.logoImage1.alpha = 1
+                                        self.logoImage2.alpha = 1
+                                        self.logoImage3.alpha = 1
+                                    })
+                                }
+                    
+                                
+                                i += 1
+                                
+                                if i > 6 {
+                                    print("timer stopped")
+                                    t.invalidate()
+                                    self.timerStarted = false
+                                    
+                                }
                             }
-                        })
-                               
+                            
+                            })
+                        }
                     }
-                    
-                    
-                
-
-               
-                    
-
-    
                         print("choose function 3")
                         
                     case 4: numberOfLogos = 4
