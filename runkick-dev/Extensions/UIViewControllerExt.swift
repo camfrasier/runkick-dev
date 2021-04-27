@@ -73,21 +73,41 @@ extension CATransition {
     }
     //New viewController will pop from right side of screen.
     func popFromRight() -> CATransition {
-        self.duration = 0.35 //set the duration to whatever you'd like.
+        self.duration = 0.15 //set the duration to whatever you'd like.
         self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        self.type = CATransitionType.moveIn
+        self.type = CATransitionType.fade
         //self.type = CATransitionType.fade
         self.subtype = CATransitionSubtype.fromRight
         return self
     }
+    
     //New viewController will appear from left side of screen.
     func popFromLeft() -> CATransition {
-        self.duration = 0.35 //set the duration to whatever you'd like.
+        self.duration = 0.15 //set the duration to whatever you'd like.
         self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        self.type = CATransitionType.moveIn
+        self.type = CATransitionType.fade
         self.subtype = CATransitionSubtype.fromLeft
         return self
     }
+    
+    func popFromBottom() -> CATransition {
+        self.duration = 0.15 //set the duration to whatever you'd like.
+        self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        self.type = CATransitionType.fade
+        //self.type = CATransitionType.fade
+        self.subtype = CATransitionSubtype.fromBottom
+        return self
+    }
+    
+    func popFromTop() -> CATransition {
+        self.duration = 0.15 //set the duration to whatever you'd like.
+        self.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        self.type = CATransitionType.fade
+        //self.type = CATransitionType.fade
+        self.subtype = CATransitionSubtype.fromTop
+        return self
+    }
+
 }
 
 extension UIImage {

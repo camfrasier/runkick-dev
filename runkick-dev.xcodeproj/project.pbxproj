@@ -552,7 +552,6 @@
 				69FE5BBE2326C61000039BF5 /* UserPostCell.swift */,
 				69FBDCF524467FCB00709E21 /* AdminProfileCell.swift */,
 				69FE5BC4233017C600039BF5 /* CommentCell.swift */,
-				69FE5BCB2331B18E00039BF5 /* NotificationsCell.swift */,
 				691A87082319D35D00EBB64A /* SearchUserCell.swift */,
 				692EDB5C2548C1B400BB86B6 /* InviteFriendsCell.swift */,
 				691914E824D8C98A008DCA06 /* RewardsCell.swift */,
@@ -560,13 +559,14 @@
 				69FBDCFB244A1B8500709E21 /* AdminProfileHeader.swift */,
 				691A86FD231754EB00EBB64A /* UserProfileHeader.swift */,
 				69FB5F22245E328D00A02FA1 /* AdminStorePostCell.swift */,
-				69FBDCEF2443A43D00709E21 /* UserSpecificFeedCell.swift */,
 				692EDB61255480ED00BB86B6 /* GroupProfileHeader.swift */,
 				6965531A255F75260027EDB6 /* GroupStatisticsCell.swift */,
 				692EDB632554968900BB86B6 /* GroupDetailCell.swift */,
 				6980617A24DBB3B300628077 /* GroupsCell.swift */,
 				69365A4B24E7808800AF156F /* CategoriesCell.swift */,
+				69FE5BCB2331B18E00039BF5 /* NotificationsCell.swift */,
 				69E70849240467FA0083444B /* MarketplaceCell.swift */,
+				69FBDCEF2443A43D00709E21 /* UserSpecificFeedCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -615,9 +615,9 @@
 		696A70B4234265A700CDD512 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				69B3E83124FF2DDA004CD859 /* CheckInCell.swift */,
 				69C5EDA2247CE48A006A22B1 /* ActivityHistoryCell.swift */,
 				6937B46E22CBDF2700446926 /* RunnerAnnotation.swift */,
-				69B3E83124FF2DDA004CD859 /* CheckInCell.swift */,
 				69D7C79F2356841200AF2736 /* SearchStoreCell.swift */,
 				69EB6A4922DD69BF000C764E /* StoreCell.swift */,
 				69977C482398905D0057D0A3 /* MenuOptionCell.swift */,
@@ -667,6 +667,7 @@
 		69E70848240467CE0083444B /* Market */ = {
 			isa = PBXGroup;
 			children = (
+				69FE5BC02326D8A700039BF5 /* FeedCell.swift */,
 				696A5215249EB4EB00289C33 /* HelperFunctions.swift */,
 				69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */,
 				696A5219249EC0E500289C33 /* StoreItemSelectionCell.swift */,
@@ -674,7 +675,6 @@
 				69D8CCCA24A8591F001432FD /* CheckoutCell.swift */,
 				69D8CCCC24A99BD9001432FD /* StripeCart.swift */,
 				69D8CCCE24AD75CA001432FD /* StripeApi.swift */,
-				69FE5BC02326D8A700039BF5 /* FeedCell.swift */,
 			);
 			path = Market;
 			sourceTree = "<group>";

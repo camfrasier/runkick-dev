@@ -140,6 +140,7 @@ class StoreCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = .lightGray
         view.isUserInteractionEnabled = true
+        view.layer.maskedCorners = [.layerMinXMinYCorner]
         return view
     } ()
     
@@ -157,6 +158,7 @@ class StoreCell: UITableViewCell {
         iv.contentMode = .scaleAspectFill
         iv.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
         iv.isUserInteractionEnabled = true
+        iv.layer.maskedCorners = [.layerMinXMinYCorner]
         return iv
     } ()
     
@@ -233,7 +235,7 @@ class StoreCell: UITableViewCell {
 
         addSubview(imageContainerView)
         //let dimension: CGFloat = 140
-        imageContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
+        imageContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
         imageContainerView.layer.cornerRadius = 3
         
         imageContainerView.addSubview(storeImageView)
@@ -250,7 +252,7 @@ class StoreCell: UITableViewCell {
         
         addSubview(locationTitleLabel)
         locationTitleLabel.anchor(top: imageContainerView.topAnchor, left: imageContainerView.rightAnchor, bottom: nil, right: nil
-            , paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            , paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationDistanceLabel)
         locationDistanceLabel.anchor(top: nil, left: locationTitleLabel.rightAnchor, bottom: locationTitleLabel.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0.75, paddingRight: 0, width: 0, height: 0)

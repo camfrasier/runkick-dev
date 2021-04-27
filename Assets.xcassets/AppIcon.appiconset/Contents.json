@@ -1,61 +1,61 @@
 {
   "images" : [
     {
-      "size" : "20x20",
+      "filename" : "zillaLogoLaunch40x40.png",
       "idiom" : "iphone",
-      "filename" : "peachyGreensAppLogoBold-40x40.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "20x20"
     },
     {
-      "size" : "20x20",
+      "filename" : "zillaLogoLaunch60x60.png",
       "idiom" : "iphone",
-      "filename" : "peachyGreensAppLogoBold-60x60.png",
-      "scale" : "3x"
+      "scale" : "3x",
+      "size" : "20x20"
     },
     {
-      "size" : "29x29",
+      "filename" : "zillaLogoLaunchModel58x58.png",
       "idiom" : "iphone",
-      "filename" : "peachyGreensAppLogoBold-58x58.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "29x29"
     },
     {
-      "size" : "29x29",
+      "filename" : "zillaLogoLaunch87x87.png",
       "idiom" : "iphone",
-      "filename" : "peachyGreensAppLogoBold-87x87.png",
-      "scale" : "3x"
+      "scale" : "3x",
+      "size" : "29x29"
     },
     {
-      "size" : "40x40",
+      "filename" : "zillaLogoLaunchModel80x80.png",
       "idiom" : "iphone",
-      "filename" : "peachyGreensAppLogoBold-80x80.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "40x40"
     },
     {
-      "size" : "40x40",
+      "filename" : "zillaLogoLaunch120x120.png",
       "idiom" : "iphone",
-      "filename" : "peachyGreensAppLogoBold-120x120.png",
-      "scale" : "3x"
+      "scale" : "3x",
+      "size" : "40x40"
     },
     {
-      "size" : "60x60",
+      "filename" : "zillaLogoLaunchModel120x120.png",
       "idiom" : "iphone",
-      "filename" : "peachyGreensAppLogoBold-120x120-1.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "size" : "60x60"
     },
     {
-      "size" : "60x60",
+      "filename" : "zillaLogoLaunchModel180x180.png",
       "idiom" : "iphone",
-      "filename" : "peachyGreensAppLogoBold-180x180.png",
-      "scale" : "3x"
+      "scale" : "3x",
+      "size" : "60x60"
     },
     {
       "idiom" : "ios-marketing",
-      "size" : "1024x1024",
-      "scale" : "1x"
+      "scale" : "1x",
+      "size" : "1024x1024"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

@@ -446,7 +446,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
             return CGSize(width: width, height: width + 15)
         }
         
-        
+        // we don't need this particular function
         if viewSinglePost {
             if let post = self.post {
                     
@@ -492,7 +492,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
 
                 let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
    
-                    return CGSize(width: width, height: (height - 300) + rect.height)
+                    return CGSize(width: width, height: (height - 350) + rect.height)
             
                     }
                 } else {
@@ -894,12 +894,16 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.barTintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //navigationController?.navigationBar.barTintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //navigationController?.navigationBar.barTintColor = UIColor.walkzillaRed()
         
-        let font = UIFont(name: "PingFangTC-Semibold", size: 17)!
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 0, green: 0, blue: 0)]
-        navigationItem.title = ""
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
+        
+        let font = UIFont(name: "ArialRoundedMTBold", size: 17)!
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)]
+        navigationItem.title = "Explore"
+        
+        navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         
         
         /*
@@ -1134,6 +1138,8 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
     
     // MARK: - API
     
+    
+    // IMPORTANT!!!
     func updateUserFeeds() {
         
         // function that allows all followed user post to show up in their feed, retroactively

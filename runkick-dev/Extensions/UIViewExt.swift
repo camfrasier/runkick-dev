@@ -135,8 +135,8 @@ extension Date {
         
         // determining whether or not we want to add a letter s to the end of the unit
         //return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
-        return "\(quotient)\(unit)\(quotient == 1 ? "" : "") ago"
-        //return "\(quotient)\(unit)\(quotient == 1 ? "" : "")"
+        //return "\(quotient)\(unit)\(quotient == 1 ? "" : "") ago"
+        return "\(quotient)\(unit)\(quotient == 1 ? "" : "")"
     }
 }
 

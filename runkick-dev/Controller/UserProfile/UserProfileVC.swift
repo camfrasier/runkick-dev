@@ -229,8 +229,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         */
         
         
-        let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        
+        //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        let userSpecificFeedVC = UserSpecificFeedVC()
         userSpecificFeedVC.viewSinglePost = true
         userSpecificFeedVC.userProfileController = self
         userSpecificFeedVC.post = posts[indexPath.item]
@@ -746,7 +746,9 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     func handlePostTapped(for header: UserProfileHeader) {
     
-        let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        let userSpecificFeedVC = UserSpecificFeedVC()
         userSpecificFeedVC.uid = user?.uid
         navigationController?.pushViewController(userSpecificFeedVC, animated: true)
     }

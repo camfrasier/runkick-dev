@@ -191,8 +191,9 @@ class AdminProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLa
         */
         
         
-        let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
         
+        let userSpecificFeedVC = UserSpecificFeedVC()
         userSpecificFeedVC.viewSinglePost = true
         userSpecificFeedVC.adminProfileController = self
         userSpecificFeedVC.post = posts[indexPath.item]

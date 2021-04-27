@@ -662,8 +662,8 @@ extension SearchVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        
+    //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+       let userSpecificFeedVC = UserSpecificFeedVC()
         userSpecificFeedVC.viewSinglePost = true
         userSpecificFeedVC.post = posts[indexPath.item]
         

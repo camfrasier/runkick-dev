@@ -247,10 +247,11 @@ class HomeVC: UIViewController, Alertable {
         return label
     }()
     
+    /*
     let activityLabel: UILabel = {
         let label = UILabel()
         //label.text = "Distance: None"
-        label.text = "Activity"
+        label.text = "Recent Activity"
         //label.font = UIFont(name: "Avenir-Black", size: 15)
         label.font = UIFont(name: "ArialRoundedMTBold", size: 12)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
@@ -258,12 +259,13 @@ class HomeVC: UIViewController, Alertable {
         label.textAlignment = .center
         return label
     }()
+    */
     
-    let boltButton: UIButton = {
+    let notificationBell: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "bolt2"), for: .normal)
-        //button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
-        button.tintColor = UIColor.walkzillaRed()
+        button.setImage(UIImage(named: "notificationBell"), for: .normal)
+        button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
+        button.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         button.alpha = 1
         return button
     }()
@@ -790,6 +792,7 @@ class HomeVC: UIViewController, Alertable {
         view.layer.shadowRadius = 5.0
         view.layer.shadowOffset = CGSize(width: 0, height: 3)
         */
+        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
         buttonTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
@@ -979,15 +982,15 @@ class HomeVC: UIViewController, Alertable {
         button.titleLabel?.textAlignment = .center
         button.setTitle("START", for: .normal)
         //button.titleLabel?.font = UIFont(name: "HelveticaNeue-CondensedBold", size: 24)
-        button.titleLabel?.font = UIFont(name: "AvenirNextCondensed-BoldItalic", size: 24)
-        button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        button.titleLabel?.font = UIFont(name: "AvenirNextCondensed-BoldItalic", size: 18)
+        button.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         //button.setTitleColor(UIColor.airBnBNew(), for: .normal)
-        button.setTitleColor(UIColor.newWalkzillaRed(), for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
         button.addTarget(self, action: #selector(handleStartStopTrip), for: .touchUpInside)
-        button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
-        button.layer.shadowRadius = 5.0
-        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        //button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        //button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
+        //button.layer.shadowRadius = 5.0
+        //button.layer.shadowOffset = CGSize(width: 0, height: 3)
         button.alpha = 0
         return button
     }()
@@ -1277,20 +1280,22 @@ class HomeVC: UIViewController, Alertable {
         
         let groupsBackgroundDimension: CGFloat = 45
         mapView.addSubview(groupsButtonBackground)
-        groupsButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: 120, height: groupsBackgroundDimension)
-        //groupsButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2
-        groupsButtonBackground.layer.cornerRadius = 23
+        groupsButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
+        groupsButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2
+        //groupsButtonBackground.layer.cornerRadius = 23
         
+        /*
         groupsButtonBackground.addSubview(activityLabel)
         activityLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         activityLabel.centerYAnchor.constraint(equalTo: groupsButtonBackground.centerYAnchor).isActive = true
         activityLabel.centerXAnchor.constraint(equalTo: groupsButtonBackground.centerXAnchor).isActive = true
-        
-        /*
-        groupsButtonBackground.addSubview(boltButton)
-        boltButton.anchor(top: nil, left: activityLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 11, height: 15)
-        boltButton.centerYAnchor.constraint(equalTo: activityLabel.centerYAnchor).isActive = true
         */
+        
+        groupsButtonBackground.addSubview(notificationBell)
+        notificationBell.anchor(top: groupsButtonBackground.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15.5, height: 18)
+        notificationBell.centerXAnchor.constraint(equalTo: groupsButtonBackground.centerXAnchor).isActive = true
+        //notificationBell.centerYAnchor.constraint(equalTo: groupsButtonBackground.centerYAnchor).isActive = true
+        
         
         /*
         mapView.addSubview(saveSegmentButton)
@@ -1775,7 +1780,7 @@ class HomeVC: UIViewController, Alertable {
   
            
            // creating custom notification button for feed view
-          
+      
     customMenuButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
            //customMenuButton.setImage(UIImage(named: "menuSliderBtn"), for: .normal)
         //customMenuButton.setImage(UIImage(named:"menuSliderBtn")!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate), for: .normal)
@@ -1887,7 +1892,7 @@ class HomeVC: UIViewController, Alertable {
  
  
     */
-        
+        /*
         customProfileButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
         customProfileButton.setImage(UIImage(named:"simpleProfileInCircle")!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate), for: .normal)
 
@@ -1899,7 +1904,25 @@ class HomeVC: UIViewController, Alertable {
             let barMenuButtonProfile = UIBarButtonItem(customView: customProfileButton)
             
             self.navigationItem.rightBarButtonItems = [barMenuButtonProfile]
+        */
         
+
+        
+    }
+    
+    
+
+    
+    
+    @objc func handleBackButton() {
+       // _ = self.navigationController?.popViewController(animated: true)
+        
+        let homeVC = HomeVC()
+        let nav = self.navigationController
+        DispatchQueue.main.async {
+            nav?.view.layer.add(CATransition().popFromLeft(), forKey: nil)
+            nav?.popViewController(animated: false)
+        }
     }
     
     func removeTabBarTopBorder() {
@@ -2072,8 +2095,8 @@ class HomeVC: UIViewController, Alertable {
         
         
         mapView.addSubview(startStopButton)
-        startStopButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: nil, paddingTop: 300, paddingLeft: 0, paddingBottom: tabBarHeight + 40, paddingRight: 0, width: 120, height: 120)
-        startStopButton.layer.cornerRadius = 120 / 2
+        startStopButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: 100, height: 100)
+        startStopButton.layer.cornerRadius = 100 / 2
         startStopButton.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
         
         
@@ -2579,6 +2602,16 @@ class HomeVC: UIViewController, Alertable {
         
         //handleMenuBlackView()
         
+        let notificationsVC = NotificationsVC()
+        //navigationController?.pushViewController(notificationsVC, animated: true)
+        
+        let nav = self.navigationController
+        DispatchQueue.main.async {
+            nav?.view.layer.add(CATransition().popFromBottom(), forKey: nil)
+            nav?.pushViewController(notificationsVC, animated: false)
+        }
+        
+        /*
         if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
             if let window:UIWindow = applicationDelegate.window {
                 
@@ -2613,6 +2646,7 @@ class HomeVC: UIViewController, Alertable {
                 }, completion: nil)
             }
         }
+ */
     }
     
     @objc func handleRightMenuSlider() {
@@ -3772,6 +3806,27 @@ class HomeVC: UIViewController, Alertable {
         
         if saveRemovePathLabel.text == "Save Path" {
             
+            
+            if initialCheckpointSelected == false {
+                //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+                self.startStopButton.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+            
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                
+                //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                    self.startStopButton.transform = CGAffineTransform(scaleX: 1.10, y: 1.10)
+                
+                //self.toggleSaveRemoveSegmentView.alpha = 1
+                    self.startStopButton.alpha = 1
+                self.initialCheckpointSelected = true
+            }) { (_) in
+                //self.toggleSaveRemoveSegmentView.transform = .identity
+                self.startStopButton.transform = .identity
+            }
+
+            }
+            
+            
             print("Save segment pressed")
                    let currentUserID = Auth.auth().currentUser?.uid
             
@@ -3892,17 +3947,9 @@ extension HomeVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         
-        var imageView = UIImageView()
-        var hotImageView = UIImageView()
-        /*
-       if let annotation = annotation as? RunnerAnnotation {
-            let identifier = "waywalker"
-            var view: MKAnnotationView
-            view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            return view
-        }
-        return nil
-       */
+        let imageView = UIImageView()
+        let hotImageView = UIImageView()
+
 
         let annotationIdentifier = "MyCustomAnnotation"
         guard !annotation.isKind(of: MKUserLocation.self) else {
@@ -3913,6 +3960,10 @@ extension HomeVC: MKMapViewDelegate {
         
 
         if annotationView == nil {
+            
+            imageView.frame = CGRect(x: 40, y: 9, width: 11, height: 14 ) // lightening bolt
+            hotImageView.frame = CGRect(x: 39, y: 10.5, width: 11, height: 10.5)   // favorites heart
+            
           annotationView = CKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
           if case let annotationView as CKAnnotationView = annotationView {
             annotationView.isEnabled = true
@@ -3920,21 +3971,13 @@ extension HomeVC: MKMapViewDelegate {
             
             
             annotationView.label = UILabel(frame: CGRect(x: 6, y: 7.5, width: 34.0, height: 18.0))
-            
-            
-            
+        
             if let label = annotationView.label {
-                //label.font = UIFont(name: "AvenirNext", size: 13.0)
                 label.font = UIFont(name: "Avenir-Black", size: 13)
-                //label.font = UIFont.boldSystemFont(ofSize: 13)
-                //label.font = UIFont(name: "AvenirNext-Bold", size: 13.0)
-  
-               
-              label.textAlignment = .center
-             //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+                label.textAlignment = .center
                 label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-              label.adjustsFontSizeToFitWidth = true
-              annotationView.addSubview(label)
+                label.adjustsFontSizeToFitWidth = true
+                annotationView.addSubview(label)
                 
             }
  
@@ -3944,10 +3987,6 @@ extension HomeVC: MKMapViewDelegate {
         if case let annotationView as CKAnnotationView = annotationView {
           annotationView.annotation = annotation
         
-            //annotationView.image = UIImage(named: "whiteCircleGreenSmall-60x60")
-            
-            //let pinImage = UIImage(named: "simpleMarkerTrueBlue")
-            //let pinImage = UIImage(named: "simpleMarkerWhite")
             let pinImage = UIImage(named: "roundedRecMarker")
             
 
@@ -3957,17 +3996,12 @@ extension HomeVC: MKMapViewDelegate {
             pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
             let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
-            
-            
+
             // when zooming in and out some annotations will disappear accordingly
             //annotationView.displayPriority = .defaultHigh
-            
-            
-            
+
             annotationView.image = resizedImage
             
-            let button = UIButton(type: .system)
-            button.setImage(UIImage(named: "bolt2"), for: .normal)
 
             if let subtitle = annotation.subtitle,
                 let label = annotationView.label {
@@ -3975,11 +4009,11 @@ extension HomeVC: MKMapViewDelegate {
             //label.text = title
  
             //label.text = "+\(subtitle ?? "?")"
-                label.text = "\(subtitle ?? "?")"  // using question mark for optional value
+            label.text = "\(subtitle ?? "?")"  // using question mark for optional value
                 
-                let pointVal = Int(subtitle ?? "?")
-                //guard let pointVal = Int(subtitle) else { return }
-                print("These are the point values \(pointVal)")
+            let pointVal = Int(subtitle ?? "?")
+            //guard let pointVal = Int(subtitle) else { return }
+            print("These are the point values \(pointVal)")
                 
         // if the value is less than 300 points show the low bar
         //if the value is between 300 and 700 show the middle bar
@@ -3997,8 +4031,7 @@ extension HomeVC: MKMapViewDelegate {
                 // hot deal
                 
                 
-                imageView.frame = CGRect(x: 40, y: 9, width: 11, height: 14 ) // lightening bolt
-                hotImageView.frame = CGRect(x: 39, y: 10.5, width: 11, height: 10.5)   // favorites heart
+
                 //imageView.image = UIImage(named: "like_selected-red")
                 
                 switch pointVal! {
@@ -4015,14 +4048,16 @@ extension HomeVC: MKMapViewDelegate {
                     
                     // when zooming in and out some annotations will disappear accordingly
                     //annotationView.displayPriority = .defaultHigh
-                    
-               
-                    
+
+                    hotImageView.image = UIImage(named: "solidHeartWalkzilla")
                     //imageView.image = UIImage(named: "twentyFivePercentBar")
+                    
+                    
                 case 250 ... 499:
                     print("mid range")
-                    //imageView.image = UIImage(named: "solidHeartWalkzilla")
-                    hotImageView.image = UIImage(named: "solidHeartWalkzilla")   // this is used for favorites
+                    //hotImageView.image = UIImage(named: "greenDot")
+                 hotImageView.image = UIImage(named: "solidHeartWalkzilla")   // this is used for favorites
+                   
                 case 500 ... 749:
                     print("high mid range, hot deal")
                     //imageView.image = UIImage(named: "seventyFivePercentBar")
@@ -4036,18 +4071,20 @@ extension HomeVC: MKMapViewDelegate {
             
                     annotationView.image = resizedImage
                     
+                    //hotImageView.image = UIImage(named: "solidHeartWalkzilla")
                     
-                    
-         
+                    //annotationView.addSubview(hotImageView)
+    
                 case 750 ... 1000:
                     print("high range, hot deal")
                     imageView.image = UIImage(named: "boltWalkzillaRed")
-                    //hotImageView.image = UIImage(named: "redCircle")
+     
                     //hotImageView.image = UIImage(named: "greenDot")
                     
                     
                 default:
                     print("Integer value not within range")
+                    
                 }
   
             }
@@ -4088,12 +4125,7 @@ extension HomeVC: MKMapViewDelegate {
         annotationView?.layer.shadowRadius = 6.0
         annotationView?.layer.shadowOffset = CGSize(width: 0, height: 3)
       
-        
-        
-        
         annotationView?.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-        
-        
             
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1.3, options: .curveEaseInOut, animations: {
                 annotationView?.alpha = 1
@@ -4419,6 +4451,8 @@ extension HomeVC: MKMapViewDelegate {
         mapView.removeOverlays(mapView.overlays)
         
         
+        
+        /*
         if initialCheckpointSelected == false {
             //self.toggleSaveRemoveSegmentView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
             self.startStopButton.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
@@ -4437,7 +4471,7 @@ extension HomeVC: MKMapViewDelegate {
         }
 
         }
-        
+        */
         
         
         
@@ -4665,9 +4699,9 @@ extension HomeVC: MKMapViewDelegate {
     mapView.addSubview(self.storeDetailBV)
     
         
-    if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
+    //if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
         
-        if let window:UIWindow = applicationDelegate.window {
+        //if let window:UIWindow = applicationDelegate.window {
             
             isSearchTableViewVisible = true
             
@@ -4675,7 +4709,7 @@ extension HomeVC: MKMapViewDelegate {
             
             storeDetailView = StoreDetailView()
             storeDetailView?.homeVC = self
-            //storeDetailView.layer.cornerRadius = 15
+            storeDetailView.layer.cornerRadius = 3
             storeDetailView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
             storeDetailView.layer.shadowColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 0.15).cgColor
             storeDetailView.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
@@ -4683,13 +4717,17 @@ extension HomeVC: MKMapViewDelegate {
             storeDetailView.layer.shadowOffset = CGSize(width: 1, height: -1)
             
 
-            window.addSubview(storeDetailView)
+            //window.addSubview(storeDetailView)
+        view.addSubview(storeDetailView)
+        
            // storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 270), paddingRight: 0, width: 0, height: window.frame.height + 20)
             
-            storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 165), paddingRight: 0, width: 0, height: window.frame.height + 20)
+            //storeDetailView.anchor(top: nil, left: window.leftAnchor, bottom: window.bottomAnchor, right: window.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -((window.frame.height) - 165), paddingRight: 0, width: 0, height: window.frame.height + 20)
+            
+            storeDetailView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 10, paddingRight: 10, width: 0, height: 150)
             
             storeDetailView.addSubview(toggleSaveRemoveSegmentView)
-            toggleSaveRemoveSegmentView.anchor(top: storeDetailView.topAnchor, left: storeDetailView.leftAnchor, bottom: nil, right: storeDetailView.rightAnchor, paddingTop: 125, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 50)
+        toggleSaveRemoveSegmentView.anchor(top: nil, left: storeDetailView.leftAnchor, bottom: storeDetailView.bottomAnchor, right: storeDetailView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
             toggleSaveRemoveSegmentView.centerXAnchor.constraint(equalTo: self.storeDetailView.centerXAnchor).isActive = true
             toggleSaveRemoveSegmentView.layer.cornerRadius = 3
             
@@ -4699,8 +4737,8 @@ extension HomeVC: MKMapViewDelegate {
             saveRemovePathLabel.centerYAnchor.constraint(equalTo: self.toggleSaveRemoveSegmentView.centerYAnchor).isActive = true
             
             
-        }
-    }
+      //  }
+   // }
  
             
         isStoreDetailViewVisible = true
@@ -5746,7 +5784,7 @@ extension HomeVC: MKMapViewDelegate {
             
         case .Notifications:
             print(" show notifications")
-            
+        
             let notificationsVC = NotificationsVC()
             navigationController?.pushViewController(notificationsVC, animated: true)
             
@@ -5818,7 +5856,8 @@ extension HomeVC: MKMapViewDelegate {
             
             guard let currentUid = Auth.auth().currentUser?.uid else { return }
             print("THIS IS THE CURRENT USER ID FOR YOUR POST")
-            let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+            //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+            let userSpecificFeedVC = UserSpecificFeedVC()
             userSpecificFeedVC.uid = currentUid
             navigationController?.pushViewController(userSpecificFeedVC, animated: true)
             

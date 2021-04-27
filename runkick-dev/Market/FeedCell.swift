@@ -157,7 +157,7 @@ class FeedCell: UICollectionViewCell {
     lazy var usernameButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .system)
         button.setTitle("Username", for: .normal)
-        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 15)
+        button.titleLabel?.font =  UIFont(name: "ArialRoundedMTBold", size: 13)
         //button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
         button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
@@ -182,14 +182,11 @@ class FeedCell: UICollectionViewCell {
     }()
     
     lazy var optionsButton: UIButton = {
-        let button = UIButton(type: .custom)
+        let button = UIButton(type: .system)
         let image = UIImage(named: "optionDotsHorizantal")?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(handleOptionTapped), for: .touchUpInside)
-        //button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        //button.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.70).cgColor
-        //button.layer.shadowRadius = 1.0
-        //button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.tintColor = UIColor.rgb(red: 120, green: 120, blue: 120)
         button.alpha = 1
         return button
     } ()
@@ -216,7 +213,7 @@ class FeedCell: UICollectionViewCell {
         
         // add gesture recognizer for double tap to like
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(handlePhotoTapped))
-        likeTap.numberOfTapsRequired = 2
+        likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
         return iv
@@ -278,20 +275,11 @@ class FeedCell: UICollectionViewCell {
     
     lazy var likesLabel: UILabel = {
         let label = UILabel()
-        //label.layer.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
-        //label.layer.cornerRadius = 20 / 2
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "3"
         label.textAlignment = .center
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        
-        /*
-        label.layer.shadowOpacity = 30 // Shadow is 30 percent opaque.
-        label.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.90).cgColor
-        label.layer.shadowRadius = 1.0
-        label.layer.shadowOffset = CGSize(width: 0, height: 1)
-        */
-        
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+
         // add gesture recognizer to label
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
         likeTap.numberOfTapsRequired = 1
@@ -303,19 +291,11 @@ class FeedCell: UICollectionViewCell {
     
     lazy var commentLabel: UILabel = {
         let label = UILabel()
-        //label.layer.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
-        //label.layer.cornerRadius = 20 / 2
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "0"
         label.textAlignment = .center
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        /*
-        label.layer.shadowOpacity = 30 // Shadow is 30 percent opaque.
-        label.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.90).cgColor
-        label.layer.shadowRadius = 1.0
-        label.layer.shadowOffset = CGSize(width: 0, height: 1)
-        */
-        
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+
         // add gesture recognizer to label
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
         commentTap.numberOfTapsRequired = 1
@@ -406,9 +386,10 @@ class FeedCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue", size: 14)
-        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
-        label.text = "2 days ago"
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.text = "2d"
         return label
     } ()
     
@@ -449,7 +430,7 @@ class FeedCell: UICollectionViewCell {
         let button = UIButton(type: .system)  // will need to change to custom
         button.setImage(UIImage(named: "walkzillaHeart"), for: .normal)
         button.addTarget(self, action: #selector(handleShowLikes), for: .touchUpInside)
-        button.tintColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        button.tintColor = UIColor.rgb(red: 200, green: 200, blue: 200)
         button.alpha = 1
         return button
     } ()
@@ -458,7 +439,7 @@ class FeedCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "walkzillaCommentBubble"), for: .normal)
         button.addTarget(self, action: #selector(handleCommentTapped), for: .touchUpInside)
-        button.tintColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        button.tintColor = UIColor.rgb(red: 200, green: 200, blue: 200)
         button.alpha = 1
         return button
     } ()
@@ -561,7 +542,8 @@ class FeedCell: UICollectionViewCell {
     }
     
     @objc func handlePhotoTapped() {
-        delegate?.handleLikeTapped(for: self, isDoubleTap: true)
+    print("do something else here, show comments and photo")
+        delegate?.handleCommentTapped(for: self)
     }
     
     @objc func handleFollowFollowingTapped() {
@@ -582,10 +564,13 @@ class FeedCell: UICollectionViewCell {
         }
          */
         
+        // cancel long press
+        /*
         if sender.state == .began {
             guard let post = self.post else { return }
             altDelegate?.presentPhotoFeedView(withFeedCell: post)
         }
+        */
     }
     
     // MARK: - Helper Functions
@@ -729,7 +714,7 @@ class FeedCell: UICollectionViewCell {
         // option button constraints
         backgroundOptionsButton.addSubview(optionsButton)
         optionsButton.translatesAutoresizingMaskIntoConstraints = false
-        optionsButton.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+ 
         
         
         imageTranslucentBar.addSubview(newCommentBubble)
@@ -751,7 +736,7 @@ class FeedCell: UICollectionViewCell {
         
         
     
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[imageBlock]-0-[locationBlock(26)]-5-[translucent(40)]-0-[captionBlock(50)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-27-[imageBlock]-0-[locationBlock(26)]-5-[translucent(40)]-0-[captionBlock(50)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[imageBlock]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock]))
         
@@ -765,7 +750,7 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[backgroundOptionsButton(30)]", options: [], metrics: nil, views: ["backgroundOptionsButton": backgroundOptionsButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[backgroundOptionsButton(30)]-40-|", options: [], metrics: nil, views: ["backgroundOptionsButton": backgroundOptionsButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[backgroundOptionsButton(30)]-27-|", options: [], metrics: nil, views: ["backgroundOptionsButton": backgroundOptionsButton]))
          
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[optionsButton(20)]", options: [], metrics: nil, views: ["optionsButton": optionsButton]))
         
@@ -795,9 +780,9 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(30)]-28-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(27)]-28-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-28-[pressHeart(27)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-28-[pressHeart(24)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
         
         
 
@@ -824,7 +809,7 @@ class FeedCell: UICollectionViewCell {
         stackView.alignment = .center
         stackView.spacing = 3
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        imageTranslucentBar.addSubview(stackView)
+        userLocationBlock.addSubview(stackView)
         
         let stackView2 = UIStackView(arrangedSubviews: [newCommentBubble, commentLabel])
         
@@ -833,10 +818,10 @@ class FeedCell: UICollectionViewCell {
         stackView2.alignment = .center
         stackView2.spacing = 3
         stackView2.translatesAutoresizingMaskIntoConstraints = false
-        imageTranslucentBar.addSubview(stackView2)
+        userLocationBlock.addSubview(stackView2)
         
 
-        stackView2.anchor(top: imageTranslucentBar.topAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor , paddingTop: 13, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        stackView2.anchor(top: userLocationBlock.topAnchor, left: nil, bottom: nil, right: userLocationBlock.rightAnchor , paddingTop: 17, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
 
         stackView.anchor(top: stackView2.topAnchor, left: nil, bottom: nil, right: stackView2.leftAnchor , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
     }
@@ -867,16 +852,16 @@ class FeedCell: UICollectionViewCell {
 
             switch type {
             case .custom:
-                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 14)
+                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 13)
                 
             case .hashtag:
                 
-                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 14)
+                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 13)
                 atts[NSAttributedString.Key.foregroundColor] = UIColor.rgb(red: 50, green: 80, blue: 150)
                 
             case .mention:
                 
-                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 14)
+                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 1)
                 atts[NSAttributedString.Key.foregroundColor] = UIColor.rgb(red: 50, green: 80, blue: 150)
                 
             default: ()
@@ -891,8 +876,8 @@ class FeedCell: UICollectionViewCell {
         captionLabel.customize { (label) in
             label.text = "\(caption)"
             label.customColor[customType] = UIColor.rgb(red: 80, green: 80, blue: 80)
-            label.font = UIFont.systemFont(ofSize: 13)
-            //label.font = UIFont(name: "Arial Rounded MT Bold", size: 10)
+            //label.font = UIFont.systemFont(ofSize: 13)
+            label.font = UIFont(name: "HelveticaNeue", size: 13)
             label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
             captionLabel.numberOfLines = 3
         
@@ -949,7 +934,7 @@ class FeedCell: UICollectionViewCell {
                 numberOfComments = 0
             }
 
-            let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+            let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font:  UIFont(name: "HelveticaNeue", size: 13)!])
             
             self.commentLabel.attributedText = attributedText
         }

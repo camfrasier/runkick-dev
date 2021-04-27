@@ -16,7 +16,7 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
     // MARK: - Properties
     
     var notifications = [Notification]()
-    var timer: Timer?
+    var timer: Timer?   // helps fix the bug where pics get jumbled up with follow like
     var currentKey: String?
     
     let cancelViewButton: UIButton = {
@@ -31,6 +31,8 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         /*
         //extends the edges beyound the tab bar
@@ -93,14 +95,15 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
+        //tableView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         tableView.addSubview(cancelViewButton)
         
         // register cell class
         tableView.register(NotificationsCell.self, forCellReuseIdentifier: reuseIdentifier)
         
         // add spacing to the top of the table view
-        //tableView.contentInset = UIEdgeInsets(top: 50,left: 0,bottom: 0,right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 10,left: 0,bottom: 0,right: 0)
         
         tableView.rowHeight = 80
         
@@ -135,11 +138,19 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
         guard let post = cell.notification?.post else { return }
         
-        //let feedController = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        let feedController = FeedVC()
-        feedController.viewSinglePost = true
-        feedController.post = post
-        navigationController?.pushViewController(feedController, animated: true)
+        
+        //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        let userSpecificFeedVC = UserSpecificFeedVC()
+        userSpecificFeedVC.viewSinglePost = true
+        userSpecificFeedVC.post = post
+        //navigationController?.pushViewController(userSpecificFeedVC, animated: true)
+
+        let nav = self.navigationController
+        DispatchQueue.main.async {
+            nav?.view.layer.add(CATransition().popFromRight(), forKey: nil)
+            nav?.pushViewController(userSpecificFeedVC, animated: false)
+        }
 
     }
     
@@ -231,35 +242,51 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+
+        
+        // add or remove nav bar bottom border
+        navigationController?.navigationBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
+        lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        
         
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
         
-        let font = UIFont(name: "HelveticaNeue-Bold", size: 17)!
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)]
-        navigationItem.title = "Notifications"
+        let font = UIFont(name: "ArialRoundedMTBold", size: 17)!
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)]
+        navigationItem.title = "Activity"
         
-        navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         
-        /*
-        let returnNavButton = UIButton(type: UIButton.ButtonType.custom)
+
+        
+        let returnNavButton = UIButton(type: UIButton.ButtonType.system)
          
          returnNavButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
          
          //using this code to show the true image without rendering color
-         returnNavButton.setImage(UIImage(named:"whiteCircleLeftArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
-         returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
-        returnNavButton.addTarget(self, action: #selector(NotificationsVC.handleBackButton), for: .touchUpInside)
-         returnNavButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+         returnNavButton.setImage(UIImage(named:"cancelButtonHeavy")?.withRenderingMode(.alwaysOriginal), for: .normal)
+         returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15 )
+        returnNavButton.addTarget(self, action: #selector(HomeVC.handleBackButton), for: .touchUpInside)
+         returnNavButton.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
          returnNavButton.backgroundColor = .clear
              
          let notificationBarBackButton = UIBarButtonItem(customView: returnNavButton)
          self.navigationItem.leftBarButtonItems = [notificationBarBackButton]
-        */
     }
     
     // may not need this function in the future
     @objc func handleBackButton() {
-        _ = self.navigationController?.popViewController(animated: true)
+       // _ = self.navigationController?.popViewController(animated: false)
+        
+        
+        let homeVC = HomeVC()
+        let nav = self.navigationController
+        DispatchQueue.main.async {
+            nav?.view.layer.add(CATransition().popFromTop(), forKey: nil)
+            nav?.popViewController(animated: false)
+        }
+        
     }
     
     @objc func dismissNotificationsView() {

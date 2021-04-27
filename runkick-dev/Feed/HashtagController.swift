@@ -74,8 +74,8 @@ class HashtagController: UICollectionViewController, UICollectionViewDelegateFlo
         navigationController?.pushViewController(feedVC, animated: true)
         */
         
-        let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-        
+        //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        let userSpecificFeedVC = UserSpecificFeedVC()
         userSpecificFeedVC.viewSinglePost = true
         userSpecificFeedVC.post = posts[indexPath.item]
         

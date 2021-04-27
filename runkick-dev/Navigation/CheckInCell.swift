@@ -116,6 +116,37 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
+    let walkRatingView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.statusBarGreen()
+        return view
+    }()
+    
+    let walkRatingShadow: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
+        return view
+    }()
+    
+    let walkRatingLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Avenir-Black", size: 32)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.textAlignment = .center
+        label.text = "91"
+        return label
+    } ()
+    
+    let walkRatingTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 13)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        label.textAlignment = .center
+        label.text = "Walkzilla Rating"
+        return label
+    } ()
+    
     let foregroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
@@ -147,13 +178,17 @@ class CheckInCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         //button.layer.borderWidth = 0.75
         //button.layer.borderColor = UIColor.rgb(red: 80, green: 80, blue: 80).cgColor
-        button.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        button.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        //button.backgroundColor = UIColor.airBnBDeepRed()
         button.titleLabel?.font =  UIFont(name: "ArialRoundedMTBold", size: 15)
-        button.setTitle("View Check Ins", for: .normal)
-        button.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
+        button.setTitle("View Menus", for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
+        button.alpha = 0
         return button
     }()
+    
+
     
     lazy var locationButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .system)
@@ -187,13 +222,12 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
-    let mapBackgroundView: UIView = {
+    lazy var mapBackgroundView: UIView = {
         let view = UIView()
-        //view.backgroundColor = UIColor.rgb(red: 238, green: 238, blue: 238)
-        //view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
-        //view.layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 0/255, alpha: 0.35).cgColor
-        //view.layer.shadowRadius = 10.0
-        //view.layer.shadowOffset = CGSize(width: 0, height: 0)
+        let mapTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
+        mapTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(mapTap)
         return view
     }()
     
@@ -588,7 +622,7 @@ class CheckInCell: UICollectionViewCell {
         
         
         // add gesture recognizer for double tap to like
-        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleMenuTapped))
         likeTap.numberOfTapsRequired = 1
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
@@ -956,10 +990,10 @@ class CheckInCell: UICollectionViewCell {
     
     lazy var likesLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 13)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "3"
         label.textAlignment = .center
-        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
         
         
         // add gesture recognizer to label
@@ -973,10 +1007,10 @@ class CheckInCell: UICollectionViewCell {
     
     lazy var commentLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 13)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "0"
         label.textAlignment = .center
-        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
         
         // add gesture recognizer to label
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
@@ -993,19 +1027,28 @@ class CheckInCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 15)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
-        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
         label.text = "2d"
         return label
     } ()
     
     let checkInLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
-        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
-        label.text = "3 Check Ins"
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.text = "3 Stops"
+        return label
+    } ()
+    
+    let mapViewLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.text = "Map View"
         return label
     } ()
     
@@ -1203,7 +1246,7 @@ class CheckInCell: UICollectionViewCell {
         let button = UIButton(type: .system)  // will need to change to custom
         button.setImage(UIImage(named: "walkzillaHeart"), for: .normal)
         button.addTarget(self, action: #selector(handleShowLikes), for: .touchUpInside)
-        button.tintColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        button.tintColor = UIColor.rgb(red: 200, green: 200, blue: 200)
         button.alpha = 1
         return button
     } ()
@@ -1212,7 +1255,7 @@ class CheckInCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "walkzillaCommentBubble"), for: .normal)
         button.addTarget(self, action: #selector(handleCommentTapped), for: .touchUpInside)
-        button.tintColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        button.tintColor = UIColor.rgb(red: 200, green: 200, blue: 200)
         button.alpha = 1
         return button
     } ()
@@ -1442,7 +1485,7 @@ class CheckInCell: UICollectionViewCell {
     }
     
     @objc func handleCommentTapped() {
-        print("comment tapped")
+        print("handle comment tapped")
         delegate?.handleCommentTapped(for: self)
     }
     
@@ -1494,12 +1537,11 @@ class CheckInCell: UICollectionViewCell {
     
     func configureContraints() {
         
-        
-        
-        addSubview(self.checkInBackground)
+        addSubview(checkInBackground)
         checkInBackground.translatesAutoresizingMaskIntoConstraints = false
         checkInBackground.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         checkInBackground.layer.cornerRadius = 3
+        
         
         addSubview(mapBackgroundView)
         mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -1509,7 +1551,6 @@ class CheckInCell: UICollectionViewCell {
         mapImageView.translatesAutoresizingMaskIntoConstraints = false
         mapImageView.clipsToBounds = true
         mapImageView.layer.cornerRadius = 3
-        
     
 
 /*
@@ -1538,6 +1579,10 @@ class CheckInCell: UICollectionViewCell {
         
         addSubview(checkInLabel)
         checkInLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(mapViewLabel)
+        mapViewLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         
         
         /*
@@ -1607,15 +1652,14 @@ class CheckInCell: UICollectionViewCell {
        
 
         
-        addSubview(favoritesButton)
-        favoritesButton.translatesAutoresizingMaskIntoConstraints = false
+
     
         checkInBackground.addSubview(newLikeButton)
         newLikeButton.translatesAutoresizingMaskIntoConstraints = false
         
         
 
-        userCommentBlock.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 30)
+        userCommentBlock.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 45)
         //userCommentBlock.backgroundColor = .red
 
         
@@ -1623,7 +1667,7 @@ class CheckInCell: UICollectionViewCell {
        // userLocationBlock.anchor(top: nil, left: leftAnchor, bottom: userCommentBlock.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 28)
 
         
-        imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: profileImageBackground.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 150)
+        imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: profileImageBackground.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 140)
         
         userLocationBlock.anchor(top: mapBackgroundView.bottomAnchor, left: mapBackgroundView.leftAnchor, bottom: nil, right: mapBackgroundView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 34)
         
@@ -1645,9 +1689,9 @@ class CheckInCell: UICollectionViewCell {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
         
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(30)]-38-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(27)]-28-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-38-[pressHeart(27)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-38-[pressHeart(24)]", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
         
         /*
         circleDotView1.anchor(top: locationLabel.topAnchor, left: locationLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 6, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
@@ -1658,29 +1702,29 @@ class CheckInCell: UICollectionViewCell {
 
        followFollowingLabel.anchor(top: usernameButton.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
  
-        
-
-        
         */
         
 
         
-        checkInBackground.anchor(top: topAnchor, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 28, paddingLeft: 20, paddingBottom: 5, paddingRight: 20, width: 0, height: 0)
+        checkInBackground.anchor(top: topAnchor, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 27, paddingLeft: 20, paddingBottom: 5, paddingRight: 20, width: 0, height: 0)
         
         checkInBackground.addSubview(walkzillaLogo)
-        walkzillaLogo.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 60)
+        walkzillaLogo.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 65)
         walkzillaLogo.centerXAnchor.constraint(equalTo: checkInBackground.centerXAnchor).isActive = true
         walkzillaLogo.centerYAnchor.constraint(equalTo: checkInBackground.centerYAnchor).isActive = true
         
-        mapBackgroundView.anchor(top: topAnchor, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 28, paddingLeft: 20, paddingBottom: 5, paddingRight: 20, width: 0, height: 0)
+        checkInBackground.addSubview(favoritesButton)
+        favoritesButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        mapBackgroundView.anchor(top: topAnchor, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 27, paddingLeft: 20, paddingBottom: 5, paddingRight: 20, width: 0, height: 0)
      
         
         mapImageView.anchor(top: mapBackgroundView.topAnchor, left: mapBackgroundView.leftAnchor, bottom: mapBackgroundView.bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
-        favoritesButton.anchor(top: userLocationBlock.bottomAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor, paddingTop: 65, paddingLeft: 0, paddingBottom: 0, paddingRight: 40, width: 180, height: 50)
-        //favoritesButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        favoritesButton.layer.cornerRadius = 23
+        favoritesButton.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: checkInBackground.bottomAnchor, right: checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+        favoritesButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        favoritesButton.layer.cornerRadius = 3
     
         
         
@@ -1785,9 +1829,34 @@ class CheckInCell: UICollectionViewCell {
         stepsLabel.centerXAnchor.constraint(equalTo: stepsTitleLabel.centerXAnchor).isActive = true
         
         
+        imageTranslucentBar.addSubview(walkRatingShadow)
+        walkRatingShadow.translatesAutoresizingMaskIntoConstraints = false
+        
+        walkRatingShadow.addSubview(walkRatingView)
+        walkRatingView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageTranslucentBar.addSubview(walkRatingLabel)
+        walkRatingLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageTranslucentBar.addSubview(walkRatingTitleLabel)
+        walkRatingTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
         
+        let walkBarDim: CGFloat = 4
+        walkRatingShadow.anchor(top: timeTitleLabel.bottomAnchor, left: imageTranslucentBar.leftAnchor, bottom: nil, right: walkRatingLabel.leftAnchor, paddingTop: 25, paddingLeft: 35, paddingBottom: 0, paddingRight: 20, width: 0, height: 8)
+        walkRatingShadow.layer.cornerRadius = walkBarDim
+        
+        walkRatingView.anchor(top: walkRatingShadow.topAnchor, left: walkRatingShadow.leftAnchor, bottom: walkRatingShadow.bottomAnchor, right: walkRatingShadow.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 60, width: 0, height: 15)
+        
+        walkRatingView.layer.cornerRadius = walkBarDim
+        
+        
+        walkRatingTitleLabel.anchor(top: walkRatingView.bottomAnchor, left: walkRatingView.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        walkRatingLabel.anchor(top: nil, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 38, width: 0, height: 0)
+        walkRatingLabel.centerYAnchor.constraint(equalTo: walkRatingShadow.centerYAnchor).isActive = true
         
         /*
 
@@ -1841,7 +1910,7 @@ class CheckInCell: UICollectionViewCell {
 
        
         
-  /*
+
         
  
         
@@ -1854,13 +1923,13 @@ class CheckInCell: UICollectionViewCell {
 
         
 
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[background]-0-|", options: [], metrics: nil, views: ["background": analyticsBlock]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[background]-0-|", options: [], metrics: nil, views: ["background": analyticsBlock]))
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[actionBlock(200)]", options: [], metrics: nil, views: ["actionBlock": actionBlock]))
 
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-200-[actionBlock(125)]", options: [], metrics: nil, views: ["actionBlock": actionBlock]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[lineView]-0-|", options: [], metrics: nil, views: ["lineView": lineView]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[lineView]-0-|", options: [], metrics: nil, views: ["lineView": lineView]))
         
         
 
@@ -1869,17 +1938,17 @@ class CheckInCell: UICollectionViewCell {
         
         //spacerBlock.anchor(top: actionBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 140)
         
-        distanceBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
+       // distanceBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
         //distanceBackground.layer.cornerRadius = 15
         //distanceBackground.layer.borderWidth = 0.50
         //distanceBackground.layer.borderColor = UIColor.rgb(red: 200, green: 200, blue: 200).cgColor
         
-        stepsBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
+        //stepsBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
         //stepsBackground.layer.cornerRadius = 15
         //stepsBackground.layer.borderWidth = 0.50
         //stepsBackground.layer.borderColor = UIColor.rgb(red: 200, green: 200, blue: 200).cgColor
         
-        durationBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
+        //durationBackground.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 90, height: 40)
         //durationBackground.layer.cornerRadius = 15
         //checkinBackground.layer.borderWidth = 0.50
         //checkinBackground.layer.borderColor = UIColor.rgb(red: 200, green: 200, blue: 200).cgColor
@@ -1900,9 +1969,9 @@ class CheckInCell: UICollectionViewCell {
 
         
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[translucent]-0-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[translucent]-0-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[translucent(40)]-0-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[translucent(40)]-0-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[favoritesButton(50)]-0-[lineView(0.15)]-0-[background(220)]-0-[locationBlock(40)]-0-[translucent(48)]-0-|", options: [], metrics: nil, views: ["lineView": lineView, "background": postImageViewBackground,"locationBlock": userLocationBlock, "translucent": imageTranslucentBar, "favoritesButton": favoritesButton]))
         
@@ -1968,18 +2037,20 @@ class CheckInCell: UICollectionViewCell {
         imageTranslucentBar.addSubview(stackView2)
         
 
-        stackView2.anchor(top: imageTranslucentBar.topAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor , paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        stackView2.anchor(top: imageTranslucentBar.topAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor , paddingTop: 13, paddingLeft: 0, paddingBottom: 0, paddingRight: 40, width: 0, height: 0)
 
         stackView.anchor(top: stackView2.topAnchor, left: nil, bottom: nil, right: stackView2.leftAnchor , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
         
         
 
-        
-*/
+
         
         
         
         postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        mapViewLabel.anchor(top: postTimeLabel.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        mapViewLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         checkInLabel.anchor(top: postTimeLabel.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 0, height: 0)
         
@@ -2054,16 +2125,16 @@ class CheckInCell: UICollectionViewCell {
 
             switch type {
             case .custom:
-                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 14)
+                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 13)
                 
             case .hashtag:
                 
-                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 14)
+                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 13)
                 atts[NSAttributedString.Key.foregroundColor] = UIColor.rgb(red: 50, green: 80, blue: 150)
                 
             case .mention:
                 
-                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 14)
+                atts[NSAttributedString.Key.font] = UIFont(name: "HelveticaNeue", size: 13)
                 atts[NSAttributedString.Key.foregroundColor] = UIColor.rgb(red: 50, green: 80, blue: 150)
                 
             default: ()
@@ -2077,7 +2148,7 @@ class CheckInCell: UICollectionViewCell {
         captionLabel.customize { (label) in
             label.text = "\(caption)"
             label.customColor[customType] = UIColor.rgb(red: 0, green: 0, blue: 0)
-            label.font = UIFont.systemFont(ofSize: 14)
+            label.font = UIFont.systemFont(ofSize: 13)
             //label.font = UIFont(name: "Arial Rounded MT Bold", size: 10)
             label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
             captionLabel.numberOfLines = 3
@@ -2258,10 +2329,10 @@ class CheckInCell: UICollectionViewCell {
                                     
                                     
                                     self.checkInBackground.addSubview(self.actionLabel1)  // fortune
-                                    self.actionLabel1.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                                    self.actionLabel1.anchor(top: self.checkInBackground.topAnchor, left: self.checkInBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
                                     
                                     self.checkInBackground.addSubview(self.actionLabel2)  // favors
-                                    self.actionLabel2.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: self.checkInBackground.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 140, paddingBottom: 10, paddingRight: 0, width: 0, height: 0)
+                                    self.actionLabel2.anchor(top: nil, left: self.checkInBackground.leftAnchor, bottom: self.checkInBackground.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 140, paddingBottom: 15, paddingRight: 0, width: 0, height: 0)
                                     
                                     self.checkInBackground.addSubview(self.actionLabel3)  // the
                                     self.actionLabel3.anchor(top: self.checkInBackground.topAnchor, left: nil, bottom: nil, right: self.checkInBackground.rightAnchor, paddingTop: 100, paddingLeft: 0, paddingBottom: 0, paddingRight: 80, width: 0, height: 0)
@@ -2307,8 +2378,10 @@ class CheckInCell: UICollectionViewCell {
                         
                     } else {
                         
+                        self.timerStarted = true
                         print("Timer started set to true")
                     
+                    self.favoritesButton.alpha = 0
                     self.mapBackgroundView.alpha = 1
                     self.checkInBackground.alpha = 1
                     self.checkInBackground.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
@@ -2375,6 +2448,8 @@ class CheckInCell: UICollectionViewCell {
                                         self.logoImage1.alpha = 1
                                         self.logoImage2.alpha = 1
                                         self.logoImage3.alpha = 1
+                                        
+                                        self.favoritesButton.alpha = 1
                                     })
                                 }
                     
@@ -2451,7 +2526,7 @@ class CheckInCell: UICollectionViewCell {
                 numberOfComments = 0
             }
 
-            let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
+            let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font:  UIFont(name: "HelveticaNeue", size: 13)!])
             
             self.commentLabel.attributedText = attributedText
         }

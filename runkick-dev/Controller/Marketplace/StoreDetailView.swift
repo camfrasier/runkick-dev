@@ -105,7 +105,7 @@ class StoreDetailView: UIView {
     // Mark - Helper functions
     
     func animateInputView(targetPosition: CGFloat, completion: @escaping(Bool) -> ()) {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.60, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.frame.origin.y = targetPosition
         }, completion: completion)
     }
@@ -164,7 +164,7 @@ class StoreDetailView: UIView {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.clipsToBounds = true
-        // tableView.layer.cornerRadius = 10
+        tableView.layer.cornerRadius = 3
         tableView.separatorColor = .none
         //tableView.backgroundColor = UIColor.rgb(red: 181, green: 201, blue: 215)
         tableView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
@@ -217,6 +217,9 @@ class StoreDetailView: UIView {
             print("not expanded expanded to partially expanded")
         }
         */
+        
+        
+        // USE THIS METHOD TO SAVE LINES OF CODE
         print("THIS INITIAL STORE VIEW IS BEING SUMMONED")
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.frame.origin.y =  self.frame.origin.y - 380   //450

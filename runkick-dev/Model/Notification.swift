@@ -17,6 +17,7 @@ class Notification {
         case Follow
         case CommentMention
         case PostMention
+        case Message
         
         // created a protocol Printable so we are conforming here
         var description: String {
@@ -26,6 +27,7 @@ class Notification {
             case .Follow: return " started following you"
             case .CommentMention: return " mentioned you in a comment"
             case .PostMention: return " mentioned you in a post"
+            case .Message: return " messaged you!"
             }
         }
         
@@ -36,7 +38,8 @@ class Notification {
             case 2: self = .Follow
             case 3: self = .CommentMention
             case 4: self = .PostMention
-            default: self = .Like
+            case 5: self = .Message
+            default: self = .Message
             }
         }
     }
