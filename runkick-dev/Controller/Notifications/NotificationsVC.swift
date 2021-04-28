@@ -28,6 +28,12 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         return button
     }()
     
+    lazy var backButtonBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +56,7 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 60
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -74,16 +80,98 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
         //cell.layer.anchorPointZ = CGFloat(indexPath.row)
         
+        cell.selectionStyle = .none
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        /*
+        case 0: self = .Like
+        case 1: self = .Comment
+        case 2: self = .Follow
+        case 3: self = .CommentMention
+        case 4: self = .PostMention
+        case 5: self = .Message
+        default: self = .Message
+        */
         
         let notification = notifications[indexPath.row]
         
-        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
-        userProfileVC.user = notification.user
-        navigationController?.pushViewController(userProfileVC, animated: true)
+        print("THIs is the NOTITIFCATION TYPE \(notification.notificationType)")
+        if notification.notificationType == .Like {
+            // type like go to the post identified
+            
+            print("The notification type is a LIKE")
+            guard let post = notification.post else { return }
+            
+            
+            //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+            
+            let userSpecificFeedVC = UserSpecificFeedVC()
+            userSpecificFeedVC.viewSinglePost = true
+            userSpecificFeedVC.post = post
+            //navigationController?.pushViewController(userSpecificFeedVC, animated: true)
+
+            let nav = self.navigationController
+            DispatchQueue.main.async {
+                nav?.view.layer.add(CATransition().popFromRight(), forKey: nil)
+                nav?.pushViewController(userSpecificFeedVC, animated: false)
+            }
+        }
+            if notification.notificationType == .Comment {
+                
+                print("Go to the post comment that was mentioned")
+                
+            }
+            
+            if notification.notificationType == .Follow {
+                
+                let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+             
+                userProfileVC.user = notification.user
+                //navigationController?.pushViewController(userProfileVC, animated: true)
+                /*
+                let transition = CATransition()
+                transition.duration = 5
+                transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.default)
+                transition.type = CATransitionType.moveIn
+                transition.subtype = CATransitionSubtype.fromRight
+                */
+         
+                //self.view.window!.backgroundColor = UIColor.white
+                
+                //navigationController?.view.layer.add(transition, forKey: kCATransition)
+                //navigationController?.pushViewController(userProfileVC, animated: false)
+                
+  
+                // SUPER IMPORTANT FUNCTION!!!!
+                let nav = self.navigationController
+                DispatchQueue.main.async {
+                    self.view.window!.backgroundColor = UIColor.white
+                    nav?.view.layer.add(CATransition().popFromRight(), forKey: kCATransition)
+                    nav?.pushViewController(userProfileVC, animated: false)
+                }
+                
+            }
+            
+            if notification.notificationType == .CommentMention {
+                print("Go to the post comment that you were mentioned in ")
+            }
+            
+            if notification.notificationType == .PostMention {
+                
+                print("Go to the post comment that you were mentioned in")
+                
+            }
+            
+            if notification.notificationType == .Message {
+                
+                print("Go to the user specific messages")
+                
+            }
+            
+        
     }
     
     
@@ -260,13 +348,16 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
 
         
+
+    
+        
         let returnNavButton = UIButton(type: UIButton.ButtonType.system)
          
          returnNavButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
          
          //using this code to show the true image without rendering color
-         returnNavButton.setImage(UIImage(named:"cancelButtonHeavy")?.withRenderingMode(.alwaysOriginal), for: .normal)
-         returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15 )
+         returnNavButton.setImage(UIImage(named:"cancelButtonBackground")?.withRenderingMode(.alwaysOriginal), for: .normal)
+         returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 45, height: 45 )
         returnNavButton.addTarget(self, action: #selector(HomeVC.handleBackButton), for: .touchUpInside)
          returnNavButton.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
          returnNavButton.backgroundColor = .clear
@@ -278,15 +369,14 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
     // may not need this function in the future
     @objc func handleBackButton() {
        // _ = self.navigationController?.popViewController(animated: false)
-        
-        
-        let homeVC = HomeVC()
+
         let nav = self.navigationController
         DispatchQueue.main.async {
-            nav?.view.layer.add(CATransition().popFromTop(), forKey: nil)
+
+            self.view.window!.backgroundColor = UIColor.white
+            nav?.view.layer.add(CATransition().popFromLeft(), forKey: kCATransition)
             nav?.popViewController(animated: false)
         }
-        
     }
     
     @objc func dismissNotificationsView() {

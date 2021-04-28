@@ -144,8 +144,8 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .white //.red
         
-        collectionView.addSubview(titleLabel)
-        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //collectionView.addSubview(titleLabel)
+        //titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         tableView.addSubview(collectionView)
         collectionView.register(MarketplaceCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -167,19 +167,20 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         //return UIEdgeInsets(top: 60, left: 16, bottom: 0, right: 16)
-        return UIEdgeInsets(top: 60, left: 4, bottom: 0, right: 4)
+        return UIEdgeInsets(top: 5, left: 10, bottom: 0, right: 10)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        /*
-        //let width = (view.frame.width - 16) / 3
-        let width = (view.frame.width - 24) / 2
-        return CGSize(width: width, height: width)
-        */
         
-        let width = (view.frame.width - 12) / 2
-        return CGSize(width: width, height: width - 10)
+        let width = (view.frame.width - 40) / 3
+        //let width = (view.frame.width - 24) / 2
+        let height = width + (width / 1.7)
+        return CGSize(width: width, height: height)
+        
+        
+        //let width = (view.frame.width - 12) / 2
+        //return CGSize(width: width, height: width - 10)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -635,7 +636,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
                        
                     searchBarText.setTitle("Search restaurants and healthy cuisines", for: .normal)
                     searchBarText.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
-                    searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+                    searchBarText.titleLabel?.font = UIFont.systemFont(ofSize: 14)
                        searchBarText.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
                        searchBarText.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
                        searchBarText.backgroundColor = .clear

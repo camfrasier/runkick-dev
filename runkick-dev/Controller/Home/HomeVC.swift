@@ -212,7 +212,7 @@ class HomeVC: UIViewController, Alertable {
     let averagePaceLabel: UILabel = {
         let label = UILabel()
         label.text = "Avg Pace: None"
-        label.font = UIFont(name: "Arial Rounded MT Bold", size: 17)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
         label.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.numberOfLines = 0
@@ -304,8 +304,9 @@ class HomeVC: UIViewController, Alertable {
     lazy var destinationTextField: UITextField = {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
-        tf.attributedPlaceholder = NSAttributedString(string:"Where to?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)])
-        tf.font = UIFont.systemFont(ofSize: 18)
+        tf.attributedPlaceholder = NSAttributedString(string:"Where to Zilla?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)])
+        //tf.font = UIFont.systemFont(ofSize: 15)
+        tf.font = UIFont(name: "ArialRoundedMTBold", size: 15)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
         tf.layer.cornerRadius = 0 //25
@@ -2607,7 +2608,9 @@ class HomeVC: UIViewController, Alertable {
         
         let nav = self.navigationController
         DispatchQueue.main.async {
-            nav?.view.layer.add(CATransition().popFromBottom(), forKey: nil)
+            
+            self.view.window!.backgroundColor = UIColor.white
+            nav?.view.layer.add(CATransition().popFromRight(), forKey: kCATransition)
             nav?.pushViewController(notificationsVC, animated: false)
         }
         

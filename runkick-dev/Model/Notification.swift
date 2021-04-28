@@ -27,7 +27,7 @@ class Notification {
             case .Follow: return " started following you"
             case .CommentMention: return " mentioned you in a comment"
             case .PostMention: return " mentioned you in a post"
-            case .Message: return " messaged you!"
+            case .Message: return " messaged you! Message back"
             }
         }
         

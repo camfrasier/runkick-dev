@@ -197,7 +197,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // Set the user in header.
         header.user = self.user
         //navigationItem.title = user?.username
-        navigationItem.title = user?.firstname
+        navigationItem.title = user?.username
         //navigationItem.title = "Hi \(String(describing: user?.firstname))"
 
         return header
@@ -365,26 +365,37 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         //self.navigationItem.rightBarButtonItems = [barSearchFriendsIconButton, barSearchFriendsButton]
         
         
-        /*
-        // custom back button
-             
-         let returnNavButton = UIButton(type: UIButton.ButtonType.custom)
+        let returnNavButton = UIButton(type: UIButton.ButtonType.system)
          
          returnNavButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
          
          //using this code to show the true image without rendering color
-         returnNavButton.setImage(UIImage(named:"whiteCircleLeftArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
-         returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
-        returnNavButton.addTarget(self, action: #selector(SearchVC.handleBackButton), for: .touchUpInside)
-         returnNavButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
+         returnNavButton.setImage(UIImage(named:"cancelButtonBackground")?.withRenderingMode(.alwaysOriginal), for: .normal)
+         returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 45, height: 45 )
+        returnNavButton.addTarget(self, action: #selector(HomeVC.handleBackButton), for: .touchUpInside)
+         returnNavButton.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
          returnNavButton.backgroundColor = .clear
              
          let notificationBarBackButton = UIBarButtonItem(customView: returnNavButton)
          self.navigationItem.leftBarButtonItems = [notificationBarBackButton]
-        */
          
     }
     
+    
+    
+     @objc func handleBackButton() {
+        // _ = self.navigationController?.popViewController(animated: false)
+         
+
+        let nav = self.navigationController
+        DispatchQueue.main.async {
+            self.view.window!.backgroundColor = UIColor.white
+            nav?.view.layer.add(CATransition().popFromLeft(), forKey: kCATransition)
+            nav?.popViewController(animated: false)
+        }
+         
+     }
+     
     func setAdminNavigationBar(for header: UserProfileHeader) {
 
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
@@ -471,10 +482,11 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
 
     }
     
+    /*
     @objc func handleBackButton() {
         _ = self.navigationController?.popViewController(animated: true)
     }
-    
+    */
     @objc func handleSearchFriends() {
         
         let searchVC = SearchVC()

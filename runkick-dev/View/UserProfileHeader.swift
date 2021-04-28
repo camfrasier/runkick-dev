@@ -703,18 +703,19 @@ class UserProfileHeader: UICollectionViewCell {
 
     func configureViewComponents() {
         
+        /*
         let profileCircleDimension: CGFloat = 95
         addSubview(gradientProfileView)
         gradientProfileView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileCircleDimension, height: profileCircleDimension)
         gradientProfileView.layer.cornerRadius = profileCircleDimension / 2
         gradientProfileView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        */
         
         let profileDimension: CGFloat = 90
-        gradientProfileView.addSubview(profileImageView)
-        profileImageView.anchor(top: gradientProfileView.topAnchor, left: gradientProfileView.leftAnchor, bottom: nil, right: nil, paddingTop: 2.5, paddingLeft: 2.5, paddingBottom: 0, paddingRight: 0, width: profileDimension, height: profileDimension)
-        profileImageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        profileImageView.layer.borderWidth = 2
+        addSubview(profileImageView)
+        profileImageView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileDimension, height: profileDimension)
         profileImageView.layer.cornerRadius = profileDimension / 2
+        profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         addSubview(usernameLabel)
         usernameLabel.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -1281,7 +1282,7 @@ class UserProfileHeader: UICollectionViewCell {
 
                                 // if any store identifier matches any of the admin posts that have been put in place, then update the below values
                                 if storeIdentifier == storeId {
-                                    print("THIS IDENTIFIER MATCHES\(storeIdentifier)")
+                                    //print("THIS IDENTIFIER MATCHES\(storeIdentifier)")
                                     
                                     DataService.instance.REF_ADMIN_STORE_POSTS.child(key).updateChildValues(["lat" : sendLat,
                                     "long" : sendLong,

@@ -363,8 +363,8 @@ class UserSpecificFeedVC: UIViewController, UserSpecificFeedCellDelegate, UIScro
              returnNavButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
              
              //using this code to show the true image without rendering color
-             returnNavButton.setImage(UIImage(named:"cancelButtonHeavy")?.withRenderingMode(.alwaysOriginal), for: .normal)
-             returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15 )
+             returnNavButton.setImage(UIImage(named:"backArrowBackground")?.withRenderingMode(.alwaysOriginal), for: .normal)
+             returnNavButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 45, height: 45 )
             returnNavButton.addTarget(self, action: #selector(HomeVC.handleBackButton), for: .touchUpInside)
              returnNavButton.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
              returnNavButton.backgroundColor = .clear

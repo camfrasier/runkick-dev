@@ -53,11 +53,21 @@ class MarketplaceCell: UICollectionViewCell {
     let categoryNameLabel: UILabel = {
         let label = UILabel()
         //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.textColor = UIColor.rgb(red: 60, green: 60, blue: 60)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         //label.font = UIFont(name: "HelveticaNeue", size: 15)
-        label.font = UIFont(name: "PingFangTC-Semibold", size: 16)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         //label.font = UIFont.boldSystemFont(ofSize: 20)
         label.text = "Sweet Green"
+        return label
+    }()
+    
+    let descriptionLabel: UILabel = {
+        let label = UILabel()
+        //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.textColor = UIColor.rgb(red: 110, green: 110, blue: 110)
+        label.font = UIFont(name: "HelveticaNeue", size: 11)
+        label.text = "This will be a list of items under each category. Vegan, etc."
+        label.numberOfLines = 0
         return label
     }()
     
@@ -69,7 +79,12 @@ class MarketplaceCell: UICollectionViewCell {
         
         view.addSubview(categoryNameLabel)
         //categoryNameLabel.center(inView: view) // invoking our extension to center the view
-        categoryNameLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        categoryNameLabel.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        view.addSubview(descriptionLabel)
+        descriptionLabel.anchor(top: categoryNameLabel.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 2, paddingBottom: 5, paddingRight: 2, width: 0, height: 0)
+        
         return view
     }()
     
@@ -104,7 +119,7 @@ class MarketplaceCell: UICollectionViewCell {
         //blackView.alpha = 0.50
         
         imageView.addSubview(nameContainerView)
-        nameContainerView.anchor(top: nil, left: imageView.leftAnchor, bottom: imageView.bottomAnchor, right: imageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 40) // because we gave the image view 32 units of space above
+        nameContainerView.anchor(top: nil, left: imageView.leftAnchor, bottom: imageView.bottomAnchor, right: imageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70) // because we gave the image view 32 units of space above
         nameContainerView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //nameContainerView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
         //nameContainerView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
