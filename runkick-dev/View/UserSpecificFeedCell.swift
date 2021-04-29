@@ -803,7 +803,7 @@ class UserSpecificFeedCell: UICollectionViewCell {
            
            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
            
-           addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[postImage]-20-|", options: [], metrics: nil, views: ["postImage": postImageView]))
+           addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[postImage]-10-|", options: [], metrics: nil, views: ["postImage": postImageView]))
            
            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
            

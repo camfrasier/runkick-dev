@@ -33,6 +33,7 @@ class FeedCell: UICollectionViewCell {
             Database.fetchUser(with: ownerUid) { (user) in  // In order to grab the photo of the correct post owner.
                 
                 self.usernameButton.setTitle(user.username, for: .normal)
+                self.usernameCaption.setTitle(user.username, for: .normal)
                 self.firstnameButton.setTitle(user.firstname, for: .normal)
                 self.lastnameButton.setTitle(user.lastname, for: .normal)
                 self.configurePostCaption(user: user)
@@ -122,9 +123,10 @@ class FeedCell: UICollectionViewCell {
     
     let locationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        label.textAlignment = .center
+        //label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.textAlignment = .left
         label.text = "Union Market DC"
         return label
     } ()
@@ -155,6 +157,17 @@ class FeedCell: UICollectionViewCell {
     }()
     */
     lazy var usernameButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
+        let button = UIButton(type: .system)
+        button.setTitle("Username", for: .normal)
+        button.titleLabel?.font =  UIFont(name: "ArialRoundedMTBold", size: 13)
+        //button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
+        button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    lazy var usernameCaption: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .system)
         button.setTitle("Username", for: .normal)
         button.titleLabel?.font =  UIFont(name: "ArialRoundedMTBold", size: 13)
@@ -660,6 +673,7 @@ class FeedCell: UICollectionViewCell {
         addSubview(userLocationBlock)
         userLocationBlock.translatesAutoresizingMaskIntoConstraints = false
         
+        
         userLocationBlock.addSubview(locationButton)
         locationButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -678,15 +692,18 @@ class FeedCell: UICollectionViewCell {
         //lineView.translatesAutoresizingMaskIntoConstraints = false
         
         // profile attributes and constraints
-        imageTranslucentBar.addSubview(profileImageView)
+        userLocationBlock.addSubview(profileImageView)
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         
         // username attributes and constraints
-        imageTranslucentBar.addSubview(usernameButton)
+        userLocationBlock.addSubview(usernameButton)
         usernameButton.translatesAutoresizingMaskIntoConstraints = false
         
+        //captionBlock.addSubview(usernameCaption)
+        //usernameCaption.translatesAutoresizingMaskIntoConstraints = false
+        
         // separator attributes and constraints
-        imageTranslucentBar.addSubview(circleDotView)
+        userLocationBlock.addSubview(circleDotView)
         circleDotView.translatesAutoresizingMaskIntoConstraints = false
         
         // date and time attributes and constraints
@@ -694,7 +711,7 @@ class FeedCell: UICollectionViewCell {
         postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // following/follower attributes and constraints
-        imageTranslucentBar.addSubview(followFollowingLabel)
+        userLocationBlock.addSubview(followFollowingLabel)
         followFollowingLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // caption block attributes and constraints
@@ -717,16 +734,16 @@ class FeedCell: UICollectionViewCell {
  
         
         
-        imageTranslucentBar.addSubview(newCommentBubble)
+        userLocationBlock.addSubview(newCommentBubble)
         newCommentBubble.translatesAutoresizingMaskIntoConstraints = false
 
-        imageTranslucentBar.addSubview(commentLabel)
+        userLocationBlock.addSubview(commentLabel)
         commentLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        imageTranslucentBar.addSubview(newLikeHeart)
+        userLocationBlock.addSubview(newLikeHeart)
         newLikeHeart.translatesAutoresizingMaskIntoConstraints = false
 
-        imageTranslucentBar.addSubview(likesLabel)
+        userLocationBlock.addSubview(likesLabel)
         likesLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -736,13 +753,13 @@ class FeedCell: UICollectionViewCell {
         
         
     
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-27-[imageBlock]-0-[locationBlock(26)]-5-[translucent(40)]-0-[captionBlock(50)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-27-[imageBlock]-0-[locationBlock(32)]-5-[translucent(0)]-4-[captionBlock(50)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[imageBlock]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[captionBlock]-25-|", options: [], metrics: nil, views: ["captionBlock": captionBlock]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[captionBlock]-15-|", options: [], metrics: nil, views: ["captionBlock": captionBlock]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-25-[translucent]-25-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[translucent]-15-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[locationBlock]-10-|", options: [], metrics: nil, views: ["locationBlock": userLocationBlock]))
         
@@ -760,7 +777,7 @@ class FeedCell: UICollectionViewCell {
         
         // variable constraints inside blocks
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[caption]-15-|", options: [], metrics: nil, views: ["caption": captionLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[caption]-15-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[caption]", options: [], metrics: nil, views: ["caption": captionLabel]))
         
@@ -770,13 +787,15 @@ class FeedCell: UICollectionViewCell {
 
         profileImageView.layer.cornerRadius = 30 / 2
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[marker(12)]-4-[location]", options: [], metrics: nil, views: ["marker": locationButton,"location": locationLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[location]", options: [], metrics: nil, views: ["location": locationLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-16-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profileImage(30)]-10-[location]-4-[marker(8)]", options: [], metrics: nil, views: ["profileImage": profileImageView, "marker": locationButton, "location": locationLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[postImage]-20-|", options: [], metrics: nil, views: ["postImage": postImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-0-[location]", options: [], metrics: nil, views: ["username": usernameButton, "location": locationLabel]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-0-[marker(12)]", options: [], metrics: nil, views: ["username": usernameButton, "marker": locationButton]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[postImage]-10-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
@@ -788,7 +807,7 @@ class FeedCell: UICollectionViewCell {
 
         // anchored variable constraints
         
-        usernameButton.anchor(top: imageTranslucentBar.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 16)
+        usernameButton.anchor(top: userLocationBlock.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 16)
         
         circleDotView.anchor(top: usernameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
 
@@ -796,9 +815,9 @@ class FeedCell: UICollectionViewCell {
         
         postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        newLikeHeart.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 17, height: 15)
+        newLikeHeart.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 14)
         
-        newCommentBubble.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 17, height: 16)
+        newCommentBubble.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 14)
         
 
         
@@ -821,7 +840,7 @@ class FeedCell: UICollectionViewCell {
         userLocationBlock.addSubview(stackView2)
         
 
-        stackView2.anchor(top: userLocationBlock.topAnchor, left: nil, bottom: nil, right: userLocationBlock.rightAnchor , paddingTop: 17, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        stackView2.anchor(top: userLocationBlock.topAnchor, left: nil, bottom: nil, right: userLocationBlock.rightAnchor , paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
 
         stackView.anchor(top: stackView2.topAnchor, left: nil, bottom: nil, right: stackView2.leftAnchor , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
     }
@@ -869,16 +888,16 @@ class FeedCell: UICollectionViewCell {
             return atts
         }
         
-        //guard let usernameCaption = usernameButton.titleLabel?.text else { return }
+        //guard let usernameCapBtn = usernameCaption.titleLabel else { return }
         
         // setting max number of lines shown under the caption
         // to adjust the number of characters go to UpoloadPostVC
         captionLabel.customize { (label) in
             label.text = "\(caption)"
-            label.customColor[customType] = UIColor.rgb(red: 80, green: 80, blue: 80)
+            label.customColor[customType] = UIColor.rgb(red: 40, green: 40, blue: 40)
             //label.font = UIFont.systemFont(ofSize: 13)
             label.font = UIFont(name: "HelveticaNeue", size: 13)
-            label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+            label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
             captionLabel.numberOfLines = 3
         
         }

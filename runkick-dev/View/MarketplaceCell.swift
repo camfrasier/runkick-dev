@@ -75,7 +75,8 @@ class MarketplaceCell: UICollectionViewCell {
     lazy var nameContainerView: UIView = {
         let view = UIView()
         //view.backgroundColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1)
-        view.backgroundColor = .blue
+        view.backgroundColor = .white
+        //view.layer.cornerRadius = 3
         
         view.addSubview(categoryNameLabel)
         //categoryNameLabel.center(inView: view) // invoking our extension to center the view
@@ -105,7 +106,7 @@ class MarketplaceCell: UICollectionViewCell {
     
     func configureViewComponents() {
         // round edges in cell
-        self.layer.cornerRadius = 0
+        self.layer.cornerRadius = 3
         
         // matches the imageview boundary radius to cell for a rounded view
         self.clipsToBounds = true

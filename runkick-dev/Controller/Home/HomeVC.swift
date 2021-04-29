@@ -304,7 +304,7 @@ class HomeVC: UIViewController, Alertable {
     lazy var destinationTextField: UITextField = {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
-        tf.attributedPlaceholder = NSAttributedString(string:"Where to Zilla?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)])
+        tf.attributedPlaceholder = NSAttributedString(string:"Where to Zilla?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
         //tf.font = UIFont.systemFont(ofSize: 15)
         tf.font = UIFont(name: "ArialRoundedMTBold", size: 15)
         tf.keyboardType = UIKeyboardType.default
@@ -2016,6 +2016,7 @@ class HomeVC: UIViewController, Alertable {
                         
                         guard let points = store?.points else { return }
                         storeFrontAnnotation.subtitle = String(points)
+                        
                         
                         self.mapView.addAnnotation(storeFrontAnnotation)
                         
@@ -3952,6 +3953,8 @@ extension HomeVC: MKMapViewDelegate {
         
         let imageView = UIImageView()
         let hotImageView = UIImageView()
+        
+       
 
 
         let annotationIdentifier = "MyCustomAnnotation"
@@ -3964,8 +3967,8 @@ extension HomeVC: MKMapViewDelegate {
 
         if annotationView == nil {
             
-            imageView.frame = CGRect(x: 40, y: 9, width: 11, height: 14 ) // lightening bolt
-            hotImageView.frame = CGRect(x: 39, y: 10.5, width: 11, height: 10.5)   // favorites heart
+           //imageView.frame = CGRect(x: 40, y: 9, width: 11, height: 14 ) // lightening bolt
+            hotImageView.frame = CGRect(x: -4, y: -4, width: 15, height: 15)   // green dot
             
           annotationView = CKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
           if case let annotationView as CKAnnotationView = annotationView {
@@ -4036,12 +4039,13 @@ extension HomeVC: MKMapViewDelegate {
                 
 
                 //imageView.image = UIImage(named: "like_selected-red")
+                //roundedRecMarkerHeartUnselected
                 
                 switch pointVal! {
                 case 1 ... 249:
                     print("low range")
-                    let pinImage = UIImage(named: "roundedRecMarker")
-                    let size = CGSize(width: 52, height: 32)
+                    let pinImage = UIImage(named: "roundedRecMarkerHeartUnselected")
+                    let size = CGSize(width: 62, height: 32)
                     UIGraphicsBeginImageContextWithOptions(size, false, 10)
                     pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
                     let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -4052,18 +4056,24 @@ extension HomeVC: MKMapViewDelegate {
                     // when zooming in and out some annotations will disappear accordingly
                     //annotationView.displayPriority = .defaultHigh
 
-                    hotImageView.image = UIImage(named: "solidHeartWalkzilla")
-                    //imageView.image = UIImage(named: "twentyFivePercentBar")
                     
                     
                 case 250 ... 499:
                     print("mid range")
                     //hotImageView.image = UIImage(named: "greenDot")
-                 hotImageView.image = UIImage(named: "solidHeartWalkzilla")   // this is used for favorites
-                   
+                            let pinImage = UIImage(named: "roundedRecMarkerHeartUnselected")
+                            let size = CGSize(width: 62, height: 32)
+                            UIGraphicsBeginImageContextWithOptions(size, false, 10)
+                            pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                            UIGraphicsEndImageContext()
+                    
+                            annotationView.image = resizedImage
+                    
+                    
                 case 500 ... 749:
                     print("high mid range, hot deal")
-                    //imageView.image = UIImage(named: "seventyFivePercentBar")
+            
                     
                     let pinImage = UIImage(named: "roundedRecMarkerShort")
                     let size = CGSize(width: 52, height: 31)
@@ -4074,16 +4084,22 @@ extension HomeVC: MKMapViewDelegate {
             
                     annotationView.image = resizedImage
                     
-                    //hotImageView.image = UIImage(named: "solidHeartWalkzilla")
-                    
-                    //annotationView.addSubview(hotImageView)
     
                 case 750 ... 1000:
                     print("high range, hot deal")
-                    imageView.image = UIImage(named: "boltWalkzillaRed")
-     
-                    //hotImageView.image = UIImage(named: "greenDot")
                     
+                    
+                            let pinImage = UIImage(named: "roundedRecMarkerHeart")
+                            let size = CGSize(width: 62, height: 32)
+                            UIGraphicsBeginImageContextWithOptions(size, false, 10)
+                            pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                            UIGraphicsEndImageContext()
+                    
+                            annotationView.image = resizedImage
+      
+                    hotImageView.image = UIImage(named: "greenDot")
+                
                     
                 default:
                     print("Integer value not within range")
@@ -4138,7 +4154,7 @@ extension HomeVC: MKMapViewDelegate {
                 annotationView?.transform = .identity
             }
      
-        annotationView?.addSubview(imageView)
+        //annotationView?.addSubview(imageView)
         annotationView?.addSubview(hotImageView)
   
         return annotationView

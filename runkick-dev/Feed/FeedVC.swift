@@ -471,10 +471,10 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
                 
                           if let captionText = posts[indexPath.item].type {
                  
-                                  print("the post type is \(postType) and we got here")
+                                  //print("the post type is \(postType) and we got here")
                               let rect = NSString(string: captionText).boundingRect(with: CGSize(width: view.frame.width, height: 1000), options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
                 
-                                print("the height value that is added for \(captionText) should be\(rect.height)")
+                               // print("the height value that is added for \(captionText) should be\(rect.height)")
                                 //return CGSize(width: view.frame.width, height: (view.frame.height - 90) + rect.height)
                             return CGSize(width: checkInWidth, height: checkInHeight)
                               }

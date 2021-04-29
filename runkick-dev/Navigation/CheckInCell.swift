@@ -178,8 +178,8 @@ class CheckInCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         //button.layer.borderWidth = 0.75
         //button.layer.borderColor = UIColor.rgb(red: 80, green: 80, blue: 80).cgColor
-        button.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        //button.backgroundColor = UIColor.airBnBDeepRed()
+        //button.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        button.backgroundColor = UIColor.statusBarGreenDeep()
         button.titleLabel?.font =  UIFont(name: "ArialRoundedMTBold", size: 15)
         button.setTitle("View Menus", for: .normal)
         button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
@@ -208,10 +208,10 @@ class CheckInCell: UICollectionViewCell {
     
     let locationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        //label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        label.textAlignment = .center
+        //label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.textAlignment = .left
         label.text = "Union Market DC"
         return label
     } ()
@@ -451,7 +451,7 @@ class CheckInCell: UICollectionViewCell {
     
     lazy var followFollowingLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "follow"
         label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         
@@ -462,6 +462,8 @@ class CheckInCell: UICollectionViewCell {
         label.addGestureRecognizer(followFollowingTap)
         return label
     } ()
+    
+
     
     let circleDotView: UIView = {
         let view = UIView()
@@ -552,9 +554,9 @@ class CheckInCell: UICollectionViewCell {
     lazy var usernameButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
         let button = UIButton(type: .system)
         button.setTitle("Username", for: .normal)
-        button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 15)
+        button.titleLabel?.font =  UIFont(name: "ArialRoundedMTBold", size: 13)
         //button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.setTitleColor(UIColor.rgb(red: 100, green: 100, blue: 100), for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
         button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
     }()
@@ -1607,11 +1609,14 @@ class CheckInCell: UICollectionViewCell {
         
         addSubview(imageTranslucentBar)
         imageTranslucentBar.translatesAutoresizingMaskIntoConstraints = false
-        //imageTranslucentBar.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+   
         
-        
-        imageTranslucentBar.addSubview(userLocationBlock)
+        addSubview(userLocationBlock)
         userLocationBlock.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
+        
      
         
         userLocationBlock.addSubview(locationButton)
@@ -1622,7 +1627,7 @@ class CheckInCell: UICollectionViewCell {
         
     
         
-        addSubview(profileImageBackground)
+        userLocationBlock.addSubview(profileImageBackground)
         profileImageBackground.translatesAutoresizingMaskIntoConstraints = false
         
         // profile attributes and constraints
@@ -1632,7 +1637,7 @@ class CheckInCell: UICollectionViewCell {
         
         
         // separator attributes and constraints
-        addSubview(circleDotView)
+        userLocationBlock.addSubview(circleDotView)
         circleDotView.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -1647,7 +1652,7 @@ class CheckInCell: UICollectionViewCell {
         circleDotView1.translatesAutoresizingMaskIntoConstraints = false
          */
          // following/follower attributes and constraints
-          addSubview(followFollowingLabel)
+        userLocationBlock.addSubview(followFollowingLabel)
          followFollowingLabel.translatesAutoresizingMaskIntoConstraints = false
        
 
@@ -1659,34 +1664,35 @@ class CheckInCell: UICollectionViewCell {
         
         
 
-        userCommentBlock.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 45)
+        userCommentBlock.anchor(top: nil, left: mapBackgroundView.leftAnchor, bottom: bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 50, paddingRight: 0, width: 0, height: 45)
         //userCommentBlock.backgroundColor = .red
 
         
         
        // userLocationBlock.anchor(top: nil, left: leftAnchor, bottom: userCommentBlock.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 28)
 
+        userLocationBlock.anchor(top: mapBackgroundView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 32)
         
-        imageTranslucentBar.anchor(top: nil, left: leftAnchor, bottom: profileImageBackground.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 140)
+        imageTranslucentBar.anchor(top: userLocationBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 80)
         
-        userLocationBlock.anchor(top: mapBackgroundView.bottomAnchor, left: mapBackgroundView.leftAnchor, bottom: nil, right: mapBackgroundView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 34)
+
         
-        profileImageBackground.anchor(top: nil, left: leftAnchor, bottom: userCommentBlock.topAnchor, right: nil, paddingTop: 0, paddingLeft: 40, paddingBottom: 5, paddingRight: 0, width: 30, height: 30)
+        profileImageBackground.anchor(top: userLocationBlock.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
         
         let profileImageDimension = CGFloat(30)
         profileImageView.anchor(top: profileImageBackground.topAnchor, left: nil, bottom: profileImageBackground.bottomAnchor, right: profileImageBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         profileImageView.layer.cornerRadius = profileImageDimension / 2
         
-        usernameButton.anchor(top: nil, left: profileImageBackground.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        usernameButton.centerYAnchor.constraint(equalTo: profileImageBackground.centerYAnchor).isActive = true
+        usernameButton.anchor(top: userLocationBlock.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 16)
+        //usernameButton.centerYAnchor.constraint(equalTo: profileImageBackground.centerYAnchor).isActive = true
         
 
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[marker(12)]-4-[location]", options: [], metrics: nil, views: ["marker": locationButton,"location": locationLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profileImage(30)]-10-[location]-4-[marker(8)]", options: [], metrics: nil, views: ["profileImage": profileImageView, "marker": locationButton, "location": locationLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[location]", options: [], metrics: nil, views: ["location": locationLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-0-[location]", options: [], metrics: nil, views: ["username": usernameButton, "location": locationLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[marker(16)]", options: [], metrics: nil, views: ["marker": locationButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-0-[marker(12)]", options: [], metrics: nil, views: ["username": usernameButton, "marker": locationButton]))
         
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(27)]-28-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
@@ -1706,7 +1712,7 @@ class CheckInCell: UICollectionViewCell {
         
 
         
-        checkInBackground.anchor(top: topAnchor, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 27, paddingLeft: 20, paddingBottom: 5, paddingRight: 20, width: 0, height: 0)
+        checkInBackground.anchor(top: topAnchor, left: leftAnchor, bottom: userLocationBlock.topAnchor, right: rightAnchor, paddingTop: 37, paddingLeft: 30, paddingBottom: 15, paddingRight: 30, width: 0, height: 200)
         
         checkInBackground.addSubview(walkzillaLogo)
         walkzillaLogo.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 65)
@@ -1716,7 +1722,7 @@ class CheckInCell: UICollectionViewCell {
         checkInBackground.addSubview(favoritesButton)
         favoritesButton.translatesAutoresizingMaskIntoConstraints = false
         
-        mapBackgroundView.anchor(top: topAnchor, left: leftAnchor, bottom: imageTranslucentBar.topAnchor, right: rightAnchor, paddingTop: 27, paddingLeft: 20, paddingBottom: 5, paddingRight: 20, width: 0, height: 0)
+        mapBackgroundView.anchor(top: topAnchor, left: leftAnchor, bottom: userLocationBlock.topAnchor, right: rightAnchor, paddingTop: 37, paddingLeft: 30, paddingBottom: 15, paddingRight: 30, width: 0, height: 200)
      
         
         mapImageView.anchor(top: mapBackgroundView.topAnchor, left: mapBackgroundView.leftAnchor, bottom: mapBackgroundView.bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -1732,10 +1738,10 @@ class CheckInCell: UICollectionViewCell {
          // addSubview(distanceBackground)
           //distanceBackground.translatesAutoresizingMaskIntoConstraints = false
         
-          addSubview(distanceLabel)
+        imageTranslucentBar.addSubview(distanceLabel)
           distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(distanceTitleLabel)
+        imageTranslucentBar.addSubview(distanceTitleLabel)
         distanceTitleLabel.translatesAutoresizingMaskIntoConstraints = false
           
          // addSubview(distanceMarker)
@@ -1744,9 +1750,9 @@ class CheckInCell: UICollectionViewCell {
           //addSubview(stepsBackground)
           //stepsBackground.translatesAutoresizingMaskIntoConstraints = false
           
-          addSubview(stepsLabel)
+        imageTranslucentBar.addSubview(stepsLabel)
           translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stepsTitleLabel)
+        imageTranslucentBar.addSubview(stepsTitleLabel)
        stepsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -1757,11 +1763,11 @@ class CheckInCell: UICollectionViewCell {
          // addSubview(durationBackground)
           //durationBackground.translatesAutoresizingMaskIntoConstraints = false
           
-          addSubview(durationLabel)
+        imageTranslucentBar.addSubview(durationLabel)
           durationLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(timeTitleLabel)
-        timeTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        imageTranslucentBar.addSubview(timeTitleLabel)
+       translatesAutoresizingMaskIntoConstraints = false
           
          // addSubview(durationMarker)
          // durationMarker.translatesAutoresizingMaskIntoConstraints = false
@@ -1770,8 +1776,8 @@ class CheckInCell: UICollectionViewCell {
           //addSubview(calorieBackground)
           //calorieBackground.translatesAutoresizingMaskIntoConstraints = false
         
-          addSubview(calorieLabel)
-          calorieLabel.translatesAutoresizingMaskIntoConstraints = false
+        imageTranslucentBar.addSubview(calorieLabel)
+       calorieLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(calorieTitleLabel)
         calorieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
           
@@ -1796,7 +1802,7 @@ class CheckInCell: UICollectionViewCell {
         
        // durationMarker.anchor(top: nil, left: imageTranslucentBar.leftAnchor, bottom: imageTranslucentBar.topAnchor, right: nil, paddingTop: 0, paddingLeft: 140, paddingBottom: 30, paddingRight: 0, width: 17, height: 17)
         
-        timeTitleLabel.anchor(top: userLocationBlock.bottomAnchor, left: imageTranslucentBar.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 35, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        timeTitleLabel.anchor(top: imageTranslucentBar.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 35, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         durationLabel.anchor(top: nil, left: nil, bottom: timeTitleLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         durationLabel.centerXAnchor.constraint(equalTo: timeTitleLabel.centerXAnchor).isActive = true
@@ -1828,7 +1834,7 @@ class CheckInCell: UICollectionViewCell {
         stepsLabel.anchor(top: nil, left: nil, bottom: stepsTitleLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         stepsLabel.centerXAnchor.constraint(equalTo: stepsTitleLabel.centerXAnchor).isActive = true
         
-        
+        /*
         imageTranslucentBar.addSubview(walkRatingShadow)
         walkRatingShadow.translatesAutoresizingMaskIntoConstraints = false
         
@@ -1858,21 +1864,26 @@ class CheckInCell: UICollectionViewCell {
         walkRatingLabel.anchor(top: nil, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 38, width: 0, height: 0)
         walkRatingLabel.centerYAnchor.constraint(equalTo: walkRatingShadow.centerYAnchor).isActive = true
         
-        /*
+    */
+ 
+ 
+ 
+ 
+        
 
-         imageTranslucentBar.addSubview(newCommentBubble)
+         userLocationBlock.addSubview(newCommentBubble)
          newCommentBubble.translatesAutoresizingMaskIntoConstraints = false
 
-         imageTranslucentBar.addSubview(commentLabel)
+         userLocationBlock.addSubview(commentLabel)
          commentLabel.translatesAutoresizingMaskIntoConstraints = false
          
-         imageTranslucentBar.addSubview(newLikeHeart)
+         userLocationBlock.addSubview(newLikeHeart)
          newLikeHeart.translatesAutoresizingMaskIntoConstraints = false
 
-         imageTranslucentBar.addSubview(likesLabel)
+         userLocationBlock.addSubview(likesLabel)
          likesLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        */
+        
         
         
         /*
@@ -2025,7 +2036,7 @@ class CheckInCell: UICollectionViewCell {
         stackView.alignment = .center
         stackView.spacing = 5
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        imageTranslucentBar.addSubview(stackView)
+        userLocationBlock.addSubview(stackView)
         
         let stackView2 = UIStackView(arrangedSubviews: [newCommentBubble, commentLabel])
         
@@ -2034,10 +2045,10 @@ class CheckInCell: UICollectionViewCell {
         stackView2.alignment = .center
         stackView2.spacing = 5
         stackView2.translatesAutoresizingMaskIntoConstraints = false
-        imageTranslucentBar.addSubview(stackView2)
+        userLocationBlock.addSubview(stackView2)
         
 
-        stackView2.anchor(top: imageTranslucentBar.topAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor , paddingTop: 13, paddingLeft: 0, paddingBottom: 0, paddingRight: 40, width: 0, height: 0)
+        stackView2.anchor(top: userLocationBlock.topAnchor, left: nil, bottom: nil, right: userLocationBlock.rightAnchor , paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 25, width: 0, height: 0)
 
         stackView.anchor(top: stackView2.topAnchor, left: nil, bottom: nil, right: stackView2.leftAnchor , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
         
@@ -2058,11 +2069,9 @@ class CheckInCell: UICollectionViewCell {
         
         
         
-        circleDotView.anchor(top: nil, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
-        circleDotView.centerYAnchor.constraint(equalTo: self.profileImageBackground.centerYAnchor).isActive = true
+        circleDotView.anchor(top: usernameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
         
-        followFollowingLabel.anchor(top: nil, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        followFollowingLabel.centerYAnchor.constraint(equalTo: self.profileImageBackground.centerYAnchor).isActive = true
+        followFollowingLabel.anchor(top: usernameButton.topAnchor, left: circleDotView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
          //circleDotView.anchor(top: postTimeLabel.topAnchor, left: postTimeLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
 
@@ -2177,12 +2186,12 @@ class CheckInCell: UICollectionViewCell {
              if followed {
                  self.followFollowingLabel.text = "following"
                 //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 15)
-                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 15)
+                self.followFollowingLabel.font = UIFont(name: "HelveticaNeue", size: 13)
                 
                 self.circleDotView.backgroundColor =  UIColor.rgb(red: 0, green: 0, blue: 0)
              } else {
                  self.followFollowingLabel.text = "follow"
-                //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 16)
+                //self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
                 self.followFollowingLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15)
                 self.circleDotView.backgroundColor =  UIColor.rgb(red: 0, green: 0, blue: 0)
              }
@@ -2300,6 +2309,7 @@ class CheckInCell: UICollectionViewCell {
                     
                     case 3: numberOfLogos = 3
                     
+                    /*
 
                     // var i = 1
                         
@@ -2467,6 +2477,8 @@ class CheckInCell: UICollectionViewCell {
                             })
                         }
                     }
+ 
+ */
                         print("choose function 3")
                         
                     case 4: numberOfLogos = 4
