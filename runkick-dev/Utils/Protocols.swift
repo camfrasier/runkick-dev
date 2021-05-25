@@ -117,6 +117,14 @@ protocol NotificationCellDelegate {
     func handlePostTapped(for cell: NotificationsCell)
 }
 
+protocol SearchCellDelegate {
+    
+    func handleFollowTapped(for cell: SearchUserCell)
+}
+
+
+
+
 protocol CommentInputAccessoryViewDelagate {
     func didSubmit(forComment comment: String)
 }

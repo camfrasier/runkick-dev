@@ -398,7 +398,7 @@ class UserSpecificFeedCell: UICollectionViewCell {
     
     lazy var newLikeButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "likeHeartWalkzilla"), for: .normal)
+        button.setImage(UIImage(named: "walkzillaHeartUnselected"), for: .normal)
         button.tintColor = UIColor.rgb(red: 225, green: 225, blue: 225)
         button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button

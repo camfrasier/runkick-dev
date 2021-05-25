@@ -1388,7 +1388,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
             if !isDoubleTap {
                 post.adjustLikes(addLike: false, completion: { (likes) in
                     //cell.likesLabel.text = "\(likes)"
-                    cell.newLikeButton.setImage(UIImage(named: "likeHeartWalkzilla"), for: .normal)
+                    cell.newLikeButton.setImage(UIImage(named: "walkzillaHeartUnselected"), for: .normal)
                      // cell.newLikeButton.setImage(UIImage(named: "heartOutline"), for: .normal)
                     //cell.newLikeButton.backgroundColor = UIColor.clear
                     //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
@@ -1400,7 +1400,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
             // handle like post
             post.adjustLikes(addLike: true, completion: { (likes) in
                 //cell.likesLabel.text = "\(likes)"
-                cell.newLikeButton.setImage(UIImage(named: "solidHeartWalkzilla"), for: .normal)
+                cell.newLikeButton.setImage(UIImage(named: "walkzillaHeartSelected"), for: .normal)
                 //cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
                 //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
                 //cell.newLikeButton.alpha = 1
@@ -1432,13 +1432,13 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
             // check if post id exists in user-like structure
                        if snapshot.hasChild(postId) {
                            post.didLike = true
-                           cell.newLikeButton.setImage(UIImage(named: "solidHeartWalkzilla"), for: .normal)
+                           cell.newLikeButton.setImage(UIImage(named: "walkzillaHeartSelected"), for: .normal)
                         //cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
                         //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
                             //cell.newLikeButton.alpha = 1
                        } else {
                            post.didLike = false
-                           cell.newLikeButton.setImage(UIImage(named: "likeHeartWalkzilla"), for: .normal)
+                           cell.newLikeButton.setImage(UIImage(named: "walkzillaHeartUnselected"), for: .normal)
                         //cell.newLikeButton.backgroundColor = UIColor.clear
                         //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
                         //cell.newLikeButton.alpha = 1

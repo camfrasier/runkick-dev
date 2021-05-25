@@ -515,7 +515,7 @@ class HomeVC: UIViewController, Alertable {
 
     
     
-    lazy var groupsButtonBackground: UIView = {
+    lazy var notificationButtonBackground: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckGroups))
@@ -1280,9 +1280,10 @@ class HomeVC: UIViewController, Alertable {
         */
         
         let groupsBackgroundDimension: CGFloat = 45
-        mapView.addSubview(groupsButtonBackground)
-        groupsButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
-        groupsButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2
+        mapView.addSubview(notificationButtonBackground)
+        notificationButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
+        notificationButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2
+        //notificationButtonBackground.layer.cornerRadius = 5
         //groupsButtonBackground.layer.cornerRadius = 23
         
         /*
@@ -1292,9 +1293,10 @@ class HomeVC: UIViewController, Alertable {
         activityLabel.centerXAnchor.constraint(equalTo: groupsButtonBackground.centerXAnchor).isActive = true
         */
         
-        groupsButtonBackground.addSubview(notificationBell)
-        notificationBell.anchor(top: groupsButtonBackground.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15.5, height: 18)
-        notificationBell.centerXAnchor.constraint(equalTo: groupsButtonBackground.centerXAnchor).isActive = true
+        notificationButtonBackground.addSubview(notificationBell)
+        notificationBell.anchor(top: notificationButtonBackground.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15.5, height: 18)
+        notificationBell.centerXAnchor.constraint(equalTo: notificationButtonBackground.centerXAnchor).isActive = true
+        
         //notificationBell.centerYAnchor.constraint(equalTo: groupsButtonBackground.centerYAnchor).isActive = true
         
         
@@ -2036,6 +2038,7 @@ class HomeVC: UIViewController, Alertable {
         mapView.addSubview(centerMapBackground)
         centerMapBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: centerMapDimension, height: centerMapDimension)
         centerMapBackground.layer.cornerRadius = 45 / 2
+        //centerMapBackground.layer.cornerRadius = 3
         
         centerMapBackground.addSubview(centerMapButton)
         centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 17.5, paddingLeft: 15.5, paddingBottom: 0, paddingRight: 0, width: 12, height: 11)
@@ -2045,6 +2048,7 @@ class HomeVC: UIViewController, Alertable {
         mapView.addSubview(settingsButtonBackground)
         settingsButtonBackground.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: settingsDimension, height: settingsDimension)
         settingsButtonBackground.layer.cornerRadius = settingsDimension / 2
+        //settingsButtonBackground.layer.cornerRadius = 3
         
         mapView.addSubview(settingsButton)
         settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 22, height: 23)
@@ -4510,19 +4514,19 @@ extension HomeVC: MKMapViewDelegate {
         //centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         //centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-        groupsButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        notificationButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             //self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             //self.centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             self.simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-            self.groupsButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            self.notificationButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             
             //self.centerMapBackground.alpha = 0
             //self.centerMapButton.alpha = 0
             self.simpleActionBackground.alpha = 0
-            self.groupsButtonBackground.alpha = 0
+            self.notificationButtonBackground.alpha = 0
             
             //self.centerMapBackground.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
             //self.centerMapButton.isHidden = true
@@ -4532,7 +4536,7 @@ extension HomeVC: MKMapViewDelegate {
             //self.centerMapButton.transform = .identity
             //self.centerMapBackground.transform = .identity
             self.simpleActionBackground.transform = .identity
-            self.groupsButtonBackground.transform = .identity
+            self.notificationButtonBackground.transform = .identity
         }
 
         
@@ -4793,19 +4797,19 @@ extension HomeVC: MKMapViewDelegate {
         //centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         //centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-        groupsButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        notificationButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             //self.centerMapButton.isHidden = false
             //self.centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             //self.centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.groupsButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.notificationButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             
             // self.centerMapButton.alpha = 1
             //self.centerMapBackground.alpha = 1
             self.simpleActionBackground.alpha = 1
-            self.groupsButtonBackground.alpha = 1
+            self.notificationButtonBackground.alpha = 1
             //self.centerMapBackground.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
             
             
@@ -4814,7 +4818,7 @@ extension HomeVC: MKMapViewDelegate {
             //self.centerMapButton.transform = .identity
             //self.centerMapBackground.transform = .identity
             self.simpleActionBackground.transform = .identity
-            self.groupsButtonBackground.transform = .identity
+            self.notificationButtonBackground.transform = .identity
         }
     }
  

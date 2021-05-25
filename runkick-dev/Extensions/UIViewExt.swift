@@ -21,6 +21,10 @@ extension UIColor {
         return UIColor.rgb(red: 221, green: 94, blue: 86)
     }
     
+    static func neonGreen() -> UIColor {
+        return UIColor.rgb(red: 74, green: 253, blue: 9)
+    }
+    
     static func airBnBRed() -> UIColor {
         //return UIColor.rgb(red: 255, green: 110, blue: 125)
         return UIColor.rgb(red: 242, green: 96, blue: 98)
@@ -322,8 +326,11 @@ extension Database {
         DataService.instance.REF_USERS.child(uid).observeSingleEvent(of: .value) { (snapshot) in
             
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            
+            
             let user = User(uid: uid, dictionary: dictionary)
             
+            //print("This is the user to append \(user)")
             completion(user)
         }
     }

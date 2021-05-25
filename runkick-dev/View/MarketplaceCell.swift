@@ -53,7 +53,7 @@ class MarketplaceCell: UICollectionViewCell {
     let categoryNameLabel: UILabel = {
         let label = UILabel()
         //label.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         //label.font = UIFont(name: "HelveticaNeue", size: 15)
         label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         //label.font = UIFont.boldSystemFont(ofSize: 20)
