@@ -41,6 +41,7 @@ class FeedCell: UICollectionViewCell {
                 
                 guard let userProfileImage = user.profileImageURL else { return }
                 self.profileImageView.loadImage(with: userProfileImage)
+                
             }
             
             postImageView.loadImage(with: imageUrl)
@@ -48,8 +49,8 @@ class FeedCell: UICollectionViewCell {
     
             //likesLabel.text = "\(likes)"
             
-            let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
-            attributedText.append(NSAttributedString(string: " likes", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
+            let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
+            attributedText.append(NSAttributedString(string: " likes", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
             likesLabel.attributedText = attributedText
             
             configureLikeButton()
@@ -143,6 +144,15 @@ class FeedCell: UICollectionViewCell {
         label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         label.textAlignment = .left
         label.text = "Union Market DC"
+        return label
+    } ()
+    
+    let wantsToLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
+        label.textAlignment = .left
+        label.text = "180+ other people want to do this"
         return label
     } ()
     
@@ -435,7 +445,7 @@ class FeedCell: UICollectionViewCell {
     
     let imageTranslucentBar: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
+        //view.backgroundColor = UIColor(red: 255/255 , green: 255/255, blue: 255/255, alpha: 1)
         //view.backgroundColor = UIColor(red: 50/255 , green: 50/255, blue: 50/255, alpha: 0.50)
         return view
     }()
@@ -668,11 +678,11 @@ class FeedCell: UICollectionViewCell {
         addSubview(self.postImageBlock)
         postImageBlock.translatesAutoresizingMaskIntoConstraints = false
         //postImageBlock.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
-        postImageBlock.layer.cornerRadius = 3
+        //postImageBlock.layer.cornerRadius = 3
         
         postImageBlock.addSubview(postImageView)
         postImageView.translatesAutoresizingMaskIntoConstraints = false
-        postImageView.layer.cornerRadius = 3
+        //postImageView.layer.cornerRadius = 3
 
         addSubview(captionBlock)
         captionBlock.translatesAutoresizingMaskIntoConstraints = false
@@ -682,9 +692,7 @@ class FeedCell: UICollectionViewCell {
         captionBlock.addSubview(captionLabel)
         captionLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(imageTranslucentBar)
-        imageTranslucentBar.translatesAutoresizingMaskIntoConstraints = false
-        //imageTranslucentBar.backgroundColor = UIColor.rgb(red: 0, green: 200, blue: 0)
+
         
         addSubview(userLocationBlock)
         userLocationBlock.translatesAutoresizingMaskIntoConstraints = false
@@ -725,8 +733,12 @@ class FeedCell: UICollectionViewCell {
         circleDotView.translatesAutoresizingMaskIntoConstraints = false
         
         // date and time attributes and constraints
-        addSubview(postTimeLabel)
+        imageTranslucentBar.addSubview(postTimeLabel)
         postTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageTranslucentBar.addSubview(wantsToLabel)
+        wantsToLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         
         // following/follower attributes and constraints
         userLocationBlock.addSubview(followFollowingLabel)
@@ -763,7 +775,7 @@ class FeedCell: UICollectionViewCell {
 
         userLocationBlock.addSubview(likesLabel)
         likesLabel.translatesAutoresizingMaskIntoConstraints = false
-        userLocationBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //userLocationBlock.backgroundColor = UIColor.rgb(red: 120, green: 200, blue: 255)
         
         
         postImageView.addSubview(newLikeButton)
@@ -774,8 +786,12 @@ class FeedCell: UICollectionViewCell {
           
           newCommentBubble.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 14)
           
+        addSubview(imageTranslucentBar)
+        imageTranslucentBar.translatesAutoresizingMaskIntoConstraints = false
+        //imageTranslucentBar.backgroundColor = UIColor.rgb(red: 222, green: 180, blue: 180)
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-27-[imageBlock]-6-[locationBlock(62)]-5-[translucent(0)]-0-[captionBlock(50)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[locationBlock(42)]-0-[captionBlock]-10-[imageBlock]-5-[translucent(45)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
 
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[imageBlock]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock]))
         
@@ -786,7 +802,7 @@ class FeedCell: UICollectionViewCell {
           stackView.alignment = .center
           stackView.spacing = 3
           stackView.translatesAutoresizingMaskIntoConstraints = false
-          userLocationBlock.addSubview(stackView)
+          imageTranslucentBar.addSubview(stackView)
           
         /*
           let stackView2 = UIStackView(arrangedSubviews: [commentLabel, newCommentBubble])
@@ -799,12 +815,14 @@ class FeedCell: UICollectionViewCell {
           userLocationBlock.addSubview(stackView2)
           */
 
-        stackView.anchor(top: userLocationBlock.topAnchor, left: userLocationBlock.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stackView.anchor(top: imageTranslucentBar.topAnchor, left: imageTranslucentBar.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        wantsToLabel.anchor(top: stackView.bottomAnchor, left: stackView.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
           
        // stackView2.anchor(top: stackView.topAnchor, left: stackView.rightAnchor, bottom: nil, right: nil , paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
      
         
-        profileImageBackground.anchor(top: userLocationBlock.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 25, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
+        profileImageBackground.anchor(top: userLocationBlock.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
         
         let profileImageDimension = CGFloat(30)
         profileImageView.anchor(top: profileImageBackground.topAnchor, left: nil, bottom: profileImageBackground.bottomAnchor, right: profileImageBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
@@ -815,11 +833,11 @@ class FeedCell: UICollectionViewCell {
         
         //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-0-[marker(12)]", options: [], metrics: nil, views: ["username": usernameButton, "marker": locationButton]))
         
-        usernameButton.anchor(top: profileImageBackground.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 16)
-        locationLabel.anchor(top: usernameButton.bottomAnchor, left: usernameButton.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        usernameButton.anchor(top: profileImageBackground.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 14)
         
-        locationButton.anchor(top: locationLabel.topAnchor, left: locationLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 12, height: 12)
-    
+        locationButton.anchor(top: usernameButton.bottomAnchor, left: usernameButton.leftAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 10, height: 13)
+        
+        locationLabel.anchor(top: usernameButton.bottomAnchor, left: locationButton.rightAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         circleDotView.anchor(top: usernameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
 
@@ -829,7 +847,7 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[captionBlock]-15-|", options: [], metrics: nil, views: ["captionBlock": captionBlock]))
         
-        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[translucent]-15-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[translucent]-0-|", options: [], metrics: nil, views: ["translucent": imageTranslucentBar]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[locationBlock]-10-|", options: [], metrics: nil, views: ["locationBlock": userLocationBlock]))
         
@@ -849,7 +867,7 @@ class FeedCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[caption]-15-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(-4)-[caption]", options: [], metrics: nil, views: ["caption": captionLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[caption]-0-|", options: [], metrics: nil, views: ["caption": captionLabel]))
         
        // addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[profileImage(30)]", options: [], metrics: nil, views: ["profileImage": profileImageView]))
         
@@ -859,11 +877,11 @@ class FeedCell: UICollectionViewCell {
         
         
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profileImage(30)]-8-[location]-4-[marker(8)]", options: [], metrics: nil, views: ["profileImage": profileImageView, "marker": locationButton, "location": locationLabel]))
+       // addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profileImage(30)]-8-[location]-4-[marker(8)]", options: [], metrics: nil, views: ["profileImage": profileImageView, "marker": locationButton, "location": locationLabel]))
         
 
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[postImage]-10-|", options: [], metrics: nil, views: ["postImage": postImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
@@ -875,7 +893,9 @@ class FeedCell: UICollectionViewCell {
 
 
         
-        postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        postTimeLabel.anchor(top: imageTranslucentBar.topAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        
+
         
   
     }
@@ -990,8 +1010,8 @@ class FeedCell: UICollectionViewCell {
 
             //let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font:  UIFont(name: "HelveticaNeue", size: 13)!])
             
-            let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
-            attributedText.append(NSAttributedString(string: " comments", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
+            let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
+            attributedText.append(NSAttributedString(string: " comments", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
             //label.attributedText = attributedText
             
             self.commentLabel.attributedText = attributedText
