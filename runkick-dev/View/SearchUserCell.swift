@@ -142,9 +142,9 @@ class SearchUserCell: UITableViewCell {
 
              
         addSubview(followButton)
-        followButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 100, height: 25)
+        followButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 100, height: 40)
         followButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
-        followButton.layer.cornerRadius = 3
+        followButton.layer.cornerRadius = 20
 
                        
         user?.checkIfUserIsFollowed (completion: { (followed) in

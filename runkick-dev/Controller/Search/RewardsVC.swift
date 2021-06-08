@@ -184,8 +184,8 @@ class RewardsVC: UITableViewController, UISearchBarDelegate {
                  })
                  self.userCurrentKey = first.key
              }
-         } else {
-            DataService.instance.REF_USERS.child(currentUserId).queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
+         } else { // changed from ref_users to ref_user_rewards.. need to verify
+            DataService.instance.REF_USER_REWARDS.child(currentUserId).queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
                  
                  guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                  guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }

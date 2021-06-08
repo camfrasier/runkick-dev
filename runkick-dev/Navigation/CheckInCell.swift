@@ -158,6 +158,34 @@ class CheckInCell: UICollectionViewCell {
         return view
     }()
     
+    let tripCompletedBackground: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    let tripCompletedLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.textAlignment = .center
+        label.text = "Checkin"
+        return label
+    } ()
+    
+    lazy var checkMarkButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "tripCompletedMarker"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
+        return button
+    } ()
+    
+    
+    let lineViewClear: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.55)
+        return view
+    }()
     
     let walkRatingShadow: UIView = {
         let view = UIView()
@@ -278,8 +306,9 @@ class CheckInCell: UICollectionViewCell {
         //button.titleLabel?.font =  UIFont(name: "HelveticaNeue", size: 13)
         button.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 13)
         button.setTitle("Shop Restaurants", for: .normal)
+        //button.setTitle("", for: .normal)
         //button.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
-        button.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
 
        // button.layer.shadowOpacity = 30 // Shadow is 30 percent opaque.
@@ -289,6 +318,13 @@ class CheckInCell: UICollectionViewCell {
         return button
     }()
     
+    lazy var menuRightArrow: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "rightMenuArrow"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
+        return button
+    } ()
 
     
     lazy var locationButton: UIButton = {  // We need to use a lazy var when converting a button into an action within a cell class.
@@ -429,7 +465,7 @@ class CheckInCell: UICollectionViewCell {
     lazy var newLikeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "walkzillaHeartUnselected"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        button.tintColor = UIColor.rgb(red: 200, green: 200, blue: 200)
         //button.tintColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
@@ -440,6 +476,8 @@ class CheckInCell: UICollectionViewCell {
         //view.alpha = 0
         return view
     }()
+    
+
     
     let centerCard: UIView = {
         let view = UIView()
@@ -1784,6 +1822,8 @@ class CheckInCell: UICollectionViewCell {
         addSubview(lineViewTop)
         lineViewTop.translatesAutoresizingMaskIntoConstraints = false
         
+
+        
         
         addSubview(mapBackgroundView)
         mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -1839,7 +1879,7 @@ class CheckInCell: UICollectionViewCell {
         //likeBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         //likeBackgroundView.backgroundColor = UIColor.white
         
-        addSubview(newLikeButton)
+        mapImageView.addSubview(newLikeButton)
         newLikeButton.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -1863,12 +1903,23 @@ class CheckInCell: UICollectionViewCell {
         addSubview(lineView)
         lineView.translatesAutoresizingMaskIntoConstraints = false
         
+        addSubview(lineViewClear)
+        lineViewClear.translatesAutoresizingMaskIntoConstraints = false
 
    
         
         addSubview(userLocationBlock)
         userLocationBlock.translatesAutoresizingMaskIntoConstraints = false
 
+        userLocationBlock.addSubview(tripCompletedBackground)
+        tripCompletedBackground.translatesAutoresizingMaskIntoConstraints = false
+        
+        tripCompletedBackground.addSubview(tripCompletedLabel)
+        tripCompletedLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        tripCompletedBackground.addSubview(checkMarkButton)
+        checkMarkButton.translatesAutoresizingMaskIntoConstraints = false
+        
         
         addSubview(statisticsBlock)
         statisticsBlock.translatesAutoresizingMaskIntoConstraints = false
@@ -1970,10 +2021,14 @@ class CheckInCell: UICollectionViewCell {
 
 
         
-        lineView.addSubview(menuButton)
+        lineViewClear.addSubview(menuButton)
         menuButton.translatesAutoresizingMaskIntoConstraints = false
         
+        lineViewClear.addSubview(menuRightArrow)
+        menuRightArrow.translatesAutoresizingMaskIntoConstraints = false
 
+        
+        
         /*
         mapBackgroundView.addSubview(tripPointsTitleLabel)
         tripPointsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -2047,7 +2102,7 @@ class CheckInCell: UICollectionViewCell {
         
         
         
-        profileImageBackground.anchor(top: likesLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
+        profileImageBackground.anchor(top: userLocationBlock.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
         
         let profileImageDimension = CGFloat(30)
         profileImageView.anchor(top: profileImageBackground.topAnchor, left: nil, bottom: profileImageBackground.bottomAnchor, right: profileImageBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
@@ -2087,10 +2142,12 @@ class CheckInCell: UICollectionViewCell {
     
         checkInBackground.anchor(top: userCommentBlock.bottomAnchor, left: leftAnchor, bottom: lineViewTop.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        lineViewClear.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: checkInBackground.bottomAnchor, right: checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 42)
+        
         lineViewTop.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: lineView.topAnchor, right: checkInBackground.rightAnchor, paddingTop: 32, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 62)
         lineViewTop.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        lineView.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: mapBackgroundView.topAnchor, right: checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 2, paddingRight: 0, width: 0, height: 42)
+        lineView.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: mapBackgroundView.topAnchor, right: checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 6)
         
         
         
@@ -2109,18 +2166,22 @@ class CheckInCell: UICollectionViewCell {
         mapBackgroundView.anchor(top: lineView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 160)
         mapBackgroundView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        menuButton.anchor(top: nil, left: lineView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 25)
-        menuButton.centerYAnchor.constraint(equalTo: lineView.centerYAnchor).isActive = true
+        menuButton.anchor(top: nil, left: lineViewClear.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 25)
+        menuButton.centerYAnchor.constraint(equalTo: lineViewClear.centerYAnchor).isActive = true
         //menuButton.layer.borderWidth = 0.5
         //menuButton.layer.borderColor = UIColor.rgb(red: 180, green: 180, blue: 180).cgColor
         //menuButton.layer.cornerRadius = 18
         //menuButton.layer.cornerRadius = 3
         
         
+        menuRightArrow.anchor(top: nil, left: nil, bottom: nil, right: lineViewTop.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 7, height: 14)
+        menuRightArrow.centerYAnchor.constraint(equalTo: lineViewClear.centerYAnchor).isActive = true
+        
+        
         //likeBackgroundView.anchor(top: mapImageView.topAnchor, left: nil, bottom: nil, right: mapImageView.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 37, height: 37)
         //likeBackgroundView.layer.cornerRadius = 3
         
-        newLikeButton.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 23, height: 20)
+        newLikeButton.anchor(top: mapImageView.topAnchor, left: nil, bottom: nil, right: mapImageView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 23, height: 20)
         //newLikeButton.centerYAnchor.constraint(equalTo: imageTranslucentBar.centerYAnchor).isActive = true
         
 
@@ -2232,6 +2293,18 @@ class CheckInCell: UICollectionViewCell {
        
         userLocationBlock.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 42)
         userLocationBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        tripCompletedBackground.anchor(top: userLocationBlock.topAnchor, left: nil, bottom: nil, right: userLocationBlock.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 90, height: 36)
+        //tripCompletedBackground.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        tripCompletedBackground.backgroundColor = UIColor.greenSalad()
+        tripCompletedBackground.layer.cornerRadius = 18
+        
+        tripCompletedLabel.anchor(top: nil, left: tripCompletedBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //tripCompletedLabel.centerXAnchor.constraint(equalTo: tripCompletedBackground.centerXAnchor).isActive = true
+        tripCompletedLabel.centerYAnchor.constraint(equalTo: tripCompletedBackground.centerYAnchor).isActive = true
+        
+        checkMarkButton.anchor(top: nil, left: tripCompletedLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 11, height: 9)
+        checkMarkButton.centerYAnchor.constraint(equalTo: tripCompletedBackground.centerYAnchor).isActive = true
         
         userCommentBlock.anchor(top: userLocationBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 24)
         userCommentBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
@@ -2409,7 +2482,8 @@ class CheckInCell: UICollectionViewCell {
 
        // activityHistoryButton.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
         
-        postTimeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        postTimeLabel.anchor(top: imageTranslucentBar.topAnchor, left: nil, bottom: nil, right: imageTranslucentBar.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        
         //postTimeLabel.centerYAnchor.constraint(equalTo: imageTranslucentBar.centerYAnchor).isActive = true
        
 
@@ -2811,7 +2885,7 @@ class CheckInCell: UICollectionViewCell {
                     
                     case 3: numberOfLogos = 3
                     
-                    
+                    self.checkMarkButton.alpha = 0
 
                     // var i = 1
                         
@@ -2949,6 +3023,25 @@ class CheckInCell: UICollectionViewCell {
                             })
                         
                         }
+                    
+                    
+                    self.checkMarkButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+                         
+                    UIView.animate(withDuration: 0.5, delay: 3, usingSpringWithDamping: 0.60, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                            
+                            self.checkMarkButton.alpha = 1
+                             self.checkMarkButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                             
+
+                         }) { (_) in
+
+                             self.checkMarkButton.transform = .identity
+                         }
+                    
+                    
+                    
+                    
+                    
                             
                     var i = 1
                     var limit = 0
@@ -3106,7 +3199,7 @@ class CheckInCell: UICollectionViewCell {
                         i += 1
 
                         if i > 3 {
-                            if limit < 3 {
+                            if limit < 8 {
                                 
                                 print("limit value is \(limit)")
                                 i = 1

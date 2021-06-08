@@ -25,6 +25,7 @@ class Rewards {
     var duration: String!
     var stepCount: Int!
     var creationDate: Date!
+    var storeImageUrl: String!
     
     
     init(storeId: String!, dictionary: Dictionary<String, AnyObject>) {
@@ -53,6 +54,10 @@ class Rewards {
         
         if let imageUrl = dictionary["imageUrl"] as? String {
             self.imageUrl = imageUrl
+        }
+        
+        if let storeImageUrl = dictionary["image"] as? String {
+            self.storeImageUrl = storeImageUrl
         }
         
         if let storeId = dictionary["storeId"] as? String {

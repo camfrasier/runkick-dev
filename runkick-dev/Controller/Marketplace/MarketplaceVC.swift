@@ -12,8 +12,10 @@ import Firebase
 private let reuseIdentifier = "MarketplaceCell"
 private let reuseTableIdentifier = "CategoryCell"
 
-class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+
+//class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate {
     // Mark: - Properties
     
     var categories = [MarketCategory]()
@@ -23,6 +25,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
     var titleView: UIView!
     var collectionView: UICollectionView!
     var collectionViewEnabled = true
+    var tableView: UITableView!
     
     var currentKey: String?
     var userCurrentKey: String?
@@ -30,34 +33,68 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Eat"
-        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        label.font = UIFont(name: "PingFangTC-Semibold", size: 28)
+        label.text = "Marketplace"
+        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
+        //label.font = UIFont(name: "HelveticaNeue-Bold", size: 22)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 22)
         return label
     }()
     
+    lazy var destinationTextField: UITextField = {
+        let tf = UITextField()
+        //tf.placeholder = "Where to?"
+        tf.attributedPlaceholder = NSAttributedString(string:"Search Categories", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
+        tf.font = UIFont.systemFont(ofSize: 18)
+        tf.keyboardType = UIKeyboardType.default
+        tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
+        tf.layer.cornerRadius = 0 //25
+        tf.clipsToBounds = true
+        tf.autocapitalizationType = .none
+        tf.addTarget(self, action: #selector(HomeVC.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
+        view.isUserInteractionEnabled = true
+        return tf
+    }()
+    
+    lazy var cancelSearchButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "simpleCancelIcon"), for: .normal)
+        button.addTarget(self, action: #selector(handleCancelSearch), for: .touchUpInside)
+        button.alpha = 0
+        return button
+    }()
+    
+    let searchLineViewVertical: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    } ()
     
     // MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        configureTableView()
+        
+        
+        //configureNavigationBar
+        configureNavigationBar()
+        
+        destinationTextField.delegate = self
+        
         // configure search bar
         configureSearchBar()
-
-        // register cell classes
-        tableView.register(CategoriesCell.self, forCellReuseIdentifier: reuseTableIdentifier)
-        
-        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
 
         // configure collection view
         configureCollectionView()
         
+        
         // configure refresh control
         configureRefreshControl()
         
-        //configureNavigationBar
-        configureNavigationBar()
+
         
         configureTabBar()
         
@@ -78,6 +115,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
 
     // MARK: - Table view data source
     
+    /*
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
@@ -125,7 +163,34 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         
         return cell
     }
+    */
     
+     // MARK: - UITableView
+    
+    func configureTableView() {
+        
+        tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.isScrollEnabled = true
+        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+ 
+        // register cell classes
+        tableView.register(CategoriesCell.self, forCellReuseIdentifier: reuseTableIdentifier)
+        
+        
+        // seperator insets.
+        //tableView.separatorInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
+        
+        // giving the top border a bit of buffer
+        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
+
+    }
     
     // MARK: - UICollectionView
     
@@ -144,18 +209,21 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .white //.red
         
-        //collectionView.addSubview(titleLabel)
-        //titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
         
         tableView.addSubview(collectionView)
         collectionView.register(MarketplaceCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         tableView.separatorColor = .clear
         
+        collectionView.addSubview(titleLabel)
+        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         //tableView.separatorInset = UIEdgeInsets(top: 56, left: 0, bottom: 0, right: 0)
         
     }
     
+    /*
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 2
     }
@@ -223,10 +291,11 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         print("DEBUG: Here is the post value\(categoryFeedVC.post)")
     }
     
-
+*/
     
     // MARK: - Handlers
     
+    /*
     func configureSearchBar() {
         
         //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
@@ -299,7 +368,27 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         
         //navigationItem.titleView = nil
     }
+    */
     
+    func configureNavigationBar() {
+        
+        //view.addSubview(navigationController!.navigationBar)
+        
+        //navigationController?.navigationBar.prefersLargeTitles = true
+        
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+    
+        
+        // add or remove nav bar bottom border
+        navigationController?.navigationBar.shadowImage = UIImage()
+        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
+        lineView.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+        
+    }
+    
+    /*
     func configureNavigationBar() {
         
         //view.addSubview(navigationController!.navigationBar)
@@ -327,8 +416,37 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
  
         configureSearchBarButton()
-        
     }
+    */
+    
+    
+    func configureSearchBar() {
+           
+           //let navBarHeight = CGFloat((navigationController?.navigationBar.frame.size.height)!)
+
+           
+           searchBar.delegate = self
+           
+           titleView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 10))
+          // let frame = CGRect(x: 0, y: 0, width: 100, height: 44)
+           //let titleView = UIView(frame: frame)
+           //searchBar.backgroundImage = UIImage()
+           //searchBar.frame = frame
+           titleView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+           titleView.layer.cornerRadius = 3
+           
+           titleView.addSubview(cancelSearchButton)
+           cancelSearchButton.anchor(top: titleView.topAnchor, left: nil, bottom: nil, right: titleView.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 15, height: 15)
+           
+           titleView.addSubview(destinationTextField)
+           destinationTextField.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: cancelSearchButton.leftAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 110, height: 40)
+           
+           titleView.addSubview(searchLineViewVertical)
+           searchLineViewVertical.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: -5, paddingBottom: 0, paddingRight: 0, width: 0.5, height: 0)
+
+           navigationItem.titleView = titleView
+           
+       }
     
     func configureTabBar() {
         // removing shadow from tab bar
@@ -369,7 +487,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
     }
     
     // MARK: - UISearchBar
-    
+    /*
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         //searchBar.showsCancelButton = true
         
@@ -382,11 +500,10 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
             // Fallback on earlier versions
         }
         
-        
-        //fetchUsers()
+        fetchStores()
         
         // hide collection view when we run this function
-        //collectionView.isHidden = true
+        collectionView.isHidden = true
         //collectionViewEnabled = false
         
         //tableView.separatorColor = .clear
@@ -434,12 +551,16 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
         
         // added stuff
         navigationItem.titleView = nil
-        configureSearchBarButton()
-        
+
         tableView.separatorColor = .clear
         
         tableView.reloadData()
     }
+    
+    */
+
+    
+    
     
     // MARK: - Handlers
     
@@ -613,7 +734,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
             })
         }
     }
-    
+    /*
     func configureSearchBarButton() {
         // configuring titile button
         let button =  UIButton(type: .custom)
@@ -660,7 +781,7 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
                self.navigationItem.leftBarButtonItems = [searchButton, searchText]
         
     }
-    
+    */
     @objc func showSearchBar() {
         
         
@@ -733,3 +854,230 @@ class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionVie
 }
 
 
+extension MarketplaceVC: UITableViewDataSource, UITableViewDelegate  {
+
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+
+     func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if inSearchMode {
+            return filteredCategories.count
+        } else {
+            return categories.count
+        }
+        
+    }
+    
+     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if categories.count > 20 {
+            if indexPath.item == categories.count - 1 {
+                fetchCategories()
+            }
+        }
+    }
+    
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+       print("item selected")
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let categoryFeedVC = CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        categoryFeedVC.post = categories[indexPath.item]
+        navigationController?.pushViewController(categoryFeedVC, animated: true)
+        
+    }
+
+    
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseTableIdentifier, for: indexPath) as! CategoriesCell
+        
+        cell.categoryPost = inSearchMode ? filteredCategories[indexPath.row] : categories[indexPath.row]
+        
+        return cell
+    }
+
+}
+
+extension MarketplaceVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+          return 2
+      }
+      
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+          return 8
+      }
+      
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+          
+          //return UIEdgeInsets(top: 60, left: 16, bottom: 0, right: 16)
+          return UIEdgeInsets(top: 45, left: 20, bottom: 0, right: 20)
+      }
+      
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+          
+          
+          let width = (view.frame.width - 55) / 2
+          //let width = (view.frame.width - 24) / 2
+          let height = width + (width / 5)
+          return CGSize(width: width, height: height)
+          
+          
+          //let width = (view.frame.width - 12) / 2
+          //return CGSize(width: width, height: width - 10)
+      }
+      
+      func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+          
+          if categories.count > 20 {
+              if indexPath.item == categories.count - 1 {
+                  fetchStores()
+              }
+          }
+          
+      }
+      /*
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+          
+          
+          
+          return CGSize(width: view.frame.width, height: 50)
+      }
+      */
+      func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+          return categories.count
+      }
+      
+      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+          
+          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MarketplaceCell
+          
+          cell.categoryPost = categories[indexPath.row]
+
+          return cell
+      }
+      
+      func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+          
+          let categoryFeedVC = CategoryFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+          categoryFeedVC.post = categories[indexPath.item]
+          navigationController?.pushViewController(categoryFeedVC, animated: true)
+          
+          
+          print("DEBUG: Here is the post value\(categoryFeedVC.post)")
+      }
+      
+
+}
+
+
+extension MarketplaceVC: UITextFieldDelegate {
+    
+
+    func textFieldDidBeginEditing(_ sender: UITextField) {
+
+        
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        //fetchStores()
+
+        collectionView.isHidden = true
+        tableView.reloadData()
+        
+        if sender == destinationTextField {
+  
+            cancelSearchButton.alpha = 1
+           
+        }
+    }
+    
+
+    //func textFieldEditingChanged(_ sender: UITextField, textDidChange searchText: String) {
+    @objc func textFieldDidChange(_ searchText: UITextField) {
+
+        
+        print(searchText)
+
+               //let searchText = searchText
+        let searchText = String(searchText.text!)
+        
+        
+            //let searchText = String(searchText.text!)
+            
+            
+            if searchText.isEmpty || searchText == " " {
+                inSearchMode = false
+                tableView.reloadData()
+            } else {
+                
+                inSearchMode = true
+                
+                // return fitlered users
+                filteredCategories = categories.filter({ $0.category?.range(of: searchText) != nil
+                    
+                    return ($0.category?.localizedCaseInsensitiveContains(searchText))!
+                })
+                tableView.reloadData()
+            }
+        
+        
+        // text printing out the text real time
+        print(searchText)
+        
+    }
+    
+    @objc func handleCancelSearch() {
+    /*
+            if #available(iOS 13.0, *) {
+                searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            } else {
+                // Fallback on earlier versions
+            }
+        */
+            
+            collectionViewEnabled = true
+            collectionView.isHidden = false
+            
+        cancelSearchButton.alpha = 0
+            // added stuff
+            //navigationItem.titleView = nil
+            //configureSearchBarButton()
+
+        //clears search view
+        destinationTextField.text = nil
+        inSearchMode = false
+        
+        // reloads search table view data
+        tableView.reloadData()
+
+        print("We reach this point so this should allow the keyboard to be cancelllllled")
+        //view.endEditing(true)
+        self.view.endEditing(true)
+        destinationTextField.resignFirstResponder()
+        
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+       // centerMapOnUserLocation()
+        
+        
+        return true
+    }
+    /*
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+    */
+}

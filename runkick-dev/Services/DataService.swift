@@ -59,6 +59,7 @@ class DataService {
     private var _REF_USER_GROUP_MESSAGES = DB_BASE.child("user-group-messages")
     private var _REF_HASHTAG_POST = DB_BASE.child("hashtag-post")
     private var _REF_SHOPPING_CART = DB_BASE.child("shopping-cart")
+
     
     // Prevents the above variables from being modified directly.
     var REF_BASE: DatabaseReference {
@@ -197,6 +198,7 @@ class DataService {
     var REF_HASHTAG_POST: DatabaseReference {
         return _REF_HASHTAG_POST
     }
+    
     /*
     // Function that creates a firebase user.
     func createFirebaseDBUser(uid: String, userData: Dictionary< String, Any>, isStoreadmin: Bool) {

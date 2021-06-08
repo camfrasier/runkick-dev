@@ -350,27 +350,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         lineView.addSubview(thinLineView)
     }
     
-    
-    func configureLeftBarButton() {
-        // custom back button
-             
-         let customNotificationsButton = UIButton(type: UIButton.ButtonType.custom)
-         
-         customNotificationsButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
-         
-         //using this code to show the true image without rendering color
-         customNotificationsButton.setImage(UIImage(named:"whiteCircleLeftArrowTB")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-         customNotificationsButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 33, height: 33 )
-          customNotificationsButton.addTarget(self, action: #selector(SearchVC.handleBackButton), for: .touchUpInside)
-         customNotificationsButton.tintColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
-         customNotificationsButton.backgroundColor = .clear
-             
-         
-         //let barSearchTitle = UIBarButtonItem(customView: customSearchTitle)
-         let barNotificationButton = UIBarButtonItem(customView: customNotificationsButton)
-         self.navigationItem.leftBarButtonItems = [barNotificationButton]
-    }
+   
     
     @objc func handleBackButton() {
         _ = self.navigationController?.popViewController(animated: true)
@@ -445,7 +425,6 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
         
-        //configureLeftBarButton()
         
         searchBar.showsCancelButton = false
         if #available(iOS 13.0, *) {
@@ -715,7 +694,7 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate  {
     // MARK: - Table view data source
       
       func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-          return 60
+          return 70
       }
 
     /*

@@ -25,6 +25,12 @@ extension UIColor {
         return UIColor.rgb(red: 74, green: 253, blue: 9)
     }
     
+    static func greenSalad() -> UIColor {
+        //return UIColor.rgb(red: 255, green: 110, blue: 125)
+        return UIColor.rgb(red: 71, green: 190, blue: 13)
+        
+    }
+    
     static func airBnBRed() -> UIColor {
         //return UIColor.rgb(red: 255, green: 110, blue: 125)
         return UIColor.rgb(red: 242, green: 96, blue: 98)
@@ -430,6 +436,7 @@ extension Database {
                 completion(group)
         }
     }
+    
     
     static func fetchPost(with postId: String, completion: @escaping(Post) -> ()) {
         DataService.instance.REF_POSTS.child(postId).observeSingleEvent(of: .value) { (snapshot) in
