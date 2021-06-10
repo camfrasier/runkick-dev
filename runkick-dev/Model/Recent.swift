@@ -1,15 +1,15 @@
 //
-//  Store.swift
+//  Recent.swift
 //  runkick-dev
 //
-//  Created by Cameron Frasier on 10/1/19.
-//  Copyright © 2019 Cameron Frasier. All rights reserved.
+//  Created by Cameron Frasier on 6/8/21.
+//  Copyright © 2021 Cameron Frasier. All rights reserved.
 //
 
 import Foundation
 import Firebase
 
-class Store {
+class Recent {
     
     // attributes
     var lat: Double?
@@ -17,17 +17,15 @@ class Store {
     var location: String!
     var title: String!
     var points: Int!
-    var storeId: String!
+    var uid: String!
     var category: String?
     var imageUrl: String!
     var storeLogoUrl: String!
-    //var favoritesUrl: String!
-    var uid: String!
     
     
-    init(storeId: String!, dictionary: Dictionary<String, AnyObject>) {
+    init(uid: String!, dictionary: Dictionary<String, AnyObject>) {
         
-        self.storeId = storeId
+        self.uid = uid
         
         if let lat = dictionary["lat"] as? Double {
             self.lat = lat
@@ -60,14 +58,7 @@ class Store {
         if let storeLogoUrl = dictionary["storeLogoUrl"] as? String {
             self.storeLogoUrl = storeLogoUrl
         }
-        
-        //if let favoritesUrl = dictionary["imageUrl"] as? String {
-          //  self.favoritesUrl = favoritesUrl
-       // }
-        
-        if let uid = dictionary["uid"] as? String {
-            self.uid = uid
-        }
+
         
     }
 }

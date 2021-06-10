@@ -372,6 +372,48 @@ extension Database {
     }
     
     
+    static func fetchFavorites(with storeId: String, uid: String, completion: @escaping(Store) -> ()) {
+           
+           // get current date
+           
+           let date = Date()
+           let formatter = DateFormatter()
+           formatter.dateFormat = "yyyy-MM-dd" //"dd.MM.yyyy"
+           let result = formatter.string(from: date)
+           //print("this is the current date \(result)")
+               
+        
+        DataService.instance.REF_USER_REWARDS.child(uid).child(storeId).observeSingleEvent(of: .value) { (snapshot) in
+                
+           
+                guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+                let store = Store(storeId: storeId, dictionary: dictionary)
+                completion(store)
+                
+            
+            print("we need to see the logo URL\(snapshot)")
+
+            /*
+               guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+           
+               
+               let recent = Recent(uid: uid, dictionary: dictionary)
+    
+               //print("this should be the activity date \(recent.activityDate)")
+               print("this is the snapshot of all the rewards restaurants\(snapshot)")
+            
+            
+               // add this boolean value once we have a consistent amount of data to run against. would like to capture it over a weeks period
+               //if user.activityDate == result {
+                   
+                   completion(recent)
+              // }
+*/
+           }
+           
+       }
+    
+    
     static func fetchCategoryPosts(with postId: String, completion: @escaping(Category) -> ()) {
         DataService.instance.REF_CATEGORIES.child(postId).observeSingleEvent(of: .value) { (snapshot) in
             
@@ -625,6 +667,7 @@ extension Database {
             
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             //guard let title = dictionary["title"] as? String else { return }  // Parsing through JSON data.
+            
             
             
             let store = Store(storeId: storeId, dictionary: dictionary)

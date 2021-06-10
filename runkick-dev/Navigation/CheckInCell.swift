@@ -2885,7 +2885,7 @@ class CheckInCell: UICollectionViewCell {
                     
                     case 3: numberOfLogos = 3
                     
-                    self.checkMarkButton.alpha = 0
+                    self.tripCompletedBackground.alpha = 0
 
                     // var i = 1
                         
@@ -3025,17 +3025,17 @@ class CheckInCell: UICollectionViewCell {
                         }
                     
                     
-                    self.checkMarkButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+                    self.tripCompletedBackground.transform = CGAffineTransform(scaleX: 0, y: 0)
                          
-                    UIView.animate(withDuration: 0.5, delay: 3, usingSpringWithDamping: 0.60, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                    UIView.animate(withDuration: 0.75, delay: 3, usingSpringWithDamping: 0.60, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                             
-                            self.checkMarkButton.alpha = 1
-                             self.checkMarkButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                            self.tripCompletedBackground.alpha = 1
+                             self.tripCompletedBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
                              
 
                          }) { (_) in
 
-                             self.checkMarkButton.transform = .identity
+                             self.tripCompletedBackground.transform = .identity
                          }
                     
                     

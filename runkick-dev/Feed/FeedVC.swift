@@ -38,6 +38,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
     var value: String?
     var users = [User]()
     var tableView: UITableView!
+    
   
     
     

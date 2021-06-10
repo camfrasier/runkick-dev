@@ -11,6 +11,7 @@ import Firebase
 
 private let reuseIdentifier = "MarketplaceCell"
 private let reuseTableIdentifier = "CategoryCell"
+private let reuseCarouselIdentifier = "CarouselCell"
 
 
 //class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -18,6 +19,7 @@ private let reuseTableIdentifier = "CategoryCell"
 class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDelegate {
     // Mark: - Properties
     
+    var stores = [Store]()
     var categories = [MarketCategory]()
     var filteredCategories = [MarketCategory]()
     var searchBar = UISearchBar()
@@ -33,17 +35,17 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Marketplace"
-        label.textColor = UIColor.rgb(red: 100, green: 100, blue: 100)
-        //label.font = UIFont(name: "HelveticaNeue-Bold", size: 22)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 22)
+        label.text = "Recently Visited"
+        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        //label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
         return label
     }()
     
     lazy var destinationTextField: UITextField = {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
-        tf.attributedPlaceholder = NSAttributedString(string:"Search Categories", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
+        tf.attributedPlaceholder = NSAttributedString(string:"Browse Categories", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
         tf.font = UIFont.systemFont(ofSize: 18)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
@@ -70,6 +72,24 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         return view
     } ()
     
+    lazy var collectionViewHorizontal: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        layout.headerReferenceSize = .zero
+        layout.sectionInset = .zero
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.dataSource = self
+        cv.delegate = self
+        cv.contentInset = .zero
+        return cv
+    }()
+    
+    let headerView: UIView = {
+        let view = UIView()
+        //view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    } ()
     // MARK: - Init
     
     override func viewDidLoad() {
@@ -90,6 +110,9 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         // configure collection view
         configureCollectionView()
         
+        // configure horizontal collection view
+        configureCollectionViewHorizontal()
+    
         
         // configure refresh control
         configureRefreshControl()
@@ -100,6 +123,8 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         
         // fetch stores
         fetchStores()
+        
+        fetchRecentVisted()
     }
     
     // this function ensures the navigation bar is filled after transitioning to a regular nav bar
@@ -188,6 +213,9 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        tableView.addSubview(titleLabel)
+        titleLabel.anchor(top: tableView.topAnchor, left: tableView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
 
     }
@@ -196,12 +224,13 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     
     func configureCollectionView() {
         
+
         // define the collection view characteristics
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        let frame = CGRect(x: 0, y: 140, width: view.frame.width, height: view.frame.height - 140)
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
         collectionView.delegate = self
@@ -214,12 +243,36 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         tableView.addSubview(collectionView)
         collectionView.register(MarketplaceCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
+
+        
         tableView.separatorColor = .clear
         
-        collectionView.addSubview(titleLabel)
-        titleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
         
         //tableView.separatorInset = UIEdgeInsets(top: 56, left: 0, bottom: 0, right: 0)
+        
+    }
+    
+    func configureCollectionViewHorizontal() {
+        
+        
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        
+        
+        let frame = CGRect(x: 0, y: 30, width: view.frame.width, height: 110)
+
+        collectionViewHorizontal = UICollectionView(frame: frame, collectionViewLayout: layout)
+        collectionViewHorizontal.delegate = self
+        collectionViewHorizontal.dataSource = self
+        collectionViewHorizontal.alwaysBounceHorizontal = true
+        collectionViewHorizontal.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+
+        
+        tableView.addSubview(collectionViewHorizontal)
+        collectionViewHorizontal.register(StoreCarouselCell.self, forCellWithReuseIdentifier: reuseCarouselIdentifier)
         
     }
     
@@ -569,6 +622,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         self.currentKey = nil
         fetchStores()
         collectionView?.reloadData()
+        collectionViewHorizontal.reloadData()
     }
     
     func configureRefreshControl() {
@@ -801,6 +855,58 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         configureSearchBar()
     }
     
+    func fetchRecentVisted() {
+
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        
+        if userCurrentKey == nil {
+            DataService.instance.REF_USER_REWARDS.child(currentUid).queryLimited(toLast: 21).observeSingleEvent(of: .value) { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                
+                
+                allObjects.forEach({ (snapshot) in
+                    
+                    let storeId = snapshot.key
+                    
+                    
+                   
+                    Database.fetchFavorites(with: storeId, uid: currentUid, completion: { (store) in
+                        print("I am just troubleshooting now \(store)")
+                        self.stores.append(store)
+                        
+                        
+                        self.collectionViewHorizontal.reloadData()
+                    })
+                })
+                self.userCurrentKey = first.key
+                
+        
+            }
+        } else {
+            DataService.instance.REF_USER_REWARDS.child(currentUid).queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 10).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let storeId = snapshot.key
+                    
+                    if storeId != self.userCurrentKey {
+                        Database.fetchFavorites(with: storeId, uid: currentUid, completion: { (store) in
+                            self.stores.append(store)
+                            self.collectionViewHorizontal.reloadData()
+                        })
+                    }
+                })
+                self.userCurrentKey = first.key
+            })
+        }
+    }
+    
     
     /*
     func fetchPosts() {
@@ -913,30 +1019,53 @@ extension MarketplaceVC: UICollectionViewDelegateFlowLayout, UICollectionViewDat
       }
       
       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        
+        if collectionView == self.collectionViewHorizontal {
+            return 2
+        }
           return 8
       }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+      
+      if collectionView == self.collectionViewHorizontal {
+          let width = 90
+
+          return CGSize(width: width, height: width + 10)
+      }
+        
+        let width = (view.frame.width - 55) / 2
+        let height = width + (width / 5)
+        return CGSize(width: width, height: height)
+
+    }
       
       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        if collectionView == self.collectionViewHorizontal {
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
           
           //return UIEdgeInsets(top: 60, left: 16, bottom: 0, right: 16)
-          return UIEdgeInsets(top: 45, left: 20, bottom: 0, right: 20)
+          return UIEdgeInsets(top: 18, left: 20, bottom: 0, right: 20)
       }
       
-      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-          
-          
-          let width = (view.frame.width - 55) / 2
-          //let width = (view.frame.width - 24) / 2
-          let height = width + (width / 5)
-          return CGSize(width: width, height: height)
-          
-          
-          //let width = (view.frame.width - 12) / 2
-          //return CGSize(width: width, height: width - 10)
-      }
+
       
       func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
           
+        if collectionView == self.collectionViewHorizontal {
+            if stores.count > 20 {
+                if indexPath.item == stores.count - 1 {
+                    fetchRecentVisted()
+                    
+                    print("We have actually reach the horizontal collection view")
+                }
+            }
+        }
+        
+        
           if categories.count > 20 {
               if indexPath.item == categories.count - 1 {
                   fetchStores()
@@ -952,11 +1081,46 @@ extension MarketplaceVC: UICollectionViewDelegateFlowLayout, UICollectionViewDat
           return CGSize(width: view.frame.width, height: 50)
       }
       */
+
       func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if collectionView == self.collectionViewHorizontal {
+            
+            return stores.count
+        }
+        
           return categories.count
       }
-      
+    /*
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        
+        return CGSize(width: view.frame.width, height: 40)
+    }
+    */
+    
+     /*
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind:
+        String, at indexPath: IndexPath) -> UICollectionReusableView {
+            let header = collectionViewHorizontal.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier:
+                reuseCarouselIdentifier, for: indexPath) as! StoreCarouselCell
+        
+        header.backgroundColor = .red
+            return header
+    }
+   
+
+     */
       func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+         if collectionView == self.collectionViewHorizontal {
+                 let cellA = collectionView.dequeueReusableCell(withReuseIdentifier: reuseCarouselIdentifier, for: indexPath) as! StoreCarouselCell
+                 print("Do we reach this point")
+                 cellA.favorite = stores[indexPath.item]
+
+                 //cell.delegate = self
+                 return cellA
+        }
           
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MarketplaceCell
           
