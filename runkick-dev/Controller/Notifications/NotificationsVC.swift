@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 
 private let reuseIdentifier = "NotificationsCell"
+private let reuseMessageIdentifier = "MessagesCell"
 
 //class NotificationsVC: UITableViewController, NotificationCellDelegate {
   class NotificationsVC: UIViewController, NotificationCellDelegate {
@@ -20,6 +21,12 @@ private let reuseIdentifier = "NotificationsCell"
     var timer: Timer?   // helps fix the bug where pics get jumbled up with follow like
     var currentKey: String?
     var tableView: UITableView!
+    var messagesTableView: UITableView!
+    
+    var messages = [Message]()
+    var messagesDictionary = [String: Message]()  // consolidating user message
+    
+    // this is for importing the message VC, may not need
     let messagesVC = MessagesController()
     
     let cancelViewButton: UIButton = {
@@ -56,6 +63,13 @@ private let reuseIdentifier = "NotificationsCell"
         
         // configuring navigation bar
         configureNavigationBar()
+        
+        configureMessagesView()
+        
+        fetchMessages()
+    
+        //tableView.isHidden = true
+        messagesTableView.isHidden = true
         
         //configureMessagesVC()
     }
@@ -210,6 +224,37 @@ private let reuseIdentifier = "NotificationsCell"
         // clear separator lines
         tableView.separatorStyle = .none
         //tableView.separatorColor = .clear
+        
+    }
+    
+    func configureMessagesView() {
+        
+
+        messagesTableView = UITableView()
+        messagesTableView.delegate = self
+        messagesTableView.dataSource = self
+        
+        //tableView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        messagesTableView.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 255)
+        messagesTableView.addSubview(cancelViewButton)
+        
+        // register cell class
+        messagesTableView.register(MessageCell.self, forCellReuseIdentifier: reuseMessageIdentifier)
+        
+        // add spacing to the top of the table view
+        messagesTableView.contentInset = UIEdgeInsets(top: 15,left: 0,bottom: 0,right: 0)
+        
+        messagesTableView.rowHeight = 80
+
+        
+        view.addSubview(messagesTableView)
+        messagesTableView.translatesAutoresizingMaskIntoConstraints = false
+        messagesTableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        // clear separator lines
+        messagesTableView.separatorStyle = .none
+        //tableView.separatorColor = .clear
     }
     
     func handleFollowTapped(for cell: NotificationsCell) {
@@ -331,6 +376,44 @@ private let reuseIdentifier = "NotificationsCell"
         }
     }
     
+    
+     
+     func fetchMessages() {
+     
+         guard let currentUid = Auth.auth().currentUser?.uid else { return }
+         
+         self.messages.removeAll()
+         self.messagesDictionary.removeAll()
+         self.messagesTableView.reloadData()
+         
+         DataService.instance.REF_USER_MESSAGES.child(currentUid).observe(.childAdded) { (snapshot) in
+             
+             let uid = snapshot.key
+             
+             DataService.instance.REF_USER_MESSAGES.child(currentUid).child(uid).observe(.childAdded, with: { (snapshot) in
+                 
+                 let messageId = snapshot.key
+                 
+                 self.fetchMessage(withMessageId: messageId)
+             })
+         }
+     }
+     
+     func fetchMessage(withMessageId messageId: String) {
+         
+         DataService.instance.REF_MESSAGES.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
+             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+             
+             let message = Message(dictionary: dictionary)
+             let chatPartnerId = message.getChatPartnerId()
+             self.messagesDictionary[chatPartnerId] = message
+             self.messages = Array(self.messagesDictionary.values)
+             
+             self.messagesTableView?.reloadData()
+         }
+     }
+     
+    
     func configureMessagesVC() {
     
            print("DEBUG: Right menu is configured at this point.")
@@ -338,12 +421,18 @@ private let reuseIdentifier = "NotificationsCell"
            //messagesVC.delegate = self
 
         messagesVC.tableView.delegate = self
-        //messagesVC.tableView.datasource = self
+        //messagesVC.datasource = self
         messagesVC.view.frame = CGRect(x: 0, y: 15, width: view.frame.width, height: view.frame.height - 15)
                
         view.addSubview(messagesVC.view)
 
        }
+    
+    func showChatController(forUser user: User) {
+        let chatController = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatController.user = user
+        navigationController?.pushViewController(chatController, animated: true)
+    }
 
     func configureNavigationBar() {
         
@@ -416,6 +505,12 @@ extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
        
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
            // #warning Incomplete implementation, return the number of rows
+            
+            if tableView == messagesTableView {
+                
+                return messages.count
+            }
+            
            return notifications.count
        }
        
@@ -427,6 +522,15 @@ extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
            }
        }
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            
+            if tableView == messagesTableView {
+                let cell = tableView.dequeueReusableCell(withIdentifier: reuseMessageIdentifier, for: indexPath) as! MessageCell
+                
+                cell.message = messages[indexPath.row]
+                
+                return cell
+            }
+            
            let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationsCell
            
            cell.notification = notifications[indexPath.row]
@@ -441,6 +545,17 @@ extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
        }
        
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            
+            
+            if tableView == messagesTableView {
+                let message = messages[indexPath.row]
+                
+                let chatPartnerId = message.getChatPartnerId()
+                Database.fetchUser(with: chatPartnerId) { (user) in // fetching our user or chat partner with the chat partner id
+                    self.showChatController(forUser: user)
+                }
+            } else {
+            
            /*
            case 0: self = .Like
            case 1: self = .Comment
@@ -528,4 +643,5 @@ extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
                
            
        }
+    }
 }

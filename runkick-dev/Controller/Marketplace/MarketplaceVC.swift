@@ -33,6 +33,9 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     var userCurrentKey: String?
     
     
+    
+    
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Recent Stops"
