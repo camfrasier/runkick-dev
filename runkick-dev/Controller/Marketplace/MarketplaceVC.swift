@@ -35,10 +35,10 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Recently Visited"
+        label.text = "Recent Stops"
         label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
-        //label.font = UIFont(name: "HelveticaNeue", size: 13)
-        label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 15)
+        //label.font = UIFont(name: "ArialRoundedMTBold", size: 17)
         return label
     }()
     
@@ -208,14 +208,14 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         //tableView.separatorInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         
         // giving the top border a bit of buffer
-        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         tableView.addSubview(titleLabel)
-        titleLabel.anchor(top: tableView.topAnchor, left: tableView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        titleLabel.anchor(top: tableView.topAnchor, left: tableView.leftAnchor, bottom: nil, right: nil, paddingTop: -5, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
 
     }
@@ -230,7 +230,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
-        let frame = CGRect(x: 0, y: 140, width: view.frame.width, height: view.frame.height - 140)
+        let frame = CGRect(x: 0, y: 120, width: view.frame.width, height: view.frame.height - 120)
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
         collectionView.delegate = self
@@ -261,7 +261,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         layout.scrollDirection = .horizontal
         
         
-        let frame = CGRect(x: 0, y: 30, width: view.frame.width, height: 110)
+        let frame = CGRect(x: 0, y: 15, width: view.frame.width, height: 105)
 
         collectionViewHorizontal = UICollectionView(frame: frame, collectionViewLayout: layout)
         collectionViewHorizontal.delegate = self
@@ -850,6 +850,9 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         
         //fetchStores()
         collectionView.isHidden = true
+        collectionViewHorizontal.isHidden = true
+        titleLabel.isHidden = true
+        
         collectionViewEnabled = false
     
         configureSearchBar()
@@ -1158,6 +1161,9 @@ extension MarketplaceVC: UITextFieldDelegate {
         //fetchStores()
 
         collectionView.isHidden = true
+        collectionViewHorizontal.isHidden = true
+        titleLabel.isHidden = true
+        
         tableView.reloadData()
         
         if sender == destinationTextField {
@@ -1213,6 +1219,8 @@ extension MarketplaceVC: UITextFieldDelegate {
             
             collectionViewEnabled = true
             collectionView.isHidden = false
+            collectionViewHorizontal.isHidden = false
+              titleLabel.isHidden = false
             
         cancelSearchButton.alpha = 0
             // added stuff

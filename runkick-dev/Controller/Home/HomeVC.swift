@@ -261,9 +261,9 @@ class HomeVC: UIViewController, Alertable {
     }()
     */
     
-    let notificationBell: UIButton = {
+    let notificationBolt: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "notificationBell"), for: .normal)
+        button.setImage(UIImage(named: "sideBoltIcon"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheckRight), for: .touchUpInside)
         button.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         button.alpha = 1
@@ -305,8 +305,8 @@ class HomeVC: UIViewController, Alertable {
         let tf = UITextField()
         //tf.placeholder = "Where to?"
         tf.attributedPlaceholder = NSAttributedString(string:"Where to Zilla?", attributes:[NSAttributedString.Key.foregroundColor: UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)])
-        //tf.font = UIFont.systemFont(ofSize: 15)
-        tf.font = UIFont(name: "ArialRoundedMTBold", size: 15)
+        tf.font = UIFont.boldSystemFont(ofSize: 17)
+        //tf.font = UIFont(name: "ArialRoundedMTBold", size: 15)
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
         tf.layer.cornerRadius = 0 //25
@@ -515,7 +515,7 @@ class HomeVC: UIViewController, Alertable {
 
     
     
-    lazy var notificationButtonBackground: UIView = {
+    lazy var notificationBoltBackground: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckGroups))
@@ -1280,10 +1280,10 @@ class HomeVC: UIViewController, Alertable {
         */
         
         let groupsBackgroundDimension: CGFloat = 45
-        mapView.addSubview(notificationButtonBackground)
-        notificationButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
-        notificationButtonBackground.layer.cornerRadius = groupsBackgroundDimension / 2
-        //notificationButtonBackground.layer.cornerRadius = 5
+        mapView.addSubview(notificationBoltBackground)
+        notificationBoltBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
+        notificationBoltBackground.layer.cornerRadius = groupsBackgroundDimension / 2
+        //notificationButtonBackground.layer.cornerRadius = 10
         //groupsButtonBackground.layer.cornerRadius = 23
         
         /*
@@ -1293,11 +1293,10 @@ class HomeVC: UIViewController, Alertable {
         activityLabel.centerXAnchor.constraint(equalTo: groupsButtonBackground.centerXAnchor).isActive = true
         */
         
-        notificationButtonBackground.addSubview(notificationBell)
-        notificationBell.anchor(top: notificationButtonBackground.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15.5, height: 18)
-        notificationBell.centerXAnchor.constraint(equalTo: notificationButtonBackground.centerXAnchor).isActive = true
-        
-        //notificationBell.centerYAnchor.constraint(equalTo: groupsButtonBackground.centerYAnchor).isActive = true
+        notificationBoltBackground.addSubview(notificationBolt)
+        notificationBolt.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 18, height: 9)
+        notificationBolt.centerXAnchor.constraint(equalTo: notificationBoltBackground.centerXAnchor).isActive = true
+        notificationBolt.centerYAnchor.constraint(equalTo: notificationBoltBackground.centerYAnchor).isActive = true
         
         
         /*
@@ -2038,7 +2037,7 @@ class HomeVC: UIViewController, Alertable {
         mapView.addSubview(centerMapBackground)
         centerMapBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: centerMapDimension, height: centerMapDimension)
         centerMapBackground.layer.cornerRadius = 45 / 2
-        //centerMapBackground.layer.cornerRadius = 3
+        //centerMapBackground.layer.cornerRadius = 10
         
         centerMapBackground.addSubview(centerMapButton)
         centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 17.5, paddingLeft: 15.5, paddingBottom: 0, paddingRight: 0, width: 12, height: 11)
@@ -2048,7 +2047,7 @@ class HomeVC: UIViewController, Alertable {
         mapView.addSubview(settingsButtonBackground)
         settingsButtonBackground.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: settingsDimension, height: settingsDimension)
         settingsButtonBackground.layer.cornerRadius = settingsDimension / 2
-        //settingsButtonBackground.layer.cornerRadius = 3
+        //settingsButtonBackground.layer.cornerRadius = 10
         
         mapView.addSubview(settingsButton)
         settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 22, height: 23)
@@ -4048,10 +4047,10 @@ extension HomeVC: MKMapViewDelegate {
                 switch pointVal! {
                 case 1 ... 249:
                     print("low range")
-                    let pinImage = UIImage(named: "roundedRecMarkerHeartUnselected")
+                    let pinImage = UIImage(named: "roundedRecMarkerHeart")
                     let size = CGSize(width: 62, height: 32)
                     UIGraphicsBeginImageContextWithOptions(size, false, 10)
-                    pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                    pinImage!.draw(in: CGRect(x: -2, y: 0, width: size.width, height: size.height))
                     let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     UIGraphicsEndImageContext()
                     
@@ -4065,10 +4064,10 @@ extension HomeVC: MKMapViewDelegate {
                 case 250 ... 499:
                     print("mid range")
                     //hotImageView.image = UIImage(named: "greenDot")
-                            let pinImage = UIImage(named: "roundedRecMarkerHeartUnselected")
+                            let pinImage = UIImage(named: "roundedRecMarkerHeart")
                             let size = CGSize(width: 62, height: 32)
                             UIGraphicsBeginImageContextWithOptions(size, false, 10)
-                            pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+                            pinImage!.draw(in: CGRect(x: -2, y: 0, width: size.width, height: size.height))
                             let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                             UIGraphicsEndImageContext()
                     
@@ -4080,9 +4079,9 @@ extension HomeVC: MKMapViewDelegate {
             
                     
                     let pinImage = UIImage(named: "roundedRecMarkerShort")
-                    let size = CGSize(width: 52, height: 31)
+                    let size = CGSize(width: 55, height: 30)
                     UIGraphicsBeginImageContextWithOptions(size, false, 10)
-                    pinImage!.draw(in: CGRect(x: -6, y: 0, width: size.width, height: size.height))
+                    pinImage!.draw(in: CGRect(x: -8, y: 0, width: size.width, height: size.height))
                     let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     UIGraphicsEndImageContext()
             
@@ -4093,14 +4092,14 @@ extension HomeVC: MKMapViewDelegate {
                     print("high range, hot deal")
                     
                     
-                            let pinImage = UIImage(named: "roundedRecMarkerHeart")
-                            let size = CGSize(width: 62, height: 32)
-                            UIGraphicsBeginImageContextWithOptions(size, false, 10)
-                            pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-                            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-                            UIGraphicsEndImageContext()
-                    
-                            annotationView.image = resizedImage
+                                    let pinImage = UIImage(named: "roundedRecMarkerShort")
+                                    let size = CGSize(width: 55, height: 30)
+                                    UIGraphicsBeginImageContextWithOptions(size, false, 10)
+                                    pinImage!.draw(in: CGRect(x: -8, y: 0, width: size.width, height: size.height))
+                                    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+                                    UIGraphicsEndImageContext()
+                            
+                                    annotationView.image = resizedImage
       
                     hotImageView.image = UIImage(named: "greenDot")
                 
@@ -4514,19 +4513,19 @@ extension HomeVC: MKMapViewDelegate {
         //centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         //centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-        notificationButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        notificationBoltBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             //self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             //self.centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             self.simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-            self.notificationButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            self.notificationBoltBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             
             //self.centerMapBackground.alpha = 0
             //self.centerMapButton.alpha = 0
             self.simpleActionBackground.alpha = 0
-            self.notificationButtonBackground.alpha = 0
+            self.notificationBoltBackground.alpha = 0
             
             //self.centerMapBackground.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
             //self.centerMapButton.isHidden = true
@@ -4536,7 +4535,7 @@ extension HomeVC: MKMapViewDelegate {
             //self.centerMapButton.transform = .identity
             //self.centerMapBackground.transform = .identity
             self.simpleActionBackground.transform = .identity
-            self.notificationButtonBackground.transform = .identity
+            self.notificationBoltBackground.transform = .identity
         }
 
         
@@ -4797,19 +4796,19 @@ extension HomeVC: MKMapViewDelegate {
         //centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         //centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-        notificationButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        notificationBoltBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             //self.centerMapButton.isHidden = false
             //self.centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             //self.centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.notificationButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.notificationBoltBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             
             // self.centerMapButton.alpha = 1
             //self.centerMapBackground.alpha = 1
             self.simpleActionBackground.alpha = 1
-            self.notificationButtonBackground.alpha = 1
+            self.notificationBoltBackground.alpha = 1
             //self.centerMapBackground.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
             
             
@@ -4818,7 +4817,7 @@ extension HomeVC: MKMapViewDelegate {
             //self.centerMapButton.transform = .identity
             //self.centerMapBackground.transform = .identity
             self.simpleActionBackground.transform = .identity
-            self.notificationButtonBackground.transform = .identity
+            self.notificationBoltBackground.transform = .identity
         }
     }
  

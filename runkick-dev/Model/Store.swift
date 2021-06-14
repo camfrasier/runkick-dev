@@ -19,6 +19,7 @@ class Store {
     var points: Int!
     var storeId: String!
     var category: String?
+    var caption: String!
     var imageUrl: String!
     var storeLogoUrl: String!
     //var favoritesUrl: String!
@@ -59,6 +60,10 @@ class Store {
         
         if let storeLogoUrl = dictionary["storeLogoUrl"] as? String {
             self.storeLogoUrl = storeLogoUrl
+        }
+        
+        if let caption = dictionary["caption"] as? String {
+            self.caption = caption
         }
         
         //if let favoritesUrl = dictionary["imageUrl"] as? String {

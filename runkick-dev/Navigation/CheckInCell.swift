@@ -224,7 +224,7 @@ class CheckInCell: UICollectionViewCell {
     lazy var stopMarkerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "stopMarkerPin"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        button.tintColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
     } ()
@@ -232,7 +232,7 @@ class CheckInCell: UICollectionViewCell {
     lazy var durationClockButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "durationIcon"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        button.tintColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
     } ()
@@ -1201,7 +1201,7 @@ class CheckInCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
-        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         label.text = "3 Stops"
         return label
     } ()
@@ -1234,7 +1234,7 @@ class CheckInCell: UICollectionViewCell {
     lazy var distanceButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "rotatingRect"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        button.tintColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         //button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
     }()
@@ -1242,7 +1242,7 @@ class CheckInCell: UICollectionViewCell {
     lazy var stepsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "dasherWalkzilla"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        button.tintColor = UIColor.rgb(red: 150, green: 150, blue: 150)
         //button.addTarget(self, action: #selector(handleUsernameTapped), for: .touchUpInside)
         return button
     }()
@@ -1251,7 +1251,7 @@ class CheckInCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
-        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         label.text = "822"
         return label
     } ()
@@ -1322,14 +1322,14 @@ class CheckInCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 17)
-        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         label.text = "880"
         return label
     } ()
     
     let distanceLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         label.textAlignment = .center
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
         label.text = "8.2 mi"
@@ -1354,7 +1354,7 @@ class CheckInCell: UICollectionViewCell {
         let label = UILabel()
         //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 19)
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
-        label.textColor = UIColor.rgb(red: 160, green: 160, blue: 160)
+        label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         label.text = "2.10 hrs"
         return label
     } ()
@@ -2192,13 +2192,16 @@ class CheckInCell: UICollectionViewCell {
         statisticsBlock.anchor(top: mapBackgroundView.bottomAnchor, left: mapBackgroundView.leftAnchor, bottom: nil, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
         
         numOfStopsBackground.anchor(top: statisticsBlock.topAnchor, left: statisticsBlock.leftAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 5.5, paddingBottom: 4, paddingRight: 0, width: ( frame.width / 4 ) - 6, height: 0)
+        numOfStopsBackground.layer.cornerRadius = 20
         
         durationBackground.anchor(top: statisticsBlock.topAnchor, left: numOfStopsBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: ( frame.width / 4 ) - 6, height: 0)
+        durationBackground.layer.cornerRadius = 20
         
         distanceBackground.anchor(top: statisticsBlock.topAnchor, left: durationBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: ( frame.width / 4 ) - 6, height: 0)
+        distanceBackground.layer.cornerRadius = 20
         
         stepsBackground.anchor(top: statisticsBlock.topAnchor, left: distanceBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: ( frame.width / 4 ) - 6, height: 0)
-        
+        stepsBackground.layer.cornerRadius = 20
         
         // stop marker
         
@@ -2233,11 +2236,11 @@ class CheckInCell: UICollectionViewCell {
         
             // steps marker
         
-        stepsButton.anchor(top: nil, left: stepsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 18, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
+        stepsButton.anchor(top: nil, left: stepsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 24, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
         stepsButton.centerYAnchor.constraint(equalTo: stepsBackground.centerYAnchor).isActive = true
         
         
-        stepsLabel.anchor(top: nil, left: stepsButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 6, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stepsLabel.anchor(top: nil, left: stepsButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
          stepsLabel.centerYAnchor.constraint(equalTo: stepsBackground.centerYAnchor).isActive = true
         
         

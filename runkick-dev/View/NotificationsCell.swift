@@ -60,6 +60,17 @@ class NotificationsCell: UITableViewCell {
         return label
     } ()
     
+    lazy var activeStatusLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.text = "active"
+        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        //label.font = UIFont(name: "ArialRoundedMTBold", size: 12)
+        label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
+        label.isUserInteractionEnabled = true
+        return label
+    } ()
+    
 
     
     lazy var postHyperLabel: UIButton = {
@@ -248,6 +259,9 @@ class NotificationsCell: UITableViewCell {
         
         
         self.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        
+        addSubview(activeStatusLabel)
+        activeStatusLabel.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 18, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
     }
     

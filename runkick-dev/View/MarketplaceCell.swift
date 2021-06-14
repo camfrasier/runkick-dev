@@ -22,6 +22,10 @@ class MarketplaceCell: UICollectionViewCell {
             categoryNameLabel.text = categoryPost?.category
             imageView.loadImage(with: imageUrl)
             // here is where the photo wouldbe established  .. will simply add show the pic and rigure it out.
+            
+            guard let description = categoryPost?.caption else { return }
+            
+            self.descriptionLabel.text = description
         }
     }
 

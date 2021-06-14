@@ -17,6 +17,9 @@ class StoreCarouselCell: UICollectionViewCell {
             guard let favoritesImageUrl = favorite?.imageUrl else { return }
             storeImageView.loadImage(with: favoritesImageUrl)
             
+            guard let storeName = favorite?.title else { return }
+            
+            self.titleLabel.text = storeName
         }
     }
 

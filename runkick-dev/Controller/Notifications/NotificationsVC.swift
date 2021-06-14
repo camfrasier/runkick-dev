@@ -11,13 +11,16 @@ import Firebase
 
 private let reuseIdentifier = "NotificationsCell"
 
-class NotificationsVC: UITableViewController, NotificationCellDelegate {
-    
+//class NotificationsVC: UITableViewController, NotificationCellDelegate {
+  class NotificationsVC: UIViewController, NotificationCellDelegate {
+
     // MARK: - Properties
     
     var notifications = [Notification]()
     var timer: Timer?   // helps fix the bug where pics get jumbled up with follow like
     var currentKey: String?
+    var tableView: UITableView!
+    let messagesVC = MessagesController()
     
     let cancelViewButton: UIButton = {
         let button = UIButton(type: .system)
@@ -53,10 +56,13 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
         // configuring navigation bar
         configureNavigationBar()
+        
+        //configureMessagesVC()
     }
     
+    /*
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 70
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -173,13 +179,13 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
             
         
     }
-    
+    */
     
     // MARK: - NotificationCellDelegate protocol
     
     func configureTableView() {
 
-        //tableView = UITableView()
+        tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -191,12 +197,14 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         tableView.register(NotificationsCell.self, forCellReuseIdentifier: reuseIdentifier)
         
         // add spacing to the top of the table view
-        tableView.contentInset = UIEdgeInsets(top: 10,left: 0,bottom: 0,right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 15,left: 0,bottom: 0,right: 0)
         
         tableView.rowHeight = 80
+
         
-        //view.addSubview(cancelViewButton)
-        //cancelViewButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 50, height: 50)
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
         // clear separator lines
@@ -322,6 +330,20 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
             })
         }
     }
+    
+    func configureMessagesVC() {
+    
+           print("DEBUG: Right menu is configured at this point.")
+           
+           //messagesVC.delegate = self
+
+        messagesVC.tableView.delegate = self
+        //messagesVC.tableView.datasource = self
+        messagesVC.view.frame = CGRect(x: 0, y: 15, width: view.frame.width, height: view.frame.height - 15)
+               
+        view.addSubview(messagesVC.view)
+
+       }
 
     func configureNavigationBar() {
         
@@ -342,7 +364,7 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         
         let font = UIFont(name: "ArialRoundedMTBold", size: 17)!
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)]
-        navigationItem.title = "Activity"
+        navigationItem.title = "Recent Activity"
         
         navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         
@@ -384,4 +406,126 @@ class NotificationsVC: UITableViewController, NotificationCellDelegate {
         print("this function should dismiss notification view")
     }
 
+}
+
+extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
+    
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+           return 70
+       }
+       
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+           // #warning Incomplete implementation, return the number of rows
+           return notifications.count
+       }
+       
+        func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+           if notifications.count > 4 {
+               if indexPath.item == notifications.count - 1 {
+                   fetchNotifications()
+               }
+           }
+       }
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+           let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationsCell
+           
+           cell.notification = notifications[indexPath.row]
+           
+           cell.delegate = self
+           
+           //cell.layer.anchorPointZ = CGFloat(indexPath.row)
+           
+           cell.selectionStyle = .none
+           
+           return cell
+       }
+       
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+           /*
+           case 0: self = .Like
+           case 1: self = .Comment
+           case 2: self = .Follow
+           case 3: self = .CommentMention
+           case 4: self = .PostMention
+           case 5: self = .Message
+           default: self = .Message
+           */
+           
+           let notification = notifications[indexPath.row]
+           
+           print("THIs is the NOTITIFCATION TYPE \(notification.notificationType)")
+           if notification.notificationType == .Like {
+               // type like go to the post identified
+               
+               print("The notification type is a LIKE")
+               guard let post = notification.post else { return }
+               
+               
+               //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+               
+               let userSpecificFeedVC = UserSpecificFeedVC()
+               userSpecificFeedVC.viewSinglePost = true
+               userSpecificFeedVC.post = post
+               //navigationController?.pushViewController(userSpecificFeedVC, animated: true)
+
+               let nav = self.navigationController
+               DispatchQueue.main.async {
+                   nav?.view.layer.add(CATransition().popFromRight(), forKey: nil)
+                   nav?.pushViewController(userSpecificFeedVC, animated: false)
+               }
+           }
+               if notification.notificationType == .Comment {
+                   
+                   print("Go to the post comment that was mentioned")
+                   
+               }
+               
+               if notification.notificationType == .Follow {
+                   
+                   let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+                
+                   userProfileVC.user = notification.user
+                   //navigationController?.pushViewController(userProfileVC, animated: true)
+                   /*
+                   let transition = CATransition()
+                   transition.duration = 5
+                   transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.default)
+                   transition.type = CATransitionType.moveIn
+                   transition.subtype = CATransitionSubtype.fromRight
+                   */
+            
+                   //self.view.window!.backgroundColor = UIColor.white
+                   
+                   //navigationController?.view.layer.add(transition, forKey: kCATransition)
+                   //navigationController?.pushViewController(userProfileVC, animated: false)
+                   
+     
+                   // SUPER IMPORTANT FUNCTION!!!!
+                   let nav = self.navigationController
+                   DispatchQueue.main.async {
+                       self.view.window!.backgroundColor = UIColor.white
+                       nav?.view.layer.add(CATransition().popFromRight(), forKey: kCATransition)
+                       nav?.pushViewController(userProfileVC, animated: false)
+                   }
+                   
+               }
+               
+               if notification.notificationType == .CommentMention {
+                   print("Go to the post comment that you were mentioned in ")
+               }
+               
+               if notification.notificationType == .PostMention {
+                   
+                   print("Go to the post comment that you were mentioned in")
+                   
+               }
+               
+               if notification.notificationType == .Message {
+                   
+                   print("Go to the user specific messages")
+                   
+               }
+               
+           
+       }
 }
