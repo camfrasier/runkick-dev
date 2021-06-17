@@ -290,7 +290,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         
         fetchProfileData()
         
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //view.backgroundColor = .clear
         /*
         //extends the edges beyound the tab bar
         edgesForExtendedLayout = .top
@@ -325,6 +325,8 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         refreshFeedControl.addTarget(self, action: #selector(handleFeedRefresh), for: .valueChanged)
         collectionViewVertical.refreshControl = refreshFeedControl
         
+        collectionViewVertical.backgroundColor = UIColor.walkzillaYellow()
+        
         //collectionView.addSubview(feedTitleLabel)
         //feedTitleLabel.anchor(top: collectionView.topAnchor, left: collectionView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
@@ -344,7 +346,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         
         view.addSubview(collectionViewVertical)
         collectionViewVertical.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        collectionViewVertical.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
         
         
 
@@ -1774,7 +1776,7 @@ extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
          if collectionView == self.collectionViewHorizontal {
              return 2
          }
-         return 10
+         return 0
      }
      
      // calling function to give space and insets

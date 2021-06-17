@@ -161,10 +161,11 @@ class SearchUserCell: UITableViewCell {
                                
                                // configured follow button for non-followed user
                                self.followButton.setTitle("Follow", for: .normal)
-                               self.followButton.setTitleColor(.white, for: .normal)
+            self.followButton.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
                                 self.followButton.titleLabel?.font =  UIFont(name: "HelveticaNeue-Bold", size: 13)
                                self.followButton.layer.borderWidth = 0
-                               self.followButton.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+                               //self.followButton.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+                            self.followButton.backgroundColor = UIColor.walkzillaYellow()
              }
         })
              

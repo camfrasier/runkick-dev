@@ -31,6 +31,67 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     var titleView: UIView!
     
     
+    lazy var searchFriendsBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleSearchFriends))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    lazy var searchGroupsBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleSearchGroups))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    let searchFriendsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Healthy Options"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        return label
+    }()
+    
+    let searchGroupsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Rewards"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        return label
+    }()
+    
+    lazy var friendsGroupsView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var indicatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.walkzillaYellow()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Search"
@@ -350,7 +411,18 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         lineView.addSubview(thinLineView)
     }
     
-   
+    @objc func handleSearchFriends() {
+        
+        print("transition to menu")
+
+        
+    }
+    
+    @objc func handleSearchGroups() {
+        print("transition to rewards")
+
+        
+    }
     
     @objc func handleBackButton() {
         _ = self.navigationController?.popViewController(animated: true)

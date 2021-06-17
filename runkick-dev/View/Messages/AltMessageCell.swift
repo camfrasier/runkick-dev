@@ -102,7 +102,7 @@ class AltMessageCell: UICollectionViewCell {
         profileImageView.layer.cornerRadius = profileImageDimension / 2
         
         addSubview(timestampLabel)
-        timestampLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
+        timestampLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
         timestampLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         
 

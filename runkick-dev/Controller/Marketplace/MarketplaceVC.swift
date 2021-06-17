@@ -33,7 +33,66 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     var userCurrentKey: String?
     
     
+    lazy var menuBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleMenuView))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
     
+    lazy var rewardsBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleRewardsView))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    let menuLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Healthy Options"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        return label
+    }()
+    
+    let rewardsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Rewards"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        return label
+    }()
+    
+    lazy var menuRewardsView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var indicatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.walkzillaYellow()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     
     let titleLabel: UILabel = {
@@ -98,7 +157,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        configureMenuRewardsView()
         
         configureTableView()
         
@@ -216,7 +275,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: menuRewardsView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
 
 
@@ -233,7 +292,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
-        let frame = CGRect(x: 0, y: 140, width: view.frame.width, height: view.frame.height - 140)
+        let frame = CGRect(x: 0, y: 130, width: view.frame.width, height: view.frame.height - 130)
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
         collectionView.delegate = self
@@ -264,7 +323,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         layout.scrollDirection = .horizontal
         
         
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 140)
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 130)
 
         collectionViewHorizontal = UICollectionView(frame: frame, collectionViewLayout: layout)
         collectionViewHorizontal.delegate = self
@@ -276,8 +335,8 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         tableView.addSubview(collectionViewHorizontal)
         collectionViewHorizontal.register(StoreCarouselCell.self, forCellWithReuseIdentifier: reuseCarouselIdentifier)
         
-        collectionViewHorizontal.addSubview(titleLabel)
-        titleLabel.anchor(top: collectionViewHorizontal.topAnchor, left: collectionViewHorizontal.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //collectionViewHorizontal.addSubview(titleLabel)
+        //titleLabel.anchor(top: collectionViewHorizontal.topAnchor, left: collectionViewHorizontal.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
     }
     
@@ -428,6 +487,36 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     }
     */
     
+    
+    func configureMenuRewardsView() {
+        
+        view.addSubview(menuRewardsView)
+        menuRewardsView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
+        
+        menuRewardsView.addSubview(lineView)
+        lineView.anchor(top: nil, left: menuRewardsView.leftAnchor, bottom: menuRewardsView.bottomAnchor, right: menuRewardsView.rightAnchor, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 30, width: 0, height: 0.75)
+        
+        menuRewardsView.addSubview(indicatorView)
+        indicatorView.anchor(top: nil, left: lineView.leftAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: -1, paddingRight: 0, width: 110, height: 4)
+        
+        menuRewardsView.addSubview(menuBackground)
+        menuBackground.anchor(top: nil, left: menuRewardsView.leftAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 25, paddingBottom: 10, paddingRight: 0, width: 120, height: 40)
+        
+        menuBackground.addSubview(menuLabel)
+        menuLabel.anchor(top: nil, left: menuBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        menuLabel.centerYAnchor.constraint(equalTo: menuBackground.centerYAnchor).isActive = true
+        
+        
+        menuRewardsView.addSubview(rewardsBackground)
+        rewardsBackground.anchor(top: nil, left: menuBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
+        
+        rewardsBackground.addSubview(rewardsLabel)
+        rewardsLabel.anchor(top: nil, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        rewardsLabel.centerYAnchor.constraint(equalTo: rewardsBackground.centerYAnchor).isActive = true
+        
+       
+    }
+    
     func configureNavigationBar() {
         
         //view.addSubview(navigationController!.navigationBar)
@@ -527,6 +616,19 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     
     @objc func handleBackButton() {
         _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func handleMenuView() {
+        
+        print("transition to menu")
+
+        
+    }
+    
+    @objc func handleRewardsView() {
+        print("transition to rewards")
+
+        
     }
     
     @objc func handleReturnMap() {
@@ -1052,7 +1154,7 @@ extension MarketplaceVC: UICollectionViewDelegateFlowLayout, UICollectionViewDat
       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         if collectionView == self.collectionViewHorizontal {
-            return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
+            return UIEdgeInsets(top: 10, left: 5, bottom: 0, right: 0)
         }
           
           //return UIEdgeInsets(top: 60, left: 16, bottom: 0, right: 16)

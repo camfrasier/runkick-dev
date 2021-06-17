@@ -166,16 +166,16 @@ class CheckInCell: UICollectionViewCell {
     let tripCompletedLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
-        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.textAlignment = .center
-        label.text = "Checkin"
+        label.text = "CheckIn"
         return label
     } ()
     
     lazy var checkMarkButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "tripCompletedMarker"), for: .normal)
-        button.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        button.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         //button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
         return button
     } ()
@@ -2299,14 +2299,14 @@ class CheckInCell: UICollectionViewCell {
         
         tripCompletedBackground.anchor(top: userLocationBlock.topAnchor, left: nil, bottom: nil, right: userLocationBlock.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 90, height: 36)
         //tripCompletedBackground.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
-        tripCompletedBackground.backgroundColor = UIColor.greenSalad()
+        tripCompletedBackground.backgroundColor = UIColor.walkzillaYellow()
         tripCompletedBackground.layer.cornerRadius = 18
         
-        tripCompletedLabel.anchor(top: nil, left: tripCompletedBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tripCompletedLabel.anchor(top: nil, left: tripCompletedBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 14, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         //tripCompletedLabel.centerXAnchor.constraint(equalTo: tripCompletedBackground.centerXAnchor).isActive = true
         tripCompletedLabel.centerYAnchor.constraint(equalTo: tripCompletedBackground.centerYAnchor).isActive = true
         
-        checkMarkButton.anchor(top: nil, left: tripCompletedLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 2, paddingBottom: 0, paddingRight: 0, width: 11, height: 9)
+        checkMarkButton.anchor(top: nil, left: tripCompletedLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 11, height: 9)
         checkMarkButton.centerYAnchor.constraint(equalTo: tripCompletedBackground.centerYAnchor).isActive = true
         
         userCommentBlock.anchor(top: userLocationBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 24)

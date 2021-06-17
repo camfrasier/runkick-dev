@@ -40,28 +40,90 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
     
     lazy var backButtonBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
+        view.backgroundColor = .red
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    lazy var messagesBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleMessagesView))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    lazy var notificationsBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleNotificationsView))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    lazy var messageNotificationView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
         layout.headerReferenceSize = .zero
         layout.sectionInset = .zero
-        layout.scrollDirection = .horizontal
+        //layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.dataSource = self
         cv.delegate = self
         cv.contentInset = .zero
         return cv
     }()
+    
+    let messagesLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Messages"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        return label
+    }()
+    
+    let notificationsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Notifications"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        return label
+    }()
+    
+    lazy var indicatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.walkzillaYellow()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.walkzillaYellow()
+        //view.backgroundColor = UIColor.walkzillaYellow()
         
         /*
         //extends the edges beyound the tab bar
@@ -69,7 +131,7 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
         extendedLayoutIncludesOpaqueBars = true
         */
         
-        
+        configureMessageNotificationView()
         
         configureTableView()
         
@@ -86,7 +148,7 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
         configureRefreshControl()
         
         //tableView.isHidden = true
-        collectionView.isHidden = true
+        //collectionView.isHidden = true
     }
     
     /*
@@ -239,7 +301,7 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
     
     func configureTableView() {
         
-        tableView = UITableView(frame: .zero, style: .grouped)
+        tableView = UITableView(frame: CGRect.zero, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.alwaysBounceVertical = true
@@ -250,27 +312,57 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
         //tableView.dataSource = self
         
         //tableView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
-        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tableView.backgroundColor = UIColor.walkzillaYellow()
         tableView.addSubview(cancelViewButton)
         
         // register cell class
         tableView.register(NotificationsCell.self, forCellReuseIdentifier: reuseIdentifier)
-        
-        // add spacing to the top of the table view
-        tableView.contentInset = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
+
         
         //tableView.rowHeight = 80
 
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: messageNotificationView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
         // clear separator lines
         tableView.separatorStyle = .none
         //tableView.separatorColor = .clear
         
+        // giving the top border a bit of buffer
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+    }
+    
+    func configureMessageNotificationView() {
+        
+        view.addSubview(messageNotificationView)
+        messageNotificationView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
+        
+        messageNotificationView.addSubview(lineView)
+        lineView.anchor(top: nil, left: messageNotificationView.leftAnchor, bottom: messageNotificationView.bottomAnchor, right: messageNotificationView.rightAnchor, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 30, width: 0, height: 0.75)
+        
+        messageNotificationView.addSubview(indicatorView)
+        indicatorView.anchor(top: nil, left: lineView.leftAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: -1, paddingRight: 0, width: 70, height: 4)
+        
+        messageNotificationView.addSubview(messagesBackground)
+        messagesBackground.anchor(top: nil, left: messageNotificationView.leftAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 25, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
+        
+        messagesBackground.addSubview(messagesLabel)
+        messagesLabel.anchor(top: nil, left: messagesBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        messagesLabel.centerYAnchor.constraint(equalTo: messagesBackground.centerYAnchor).isActive = true
+        
+        
+        messageNotificationView.addSubview(notificationsBackground)
+        notificationsBackground.anchor(top: nil, left: messagesBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
+        
+        notificationsBackground.addSubview(notificationsLabel)
+        notificationsLabel.anchor(top: nil, left: notificationsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        notificationsLabel.centerYAnchor.constraint(equalTo: notificationsBackground.centerYAnchor).isActive = true
+        
+       
     }
     
    
@@ -316,6 +408,23 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
     // MARK: - Handlers
     
     // MARK: - Handlers
+    
+    
+    @objc func handleMessagesView() {
+        
+        print("transition to messages")
+       // tableView.isHidden = true
+        collectionView.isHidden = false
+        
+    }
+    
+    @objc func handleNotificationsView() {
+        print("transition to notifications")
+      //  tableView.isHidden = false
+        collectionView.isHidden = true
+        
+    }
+    
     
     @objc func handleRefresh() {
         notifications.removeAll(keepingCapacity: false)
@@ -383,12 +492,14 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
                     
                     let notification = Notification(user: user, post: post, dictionary: dictionary)
                     self.notifications.append(notification)
-                    self.handleReloadTable()
+                    //self.handleReloadTable()
+                    self.handleSortNotifications()
                 })
             } else {
                 let notification = Notification(user: user, dictionary: dictionary)
                 self.notifications.append(notification)
-                self.handleReloadTable()
+                //self.handleReloadTable()
+                self.handleSortNotifications()
             }
         })
         DataService.instance.REF_NOTIFICATIONS.child(currentUid).child(notificationId).child("checked").setValue(1)
@@ -498,17 +609,17 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
         
         // add or remove nav bar bottom border
         navigationController?.navigationBar.shadowImage = UIImage()
-        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
-        lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        //let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
+        //lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
         
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
         
         let font = UIFont(name: "ArialRoundedMTBold", size: 17)!
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 90/255, green: 90/255, blue: 90/255, alpha: 1)]
         navigationItem.title = "Recent Activity"
         
-        navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        navigationController?.navigationBar.tintColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
         
 
         
@@ -691,8 +802,6 @@ extension NotificationsVC: UICollectionViewDelegateFlowLayout, UICollectionViewD
       
       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-          
-          //return UIEdgeInsets(top: 60, left: 16, bottom: 0, right: 16)
           return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
       }
     

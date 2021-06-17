@@ -791,7 +791,7 @@ class FeedCell: UICollectionViewCell {
         //imageTranslucentBar.backgroundColor = UIColor.rgb(red: 222, green: 180, blue: 180)
         
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[locationBlock(42)]-0-[captionBlock]-10-[imageBlock]-5-[translucent(45)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[locationBlock(42)]-0-[captionBlock]-10-[imageBlock]-5-[translucent(55)]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock, "locationBlock": userLocationBlock ,"translucent": imageTranslucentBar, "captionBlock": captionBlock]))
 
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[imageBlock]-0-|", options: [], metrics: nil, views: ["imageBlock": postImageBlock]))
         
