@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 private let reuseIdentifier = "NotificationsCell"
-private let reuseMessageIdentifier = "MessagesCell"
+private let reuseAltMessageIdentifier = "AltMessageCell"
 
 //class NotificationsVC: UITableViewController, NotificationCellDelegate {
   class NotificationsVC: UIViewController, NotificationCellDelegate {
@@ -18,16 +18,16 @@ private let reuseMessageIdentifier = "MessagesCell"
     // MARK: - Properties
     
     var notifications = [Notification]()
-    var timer: Timer?   // helps fix the bug where pics get jumbled up with follow like
+    var timer: Timer? // helps fix the bug where pics get jumbled up with follow like
+    var timer1: Timer?
     var currentKey: String?
     var tableView: UITableView!
-    var messagesTableView: UITableView!
     
     var messages = [Message]()
     var messagesDictionary = [String: Message]()  // consolidating user message
     
     // this is for importing the message VC, may not need
-    let messagesVC = MessagesController()
+  //  let messagesVC = MessagesController()
     
     let cancelViewButton: UIButton = {
         let button = UIButton(type: .system)
@@ -44,11 +44,24 @@ private let reuseMessageIdentifier = "MessagesCell"
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        layout.headerReferenceSize = .zero
+        layout.sectionInset = .zero
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.dataSource = self
+        cv.delegate = self
+        cv.contentInset = .zero
+        return cv
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        view.backgroundColor = UIColor.walkzillaYellow()
         
         /*
         //extends the edges beyound the tab bar
@@ -56,22 +69,24 @@ private let reuseMessageIdentifier = "MessagesCell"
         extendedLayoutIncludesOpaqueBars = true
         */
         
+        
+        
         configureTableView()
         
         // fetch notifications
         fetchNotifications()
         
+        configureCollectionView()
+        fetchMessages()
+        
         // configuring navigation bar
         configureNavigationBar()
         
-        configureMessagesView()
+        // configure refresh control
+        configureRefreshControl()
         
-        fetchMessages()
-    
         //tableView.isHidden = true
-        messagesTableView.isHidden = true
-        
-        //configureMessagesVC()
+        collectionView.isHidden = true
     }
     
     /*
@@ -195,13 +210,44 @@ private let reuseMessageIdentifier = "MessagesCell"
     }
     */
     
+    // MARK: - CollectionView
+    
+    func configureCollectionView() {
+        
+        
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+
+        collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+
+        tableView.addSubview(collectionView)
+        collectionView.register(AltMessageCell.self, forCellWithReuseIdentifier: reuseAltMessageIdentifier)
+        
+    }
+    
+    
     // MARK: - NotificationCellDelegate protocol
     
     func configureTableView() {
-
-        tableView = UITableView()
+        
+        tableView = UITableView(frame: .zero, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.alwaysBounceVertical = true
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        //tableView = UITableView()
+        //tableView.delegate = self
+        //tableView.dataSource = self
         
         //tableView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
         tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
@@ -211,9 +257,9 @@ private let reuseMessageIdentifier = "MessagesCell"
         tableView.register(NotificationsCell.self, forCellReuseIdentifier: reuseIdentifier)
         
         // add spacing to the top of the table view
-        tableView.contentInset = UIEdgeInsets(top: 15,left: 0,bottom: 0,right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
         
-        tableView.rowHeight = 80
+        //tableView.rowHeight = 80
 
         
         view.addSubview(tableView)
@@ -227,35 +273,7 @@ private let reuseMessageIdentifier = "MessagesCell"
         
     }
     
-    func configureMessagesView() {
-        
-
-        messagesTableView = UITableView()
-        messagesTableView.delegate = self
-        messagesTableView.dataSource = self
-        
-        //tableView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
-        messagesTableView.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 255)
-        messagesTableView.addSubview(cancelViewButton)
-        
-        // register cell class
-        messagesTableView.register(MessageCell.self, forCellReuseIdentifier: reuseMessageIdentifier)
-        
-        // add spacing to the top of the table view
-        messagesTableView.contentInset = UIEdgeInsets(top: 15,left: 0,bottom: 0,right: 0)
-        
-        messagesTableView.rowHeight = 80
-
-        
-        view.addSubview(messagesTableView)
-        messagesTableView.translatesAutoresizingMaskIntoConstraints = false
-        messagesTableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        
-        // clear separator lines
-        messagesTableView.separatorStyle = .none
-        //tableView.separatorColor = .clear
-    }
+   
     
     func handleFollowTapped(for cell: NotificationsCell) {
         
@@ -297,6 +315,24 @@ private let reuseMessageIdentifier = "MessagesCell"
     
     // MARK: - Handlers
     
+    // MARK: - Handlers
+    
+    @objc func handleRefresh() {
+        notifications.removeAll(keepingCapacity: false)
+        self.currentKey = nil
+        fetchNotifications()
+        
+        collectionView.reloadData()
+        tableView.reloadData()
+    }
+    
+    func configureRefreshControl() {
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        self.tableView?.refreshControl = refreshControl
+    }
+    
     func handleReloadTable() {
         self.timer?.invalidate()
         
@@ -309,6 +345,25 @@ private let reuseMessageIdentifier = "MessagesCell"
             return notification1.creationDate > notification2.creationDate
         }
         self.tableView.reloadData()
+        
+    }
+    
+    func handleReloadMessagesTable() {
+        self.timer1?.invalidate()
+        
+        self.timer1 = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(handleSortMessages), userInfo: nil, repeats: false)
+    }
+    
+    @objc func handleSortMessages() {
+        
+        self.messages.sort(by: { (message1, message2) -> Bool in
+            return message1.creationDate > message2.creationDate
+        })
+
+        self.collectionView.reloadData()
+        print("Handle reload messafes called")
+        
+   
     }
     
     // MARK: - API
@@ -339,10 +394,16 @@ private let reuseMessageIdentifier = "MessagesCell"
         DataService.instance.REF_NOTIFICATIONS.child(currentUid).child(notificationId).child("checked").setValue(1)
     }
     
+    
+
+    
+    
+    
     func fetchNotifications() {
         
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
+        self.tableView.refreshControl?.endRefreshing()
         if currentKey == nil {
             DataService.instance.REF_NOTIFICATIONS.child(currentUid).queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
                 
@@ -382,57 +443,49 @@ private let reuseMessageIdentifier = "MessagesCell"
      
          guard let currentUid = Auth.auth().currentUser?.uid else { return }
          
+       
          self.messages.removeAll()
          self.messagesDictionary.removeAll()
-         self.messagesTableView.reloadData()
-         
+         //self.messagesTableView.reloadData()
+        self.collectionView.reloadData()
+        
+        self.collectionView.refreshControl?.endRefreshing()
+        
          DataService.instance.REF_USER_MESSAGES.child(currentUid).observe(.childAdded) { (snapshot) in
-             
              let uid = snapshot.key
              
              DataService.instance.REF_USER_MESSAGES.child(currentUid).child(uid).observe(.childAdded, with: { (snapshot) in
                  
                  let messageId = snapshot.key
                  
-                 self.fetchMessage(withMessageId: messageId)
+                 //self.fetchMessage(withMessageId: messageId)
+                    Database.fetchMessage(withMessageId: messageId) { message in
+                    
+                    let chatPartnerId = message.getChatPartnerId()
+                        self.messagesDictionary[chatPartnerId] = message
+                        self.messages = Array(self.messagesDictionary.values)
+                        //self.collectionView.reloadData()
+                        self.handleReloadMessagesTable()
+                        
+                        print("I just need some data here and maybe I can be money")
+                        
+                    //self.handleReloadMessagesTable()
+                        //self.messagesTableView.reloadData()
+                }
+                
+                
              })
          }
-     }
-     
-     func fetchMessage(withMessageId messageId: String) {
          
-         DataService.instance.REF_MESSAGES.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
-             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
-             
-             let message = Message(dictionary: dictionary)
-             let chatPartnerId = message.getChatPartnerId()
-             self.messagesDictionary[chatPartnerId] = message
-             self.messages = Array(self.messagesDictionary.values)
-             
-             self.messagesTableView?.reloadData()
-         }
      }
-     
-    
-    func configureMessagesVC() {
-    
-           print("DEBUG: Right menu is configured at this point.")
-           
-           //messagesVC.delegate = self
-
-        messagesVC.tableView.delegate = self
-        //messagesVC.datasource = self
-        messagesVC.view.frame = CGRect(x: 0, y: 15, width: view.frame.width, height: view.frame.height - 15)
-               
-        view.addSubview(messagesVC.view)
-
-       }
+   
     
     func showChatController(forUser user: User) {
         let chatController = ChatController(collectionViewLayout: UICollectionViewFlowLayout())
         chatController.user = user
         navigationController?.pushViewController(chatController, animated: true)
     }
+    
 
     func configureNavigationBar() {
         
@@ -461,7 +514,7 @@ private let reuseMessageIdentifier = "MessagesCell"
         
 
     
-        
+        /*
         let returnNavButton = UIButton(type: UIButton.ButtonType.system)
          
          returnNavButton.frame = CGRect(x: 0, y: 0, width: 33, height: 33)
@@ -475,6 +528,8 @@ private let reuseMessageIdentifier = "MessagesCell"
              
          let notificationBarBackButton = UIBarButtonItem(customView: returnNavButton)
          self.navigationItem.leftBarButtonItems = [notificationBarBackButton]
+        */
+        
     }
     
     // may not need this function in the future
@@ -500,16 +555,12 @@ private let reuseMessageIdentifier = "MessagesCell"
 extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
     
      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
            return 70
        }
        
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
            // #warning Incomplete implementation, return the number of rows
-            
-            if tableView == messagesTableView {
-                
-                return messages.count
-            }
             
            return notifications.count
        }
@@ -522,14 +573,6 @@ extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
            }
        }
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            
-            if tableView == messagesTableView {
-                let cell = tableView.dequeueReusableCell(withIdentifier: reuseMessageIdentifier, for: indexPath) as! MessageCell
-                
-                cell.message = messages[indexPath.row]
-                
-                return cell
-            }
             
            let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NotificationsCell
            
@@ -545,16 +588,7 @@ extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
        }
        
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            
-            
-            if tableView == messagesTableView {
-                let message = messages[indexPath.row]
-                
-                let chatPartnerId = message.getChatPartnerId()
-                Database.fetchUser(with: chatPartnerId) { (user) in // fetching our user or chat partner with the chat partner id
-                    self.showChatController(forUser: user)
-                }
-            } else {
+
             
            /*
            case 0: self = .Like
@@ -640,8 +674,63 @@ extension NotificationsVC: UITableViewDataSource, UITableViewDelegate  {
                    print("Go to the user specific messages")
                    
                }
-               
-           
        }
-    }
 }
+
+extension NotificationsVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        
+        let width = (view.frame.width )
+        let height = (width - width + 70)
+        return CGSize(width: width, height: height)
+
+    }
+      
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+          
+          //return UIEdgeInsets(top: 60, left: 16, bottom: 0, right: 16)
+          return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+      }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+  
+        return 0
+    }
+      
+
+      
+
+
+      func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return messages.count
+      }
+
+      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+          
+          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseAltMessageIdentifier, for: indexPath) as! AltMessageCell
+          
+        cell.message = messages[indexPath.item]
+
+          return cell
+      }
+      
+      func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+          
+        let message = messages[indexPath.item]
+        
+        let chatPartnerId = message.getChatPartnerId()
+        Database.fetchUser(with: chatPartnerId) { (user) in // fetching our user or chat partner with the chat partner id
+            self.showChatController(forUser: user)
+          
+        }
+      }
+      
+
+}
+

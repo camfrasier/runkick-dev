@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F13C80C3127AA3ACD01F38D8BF6FADB9"
+               BlueprintIdentifier = "5F8CAE91BB23E0AE914386C701F48E51"
+               BuildableName = "InstantSearchClient.framework"
                BlueprintName = "InstantSearchClient"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "InstantSearchClient.framework">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

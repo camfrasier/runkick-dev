@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02A42F47FF8C703B91BFA4E8 /* Pods_runkick_dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038E0E18E1FAF2B32347535C /* Pods_runkick_dev.framework */; };
 		6918226223B023D90009F00A /* UserSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6918226123B023D90009F00A /* UserSettingsVC.swift */; };
 		6918226423B025060009F00A /* SettingsMenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6918226323B025060009F00A /* SettingsMenuOptionCell.swift */; };
 		6918226623B025560009F00A /* SettingsMenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6918226523B025560009F00A /* SettingsMenuOption.swift */; };
@@ -31,6 +32,7 @@
 		69236750230B7F09002FCA4D /* UploadPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6923674F230B7F09002FCA4D /* UploadPostVC.swift */; };
 		692CAE18233C23470056FC7A /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692CAE17233C23470056FC7A /* SearchPostCell.swift */; };
 		692CAE1B233C32350056FC7A /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692CAE1A233C32350056FC7A /* MessagesController.swift */; };
+		692E9A5D267AB7E40096E014 /* AltMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692E9A5C267AB7E40096E014 /* AltMessageCell.swift */; };
 		692EDB532535259F00BB86B6 /* GroupMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB522535259F00BB86B6 /* GroupMessageController.swift */; };
 		692EDB5525352C9A00BB86B6 /* GroupMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB5425352C9A00BB86B6 /* GroupMessageCell.swift */; };
 		692EDB57253E19AF00BB86B6 /* CreateGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EDB56253E19AF00BB86B6 /* CreateGroupVC.swift */; };
@@ -159,12 +161,11 @@
 		69FE5BCA2331AD4C00039BF5 /* NotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FE5BC92331AD4C00039BF5 /* NotificationsVC.swift */; };
 		69FE5BCC2331B18E00039BF5 /* NotificationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FE5BCB2331B18E00039BF5 /* NotificationsCell.swift */; };
 		69FE5BCE2332D6EB00039BF5 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FE5BCD2332D6EB00039BF5 /* Notification.swift */; };
-		BBC56FB48246D5D571A45DAA /* Pods_runkick_dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C0B665263E6CC1BFE8643C5 /* Pods_runkick_dev.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		00DF01B1F47F76A60F5E9405 /* Pods-runkick-dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-runkick-dev.release.xcconfig"; path = "Target Support Files/Pods-runkick-dev/Pods-runkick-dev.release.xcconfig"; sourceTree = "<group>"; };
-		5C548CA2B60DB4D43E70AFC5 /* Pods-runkick-dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-runkick-dev.debug.xcconfig"; path = "Target Support Files/Pods-runkick-dev/Pods-runkick-dev.debug.xcconfig"; sourceTree = "<group>"; };
+		038E0E18E1FAF2B32347535C /* Pods_runkick_dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_runkick_dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		39CD6312C6F7649EE9E9C73A /* Pods-runkick-dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-runkick-dev.release.xcconfig"; path = "Target Support Files/Pods-runkick-dev/Pods-runkick-dev.release.xcconfig"; sourceTree = "<group>"; };
 		6918226123B023D90009F00A /* UserSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsVC.swift; sourceTree = "<group>"; };
 		6918226323B025060009F00A /* SettingsMenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuOptionCell.swift; sourceTree = "<group>"; };
 		6918226523B025560009F00A /* SettingsMenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuOption.swift; sourceTree = "<group>"; };
@@ -189,6 +190,7 @@
 		6923674F230B7F09002FCA4D /* UploadPostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostVC.swift; sourceTree = "<group>"; };
 		692CAE17233C23470056FC7A /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
 		692CAE1A233C32350056FC7A /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
+		692E9A5C267AB7E40096E014 /* AltMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltMessageCell.swift; sourceTree = "<group>"; };
 		692EDB522535259F00BB86B6 /* GroupMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessageController.swift; sourceTree = "<group>"; };
 		692EDB5425352C9A00BB86B6 /* GroupMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessageCell.swift; sourceTree = "<group>"; };
 		692EDB56253E19AF00BB86B6 /* CreateGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupVC.swift; sourceTree = "<group>"; };
@@ -320,7 +322,7 @@
 		69FE5BC92331AD4C00039BF5 /* NotificationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsVC.swift; sourceTree = "<group>"; };
 		69FE5BCB2331B18E00039BF5 /* NotificationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsCell.swift; sourceTree = "<group>"; };
 		69FE5BCD2332D6EB00039BF5 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
-		9C0B665263E6CC1BFE8643C5 /* Pods_runkick_dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_runkick_dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		71E09370462ADE08D1D5C45E /* Pods-runkick-dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-runkick-dev.debug.xcconfig"; path = "Target Support Files/Pods-runkick-dev/Pods-runkick-dev.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,26 +330,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBC56FB48246D5D571A45DAA /* Pods_runkick_dev.framework in Frameworks */,
+				02A42F47FF8C703B91BFA4E8 /* Pods_runkick_dev.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		09C5626399A2670B9A3EFFC6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9C0B665263E6CC1BFE8643C5 /* Pods_runkick_dev.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		24F8D54D6FB2817099E5943D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5C548CA2B60DB4D43E70AFC5 /* Pods-runkick-dev.debug.xcconfig */,
-				00DF01B1F47F76A60F5E9405 /* Pods-runkick-dev.release.xcconfig */,
+				71E09370462ADE08D1D5C45E /* Pods-runkick-dev.debug.xcconfig */,
+				39CD6312C6F7649EE9E9C73A /* Pods-runkick-dev.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -481,7 +475,7 @@
 				69E6A0AD23679A3500149219 /* Assets.xcassets */,
 				6937B43222A6CFED00446926 /* Products */,
 				24F8D54D6FB2817099E5943D /* Pods */,
-				09C5626399A2670B9A3EFFC6 /* Frameworks */,
+				CE3D13A67DFD1206B2F678DD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -539,6 +533,7 @@
 				69FA081F233D4C45002DC00F /* Messages */,
 				696A70B32342656F00CDD512 /* Social */,
 				6937B44922A85D9B00446926 /* GradientView.swift */,
+				691A87082319D35D00EBB64A /* SearchUserCell.swift */,
 				699F3D5E266FC74900D8DB1D /* StoreCarouselCell.swift */,
 				698F88F525B6307500F26CBC /* ScrollViewCell.swift */,
 				698F88F125A8034300F26CBC /* UserCarouselCell.swift */,
@@ -552,6 +547,7 @@
 				6937B44F22A97B3D00446926 /* CircleView.swift */,
 				6937B45122A97E1A00446926 /* RoundedShadowButton.swift */,
 				6937B46122AACD9500446926 /* RoundedCornerTextField.swift */,
+				692CAE17233C23470056FC7A /* SearchPostCell.swift */,
 				69E6FC4823208FF2004D59A7 /* FollowLikeCell.swift */,
 				698B486523233D7700A0F3E0 /* SelectPhotoCell.swift */,
 				698B486723233DD900A0F3E0 /* SelectPhotoHeader.swift */,
@@ -560,7 +556,6 @@
 				69FE5BC4233017C600039BF5 /* CommentCell.swift */,
 				692EDB5C2548C1B400BB86B6 /* InviteFriendsCell.swift */,
 				691914E824D8C98A008DCA06 /* RewardsCell.swift */,
-				692CAE17233C23470056FC7A /* SearchPostCell.swift */,
 				69FBDCFB244A1B8500709E21 /* AdminProfileHeader.swift */,
 				691A86FD231754EB00EBB64A /* UserProfileHeader.swift */,
 				69FB5F22245E328D00A02FA1 /* AdminStorePostCell.swift */,
@@ -572,7 +567,6 @@
 				69FE5BCB2331B18E00039BF5 /* NotificationsCell.swift */,
 				69E70849240467FA0083444B /* MarketplaceCell.swift */,
 				69FBDCEF2443A43D00709E21 /* UserSpecificFeedCell.swift */,
-				691A87082319D35D00EBB64A /* SearchUserCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -690,6 +684,7 @@
 			children = (
 				69B3E83B250706B1004CD859 /* CircleCell.swift */,
 				69FA0820233D4C95002DC00F /* MessageCell.swift */,
+				692E9A5C267AB7E40096E014 /* AltMessageCell.swift */,
 				69FA0824233D58ED002DC00F /* NewMessageCell.swift */,
 				69FA082A23425306002DC00F /* ChatCell.swift */,
 				696A52122495ADB900289C33 /* ActivityHistoryCell.swift */,
@@ -707,6 +702,14 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
+		CE3D13A67DFD1206B2F678DD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				038E0E18E1FAF2B32347535C /* Pods_runkick_dev.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -714,11 +717,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6937B44322A6CFF100446926 /* Build configuration list for PBXNativeTarget "runkick-dev" */;
 			buildPhases = (
-				CDF58AA24148009E81823B44 /* [CP] Check Pods Manifest.lock */,
+				145C89F8F8F6928686407E00 /* [CP] Check Pods Manifest.lock */,
 				6937B42D22A6CFED00446926 /* Sources */,
 				6937B42E22A6CFED00446926 /* Frameworks */,
 				6937B42F22A6CFED00446926 /* Resources */,
-				D040B240758AD422467E88BC /* [CP] Embed Pods Frameworks */,
+				6653099CC87DA5B801024BE0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -750,7 +753,7 @@
 				};
 			};
 			buildConfigurationList = 6937B42C22A6CFED00446926 /* Build configuration list for PBXProject "runkick-dev" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -782,7 +785,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CDF58AA24148009E81823B44 /* [CP] Check Pods Manifest.lock */ = {
+		145C89F8F8F6928686407E00 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -804,7 +807,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D040B240758AD422467E88BC /* [CP] Embed Pods Frameworks */ = {
+		6653099CC87DA5B801024BE0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -835,6 +838,7 @@
 				692EDB6025547F8F00BB86B6 /* GroupProfileVC.swift in Sources */,
 				69C5EDA3247CE48A006A22B1 /* ActivityHistoryCell.swift in Sources */,
 				6980617B24DBB3B300628077 /* GroupsCell.swift in Sources */,
+				692E9A5D267AB7E40096E014 /* AltMessageCell.swift in Sources */,
 				69FB5F1F245E266D00A02FA1 /* StorePost.swift in Sources */,
 				69FB5F21245E319D00A02FA1 /* AdminStorePostVC.swift in Sources */,
 				691A86FE231754EB00EBB64A /* UserProfileHeader.swift in Sources */,
@@ -1119,7 +1123,7 @@
 		};
 		6937B44422A6CFF100446926 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5C548CA2B60DB4D43E70AFC5 /* Pods-runkick-dev.debug.xcconfig */;
+			baseConfigurationReference = 71E09370462ADE08D1D5C45E /* Pods-runkick-dev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "runkick-dev/runkick-dev.entitlements";
@@ -1127,7 +1131,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9289X3KRJS;
 				INFOPLIST_FILE = "runkick-dev/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1142,7 +1146,7 @@
 		};
 		6937B44522A6CFF100446926 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 00DF01B1F47F76A60F5E9405 /* Pods-runkick-dev.release.xcconfig */;
+			baseConfigurationReference = 39CD6312C6F7649EE9E9C73A /* Pods-runkick-dev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "runkick-dev/runkick-dev.entitlements";
@@ -1150,7 +1154,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9289X3KRJS;
 				INFOPLIST_FILE = "runkick-dev/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

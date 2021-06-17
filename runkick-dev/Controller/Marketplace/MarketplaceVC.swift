@@ -99,6 +99,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         super.viewDidLoad()
         
         
+        
         configureTableView()
         
         
@@ -121,7 +122,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         configureRefreshControl()
         
 
-        
+       
         configureTabBar()
         
         // fetch stores
@@ -201,7 +202,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = true
-        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tableView.backgroundColor = UIColor.walkzillaYellow()
  
         // register cell classes
         tableView.register(CategoriesCell.self, forCellReuseIdentifier: reuseTableIdentifier)
@@ -211,14 +212,13 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         //tableView.separatorInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         
         // giving the top border a bit of buffer
-        tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        tableView.addSubview(titleLabel)
-        titleLabel.anchor(top: tableView.topAnchor, left: tableView.leftAnchor, bottom: nil, right: nil, paddingTop: -5, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
 
 
     }
@@ -233,7 +233,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
-        let frame = CGRect(x: 0, y: 120, width: view.frame.width, height: view.frame.height - 120)
+        let frame = CGRect(x: 0, y: 140, width: view.frame.width, height: view.frame.height - 140)
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
         collectionView.delegate = self
@@ -264,7 +264,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         layout.scrollDirection = .horizontal
         
         
-        let frame = CGRect(x: 0, y: 15, width: view.frame.width, height: 105)
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 140)
 
         collectionViewHorizontal = UICollectionView(frame: frame, collectionViewLayout: layout)
         collectionViewHorizontal.delegate = self
@@ -273,9 +273,11 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         collectionViewHorizontal.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
 
-        
         tableView.addSubview(collectionViewHorizontal)
         collectionViewHorizontal.register(StoreCarouselCell.self, forCellWithReuseIdentifier: reuseCarouselIdentifier)
+        
+        collectionViewHorizontal.addSubview(titleLabel)
+        titleLabel.anchor(top: collectionViewHorizontal.topAnchor, left: collectionViewHorizontal.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
     }
     
@@ -1050,11 +1052,11 @@ extension MarketplaceVC: UICollectionViewDelegateFlowLayout, UICollectionViewDat
       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
         if collectionView == self.collectionViewHorizontal {
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         }
           
           //return UIEdgeInsets(top: 60, left: 16, bottom: 0, right: 16)
-          return UIEdgeInsets(top: 18, left: 20, bottom: 0, right: 20)
+          return UIEdgeInsets(top: 5, left: 20, bottom: 0, right: 20)
       }
       
 

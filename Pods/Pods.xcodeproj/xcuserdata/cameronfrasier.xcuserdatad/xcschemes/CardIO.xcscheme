@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4A1C5BBBF29796C62ECF8A3DF0E46ACE"
+               BlueprintIdentifier = "A5AFDBFF44C91B5332DDBF2B370A941E"
+               BuildableName = "CardIO"
                BlueprintName = "CardIO"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "CardIO">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

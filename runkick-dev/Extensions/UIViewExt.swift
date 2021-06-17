@@ -41,6 +41,12 @@ extension UIColor {
         return UIColor.rgb(red: 255, green: 55, blue: 100)
     }
     
+    static func walkzillaYellow() -> UIColor {
+        return UIColor.rgb(red: 255, green: 200, blue: 0)
+    }
+    
+    
+    
     static func walkzillaRed() -> UIColor {
         return UIColor.rgb(red: 246, green: 80, blue: 100)
     }
@@ -703,6 +709,17 @@ extension Database {
                 print(storeId)
                 completion(store)
             }) */
+        }
+    }
+    
+    static  func fetchMessage(withMessageId messageId: String, completion: @escaping(Message) -> ()) {
+        
+        DataService.instance.REF_MESSAGES.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            
+            let message = Message(dictionary: dictionary)
+
+           completion(message)
         }
     }
 }

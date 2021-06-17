@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "963799FC41F68C572C57F7D670E592AA"
+               BlueprintIdentifier = "F2119131FC18F1B2D5F60CE766D22393"
                BuildableName = "Pods_runkick_dev.framework"
                BlueprintName = "Pods-runkick-dev"
                ReferencedContainer = "container:Pods.xcodeproj">

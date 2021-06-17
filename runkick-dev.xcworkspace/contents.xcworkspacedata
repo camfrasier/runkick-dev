@@ -7,4 +7,10 @@
    <FileRef
       location = "absolute:Pods/Pods.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:runkick-dev.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>

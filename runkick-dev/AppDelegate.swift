@@ -76,10 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("DEBUG: Registered for notifications with device token: ", deviceToken)
     }
-    
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+    // string was not optional before update to 12.5 xcode may be an issue
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         
-        print("DEBUG: Registered with FCM Token: ", fcmToken)
+        //print("DEBUG: Registered with FCM Token: ", fcmToken)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

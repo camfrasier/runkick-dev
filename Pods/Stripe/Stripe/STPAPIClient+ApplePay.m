@@ -126,7 +126,7 @@
     payload[@"pk_token"] = paymentString;
     payload[@"card"] = [self addressParamsFromPKContact:payment.billingContact];
 
-    NSCAssert(!(paymentString.length == 0 && [[Stripe defaultPublishableKey] hasPrefix:@"pk_live"]), @"The pk_token is empty. Using Apple Pay with an iOS Simulator while not in Stripe Test Mode will always fail.");
+    NSCAssert(!(paymentString.length == 0 && [[STPAPIClient sharedClient].publishableKey hasPrefix:@"pk_live"]), @"The pk_token is empty. Using Apple Pay with an iOS Simulator while not in Stripe Test Mode will always fail.");
 
     NSString *paymentInstrumentName = payment.token.paymentMethod.displayName;
     if (paymentInstrumentName) {
@@ -155,15 +155,15 @@
     if (stripeError == nil) {
         return nil;
     }
-    NSMutableDictionary *userInfo = [stripeError.userInfo mutableCopy];
-    PKPaymentErrorCode errorCode = PKPaymentUnknownError;
-    if (stripeError.domain == StripeDomain) {
-        if ([stripeError.userInfo[STPCardErrorCodeKey] isEqualToString:STPIncorrectZip]) {
-            errorCode = PKPaymentBillingContactInvalidError;
-            userInfo[PKPaymentErrorPostalAddressUserInfoKey] = CNPostalAddressPostalCodeKey;
-        }
+
+    if (stripeError.domain == StripeDomain && [stripeError.userInfo[STPCardErrorCodeKey] isEqualToString:STPIncorrectZip]) {
+        NSMutableDictionary *userInfo = [stripeError.userInfo mutableCopy];
+        PKPaymentErrorCode errorCode = PKPaymentUnknownError;
+        errorCode = PKPaymentBillingContactInvalidError;
+        userInfo[PKPaymentErrorPostalAddressUserInfoKey] = CNPostalAddressPostalCodeKey;
+        return [NSError errorWithDomain:StripeDomain code:errorCode userInfo:userInfo];
     }
-    return [NSError errorWithDomain:PKPaymentErrorDomain code:errorCode userInfo:userInfo];
+    return stripeError;
 }
 
 @end

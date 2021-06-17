@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A94242B0669C7A9BBE8B3ADE5C7844A0"
+               BlueprintIdentifier = "B5AB76607FAE66C0A637C8241113BBDE"
                BuildableName = "EmptyDataSet_Swift.framework"
                BlueprintName = "EmptyDataSet-Swift"
                ReferencedContainer = "container:Pods.xcodeproj">

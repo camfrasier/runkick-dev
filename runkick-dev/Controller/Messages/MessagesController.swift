@@ -35,8 +35,8 @@ class MessagesController: UITableViewController {
         configureNavigationBar()
         
         tableView.register(MessageCell.self, forCellReuseIdentifier: reuseIdentifier)
-        
-        fetchMessages()
+    
+       fetchMessages()
     }
     
     // MARK: - UITableView
@@ -106,6 +106,7 @@ class MessagesController: UITableViewController {
                 let messageId = snapshot.key
                 
                 self.fetchMessage(withMessageId: messageId)
+                
             })
         }
     }
@@ -113,14 +114,21 @@ class MessagesController: UITableViewController {
     func fetchMessage(withMessageId messageId: String) {
         
         DataService.instance.REF_MESSAGES.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
+            
+          
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             
             let message = Message(dictionary: dictionary)
             let chatPartnerId = message.getChatPartnerId()
             self.messagesDictionary[chatPartnerId] = message
-            self.messages = Array(self.messagesDictionary.values)
             
-            self.tableView?.reloadData()
+           
+            self.messages = Array(self.messagesDictionary.values)
+            print("Here are the chat dictionary is \(self.messages)")
+            
+            
+           // self.tableView?.reloadData()
+            
         }
     }
     

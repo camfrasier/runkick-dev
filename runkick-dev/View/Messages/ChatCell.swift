@@ -35,7 +35,7 @@ class ChatCell: UICollectionViewCell {
     
     let bubbleView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 0, green: 127, blue: 249)
+        view.backgroundColor = UIColor.walkzillaYellow()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 15
         view.layer.masksToBounds = true
@@ -45,9 +45,9 @@ class ChatCell: UICollectionViewCell {
     let textView: UITextView = {
         let tv = UITextView()
         tv.text = "Sample text for now"
-        tv.font = UIFont.systemFont(ofSize: 16)
+        tv.font = UIFont.systemFont(ofSize: 15)
         tv.backgroundColor = .clear
-        tv.textColor = .white
+        tv.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.isEditable = false
         return tv
@@ -91,6 +91,7 @@ class ChatCell: UICollectionViewCell {
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         
         // bubble view text view anchors
+        
         textView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
         textView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
         textView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true

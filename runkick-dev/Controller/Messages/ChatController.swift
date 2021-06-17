@@ -179,8 +179,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cell.bubbleViewLeftAnchor?.isActive = false
             //cell.bubbleView.backgroundColor = UIColor.rgb(red: 236, green: 38, blue: 125) // action red
             //cell.bubbleView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 250)
-            cell.bubbleView.backgroundColor = UIColor.rgb(red: 26, green: 172, blue: 249) // true blue
-            cell.textView.textColor = .white
+            cell.bubbleView.backgroundColor = UIColor.walkzillaYellow() // true blue
+            cell.textView.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
             cell.profileImageView.isHidden = true
             
         } else {
@@ -188,8 +188,8 @@ class ChatController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cell.bubbleViewRightAnchor?.isActive = false
             cell.bubbleViewLeftAnchor?.isActive = true
             //cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
-            cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
-            cell.textView.textColor = .black
+            cell.bubbleView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+            cell.textView.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
             cell.profileImageView.isHidden = false
         }
     }

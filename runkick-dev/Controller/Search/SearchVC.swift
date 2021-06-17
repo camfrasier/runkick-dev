@@ -228,7 +228,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
 
         //self.tableView.refreshControl?.endRefreshing()
         
-        self.tableView.refreshControl?.endRefreshing()
+         self.tableView.refreshControl?.endRefreshing()
         
         if userCurrentKey == nil {
             DataService.instance.REF_USERS.queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
