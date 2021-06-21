@@ -332,6 +332,38 @@ class HomeVC: UIViewController, Alertable {
         return view
     }()
     
+    lazy var userActivityButtonBackground: UIView = {
+        let view = UIView()
+        
+        view.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.25).cgColor
+        view.layer.shadowRadius = 4.0
+        view.layer.shadowOffset = CGSize(width: 1, height: 2)
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+ 
+        view.backgroundColor = UIColor.walkzillaYellow()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleUserActivity))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+
+    
+    let userActivityLabel: UILabel = {
+        let label = UILabel()
+        //label.text = "Distance: None"
+        label.text = "Activity"
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.textAlignment = .center
+        label.backgroundColor = .clear
+        return label
+    }()
+    
     let searchImageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .clear
@@ -517,9 +549,11 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var notificationBoltBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.walkzillaYellow()
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckGroups))
         menuTap.numberOfTapsRequired = 1
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(menuTap)
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
@@ -776,7 +810,7 @@ class HomeVC: UIViewController, Alertable {
         label.text = "Save Path"
         //label.font = UIFont.boldSystemFont(ofSize: 17)
         label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
-        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         let buttonTap = UITapGestureRecognizer(target: self, action: #selector(handleSaveRemoveSegment))
         buttonTap.numberOfTapsRequired = 1
         label.isUserInteractionEnabled = true
@@ -786,7 +820,7 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var toggleSaveRemoveSegmentView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.statusBarGreen()
+        view.backgroundColor = UIColor.walkzillaYellow()
         /*
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.35).cgColor
@@ -1670,7 +1704,18 @@ class HomeVC: UIViewController, Alertable {
         searchBarSubView.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 100)
         
         //mapView.tintColor = UIColor.airBnBRed()
-        mapView.tintColor = UIColor.walkzillaRed()
+        mapView.tintColor = UIColor.walkzillaYellow()
+        
+        mapView.addSubview(userActivityButtonBackground)
+        userActivityButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: 210, height: 45)
+        userActivityButtonBackground.layer.cornerRadius = 22
+        userActivityButtonBackground.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+            
+        userActivityButtonBackground.addSubview(userActivityLabel)
+        userActivityLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        userActivityLabel.centerXAnchor.constraint(equalTo: userActivityButtonBackground.centerXAnchor).isActive = true
+        userActivityLabel.centerYAnchor.constraint(equalTo: userActivityButtonBackground.centerYAnchor).isActive = true
+        
         
         //mapView.tintColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
         //mapView.tintColor = UIColor(red: 122/255, green: 206/255, blue: 33/255, alpha: 1) // limer
@@ -1927,6 +1972,10 @@ class HomeVC: UIViewController, Alertable {
         }
     }
     
+    @objc func handleUserActivity() {
+        print("handle user activity")
+    }
+    
     func removeTabBarTopBorder() {
         
         // remove tab bar top border
@@ -2100,7 +2149,7 @@ class HomeVC: UIViewController, Alertable {
         
         
         mapView.addSubview(startStopButton)
-        startStopButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: 100, height: 100)
+        startStopButton.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 100, height: 100)
         startStopButton.layer.cornerRadius = 100 / 2
         startStopButton.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
         
@@ -3854,7 +3903,7 @@ class HomeVC: UIViewController, Alertable {
             
             // now setting to remove segment
            saveRemovePathLabel.text = "Remove Path"
-            saveRemovePathLabel.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+            saveRemovePathLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
             saveRemovePathLabel.backgroundColor = UIColor.clear
             toggleSaveRemoveSegmentView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
            //toggleSaveRemoveSegmentView.backgroundColor = stopColor
@@ -3874,9 +3923,9 @@ class HomeVC: UIViewController, Alertable {
            //toggleSaveRemoveSegmentView.backgroundColor = startColor
             
            saveRemovePathLabel.text = "Save Path"
-            saveRemovePathLabel.textColor = .white
+            saveRemovePathLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
              saveRemovePathLabel.backgroundColor = .clear
-            toggleSaveRemoveSegmentView.backgroundColor = UIColor.statusBarGreen()
+            toggleSaveRemoveSegmentView.backgroundColor = UIColor.walkzillaYellow()
             saveSegmentVisible = true
         }
     }
@@ -4173,8 +4222,16 @@ extension HomeVC: MKMapViewDelegate {
             print("DEBUG: Store detail view set to true")
         } else {
             
-            centerMapBackground.fadeTo(alphaValue: 1, withDuration: 0.25)
-            //centerMapButton.fadeTo(alphaValue: 1, withDuration: 0.75)
+            //centerMapBackground.fadeTo(alphaValue: 1, withDuration: 0.25)
+            
+   
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.50, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+                
+                self.centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+
+                self.centerMapBackground.alpha = 1
+                
+            })
         }
     }
     
@@ -4506,7 +4563,7 @@ extension HomeVC: MKMapViewDelegate {
             //toggleSaveRemoveSegmentView.backgroundColor = startColor
             
             saveRemovePathLabel.text = "Save Path"
-            saveRemovePathLabel.textColor = .white
+            saveRemovePathLabel.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
              saveRemovePathLabel.backgroundColor = .clear
         }
         

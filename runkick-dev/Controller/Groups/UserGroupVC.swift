@@ -710,7 +710,7 @@ class UserGroupVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
            
            return UIEdgeInsets(top: 60, left: 2, bottom: 2, right: 2)
-       }
+    }
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            //let width = (view.frame.width - 16) / 3

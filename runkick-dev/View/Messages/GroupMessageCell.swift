@@ -38,22 +38,34 @@ class GroupMessageCell: UITableViewCell {
         return iv
     } ()
     
-    let groupsNameLabel: UILabel = {
+
+    
+    lazy var groupsNameLabel: UILabel = {
         let label = UILabel()
-        //label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = .center
-        label.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
-        label.textColor = UIColor.rgb(red: 90, green: 90, blue: 90)
+        label.numberOfLines = 3
+        //label.font = UIFont(name: "ArialRoundedMT", size: 13)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        //return label
+
+        label.isUserInteractionEnabled = true
+
         return label
     } ()
     
-    let groupDetailsLabel: UILabel = {
+    lazy var groupDetailsLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont(name: "HelveticaNeue", size: 14)
+        label.numberOfLines = 1
         label.text = "10 members, last post: 3h"
+        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        //label.font = UIFont(name: "ArialRoundedMTBold", size: 12)
+        label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
+        //return label
+
+        label.isUserInteractionEnabled = true
+
         return label
-    }()
+    } ()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -81,21 +93,25 @@ class GroupMessageCell: UITableViewCell {
     
     func configureComponents() {
         
-        let profileImageDimension = CGFloat(60)
-        addSubview(groupImageView)
-        groupImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension + 2)
-        //groupImageView.layer.cornerRadius = profileImageDimension / 2
         
-        groupImageView.layer.cornerRadius = 23
+        let profileImageDimension = CGFloat(40)
+        addSubview(groupImageView)
+        groupImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
+        groupImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        //groupImageView.layer.cornerRadius = profileImageDimension / 2
+        groupImageView.layer.cornerRadius = profileImageDimension / 2.4
         groupImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         
+        
         addSubview(groupsNameLabel)
-        groupsNameLabel.anchor(top: groupImageView.topAnchor, left: groupImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
+        groupsNameLabel.anchor(top: groupImageView.topAnchor, left: groupImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //usernameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+
         addSubview(groupDetailsLabel)
-        groupDetailsLabel.anchor(top: groupsNameLabel.bottomAnchor, left: groupsNameLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        groupDetailsLabel.anchor(top: groupsNameLabel.bottomAnchor, left: groupsNameLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+    
         
         //textLabel?.text = "Group Name Here"
         //detailTextLabel?.text = "Group caption here"

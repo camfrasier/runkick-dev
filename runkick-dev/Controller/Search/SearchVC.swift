@@ -10,10 +10,27 @@ import UIKit
 import Firebase
 
 private let reuseIdentifier = "SeachUserCell"
-private let reusePostCellIdentifier = "SearchPostCell"
+private let reuseGroupsCellIdentifier = "GroupsCell"
+private let reuseGroupsIdentifier = "GroupMessageCell"
 
 class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICollectionViewDelegate {
 
+    
+    // MARK: - Group Properties
+    
+    var groups = [UserGroup]()
+    var groupsTableView: UITableView!
+    var filteredGroups = [UserGroup]()
+    var groupsCurrentKey: String?
+    var groupsTitleView: UIView!
+    var createGroupVC = CreateGroupVC()
+    
+    // MARK: - My Group Properties
+    
+    var myGroupsCurrentKey: String?
+    var filteredMyGroups = [UserGroup]()
+    var myGroups = [UserGroup]()
+    
     
     
     // Mark: - Properties
@@ -29,6 +46,10 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     var currentKey: String?
     var userCurrentKey: String?
     var titleView: UIView!
+    var showGroups = false
+    var showMyGroups = false
+    var showMyFriends = true
+    
     
     
     lazy var searchFriendsBackground: UIView = {
@@ -55,9 +76,23 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         return view
     }()
     
+    lazy var searchMyGroupsBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleSearchMyGroups))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+
+    
     let searchFriendsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Healthy Options"
+        label.text = "Friends"
         label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.font = UIFont(name: "HelveticaNeue", size: 15)
         return label
@@ -65,7 +100,15 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     
     let searchGroupsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Rewards"
+        label.text = "Groups"
+        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.font = UIFont(name: "HelveticaNeue", size: 15)
+        return label
+    }()
+    
+    let searchMyGroupsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "My Groups"
         label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.font = UIFont(name: "HelveticaNeue", size: 15)
         return label
@@ -109,6 +152,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
         tf.layer.cornerRadius = 0 //25
         tf.clipsToBounds = true
+        tf.tintColor = UIColor.walkzillaYellow()
         tf.autocapitalizationType = .none
         tf.addTarget(self, action: #selector(HomeVC.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
         view.isUserInteractionEnabled = true
@@ -129,6 +173,18 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     } ()
+    
+    lazy var myGroupsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        label.text = "My Groups"
+        //let groupTap = UITapGestureRecognizer(target: self, action: #selector(handleGroupsTapped))
+        //groupTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        //label.addGestureRecognizer(groupTap)
+        return label
+    } ()
     /*
     fileprivate let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -139,17 +195,20 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         return cv
     }()
     */
+    /*
     enum PostType: String {
 
         case userPost = "userPost"
         case checkIn = "checkIn"
     }
+    */
     
     // MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureFriendsGroupSearch()
         
         configureTableView()
         
@@ -163,9 +222,29 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         
         fetchUsers()
         
+        
         tableView.separatorStyle = .none
+        
+        // configure refresh control
+        configureRefreshControl()
+        
+
+        configureGroupsTableView()
+        fetchGroups()
+        
+        configureGroupsCollectionView()
+        fetchMyGroups()
+        
+        
+        tableView.isHidden = false
+        groupsTableView.isHidden = true
+        collectionView.isHidden = true
+       
+        
+        
         /*
         
+         
        //setupToHideKeyboardOnTapOnView()
 
         
@@ -185,8 +264,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         
         fetchUsers()
         
-        // configure refresh control
-        configureRefreshControl()
+
  
  */
     }
@@ -237,13 +315,13 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         //tableView.separatorInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         
         // giving the top border a bit of buffer
-        tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tableView.anchor(top: friendsGroupsView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
-        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tableView.backgroundColor = UIColor.walkzillaYellow()
         
         /*
          tableView = UITableView()
@@ -263,6 +341,194 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
          */
         
     }
+    
+    func configureGroupsTableView() {
+        
+        groupsTableView = UITableView()
+        groupsTableView.rowHeight = 70
+        groupsTableView.delegate = self
+        groupsTableView.dataSource = self
+        groupsTableView.isScrollEnabled = true
+        groupsTableView.separatorColor = .clear
+
+        groupsTableView.register(GroupMessageCell.self, forCellReuseIdentifier: reuseGroupsIdentifier)
+        
+        
+        view.addSubview(groupsTableView)
+        groupsTableView.translatesAutoresizingMaskIntoConstraints = false
+        groupsTableView.backgroundColor = UIColor.walkzillaYellow()
+        groupsTableView.anchor(top: friendsGroupsView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+
+        
+    }
+    
+    func configureGroupsCollectionView() {
+        
+
+        // define the collection view characteristics
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+
+        collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.alwaysBounceVertical = true
+        collectionView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+
+        
+        collectionView.register(GroupsCell.self, forCellWithReuseIdentifier: reuseGroupsCellIdentifier)
+        
+        view.addSubview(collectionView)
+        
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.anchor(top: friendsGroupsView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        tableView.separatorColor = .clear
+    }
+    
+    
+    func fetchGroups() {
+        
+        //guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        
+        self.groupsTableView.refreshControl?.endRefreshing()
+
+         if groupsCurrentKey == nil {
+            
+            // because I expect more per view i increased the toLast count to 8
+            DataService.instance.REF_USER_GROUPS.queryLimited(toLast: 8).observeSingleEvent(of: .value) { (snapshot) in
+                 
+                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                 
+                 allObjects.forEach({ (snapshot) in
+                     let groupId = snapshot.key
+                     
+                    Database.fetchUserGroups(with: groupId, completion: { (group) in
+                        self.groups.append(group)
+                        self.groupsTableView.reloadData()
+                    })
+                 })
+                 self.groupsCurrentKey = first.key
+             }
+         } else {
+            DataService.instance.REF_USER_GROUPS.queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 9).observeSingleEvent(of: .value, with: { (snapshot) in
+                 
+                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                 
+                 allObjects.forEach({ (snapshot) in
+                     let groupId = snapshot.key
+                     
+                     if groupId != self.userCurrentKey {
+                         Database.fetchUserGroups(with: groupId, completion: { (group) in
+                             self.groups.append(group)
+                             self.groupsTableView.reloadData()
+                         })
+                     }
+                 })
+                 self.groupsCurrentKey = first.key
+             })
+         }
+     }
+    
+    func fetchMyGroups() {
+        
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        //guard let observedUserId = uid else { return }
+        
+        self.collectionView.refreshControl?.endRefreshing()
+
+        
+        if self.myGroupsCurrentKey == nil {
+            
+        DataService.instance.REF_USERS.child(currentUserId).child("groups").queryLimited(toLast: 15).observeSingleEvent(of: .value, with: { (snapshot) in
+        
+        if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+            guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+       
+        for snap in snapshots {
+                
+            let groupId = snap.key
+            print("this should bring back all groups the user is apart of \(key)")
+
+               Database.fetchUserGroups(with: groupId, completion: { (group) in
+                   self.myGroups.append(group)
+                   self.collectionView.reloadData()
+
+            //self.userCurrentKey = first.key
+                
+                })
+            }
+            self.myGroupsCurrentKey = first.key
+            }
+        })
+        } else {
+            
+            DataService.instance.REF_USERS.child(currentUserId).child("groups").queryLimited(toLast: 16).observeSingleEvent(of: .value, with: { (snapshot) in
+                  
+                  if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                     guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                 
+                  for snap in snapshots {
+                          
+                      let groupId = snap.key
+                      print("this should bring back all groups the user is apart of \(key)")
+    
+  
+                         if groupId != self.myGroupsCurrentKey {
+                             Database.fetchUserGroups(with: groupId, completion: { (group) in
+                                 self.myGroups.append(group)
+                                 self.collectionView.reloadData()
+                             })
+                         }
+ 
+                      }
+                    self.myGroupsCurrentKey = first.key
+                      }
+                  })
+            
+        }
+     }
+    
+    // completion block function to run and after the group can be removed
+    func firstTask(completion: (_ success: Bool) -> Void) {
+        
+            _ = self.navigationController?.popViewController(animated: true)
+            completion(true)
+
+        // Call completion, when finished, success or faliure
+        
+    }
+    
+    /*
+    //handle group refresh
+    @objc func handleGroupsRefresh() {
+        groups.removeAll(keepingCapacity: false)
+        self.userCurrentKey = nil
+        fetchGroups()
+        
+        tableView?.reloadData()
+    }
+    */
+    
+    @objc func handleCreateGroup() {
+        print("Create group here!")
+        
+        let createGroupVC = CreateGroupVC()
+        //createGroupVC.modalPresentationStyle = .fullScreen
+        //present(createGroupVC, animated: true, completion:nil)
+        
+        self.navigationController?.pushViewController(createGroupVC, animated: true)
+    }
+    
     
     func configureNavigationBar() {
         
@@ -287,12 +553,12 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     
     func fetchUsers() {
 
-        //self.tableView.refreshControl?.endRefreshing()
-        
-         self.tableView.refreshControl?.endRefreshing()
-        
+        self.tableView.refreshControl?.endRefreshing()
+
         if userCurrentKey == nil {
             DataService.instance.REF_USERS.queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
+                
+                self.tableView.refreshControl?.endRefreshing()
                 
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
@@ -329,9 +595,46 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     }
   
     
+    func configureFriendsGroupSearch() {
+        
+        view.addSubview(friendsGroupsView)
+        friendsGroupsView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 70)
+        
+        friendsGroupsView.addSubview(lineView)
+        lineView.anchor(top: nil, left: friendsGroupsView.leftAnchor, bottom: friendsGroupsView.bottomAnchor, right: friendsGroupsView.rightAnchor, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 30, width: 0, height: 0.75)
+        
+        friendsGroupsView.addSubview(indicatorView)
+        indicatorView.anchor(top: nil, left: lineView.leftAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: -1, paddingRight: 0, width: 50, height: 4)
+        
+        friendsGroupsView.addSubview(searchFriendsBackground)
+        searchFriendsBackground.anchor(top: nil, left: friendsGroupsView.leftAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 25, paddingBottom: 10, paddingRight: 0, width: 80, height: 40)
+        
+        searchFriendsBackground.addSubview(searchFriendsLabel)
+        searchFriendsLabel.anchor(top: nil, left: searchFriendsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        searchFriendsLabel.centerYAnchor.constraint(equalTo: searchFriendsBackground.centerYAnchor).isActive = true
+        
+        
+        friendsGroupsView.addSubview(searchGroupsBackground)
+        searchGroupsBackground.anchor(top: nil, left: searchFriendsBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
+        
+        searchGroupsBackground.addSubview(searchGroupsLabel)
+        searchGroupsLabel.anchor(top: nil, left: searchGroupsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        searchGroupsLabel.centerYAnchor.constraint(equalTo: searchGroupsBackground.centerYAnchor).isActive = true
+        
+        friendsGroupsView.addSubview(searchMyGroupsBackground)
+        searchMyGroupsBackground.anchor(top: nil, left: searchGroupsBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
+        
+        searchMyGroupsBackground.addSubview(searchMyGroupsLabel)
+        searchMyGroupsLabel.anchor(top: nil, left: searchMyGroupsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        searchMyGroupsLabel.centerYAnchor.constraint(equalTo: searchMyGroupsBackground.centerYAnchor).isActive = true
+        
+       
+    }
+    
     
     // MARK: - UICollectionView
     
+    /*
     func configureCollectionView() {
         
         
@@ -356,9 +659,9 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         
         collectionView.register(SearchPostCell.self, forCellWithReuseIdentifier: reusePostCellIdentifier)
         
-
-        
     }
+    */
+    
     
     
     // MARK: - Handlers
@@ -391,6 +694,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
 
         navigationItem.titleView = titleView
         
+        
     }
     
 
@@ -412,15 +716,75 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     }
     
     @objc func handleSearchFriends() {
-        
-        print("transition to menu")
+        showGroups = false
+        showMyGroups = false
+        showMyFriends = true
 
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.indicatorView.transform = CGAffineTransform(translationX: 0, y: 0)
+        })
+        
+        print("transition to friends search")
+        tableView.isHidden = false
+        groupsTableView.isHidden = true
+        collectionView.isHidden = true
+        
+        
         
     }
     
     @objc func handleSearchGroups() {
-        print("transition to rewards")
 
+
+        showGroups = true
+        showMyGroups = false
+        showMyFriends = false
+        
+        indicatorView.transform = CGAffineTransform(translationX: 1, y: 1)
+
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+
+            self.indicatorView.transform = CGAffineTransform(translationX: 85, y: 0)
+        })
+        
+        
+        
+        print("transition to groups search")
+       
+        
+        
+        tableView.isHidden = true
+        groupsTableView.isHidden = false
+        collectionView.isHidden = true
+        
+        
+
+        
+    }
+    
+    @objc func handleSearchMyGroups() {
+        print("Handle search my groups")
+        
+        showGroups = false
+        showMyGroups = true
+        showMyFriends = false
+        
+        /*
+        indicatorView.transform = CGAffineTransform(translationX: 1, y: 1)
+
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.indicatorView.transform = CGAffineTransform(translationX: 175, y: 0)
+        })
+        */
+        
+        print("transition to groups search")
+        
+        tableView.isHidden = true
+        groupsTableView.isHidden = true
+        collectionView.isHidden = false
         
     }
     
@@ -449,10 +813,12 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         //searchBar.showsCancelButton = true
         
         //self.navigationItem.leftBarButtonItems = nil
-
+        
         
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+            
+        
         } else {
             // Fallback on earlier versions
         }
@@ -524,8 +890,9 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     // MARK: - Handlers
     
     @objc func handleRefresh() {
-        users.removeAll(keepingCapacity: false)
+        //users.removeAll(keepingCapacity: false)
         self.currentKey = nil
+        
         fetchUsers()
         tableView?.reloadData()
         
@@ -636,7 +1003,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
     
         configureSearchBar()
     }
-    
+    /*
     func fetchPosts() {
         // function to fetch our images and place them in the collection view
 
@@ -646,8 +1013,6 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
             
             // initial data pull
             DataService.instance.REF_POSTS.queryLimited(toLast: 21).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                self.tableView.refreshControl?.endRefreshing()
                 
                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
@@ -685,6 +1050,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
             })
         }
     }
+*/
     
     
  /*   override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -706,57 +1072,56 @@ extension SearchVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 8, left: 0, bottom: 1, right: 0)
+        return UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let width : CGFloat
-        let height : CGFloat
 
-        if indexPath.item == 0 {
-            width = view.frame.width
-            height = 210
-        } else {
-            width = (view.frame.width) / 3
-            height = width
-        }
-    
-        return CGSize(width: width, height: height)
+        let width = ((view.frame.width) / 3 ) - 10
+        return CGSize(width: width - 5, height: width)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        if posts.count > 20 {
-            if indexPath.item == posts.count - 1 {
-                //fetchPosts()
+        if myGroups.count > 14 {
+            if indexPath.item == myGroups.count - 1 {
+                fetchMyGroups()
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        print("the number of post is \(posts.count)")
-        return posts.count
+        if inSearchMode {
+            return filteredMyGroups.count
+        } else {
+            return myGroups.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusePostCellIdentifier, for: indexPath) as! SearchPostCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseGroupsCellIdentifier, for: indexPath) as! GroupsCell
+     
+     var group: UserGroup!
+     
+     //group = groups[indexPath.row]
+     
+     //cell.group = group
         
-        cell.post = posts[indexPath.item]
+        if inSearchMode {
+            group = filteredMyGroups[indexPath.row]
+        } else {
+            group = myGroups[indexPath.row]
+        }
         
+        cell.group = group
+         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-    //let userSpecificFeedVC = UserSpecificFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
-       let userSpecificFeedVC = UserSpecificFeedVC()
-        userSpecificFeedVC.viewSinglePost = true
-        userSpecificFeedVC.post = posts[indexPath.item]
-        
-        navigationController?.pushViewController(userSpecificFeedVC, animated: true)
+        print("you selected a cell from my groups")
     }
     
 }
@@ -766,6 +1131,10 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate  {
     // MARK: - Table view data source
       
       func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if tableView == groupsTableView {
+            return 70
+        }
           return 70
       }
 
@@ -776,6 +1145,15 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate  {
      */
     
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if tableView == groupsTableView {
+            if inSearchMode {
+                return filteredGroups.count
+            } else {
+                return groups.count
+            }
+        }
+        
           if inSearchMode {
               return filteredUsers.count
           } else {
@@ -794,6 +1172,16 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate  {
       
       
       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if tableView == groupsTableView {
+            print("This is where user should be allowed to join an existing friends group or create one")
+            tableView.deselectRow(at: indexPath, animated: true)
+
+            let groupProfilVC = GroupProfileVC()
+            groupProfilVC.group = groups[indexPath.item]
+            navigationController?.pushViewController(groupProfilVC, animated: true)
+
+        }
           
           var user: User!
           
@@ -818,6 +1206,25 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate  {
 
       
       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if tableView == groupsTableView {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: reuseGroupsIdentifier, for: indexPath) as! GroupMessageCell
+            
+            var group: UserGroup!
+            
+            if inSearchMode {
+                group = filteredGroups[indexPath.row]
+            } else {
+                group = groups[indexPath.row]
+            }
+            
+            cell.group = group
+            
+            return cell
+        }
+        
+        
           let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SearchUserCell
           
           var user: User!
@@ -855,8 +1262,59 @@ extension SearchVC: UITextFieldDelegate {
     //func textFieldEditingChanged(_ sender: UITextField, textDidChange searchText: String) {
     @objc func textFieldDidChange(_ searchText: UITextField) {
 
+        if showGroups == true {
+            
+            print("SHOW GROUPS IS SET TO TRUE")
+            
+            let searchText = String(searchText.text!)
         
+            //let searchText = String(searchText.text!)
+            
+            
+            if searchText.isEmpty || searchText == " " {
+                inSearchMode = false
+                groupsTableView.reloadData()
+            } else {
+                
+                inSearchMode = true
+                
+                // return fitlered users
+                filteredGroups = groups.filter({ (group) -> Bool in                // having and issue here <--
+                    
+                    return group.groupName.localizedCaseInsensitiveContains(searchText)
+                })
+                groupsTableView.reloadData()
+            }
+        }
+        
+        if showMyGroups == true {
+            
+            print("SHOW MY USER GROUPS IS SET TO TRUE")
+            
+            let searchText = String(searchText.text!)
+           
+            
+            if searchText.isEmpty || searchText == " " {
+                inSearchMode = false
+                collectionView.reloadData()
+            } else {
+                
+                inSearchMode = true
+                
+                // return fitlered users
+                filteredMyGroups = myGroups.filter({ (group) -> Bool in                // having and issue here <--
+                    
+                    return group.groupName.localizedCaseInsensitiveContains(searchText)
+                })
+                collectionView.reloadData()
+            }
+            
+        }
+        
+        if showMyFriends == true {
         print(searchText)
+            
+            print("SHOW MY FRIENDS SET TO TRUE")
 
                //let searchText = searchText
         let searchText = String(searchText.text!)
@@ -883,6 +1341,8 @@ extension SearchVC: UITextFieldDelegate {
                 })
                 tableView.reloadData()
             }
+        }
+        
     }
     
     @objc func handleCancelSearch() {
@@ -893,6 +1353,51 @@ extension SearchVC: UITextFieldDelegate {
                 // Fallback on earlier versions
             }
         */
+            
+        if showGroups == true {
+        
+        collectionViewEnabled = true
+        
+        
+        cancelSearchButton.alpha = 0
+            // added stuff
+            //navigationItem.titleView = nil
+            //configureSearchBarButton()
+
+        //clears search view
+        destinationTextField.text = nil
+        inSearchMode = false
+        
+        // reloads search table view data
+        groupsTableView.reloadData()
+
+        print("We reach this point so this should allow the keyboard to be cancelllllled")
+        //view.endEditing(true)
+        self.view.endEditing(true)
+        destinationTextField.resignFirstResponder()
+            
+        }
+        
+        if showMyGroups == true {
+            collectionViewEnabled = true
+            
+            cancelSearchButton.alpha = 0
+   
+            //clears search view
+            destinationTextField.text = nil
+            inSearchMode = false
+            
+            // reloads search table view data
+            collectionView.reloadData()
+
+            print("We reach this point so this should allow the keyboard to be cancelllllled")
+            //view.endEditing(true)
+            self.view.endEditing(true)
+            destinationTextField.resignFirstResponder()
+                   
+        }
+        
+        if showMyFriends == true {
             
             collectionViewEnabled = true
             //collectionView.isHidden = false
@@ -913,6 +1418,9 @@ extension SearchVC: UITextFieldDelegate {
         //view.endEditing(true)
         self.view.endEditing(true)
         destinationTextField.resignFirstResponder()
+            
+            
+        }
         
     }
 
@@ -928,5 +1436,4 @@ extension SearchVC: UITextFieldDelegate {
     }
     */
 }
-
 

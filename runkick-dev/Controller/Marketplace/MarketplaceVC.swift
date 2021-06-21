@@ -12,6 +12,7 @@ import Firebase
 private let reuseIdentifier = "MarketplaceCell"
 private let reuseTableIdentifier = "CategoryCell"
 private let reuseCarouselIdentifier = "CarouselCell"
+private let reuseRewardsIdentifier = "RewardsCell"
 
 
 //class MarketplaceVC: UITableViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -28,9 +29,16 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     var collectionView: UICollectionView!
     var collectionViewEnabled = true
     var tableView: UITableView!
+    var showRewards = false
+    
     
     var currentKey: String?
     var userCurrentKey: String?
+    
+    var rewardsTableView: UITableView!
+    var rewards = [Rewards]()
+    var filteredRewards = [Rewards]()
+    var rewardsCurrentKey: String?
     
     
     lazy var menuBackground: UIView = {
@@ -112,6 +120,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         tf.keyboardType = UIKeyboardType.default
         tf.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
         tf.layer.cornerRadius = 0 //25
+        tf.tintColor = UIColor.walkzillaYellow()
         tf.clipsToBounds = true
         tf.autocapitalizationType = .none
         tf.addTarget(self, action: #selector(HomeVC.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
@@ -180,7 +189,8 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         // configure refresh control
         configureRefreshControl()
         
-
+        configureRewardsTableView()
+        
        
         configureTabBar()
         
@@ -188,6 +198,9 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         fetchStores()
         
         fetchRecentVisted()
+        
+        rewardsTableView.isHidden = true
+        tableView.isHidden = false
     }
     
     // this function ensures the navigation bar is filled after transitioning to a regular nav bar
@@ -279,6 +292,32 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         
 
 
+
+    }
+    
+    func configureRewardsTableView() {
+        
+        rewardsTableView = UITableView()
+        // need the below statements to instantiate the extensions below
+        rewardsTableView.delegate = self
+        rewardsTableView.dataSource = self
+        rewardsTableView.isScrollEnabled = true
+        rewardsTableView.backgroundColor = UIColor.walkzillaYellow()
+        rewardsTableView.separatorColor = .clear
+ 
+        // register cell classes
+        rewardsTableView.register(RewardsCell.self, forCellReuseIdentifier: reuseRewardsIdentifier)
+        
+        
+        // seperator insets.
+        //tableView.separatorInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
+        
+        // giving the top border a bit of buffer
+        rewardsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        view.addSubview(rewardsTableView)
+        rewardsTableView.translatesAutoresizingMaskIntoConstraints = false
+        rewardsTableView.anchor(top: menuRewardsView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 
     }
     
@@ -508,7 +547,7 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         
         
         menuRewardsView.addSubview(rewardsBackground)
-        rewardsBackground.anchor(top: nil, left: menuBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
+        rewardsBackground.anchor(top: nil, left: menuBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
         
         rewardsBackground.addSubview(rewardsLabel)
         rewardsLabel.anchor(top: nil, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -520,14 +559,12 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     func configureNavigationBar() {
         
         //view.addSubview(navigationController!.navigationBar)
-        
         //navigationController?.navigationBar.prefersLargeTitles = true
         
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
     
-        
         // add or remove nav bar bottom border
         navigationController?.navigationBar.shadowImage = UIImage()
         let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
@@ -620,13 +657,41 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     
     @objc func handleMenuView() {
         
+        rewardsTableView.isHidden = true
+        tableView.isHidden = false
+        
+        showRewards = false
         print("transition to menu")
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.indicatorView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.indicatorView.transform = CGAffineTransform(translationX: 0, y: 0)
+            
+        })
 
         
     }
     
     @objc func handleRewardsView() {
         print("transition to rewards")
+        
+        rewardsTableView.isHidden = false
+        tableView.isHidden = true
+        
+        fetchRewards()
+        
+        showRewards = true
+        indicatorView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        indicatorView.transform = CGAffineTransform(translationX: 1, y: 1)
+       
+
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.indicatorView.transform = CGAffineTransform(scaleX: 0.75, y: 1)
+            self.indicatorView.transform = CGAffineTransform(translationX: 110, y: 0)
+            
+        })
 
         
     }
@@ -943,6 +1008,49 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         
     }
     */
+    
+    func fetchRewards() {
+        
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+
+         if rewardsCurrentKey == nil {
+            
+            DataService.instance.REF_USER_REWARDS.child(currentUserId).queryLimited(toLast: 4).observeSingleEvent(of: .value) { (snapshot) in
+                 
+                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                 
+                 allObjects.forEach({ (snapshot) in
+                     let storeId = snapshot.key
+                     
+                    Database.fetchRewards(with: storeId) { (reward) in
+                        self.rewards.append(reward)
+                        self.rewardsTableView.reloadData()
+                    }
+                 })
+                 self.rewardsCurrentKey = first.key
+             }
+         } else { // changed from ref_users to ref_user_rewards.. need to verify
+            DataService.instance.REF_USER_REWARDS.child(currentUserId).queryOrderedByKey().queryEnding(atValue: userCurrentKey).queryLimited(toLast: 5).observeSingleEvent(of: .value, with: { (snapshot) in
+                 
+                 guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                 
+                 allObjects.forEach({ (snapshot) in
+                     let storeId = snapshot.key
+                     
+                     if storeId != self.rewardsCurrentKey {
+                         Database.fetchRewards(with: storeId, completion: { (reward) in
+                             self.rewards.append(reward)
+                             self.rewardsTableView.reloadData()
+                         })
+                     }
+                 })
+                 self.rewardsCurrentKey = first.key
+             })
+         }
+     }
+    
     @objc func showSearchBar() {
         
         
@@ -1073,6 +1181,10 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
 extension MarketplaceVC: UITableViewDataSource, UITableViewDelegate  {
 
      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if tableView == rewardsTableView {
+            return 80
+        }
         return 50
     }
 
@@ -1081,6 +1193,14 @@ extension MarketplaceVC: UITableViewDataSource, UITableViewDelegate  {
     }
 
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if tableView == rewardsTableView {
+            if inSearchMode {
+                return filteredRewards.count
+            } else {
+                return rewards.count
+            }
+        }
         
         if inSearchMode {
             return filteredCategories.count
@@ -1092,6 +1212,15 @@ extension MarketplaceVC: UITableViewDataSource, UITableViewDelegate  {
     
      func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
+        
+        if tableView == rewardsTableView {
+            if rewards.count > 3 {
+                if indexPath.item == rewards.count - 1 {
+                    fetchRewards()
+                }
+            }
+            
+        }
         if categories.count > 20 {
             if indexPath.item == categories.count - 1 {
                 fetchCategories()
@@ -1113,6 +1242,25 @@ extension MarketplaceVC: UITableViewDataSource, UITableViewDelegate  {
 
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if tableView == rewardsTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: reuseRewardsIdentifier, for: indexPath) as! RewardsCell
+                    
+            var reward: Rewards!
+            
+            //reward = rewards[indexPath.row]
+            
+            if inSearchMode {
+                reward = filteredRewards[indexPath.row]
+            } else {
+                reward = rewards[indexPath.row]
+            }
+            
+            cell.reward = reward
+            
+            return cell
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseTableIdentifier, for: indexPath) as! CategoriesCell
         
         cell.categoryPost = inSearchMode ? filteredCategories[indexPath.row] : categories[indexPath.row]
@@ -1284,6 +1432,25 @@ extension MarketplaceVC: UITextFieldDelegate {
     //func textFieldEditingChanged(_ sender: UITextField, textDidChange searchText: String) {
     @objc func textFieldDidChange(_ searchText: UITextField) {
 
+        if showRewards == true {
+            
+            let searchText = String(searchText.text!)
+            
+            if searchText.isEmpty || searchText == " " {
+                inSearchMode = false
+                rewardsTableView.reloadData()
+            } else {
+                
+                inSearchMode = true
+                
+                // return fitlered users
+                filteredRewards = rewards.filter({ (reward) -> Bool in                // having and issue here <--
+                    
+                    return reward.title.localizedCaseInsensitiveContains(searchText)
+                })
+                rewardsTableView.reloadData()
+            }
+        } else {
         
         print(searchText)
 
@@ -1312,7 +1479,7 @@ extension MarketplaceVC: UITextFieldDelegate {
         
         // text printing out the text real time
         print(searchText)
-        
+        }
     }
     
     @objc func handleCancelSearch() {
@@ -1323,6 +1490,33 @@ extension MarketplaceVC: UITextFieldDelegate {
                 // Fallback on earlier versions
             }
         */
+        
+        if showRewards == true {
+            
+            collectionViewEnabled = true
+            collectionView.isHidden = false
+            collectionViewHorizontal.isHidden = false
+            tableView.isHidden = true
+            titleLabel.isHidden = false
+          
+      cancelSearchButton.alpha = 0
+          // added stuff
+          //navigationItem.titleView = nil
+          //configureSearchBarButton()
+
+      //clears search view
+      destinationTextField.text = nil
+      inSearchMode = false
+      
+      // reloads search table view data
+      rewardsTableView.reloadData()
+
+      print("We reach this point so this should allow the keyboard to be cancelllllled")
+      //view.endEditing(true)
+      self.view.endEditing(true)
+      destinationTextField.resignFirstResponder()
+            
+        } else {
             
             collectionViewEnabled = true
             collectionView.isHidden = false
@@ -1345,7 +1539,7 @@ extension MarketplaceVC: UITextFieldDelegate {
         //view.endEditing(true)
         self.view.endEditing(true)
         destinationTextField.resignFirstResponder()
-        
+        }
     }
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {

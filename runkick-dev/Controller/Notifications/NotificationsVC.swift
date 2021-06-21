@@ -410,7 +410,35 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
     // MARK: - Handlers
     
     
+    
+    @objc func handleNotificationsView() {
+        
+        indicatorView.transform = CGAffineTransform(translationX: 1, y: 1)
+
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            //self.indicatorView.transform = CGAffineTransform(scaleX: 1.25, y: 1)
+            self.indicatorView.transform = CGAffineTransform(translationX: 105, y: 0)
+            
+        })
+        
+
+        
+        print("transition to notifications")
+      //  tableView.isHidden = false
+        collectionView.isHidden = true
+        
+    }
+    
     @objc func handleMessagesView() {
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+
+            self.indicatorView.transform = CGAffineTransform(translationX: 0, y: 0)
+            //self.indicatorView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        })
+        
         
         print("transition to messages")
        // tableView.isHidden = true
@@ -418,12 +446,7 @@ private let reuseAltMessageIdentifier = "AltMessageCell"
         
     }
     
-    @objc func handleNotificationsView() {
-        print("transition to notifications")
-      //  tableView.isHidden = false
-        collectionView.isHidden = true
-        
-    }
+
     
     
     @objc func handleRefresh() {

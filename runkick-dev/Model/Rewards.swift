@@ -20,6 +20,7 @@ class Rewards {
     var points: Int!
     var storeId: String!
     var averagePace: String!
+    var category: String!
     var pace: String!
     var distance: Double!
     var duration: String!
@@ -82,6 +83,10 @@ class Rewards {
         
         if let stepCount = dictionary["stepCount"] as? Int {
             self.stepCount = stepCount
+        }
+        
+        if let category = dictionary["category"] as? String {
+            self.category = category
         }
         
         if let creationDate = dictionary["creationDate"] as? Double {

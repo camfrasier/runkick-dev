@@ -63,7 +63,7 @@ class SearchUserCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.text = "active"
-        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         //label.font = UIFont(name: "ArialRoundedMTBold", size: 12)
         label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         //return label

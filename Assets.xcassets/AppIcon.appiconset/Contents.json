@@ -1,54 +1,55 @@
 {
   "images" : [
     {
-      "filename" : "zillaLogoLaunch40x40.png",
+      "filename" : "walkzillaLogoIcon-40x40.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "zillaLogoLaunch60x60.png",
+      "filename" : "walkzillaLogoIcon-60x60.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "zillaLogoLaunchModel58x58.png",
+      "filename" : "walkzillaLogoIcon-58x58.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "zillaLogoLaunch87x87.png",
+      "filename" : "walkzillaLogoIcon-87x87.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "zillaLogoLaunchModel80x80.png",
+      "filename" : "walkzillaLogoIcon-80x80.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "zillaLogoLaunch120x120.png",
+      "filename" : "walkzillaLogoIcon-120x120.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "zillaLogoLaunchModel120x120.png",
+      "filename" : "walkzillaLogoIcon-120x120-1.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "zillaLogoLaunchModel180x180.png",
+      "filename" : "walkzillaLogoIcon-180x180.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
+      "filename" : "walkzillaLogoIcon-1024x1024.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

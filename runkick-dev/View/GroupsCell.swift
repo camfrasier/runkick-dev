@@ -36,7 +36,7 @@ class GroupsCell: UICollectionViewCell {
     let groupsNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
         label.text = "Group Name"
         return label
     }()
@@ -44,7 +44,7 @@ class GroupsCell: UICollectionViewCell {
     let groupDetailsLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "10 members"
         return label
     }()
@@ -56,20 +56,19 @@ class GroupsCell: UICollectionViewCell {
         
         let postImageDimension = CGFloat(90)
         addSubview(groupImageView)
-        groupImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: postImageDimension, height: postImageDimension + 4)
-        //groupImageView.layer.cornerRadius = postImageDimension / 2
-        groupImageView.layer.cornerRadius = 37
+        groupImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: postImageDimension, height: postImageDimension )
+        groupImageView.layer.cornerRadius = postImageDimension / 2.4
         groupImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         groupImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         addSubview(groupsNameLabel)
-        groupsNameLabel.anchor(top: groupImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        groupsNameLabel.anchor(top: groupImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         groupsNameLabel.centerXAnchor.constraint(equalTo: groupImageView.centerXAnchor).isActive = true
         
-        addSubview(groupDetailsLabel)
-        groupDetailsLabel.anchor(top: groupsNameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        //addSubview(groupDetailsLabel)
+        //groupDetailsLabel.anchor(top: groupsNameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        groupDetailsLabel.centerXAnchor.constraint(equalTo: groupImageView.centerXAnchor).isActive = true
+        //groupDetailsLabel.centerXAnchor.constraint(equalTo: groupImageView.centerXAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

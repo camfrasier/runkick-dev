@@ -19,11 +19,16 @@ class RewardsCell: UITableViewCell {
             guard let storename = reward?.title else { return }
             self.storeTitleLabel.text = storename
             
+            guard let category = reward?.category else { return }
+            self.categoryLabel.text = category
+            
             guard let points = reward?.points else { return }
+            
             self.pointsLabel.text = String(points)
 
         }
     }
+    
 
     let rewardsImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -36,17 +41,37 @@ class RewardsCell: UITableViewCell {
     
     let storeTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = UIColor.rgb(red: 17, green: 20, blue: 20)
+        label.numberOfLines = 3
+        //label.font = UIFont(name: "ArialRoundedMT", size: 13)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        label.isUserInteractionEnabled = true
         return label
     } ()
     
     let pointsLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 17)
-        label.textColor = UIColor.rgb(red: 17, green: 20, blue: 20)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        //label.textColor = UIColor.statusBarGreenDeep()
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 14.5)
         return label
     } ()
+    
+    let tokenLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.text = "points"
+        return label
+    }()
+    
+    let categoryLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.text = "Mediterranean Cuisine"
+        return label
+    }()
     
     let separatorView: UIView = {
         let view = UIView()
@@ -67,17 +92,28 @@ class RewardsCell: UITableViewCell {
         
         super.layoutSubviews()
         
-        let postImageDimension = CGFloat(55)
+        let profileImageDimension = CGFloat(40)
         addSubview(rewardsImageView)
-        rewardsImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: postImageDimension, height: postImageDimension)
+        rewardsImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         rewardsImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        rewardsImageView.layer.cornerRadius = postImageDimension / 2
+        rewardsImageView.layer.cornerRadius = profileImageDimension / 2
         
         addSubview(storeTitleLabel)
         storeTitleLabel.anchor(top: topAnchor, left: rewardsImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        addSubview(categoryLabel)
+        categoryLabel.anchor(top: storeTitleLabel.bottomAnchor, left: storeTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        
+        addSubview(tokenLabel)
+        tokenLabel.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
+        tokenLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
         addSubview(pointsLabel)
-        pointsLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 25, width: 0, height: 0)
+        pointsLabel.anchor(top: nil, left: nil, bottom: nil, right: tokenLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 2, width: 0, height: 0)
+        pointsLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        
     
     }
     

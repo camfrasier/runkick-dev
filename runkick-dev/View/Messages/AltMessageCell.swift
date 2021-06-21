@@ -75,9 +75,10 @@ class AltMessageCell: UICollectionViewCell {
     let detailTextLabel: UILabel = {
         let label = UILabel()
         //label.font = UIFont.systemFont(ofSize: 15)
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
+        label.numberOfLines = 0
         return label
     } ()
     
@@ -133,7 +134,7 @@ class AltMessageCell: UICollectionViewCell {
 
         
         addSubview(detailTextLabel)
-        detailTextLabel.anchor(top: firstnameLabel.bottomAnchor, left: firstnameLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        detailTextLabel.anchor(top: firstnameLabel.bottomAnchor, left: firstnameLabel.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 90, width: 0, height: 0)
 
 
     }
