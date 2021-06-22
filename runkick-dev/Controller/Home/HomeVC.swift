@@ -512,7 +512,10 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var simpleMenuBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        //view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        view.backgroundColor = UIColor.walkzillaYellow()
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         //view.backgroundColor = .clear
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheck))
         menuTap.numberOfTapsRequired = 1
@@ -693,7 +696,7 @@ class HomeVC: UIViewController, Alertable {
     
     lazy var centerMapBackground: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        view.backgroundColor = UIColor.clear
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
         view.layer.shadowRadius = 6.0
@@ -707,16 +710,24 @@ class HomeVC: UIViewController, Alertable {
     }()
     
     let centerMapButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.system)
-        button.setImage(UIImage(named: "centerMapIconWalkzilla"), for: .normal)
-        button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        button.setImage(UIImage(named: "walkzillaMapArrow"), for: .normal)
+        button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
+        button.layer.shadowRadius = 6.0
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        //button.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         button.addTarget(self, action: #selector(handleCenterMapBtnPressed), for: .touchUpInside)
         return button
     }()
     
     lazy var settingsButtonBackground: UIView = {
         let view = UIView()
-        view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        
+        view.backgroundColor = UIColor.walkzillaYellow()
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+        //view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
         view.layer.shadowRadius = 5.0
@@ -2084,12 +2095,15 @@ class HomeVC: UIViewController, Alertable {
         
         let centerMapDimension: CGFloat = 45
         mapView.addSubview(centerMapBackground)
-        centerMapBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: mapView.rightAnchor, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: centerMapDimension, height: centerMapDimension)
+        centerMapBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 90, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: centerMapDimension, height: centerMapDimension)
         centerMapBackground.layer.cornerRadius = 45 / 2
+        centerMapBackground.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
         //centerMapBackground.layer.cornerRadius = 10
         
         centerMapBackground.addSubview(centerMapButton)
-        centerMapButton.anchor(top: centerMapBackground.topAnchor , left: centerMapBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 17.5, paddingLeft: 15.5, paddingBottom: 0, paddingRight: 0, width: 12, height: 11)
+        centerMapButton.anchor(top: nil , left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 24, height: 23)
+        centerMapButton.centerXAnchor.constraint(equalTo: centerMapBackground.centerXAnchor).isActive = true
+        centerMapButton.centerYAnchor.constraint(equalTo: centerMapBackground.centerYAnchor).isActive = true
         
         
         let settingsDimension: CGFloat = 45

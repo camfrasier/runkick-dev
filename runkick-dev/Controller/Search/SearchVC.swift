@@ -185,6 +185,28 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         //label.addGestureRecognizer(groupTap)
         return label
     } ()
+    
+    
+
+    lazy var createGroupBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleCreateGroup))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    lazy var createGroupButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "walkzillaCreateGroup"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        button.addTarget(self, action: #selector(handleCreateGroup), for: .touchUpInside)
+        return button
+    }()
     /*
     fileprivate let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -622,11 +644,19 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         searchGroupsLabel.centerYAnchor.constraint(equalTo: searchGroupsBackground.centerYAnchor).isActive = true
         
         friendsGroupsView.addSubview(searchMyGroupsBackground)
-        searchMyGroupsBackground.anchor(top: nil, left: searchGroupsBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
+        searchMyGroupsBackground.anchor(top: nil, left: searchGroupsBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
         
         searchMyGroupsBackground.addSubview(searchMyGroupsLabel)
         searchMyGroupsLabel.anchor(top: nil, left: searchMyGroupsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         searchMyGroupsLabel.centerYAnchor.constraint(equalTo: searchMyGroupsBackground.centerYAnchor).isActive = true
+        
+        friendsGroupsView.addSubview(createGroupBackground)
+        createGroupBackground.anchor(top: nil, left: nil, bottom: lineView.topAnchor, right: friendsGroupsView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 20, width: 40, height: 40)
+        
+        createGroupBackground.addSubview(createGroupButton)
+        createGroupButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 28, height: 28)
+        createGroupButton.centerXAnchor.constraint(equalTo: createGroupBackground.centerXAnchor).isActive = true
+        createGroupButton.centerYAnchor.constraint(equalTo: createGroupBackground.centerYAnchor).isActive = true
         
        
     }

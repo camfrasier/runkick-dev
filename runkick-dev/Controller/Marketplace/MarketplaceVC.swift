@@ -65,6 +65,18 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         return view
     }()
     
+    lazy var filterBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleFilterView))
+        rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
     let menuLabel: UILabel = {
         let label = UILabel()
         label.text = "Healthy Options"
@@ -80,6 +92,16 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         label.font = UIFont(name: "HelveticaNeue", size: 15)
         return label
     }()
+    
+    lazy var filterButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "walkzillaFilter"), for: .normal)
+        button.tintColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        button.addTarget(self, action: #selector(handleFilterView), for: .touchUpInside)
+        return button
+    }()
+    
+    
     
     lazy var menuRewardsView: UIView = {
         let view = UIView()
@@ -553,6 +575,14 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         rewardsLabel.anchor(top: nil, left: rewardsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         rewardsLabel.centerYAnchor.constraint(equalTo: rewardsBackground.centerYAnchor).isActive = true
         
+        menuRewardsView.addSubview(filterBackground)
+        filterBackground.anchor(top: nil, left: nil, bottom: lineView.topAnchor, right: menuRewardsView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 20, width: 40, height: 40)
+        
+        filterBackground.addSubview(filterButton)
+        filterButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 24)
+        filterButton.centerXAnchor.constraint(equalTo: filterBackground.centerXAnchor).isActive = true
+        filterButton.centerYAnchor.constraint(equalTo: filterBackground.centerYAnchor).isActive = true
+        
        
     }
     
@@ -654,6 +684,12 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     @objc func handleBackButton() {
         _ = self.navigationController?.popViewController(animated: true)
     }
+    
+    @objc func handleFilterView() {
+        print("filter button pressed")
+    }
+    
+    
     
     @objc func handleMenuView() {
         

@@ -131,12 +131,12 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
         
         // Mark: - Camera view controller
-        let cameraVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "CAMERA", rootViewController: CameraVC())
+        let cameraVC = constructNavController(unselectedImage: UIImage(named: "cam-unselected-2x")!, selectedImage: UIImage(named: "cam-unselected-2x")!, title: "Capture", rootViewController: CameraVC())
         
         //let circleVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Circle", rootViewController: CircleVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]
-        viewControllers = [homeVC, marketplaceVC, selectImageVC, feedVC, searchVC]
+        viewControllers = [homeVC, marketplaceVC, cameraVC, feedVC, searchVC]
         
     
         // configure notification dot
@@ -196,10 +196,12 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
     // MARK: - UITableBarController
     
+    
+    /*
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
         let index = viewControllers?.firstIndex(of: viewController)
-        
+        /*
         // will need to go back and clean this up for another index value later.
         if index == 2 {
             
@@ -208,28 +210,28 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             let navController = UINavigationController(rootViewController: selectImageVC)
             selectImageVC.isUserAdminUpload = false
             */
-            let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
             
+            
+            let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
             //let cameraVC = CameraVC()
-            let navController = UINavigationController(rootViewController: CameraVC())
             selectImageVC.isUserAdminUpload = false
             
+            
+            let navController = UINavigationController(rootViewController: CameraVC())
             print("THe user is an admin or user BUT we should always present the normal upload view.. set to false")
             navController.modalPresentationStyle = .fullScreen
             navController.navigationBar.tintColor = UIColor(red: 60/255, green: 124/255, blue: 222/255, alpha: 1)
-            present(navController, animated: true, completion: nil)
-            
-   
+            present(navController, animated: false, completion: nil)
             return false
             
-        } else if index == 3 {
+        } else   */ if index == 3 {
             // hides the red notification dot
             dot.isHidden = true
             return true
         }
         return true
     }
-    
+    */
     // MARK: - API
     
     func observeNotifications() {

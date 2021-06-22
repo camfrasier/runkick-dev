@@ -11,27 +11,40 @@ import AVFoundation
 
 class CameraVC : UIViewController {
     
+    
     lazy var shutterButton: UIButton = {
         let button = UIButton(type: .system)
-        //button.setTitle("Start Pedometer", for: .normal)
+        button.setImage(UIImage(named: "walkzillaCameraRing"), for: .normal)
         button.addTarget(self, action: #selector(handleShutterButton), for: .touchUpInside)
-        button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        //button.layer.borderWidth = 1
-        //button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
+        button.tintColor = UIColor.walkzillaYellow()
         button.alpha = 1
         return button
     }()
     
+    lazy var toolBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        view.isUserInteractionEnabled = true
+        view.alpha = 0.35
+        return view
+    }()
+    
     lazy var toggleViewButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Switch", for: .normal)
+        button.setImage(UIImage(named: "walkzillaPhotoFlip"), for: .normal)
         button.addTarget(self, action: #selector(toggleCamera), for: .touchUpInside)
-        button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
-        //button.layer.borderWidth = 1
-        //button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
-        button.alpha = 1
+        button.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         return button
     }()
+    
+    lazy var photoAlbumButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "walkzillaPhotoAlbum"), for: .normal)
+        button.addTarget(self, action: #selector(handleSelectFromAlbum), for: .touchUpInside)
+        button.tintColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        return button
+    }()
+
     
     var captureSession = AVCaptureSession()
     
@@ -107,15 +120,21 @@ class CameraVC : UIViewController {
     
     func configureCameraViewComponents() {
         
+        let shutterDimension: CGFloat = 80
         view.addSubview(shutterButton)
-        shutterButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 50, paddingRight: 0, width: 60, height: 60)
+        shutterButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: shutterDimension, height: shutterDimension)
         shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        shutterButton.layer.cornerRadius = 60 / 2
+        shutterButton.layer.cornerRadius = shutterDimension / 2
+    
+        view.addSubview(toolBackgroundView)
+        toolBackgroundView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 18, width: 45, height: 110)
+        toolBackgroundView.layer.cornerRadius = 15
+        
+        view.addSubview(photoAlbumButton)
+        photoAlbumButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 57, paddingLeft: 0, paddingBottom: 0, paddingRight: 25, width: 30, height: 30)
         
         view.addSubview(toggleViewButton)
-        toggleViewButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 50, paddingRight: 0, width: 60, height: 60)
-        //toggleViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        toggleViewButton.layer.cornerRadius = 60 / 2
+        toggleViewButton.anchor(top: photoAlbumButton.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 24, width: 32, height: 34)
     }
     
     @objc func handleShutterButton() {
@@ -175,12 +194,12 @@ class CameraVC : UIViewController {
         currentDevice = newDevice
         captureSession.commitConfiguration()
     }
-    
+    /*
     @objc func handleCancel() {
         print("Cancel and go back!")
         dismiss(animated: true, completion: nil)
     }
-    
+    */
     @objc func handleSelectFromAlbum() {
         let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
         self.navigationController?.pushViewController(selectImageVC, animated: true)
@@ -208,8 +227,8 @@ class CameraVC : UIViewController {
         navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         navigationItem.title = ""
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Album", style: .plain, target: self, action: #selector(handleSelectFromAlbum))
+        //self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
+       // self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Album", style: .plain, target: self, action: #selector(handleSelectFromAlbum))
     }
     
 }
