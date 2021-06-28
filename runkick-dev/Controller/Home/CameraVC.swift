@@ -21,6 +21,15 @@ class CameraVC : UIViewController {
         return button
     }()
     
+    lazy var recordButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "walkzillaCameraRing"), for: .normal)
+        button.addTarget(self, action: #selector(handleRecordButton), for: .touchUpInside)
+        button.tintColor = UIColor.walkzillaRed()
+        button.alpha = 1
+        return button
+    }()
+    
     lazy var toolBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.rgb(red: 40, green: 40, blue: 40)
@@ -118,6 +127,10 @@ class CameraVC : UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
     func configureCameraViewComponents() {
         
         let shutterDimension: CGFloat = 80
@@ -125,6 +138,12 @@ class CameraVC : UIViewController {
         shutterButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: shutterDimension, height: shutterDimension)
         shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         shutterButton.layer.cornerRadius = shutterDimension / 2
+        
+        
+        let recordDimension: CGFloat = 40
+        view.addSubview(recordButton)
+        recordButton.anchor(top: nil, left: shutterButton.rightAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 30, paddingRight: 0, width: recordDimension, height: recordDimension)
+        recordButton.layer.cornerRadius = recordDimension / 2
     
         view.addSubview(toolBackgroundView)
         toolBackgroundView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 18, width: 45, height: 110)
@@ -151,9 +170,7 @@ class CameraVC : UIViewController {
                 
                // let imageVC = ImageVC()
                // imageVC.image = self.stillImage
-            
-                
-                
+              
                 let uploadPostVC = UploadPostVC()
                 uploadPostVC.selectedImage = self.stillImage
                 //uploadPostVC.selectedImage = self.header?.photoImageView.image // Using this to pull the instance of our header and use it for the share page.
@@ -167,6 +184,12 @@ class CameraVC : UIViewController {
             }
         })
         
+    }
+    
+    @objc func handleRecordButton() {
+        
+        print("Press and hold record should be here")
+
     }
     
     @objc private func toggleCamera() {

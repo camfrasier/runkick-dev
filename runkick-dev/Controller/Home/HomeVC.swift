@@ -352,16 +352,26 @@ class HomeVC: UIViewController, Alertable {
         return view
     }()
 
-    
+    /*
     let userActivityLabel: UILabel = {
         let label = UILabel()
         //label.text = "Distance: None"
-        label.text = "Activity"
+        label.text = "Activity Profile"
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 13)
         label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
         label.textAlignment = .center
         label.backgroundColor = .clear
         return label
+    }()
+    */
+    //actionBoltIcon
+    
+    lazy var userActivityButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "walkzillaActivity"), for: .normal)
+        button.addTarget(self, action: #selector(handleUserActivity), for: .touchUpInside)
+        button.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        return button
     }()
     
     let searchImageView: UIImageView = {
@@ -711,7 +721,7 @@ class HomeVC: UIViewController, Alertable {
     
     let centerMapButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
-        button.setImage(UIImage(named: "walkzillaMapArrow"), for: .normal)
+        button.setImage(UIImage(named: "walkZillaCentreMap"), for: .normal)
         button.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         button.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
         button.layer.shadowRadius = 6.0
@@ -1718,14 +1728,14 @@ class HomeVC: UIViewController, Alertable {
         mapView.tintColor = UIColor.walkzillaYellow()
         
         mapView.addSubview(userActivityButtonBackground)
-        userActivityButtonBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: 210, height: 45)
-        userActivityButtonBackground.layer.cornerRadius = 22
-        userActivityButtonBackground.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+        userActivityButtonBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 30, paddingRight: 0, width: 45, height: 45)
+        userActivityButtonBackground.layer.cornerRadius = 45 / 2
+        //userActivityButtonBackground.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
             
-        userActivityButtonBackground.addSubview(userActivityLabel)
-        userActivityLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        userActivityLabel.centerXAnchor.constraint(equalTo: userActivityButtonBackground.centerXAnchor).isActive = true
-        userActivityLabel.centerYAnchor.constraint(equalTo: userActivityButtonBackground.centerYAnchor).isActive = true
+        userActivityButtonBackground.addSubview(userActivityButton)
+        userActivityButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 15)
+        userActivityButton.centerXAnchor.constraint(equalTo: userActivityButtonBackground.centerXAnchor).isActive = true
+        userActivityButton.centerYAnchor.constraint(equalTo: userActivityButtonBackground.centerYAnchor).isActive = true
         
         
         //mapView.tintColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
@@ -2093,15 +2103,15 @@ class HomeVC: UIViewController, Alertable {
         
         let tabBarHeight = CGFloat((tabBarController?.tabBar.frame.size.height)!)
         
-        let centerMapDimension: CGFloat = 45
+        let centerMapDimension: CGFloat = 50
         mapView.addSubview(centerMapBackground)
-        centerMapBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 90, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: centerMapDimension, height: centerMapDimension)
-        centerMapBackground.layer.cornerRadius = 45 / 2
+        centerMapBackground.anchor(top: mapView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: centerMapDimension, height: centerMapDimension)
+        centerMapBackground.layer.cornerRadius = centerMapDimension / 2
         centerMapBackground.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
         //centerMapBackground.layer.cornerRadius = 10
         
         centerMapBackground.addSubview(centerMapButton)
-        centerMapButton.anchor(top: nil , left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 24, height: 23)
+        centerMapButton.anchor(top: nil , left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 35, height: 35)
         centerMapButton.centerXAnchor.constraint(equalTo: centerMapBackground.centerXAnchor).isActive = true
         centerMapButton.centerYAnchor.constraint(equalTo: centerMapBackground.centerYAnchor).isActive = true
         
@@ -2209,7 +2219,7 @@ class HomeVC: UIViewController, Alertable {
         
         // configure search store view table view
         tableView = UITableView()
-        tableView.rowHeight = 50
+        //tableView.rowHeight = 50
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -4583,19 +4593,19 @@ extension HomeVC: MKMapViewDelegate {
         
         //centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
         //centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-        simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+        userActivityButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         notificationBoltBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             
             //self.centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             //self.centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-            self.simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+            self.userActivityButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             self.notificationBoltBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
             
             //self.centerMapBackground.alpha = 0
             //self.centerMapButton.alpha = 0
-            self.simpleActionBackground.alpha = 0
+            self.userActivityButtonBackground.alpha = 0
             self.notificationBoltBackground.alpha = 0
             
             //self.centerMapBackground.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0).cgColor
@@ -4605,7 +4615,7 @@ extension HomeVC: MKMapViewDelegate {
         }) { (_) in
             //self.centerMapButton.transform = .identity
             //self.centerMapBackground.transform = .identity
-            self.simpleActionBackground.transform = .identity
+            self.userActivityButtonBackground.transform = .identity
             self.notificationBoltBackground.transform = .identity
         }
 
@@ -4866,19 +4876,19 @@ extension HomeVC: MKMapViewDelegate {
         
         //centerMapButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         //centerMapBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-        simpleActionBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        userActivityButtonBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         notificationBoltBackground.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
         
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
             //self.centerMapButton.isHidden = false
             //self.centerMapButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             //self.centerMapBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.simpleActionBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.userActivityButtonBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.notificationBoltBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
             
             // self.centerMapButton.alpha = 1
             //self.centerMapBackground.alpha = 1
-            self.simpleActionBackground.alpha = 1
+            self.userActivityButtonBackground.alpha = 1
             self.notificationBoltBackground.alpha = 1
             //self.centerMapBackground.layer.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
             
@@ -4887,7 +4897,7 @@ extension HomeVC: MKMapViewDelegate {
         }) { (_) in
             //self.centerMapButton.transform = .identity
             //self.centerMapBackground.transform = .identity
-            self.simpleActionBackground.transform = .identity
+            self.userActivityButtonBackground.transform = .identity
             self.notificationBoltBackground.transform = .identity
         }
     }
@@ -6096,7 +6106,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65
+        return 50
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

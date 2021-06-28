@@ -35,9 +35,11 @@ class GroupsCell: UICollectionViewCell {
     
     let groupsNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        label.numberOfLines = 0
         label.text = "Group Name"
+        label.textAlignment = .center
         return label
     }()
     
@@ -54,7 +56,7 @@ class GroupsCell: UICollectionViewCell {
         
         backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        let postImageDimension = CGFloat(90)
+        let postImageDimension = CGFloat(85)
         addSubview(groupImageView)
         groupImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: postImageDimension, height: postImageDimension )
         groupImageView.layer.cornerRadius = postImageDimension / 2.4
@@ -62,7 +64,8 @@ class GroupsCell: UICollectionViewCell {
         groupImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         addSubview(groupsNameLabel)
-        groupsNameLabel.anchor(top: groupImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        groupsNameLabel.anchor(top: groupImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        //groupsNameLabel.backgroundColor = UIColor.rgb(red: 0, green: 200, blue: 200)
         groupsNameLabel.centerXAnchor.constraint(equalTo: groupImageView.centerXAnchor).isActive = true
         
         //addSubview(groupDetailsLabel)

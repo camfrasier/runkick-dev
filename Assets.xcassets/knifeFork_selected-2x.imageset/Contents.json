@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "splashLogoWalkzilla.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "knifeFork_selected-2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

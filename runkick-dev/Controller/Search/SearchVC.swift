@@ -651,7 +651,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         searchMyGroupsLabel.centerYAnchor.constraint(equalTo: searchMyGroupsBackground.centerYAnchor).isActive = true
         
         friendsGroupsView.addSubview(createGroupBackground)
-        createGroupBackground.anchor(top: nil, left: nil, bottom: lineView.topAnchor, right: friendsGroupsView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 20, width: 40, height: 40)
+        createGroupBackground.anchor(top: nil, left: nil, bottom: lineView.topAnchor, right: friendsGroupsView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 28, width: 40, height: 40)
         
         createGroupBackground.addSubview(createGroupButton)
         createGroupButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 28, height: 28)

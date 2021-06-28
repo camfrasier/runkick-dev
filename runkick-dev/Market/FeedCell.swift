@@ -1010,7 +1010,7 @@ class FeedCell: UICollectionViewCell {
 
             //let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font:  UIFont(name: "HelveticaNeue", size: 13)!])
             
-            let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
+            let attributedText = NSMutableAttributedString(string: "\(numberOfComments)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
             attributedText.append(NSAttributedString(string: " comments", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
             //label.attributedText = attributedText
             

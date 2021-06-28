@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 
 class GroupMessageCell: UITableViewCell {
@@ -25,9 +26,14 @@ class GroupMessageCell: UITableViewCell {
             
             //guard let points = group?.points else { return }
             //self.pointsLabel.text = String(points)
-
+            
+            guard let groupId = group?.groupId else { return }
+            calculateMemberCount(groupId: groupId)
+            
         }
     }
+    
+    
     
     let groupImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -56,14 +62,21 @@ class GroupMessageCell: UITableViewCell {
     lazy var groupDetailsLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.text = "10 members, last post: 3h"
-        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        label.text = "Group tag line here."
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         //label.font = UIFont(name: "ArialRoundedMTBold", size: 12)
         label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
-        //return label
-
         label.isUserInteractionEnabled = true
-
+        return label
+    } ()
+    
+    lazy var numOfGroupMembers: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.text = "12"
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        label.isUserInteractionEnabled = true
         return label
     } ()
     
@@ -91,6 +104,35 @@ class GroupMessageCell: UITableViewCell {
         */
     }
     
+    func calculateMemberCount(groupId: String) {
+        var numberOfMembers: Int!
+        
+        
+        DataService.instance.REF_USER_GROUPS.child(groupId).child("members").observe(.value) { (snapshot) in
+
+            if let snapshot = snapshot.value as? Dictionary<String, AnyObject> {
+                
+                numberOfMembers = snapshot.count
+                print("GROUP ID >>>>>>>>>>>>>>>>>>>>>>> \(numberOfMembers)")
+                
+             
+            } else {
+                numberOfMembers = 0
+            }
+            
+            let attributedText = NSMutableAttributedString(string: String(numberOfMembers), attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
+            attributedText.append(NSAttributedString(string: " members", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 120, green: 120, blue: 120)]))
+            //label.attributedText = attributedText
+            
+            self.numOfGroupMembers.attributedText = attributedText
+            
+        }
+        
+
+        
+        
+    }
+    
     func configureComponents() {
         
         
@@ -110,6 +152,10 @@ class GroupMessageCell: UITableViewCell {
 
         addSubview(groupDetailsLabel)
         groupDetailsLabel.anchor(top: groupsNameLabel.bottomAnchor, left: groupsNameLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(numOfGroupMembers)
+        numOfGroupMembers.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 40, width: 0, height: 0)
+        numOfGroupMembers.centerYAnchor.constraint(equalTo: groupImageView.centerYAnchor).isActive = true
         
     
         

@@ -24,6 +24,8 @@
 	<string>Walkology would like access to your media.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Walkology would like access to your media.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Walkzilla would like to access your microphone.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Walkology needs your location before we begin.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

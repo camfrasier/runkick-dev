@@ -25,13 +25,13 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
         // Tab bar tint color
         //tabBar.tintColor = UIColor.rgb(red: 242, green: 96, blue: 98)
-        //tabBar.tintColor = UIColor.rgb(red: 243, green: 78, blue: 92)
-        //tabBar.tintColor = UIColor.rgb(red: 236, green: 84, blue: 95)
-        tabBar.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+
+        tabBar.tintColor = UIColor.walkzillaYellow()
         tabBar.unselectedItemTintColor = UIColor.rgb(red: 100, green: 100, blue: 100)
         UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -4)
         
-            
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor:UIColor.rgb(red: 40, green: 40, blue: 40)], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor:UIColor.rgb(red: 40, green: 40, blue: 40)], for: .selected)
  
         
         
@@ -108,7 +108,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
 
         // Mark: - Search feed controller
-        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "knifeFork_unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "knifeFork_unselected-2x")!, title: "Pickup", rootViewController: MarketplaceVC())
+        let marketplaceVC = constructNavController(unselectedImage: UIImage(named: "newKnifeFork_unselected-2x")!.withRenderingMode(UIImage.RenderingMode.alwaysOriginal), selectedImage: UIImage(named: "newKnifeFork_unselected-2x")!, title: "Pickup", rootViewController: MarketplaceVC())
         
         
         
@@ -131,8 +131,10 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
         
         // Mark: - Camera view controller
-        let cameraVC = constructNavController(unselectedImage: UIImage(named: "cam-unselected-2x")!, selectedImage: UIImage(named: "cam-unselected-2x")!, title: "Capture", rootViewController: CameraVC())
+        let cameraVC = constructNavController(unselectedImage: UIImage(named: "cam-unselected-2x")!, selectedImage: UIImage(named: "cam-unselected-2x")!, title: "Capture", rootViewController: CameraViewController())
         
+        //CameraViewController()
+        //CameraVC()
         //let circleVC = constructNavController(unselectedImage: UIImage(named: "plus_unselected")!, selectedImage: UIImage(named: "plus_unselected")!, title: "Circle", rootViewController: CircleVC(collectionViewLayout: UICollectionViewFlowLayout()))
         
         //viewControllers = [homeVC, feedVC, marketplaceVC, notificationsVC, searchVC]

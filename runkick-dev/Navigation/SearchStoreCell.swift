@@ -31,6 +31,7 @@ class SearchStoreCell: UITableViewCell, CLLocationManagerDelegate {
             guard let storeAddress = store?.location else { return }
             guard let storeLat = store?.lat else { return }
             guard let storeLong = store?.long else { return }
+            
 
             let coordinatePin = CLLocationCoordinate2DMake(storeLat, storeLong)
             let destinationPin = MKPlacemark(coordinate: coordinatePin)
@@ -59,8 +60,8 @@ class SearchStoreCell: UITableViewCell, CLLocationManagerDelegate {
             
             //profileImageView.loadImage(with: profileImageUrl)
             
-            self.textLabel?.text = storeName
-            self.detailTextLabel?.text = storeAddress
+            storeNameLabel.text = storeName
+            addressLabel.text = storeAddress
         }
     }
     
@@ -76,12 +77,28 @@ class SearchStoreCell: UITableViewCell, CLLocationManagerDelegate {
         //iv.tintColor = .lightGray
         return iv
     } ()
-    
+    //ArialRoundedMTBold
     let locationDistanceLabel: UILabel = {
         let label = UILabel()
         label.text = "5.5mi"
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.textColor = UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1)
+        return label
+    } ()
+    
+    let addressLabel: UILabel = {
+        let label = UILabel()
+        label.text = "2100 Jackson Street"
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
+        return label
+    } ()
+    
+    let storeNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "CAVA"
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 15)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         return label
     } ()
     
@@ -100,13 +117,13 @@ class SearchStoreCell: UITableViewCell, CLLocationManagerDelegate {
         
         calculateUserDistance()
         
-       
+        configureSearchViewComponents()
     }
     
     override func layoutSubviews() {
         
         super.layoutSubviews()
- 
+ /*
         //textLabel?.frame = CGRect(x: 75, y: textLabel!.frame.origin.y, width: self.frame.width, height: (textLabel?.frame.height)!)
         textLabel?.frame = CGRect(x: 35, y: textLabel!.frame.origin.y, width: self.frame.width, height: (textLabel?.frame.height)!)
         textLabel?.font = UIFont.systemFont(ofSize: 17)
@@ -115,10 +132,9 @@ class SearchStoreCell: UITableViewCell, CLLocationManagerDelegate {
         detailTextLabel?.frame = CGRect(x: 35, y: detailTextLabel!.frame.origin.y, width: self.frame.width, height: detailTextLabel!.frame.height)
         detailTextLabel?.textColor = UIColor(red: 120/255, green: 120/255, blue: 120/255, alpha: 1)
         detailTextLabel?.font = UIFont.systemFont(ofSize: 15)
+        */
         
-        addSubview(locationDistanceLabel)
-        locationDistanceLabel.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 35, width: 0, height: 0)
-        locationDistanceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+
         
         /*
         // Add image view
@@ -175,6 +191,21 @@ class SearchStoreCell: UITableViewCell, CLLocationManagerDelegate {
         //print("\(distanceAsString)")
     }
     */
+    
+    func configureSearchViewComponents() {
+        addSubview(storeNameLabel)
+        storeNameLabel.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        addSubview(addressLabel)
+        addressLabel.anchor(top: storeNameLabel.bottomAnchor, left: storeNameLabel.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 80, width: 0, height: 0)
+        
+        addSubview(locationDistanceLabel)
+        locationDistanceLabel.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 35, width: 0, height: 0)
+        locationDistanceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+    }
+    
+    
     
     func calculateUserDistance() {
         

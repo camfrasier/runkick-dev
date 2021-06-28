@@ -31,6 +31,7 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     var uploadAction: UploadAction!
     var selectedImage: UIImage?
     var postToEdit: Post?
+    var postToVideo = false
     //var image: UIImage?
     
     let photoImageView: CustomImageView = {
@@ -92,11 +93,15 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        
+        //navigationController?.navigationBar.isHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        
         if uploadAction == .SaveChanges {
             guard let post = self.postToEdit else { return }
             actionButton.setTitle("Save Changes", for: .normal)
             self.navigationItem.title = "Edit Post"
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
+            //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
             navigationController?.navigationBar.tintColor = .black
             
             photoImageView.loadImage(with: post.imageUrl)
@@ -104,9 +109,15 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         } else {
             actionButton.setTitle("Share", for: .normal)
             self.navigationItem.title = "Upload Post"
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
+            //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
             navigationController?.navigationBar.tintColor = .black
         }
+        
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     // MARK: - UITextView
@@ -168,7 +179,11 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     @objc func handleCancel() {
         
         print("the cancel button should work here")
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
+        
+        //self.navigationController?.popViewController(animated: true)
+        
+       // self.navigationController?.dismiss(animated: true)
     }
     
     @objc func handleSaveImage() {
@@ -179,7 +194,8 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
             return
         }
             UIImageWriteToSavedPhotosAlbum(imageToSave, nil, nil, nil)
-           // dismiss(animated: false, completion: nil)
+            //dismiss(animated: false, completion: nil)
+        
     }
     
     func buttonSelector(uploadAction: UploadAction) {
@@ -203,11 +219,14 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         DataService.instance.REF_POSTS.child(post.postId).child("caption").setValue(updatedCaption) { (err, ref) in
             
             // using the dismiss here instead of pop because we are in a naviagation view and it's smoother going back this way
-            self.dismiss(animated: true, completion: nil)
+            
+            //self.navigationController?.popViewController(animated: true)
+            
         }
     }
     
     func handleUploadPost() {
+        
         
         // Parameters
         guard
@@ -292,21 +311,21 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
                             }
                         }
                         
-                        
+                        /*
                         // return to home feed.
                         self.dismiss(animated: true, completion: {
-                            self.tabBarController?.selectedIndex = 1
+                            self.tabBarController?.selectedIndex = 2
                             
                         })
+                        */
+                        
                     })
-                    
-                    
-                    
-                
 
                 }
             })
         }
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     func configureViewComponents() {
