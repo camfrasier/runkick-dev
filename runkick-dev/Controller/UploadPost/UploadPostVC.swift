@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import AVFoundation
 
 class UploadPostVC: UIViewController, UITextViewDelegate {
     
@@ -17,12 +18,14 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     enum UploadAction: Int {
         case UploadPost
         case SaveChanges
+        case UploadVideoPost
         
         // initialize enum with uploadpost action
         init(index: Int) {
             switch index {
             case 0: self = .UploadPost
             case 1: self = .SaveChanges
+            case 2: self = .UploadVideoPost
             default: self = .UploadPost
             }
         }
@@ -30,8 +33,9 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     
     var uploadAction: UploadAction!
     var selectedImage: UIImage?
+    var selectedVideo: URL?
     var postToEdit: Post?
-    var postToVideo = false
+    var isVideoPost = false
     //var image: UIImage?
     
     let photoImageView: CustomImageView = {
@@ -45,6 +49,17 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
     lazy var saveImage: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Save Image", for: .normal)
+        button.addTarget(self, action: #selector(handleSaveImage), for: .touchUpInside)
+        button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //button.layer.borderWidth = 1
+        //button.layer.borderColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
+        button.alpha = 1
+        return button
+    }()
+    
+    lazy var saveVideo: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Save Video", for: .normal)
         button.addTarget(self, action: #selector(handleSaveImage), for: .touchUpInside)
         button.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         //button.layer.borderWidth = 1
@@ -83,6 +98,9 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         
         // Load the image.
         loadImage()
+        
+        print("The bool variable for theis vide is set to \(isVideoPost)")
+
         
         captionTextView.delegate = self // Just telling our program that this view controller will be the delegate for handling all the data.
         
@@ -176,6 +194,7 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         buttonSelector(uploadAction: uploadAction)
     }
     
+    
     @objc func handleCancel() {
         
         print("the cancel button should work here")
@@ -198,15 +217,29 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         
     }
     
+    @objc func handleSaveVideo() {
+        
+   
+        print("save current video")
+       
+       // UISaveVideoAtPathToSavedPhotosAlbum(url.path, self, #selector(self.video(_:didFinishSavingWithError:contextInfo:)), nil)
+        
+    }
+    
     func buttonSelector(uploadAction: UploadAction) {
         
         switch uploadAction {
             
         case .UploadPost:
             handleUploadPost()
-            
+
         case .SaveChanges:
             handleSavePostChanges()
+            
+        case .UploadVideoPost:
+            handleUploadVideo(url: selectedVideo!)
+            isVideoPost = true
+            
         }
     }
     
@@ -223,6 +256,136 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
             //self.navigationController?.popViewController(animated: true)
             
         }
+    }
+    
+func handleUploadVideo(url: URL) {
+    
+    
+            let name = "\(NSUUID().uuidString).mp4"
+            let creationDate = Int(NSDate().timeIntervalSince1970)
+            //let name = "\(Int(Date().timeIntervalSince1970)).mp4"
+            let path = NSTemporaryDirectory() + name
+
+            let dispatchgroup = DispatchGroup()
+            
+            // Parameters
+            guard
+                let caption = captionTextView.text,
+                //let postImg = photoImageView.image,
+                let currentUid = Auth.auth().currentUser?.uid else { return }
+    
+    print("WE ARE PLANNING TO UPLOAD a VID AND HERE IS THE URL \(url)")
+            dispatchgroup.enter()
+
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let outputurl = documentsURL.appendingPathComponent(name)
+            var ur = outputurl
+    
+    
+    // i believe my data has already been converted
+    
+            self.convertVideo(toMPEG4FormatForVideo: url as URL, outputURL: outputurl) { (session) in
+
+                ur = session.outputURL!
+                dispatchgroup.leave()
+
+            }
+            dispatchgroup.wait()
+
+            let data = NSData(contentsOf: ur as URL)
+
+            do {
+
+                try data?.write(to: URL(fileURLWithPath: path), options: .atomic)
+
+            } catch {
+
+                print(error)
+            }
+
+            let storageRef = Storage.storage().reference().child("video_posts").child(name)
+           
+            if let uploadData = data as Data? { storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+              guard let metadata = metadata else {
+                // Uh-oh, an error occurred!
+                return
+              }
+              // Metadata contains file metadata such as size, content-type.
+              //let size = metadata.size
+              // You can also access to download URL after upload.
+                
+                
+                storageRef.downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                  // Uh-oh, an error occurred!
+                  return
+                }
+                    let postVideoUrl = (url?.absoluteString)!
+                    print(postVideoUrl)
+                    
+                    let values = ["caption": caption,
+                                  "creationDate": creationDate,
+                                  "likes": 0,
+                                  "videoUrl": postVideoUrl,
+                                  "type": "videoPost",
+                                  "ownerUid": currentUid] as [String: Any]
+                    
+                    
+                    let postId = DataService.instance.REF_POSTS.childByAutoId()
+                    let userPostId = DataService.instance.REF_USER_POSTS
+                    // Upload information to database.
+                    
+                    postId.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                        
+                        guard let postKey = postId.key else { return }
+                        // update user post section.
+                        userPostId.child(currentUid).updateChildValues([postKey: 1])
+                        
+                        // update user feed structure
+                        self.updateUserFeeds(with: postKey)
+                        
+                        // upload hashtag to server
+                        self.uploadHastagToServer(withPostId: postKey)
+                        
+                        // upload mention notification to server
+                        if caption.contains("@") {
+                            self.uploadMentionNotification(forPostId: postKey, withText: caption, isForComment: false)
+                        }
+
+                        // confirming image landscape or profile
+                        let convertedUrl = downloadURL
+                        Database.fetchDimensions(with: convertedUrl) { (photoImage) in
+                            let imageWidth = photoImage.size.width
+                            let imageHeight = photoImage.size.height
+                            
+                            print("this is the photo width \(imageWidth) and this is the height \(imageHeight)")
+                            if imageWidth > imageHeight {
+                                postId.updateChildValues(["photoStyle": "landscape"])
+                            } else {
+                                 postId.updateChildValues(["photoStyle": "portrait"])
+                            }
+                        }
+                        
+                    })
+      
+              }
+            })
+        }
+ 
+    }
+    
+    
+    func convertVideo(toMPEG4FormatForVideo inputURL: URL, outputURL: URL, handler: @escaping (AVAssetExportSession) -> Void) {
+        
+        //try! FileManager.default.removeItem(at: outputURL as URL)
+        let asset = AVURLAsset(url: inputURL as URL, options: nil)
+
+        let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality)!
+        exportSession.outputURL = outputURL
+        exportSession.outputFileType = .mp4
+        exportSession.exportAsynchronously(completionHandler: {
+            handler(exportSession)
+        })
     }
     
     func handleUploadPost() {
@@ -263,10 +426,6 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
                     print(postImageUrl)
                     
 
-                    
-                    
-                    
-                    
                     let values = ["caption": caption,
                                   "creationDate": creationDate,
                                   "likes": 0,
@@ -341,10 +500,27 @@ class UploadPostVC: UIViewController, UITextViewDelegate {
         actionButton.anchor(top: photoImageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 24, paddingBottom: 0, paddingRight: 24, width: 0, height: 40)
         
         
-        view.addSubview(saveImage)
-        saveImage.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 60, paddingBottom: 50, paddingRight: 0, width: 100, height: 50)
-        //saveImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        saveImage.layer.cornerRadius = 15
+        if isVideoPost {
+            view.addSubview(saveVideo)
+            saveVideo.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 60, paddingBottom: 50, paddingRight: 0, width: 100, height: 50)
+            //saveImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            saveVideo.layer.cornerRadius = 15
+            
+        } else {
+     
+            view.addSubview(saveImage)
+            saveImage.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 60, paddingBottom: 50, paddingRight: 0, width: 100, height: 50)
+            //saveImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            saveImage.layer.cornerRadius = 15
+
+    }
+        
+        
+        
+
+        
+
+        
     }
     
     func loadImage() {

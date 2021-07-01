@@ -1,32 +1,35 @@
 //
-//  FeedCell.swift
+//  VideoFeedCell.swift
 //  runkick-dev
 //
-//  Created by Cameron Frasier on 9/9/19.
-//  Copyright © 2019 Cameron Frasier. All rights reserved.
+//  Created by Cameron Frasier on 6/29/21.
+//  Copyright © 2021 Cameron Frasier. All rights reserved.
 //
 
 import UIKit
 import Firebase
 import ActiveLabel
+import AVKit
+import AVFoundation
 
-
-protocol AltFeedCellDelegate {
-    func presentPhotoFeedView(withFeedCell post: Post)
-}
-
-class FeedCell: UICollectionViewCell {
+class VideoFeedCell: UICollectionViewCell {
     // creating a variable of the type FeedCellDelegate that's optional
-    var delegate: FeedCellDelegate?
-    var altDelegate: AltFeedCellDelegate?
+    var delegate: VideoFeedCellDelegate?
+    //var altDelegate: AltFeedCellDelegate?
     var isWide = false
     
     var post: Post? {
         
         didSet {
             
+     
+                print("media type is video")
+                guard let url = URL(string: post?.videoUrl ?? "") else { return }
+             //   playVideo(url: url)
+
+                //guard let imageUrl = post?.imageUrl else { return }
+
             guard let ownerUid = post?.ownerUid else { return }
-            guard let imageUrl = post?.imageUrl else { return }
             guard let likes = post?.likes else { return }
            // guard let postId = post?.postId else { return }
         
@@ -42,12 +45,9 @@ class FeedCell: UICollectionViewCell {
                 
                 guard let userProfileImage = user.profileImageURL else { return }
                 self.profileImageView.loadImage(with: userProfileImage)
-                
+  
             }
             
-            postImageView.loadImage(with: imageUrl)
-            
-    
             //likesLabel.text = "\(likes)"
             
             let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
@@ -62,14 +62,14 @@ class FeedCell: UICollectionViewCell {
             
             //sizeOfImage()
             
-            
+            //postImageView.loadImage(with: imageUrl)
             
             //guard let postUrl = post?.imageUrl else { return }
             //sizeImageAt(postId: postId, urlString: postUrl)
             
         }
     }
-    
+
 
     
     // MARK: - Properties
@@ -615,6 +615,35 @@ class FeedCell: UICollectionViewCell {
     
     // MARK: - Helper Functions
     
+    func playVideo(url: URL) {
+        
+        print("does the video function to play video get called \(url)")
+        
+        let player = AVPlayer(url: url)
+        let playerView = AVPlayerLayer()
+        playerView.player = player
+        playerView.videoGravity = .resizeAspectFill
+        player.volume = 4  // may need to add a mute button later
+        postImageBlock.layer.addSublayer(playerView)
+        playerView.frame = CGRect(x: 0, y: 0, width: postImageBlock.frame.width, height: postImageBlock.frame.height)
+        player.play()
+        
+    
+        /*
+        let vc = AVPlayerViewController()
+        vc.player = player
+        
+        //addSubview(self.postImageBlock)
+        //postImageBlock.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
+        postImageBlock.addSubview(vc.view)
+        vc.player?.play()
+       // self.present(vc, animated: true) { vc.player?.play() }
+        */
+    }
+    
     func configureViewComponents() {
         
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
@@ -681,9 +710,8 @@ class FeedCell: UICollectionViewCell {
         //postImageBlock.backgroundColor = UIColor.rgb(red: 255, green: 0, blue: 0)
         //postImageBlock.layer.cornerRadius = 3
         
-        postImageBlock.addSubview(postImageView)
-        postImageView.translatesAutoresizingMaskIntoConstraints = false
-        //postImageView.layer.cornerRadius = 3
+        
+
 
         addSubview(captionBlock)
         captionBlock.translatesAutoresizingMaskIntoConstraints = false
@@ -779,7 +807,7 @@ class FeedCell: UICollectionViewCell {
         //userLocationBlock.backgroundColor = UIColor.rgb(red: 120, green: 200, blue: 255)
         
         
-        postImageView.addSubview(newLikeButton)
+        postImageBlock.addSubview(newLikeButton)
         newLikeButton.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -882,9 +910,9 @@ class FeedCell: UICollectionViewCell {
         
 
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
+       // addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
+        //addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[postImage]-0-|", options: [], metrics: nil, views: ["postImage": postImageView]))
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[pressHeart(23)]-28-|", options: [], metrics: nil, views: ["pressHeart": newLikeButton]))
         
@@ -1025,6 +1053,7 @@ class FeedCell: UICollectionViewCell {
     }
 }
 
+/*
 extension UILabel {
     
     func setLineHeight(lineHeight: CGFloat) {
@@ -1039,4 +1068,4 @@ extension UILabel {
         }
     }
 }
-
+*/

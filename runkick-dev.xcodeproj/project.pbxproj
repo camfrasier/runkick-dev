@@ -65,6 +65,7 @@
 		6937B46922C18C1E00446926 /* UpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6937B46822C18C1E00446926 /* UpdateService.swift */; };
 		6937B46D22C2913600446926 /* StoreAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6937B46C22C2913600446926 /* StoreAnnotation.swift */; };
 		6937B46F22CBDF2800446926 /* RunnerAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6937B46E22CBDF2700446926 /* RunnerAnnotation.swift */; };
+		694A0416268BDFDC0029F85B /* VideoFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 694A0415268BDFDC0029F85B /* VideoFeedCell.swift */; };
 		6965531B255F75260027EDB6 /* GroupStatisticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965531A255F75260027EDB6 /* GroupStatisticsCell.swift */; };
 		6965531D2571CB8E0027EDB6 /* ChatroomVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965531C2571CB8C0027EDB6 /* ChatroomVC.swift */; };
 		6965531F2577024B0027EDB6 /* ChatroomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6965531E2577024A0027EDB6 /* ChatroomCell.swift */; };
@@ -227,6 +228,7 @@
 		6937B46822C18C1E00446926 /* UpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateService.swift; sourceTree = "<group>"; };
 		6937B46C22C2913600446926 /* StoreAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreAnnotation.swift; sourceTree = "<group>"; };
 		6937B46E22CBDF2700446926 /* RunnerAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerAnnotation.swift; sourceTree = "<group>"; };
+		694A0415268BDFDC0029F85B /* VideoFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFeedCell.swift; sourceTree = "<group>"; };
 		6965531A255F75260027EDB6 /* GroupStatisticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupStatisticsCell.swift; sourceTree = "<group>"; };
 		6965531C2571CB8C0027EDB6 /* ChatroomVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatroomVC.swift; sourceTree = "<group>"; };
 		6965531E2577024A0027EDB6 /* ChatroomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatroomCell.swift; sourceTree = "<group>"; };
@@ -674,6 +676,7 @@
 			isa = PBXGroup;
 			children = (
 				69FE5BC02326D8A700039BF5 /* FeedCell.swift */,
+				694A0415268BDFDC0029F85B /* VideoFeedCell.swift */,
 				696A5215249EB4EB00289C33 /* HelperFunctions.swift */,
 				69E8EEB5246A3237006D4AF6 /* CategoryFeedCell.swift */,
 				696A5219249EC0E500289C33 /* StoreItemSelectionCell.swift */,
@@ -926,6 +929,7 @@
 				69FA0827233D94D2002DC00F /* Message.swift in Sources */,
 				69FE5BBD232490E400039BF5 /* Post.swift in Sources */,
 				69FBDCEE2443A1F700709E21 /* UserSpecificFeedVC.swift in Sources */,
+				694A0416268BDFDC0029F85B /* VideoFeedCell.swift in Sources */,
 				69A1D56823480CA9003276B1 /* CommentInputAccessoryView.swift in Sources */,
 				69FA082923425198002DC00F /* ChatController.swift in Sources */,
 				691A870D231AFA1400EBB64A /* FollowLikeVC.swift in Sources */,

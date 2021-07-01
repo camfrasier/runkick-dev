@@ -9,14 +9,20 @@
 import UIKit
 import Firebase
 import ActiveLabel
+import AVKit
+import AVFoundation
 
 private let reuseIdentifier = "Cell"
 private let reuseCheckInIdentifier = "CheckInCell"
 private let reuseCarouselIdentifier = "CarouselCell"
 private let reuseScrollIdentifier = "ScrollViewCell"
 
+private let reuseVideoCellIdentifier = "VideoFeedCell"
+
 
 class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
+
+    
     
     /*
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -276,6 +282,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
 
         case userPost = "userPost"
         case checkIn = "checkIn"
+        case userVideoPost = "videoPost"
     }
     
 
@@ -317,6 +324,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         collectionViewVertical.dataSource = self
         collectionViewVertical.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionViewVertical.register(CheckInCell.self, forCellWithReuseIdentifier: reuseCheckInIdentifier)
+        collectionViewVertical.register(VideoFeedCell.self, forCellWithReuseIdentifier: reuseVideoCellIdentifier)
       
 
         
@@ -1882,40 +1890,6 @@ extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
              } else {
                  cell.post = posts[indexPath.item]
                  
-                /*
-                let dimensionUrl = cell.post?.imageUrl
- 
-                let url = URL(string: dimensionUrl!)
-                
-                URLSession.shared.dataTask(with: url!) { (data, response, error) in
-                    
-                    // Handle our error
-                    if let error = error {
-                        print("Failed to load image with error", error.localizedDescription)
-                    }
-                    
-                    // Image data.
-                    guard let imageData = data else { return }
-                    
-                    
-                    // Set image using image data.
-                    let photoImage = UIImage(data: imageData)
-                    
-                    let imageWidth = photoImage?.size.width
-                    let imageHeight = photoImage?.size.height
-                    print("this is the photo width \(imageWidth) and this is the height \(imageHeight)")
-                    
-                    // Create key and value for image cache.
-                    //imageCache[url!.absoluteString] = photoImage
-                    
-                    // Set our image.
-                    DispatchQueue.main.async {
-                        //self.image = photoImage
-                        
-                        //print("This is the phot heigjt \(photoImage?.size.height)")
-                    }
-                    }.resume()
-                */
              }
              
              handleHastagTapped(forCell: cell)
@@ -1925,16 +1899,97 @@ extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
              handleMentionedTapped(forCell: cell)
              
              return cell
-
+            
+         case .userVideoPost:
+            
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseVideoCellIdentifier, for: indexPath) as! VideoFeedCell
+            
+            cell.delegate = self
+                 
+            if viewSinglePost {
+                if let post = self.post {
+                    cell.post = post
+                    
+                    let url = URL(string: post.videoUrl)
+                    
+                    print("loading the video earlier in view from vc \(url)")
+                    
+                    let player = AVPlayer(url: url!)
+                    let playerView = AVPlayerLayer()
+                    playerView.player = player
+                    playerView.videoGravity = .resizeAspectFill
+                    player.volume = 4  // may need to add a mute button later
+                    cell.postImageBlock.layer.addSublayer(playerView)
+                    playerView.frame = CGRect(x: 0, y: 0, width: cell.postImageBlock.frame.width, height: cell.postImageBlock.frame.height)
+                    player.play()
+                }
+            } else {
+                cell.post = posts[indexPath.item]
+                
+                let url = URL(string: post.videoUrl)
+                
+                print("loading the video earlier in view from vc \(url)")
+                
+                let player = AVPlayer(url: url!)
+                let playerView = AVPlayerLayer()
+                playerView.player = player
+                playerView.videoGravity = .resizeAspectFill
+                player.volume = 4  // may need to add a mute button later
+                cell.postImageBlock.layer.addSublayer(playerView)
+                playerView.frame = CGRect(x: 0, y: 0, width: cell.postImageBlock.frame.width, height: cell.postImageBlock.frame.height)
+                player.play()
+                
+    
+            }
+    
+            
+            return cell
+            
          case .none:
      
              return UICollectionViewCell()
-             
+  
          }
     }
 
      
 }
 
+extension FeedVC:  VideoFeedCellDelegate {
+    
+    func handleUsernameTapped(for cell: VideoFeedCell) {
+        print("user tapped username in video cell")
+    }
+
+    func handleOptionTapped(for cell: VideoFeedCell) {
+        print("user tapped options in video cell")
+    }
+
+    func handleFollowFollowingTapped(for cell: VideoFeedCell) {
+        print("user tapped follow in video cell")
+    }
+
+    func handleLikeTapped(for cell: VideoFeedCell, isDoubleTap: Bool) {
+        print("user tapped like in video cell")
+    }
+
+    func handlePhotoTapped(for cell: VideoFeedCell) {
+        print("user tapped photo in video cell")
+    }
+
+    func handleCommentTapped(for cell: VideoFeedCell) {
+        print("user tapped comment in video cell")
+    }
+
+    func handleConfigureLikeButton(for cell: VideoFeedCell) {
+        print("user tapped configure like in video cell")
+    }
+
+    func handleShowLikes(for cell: VideoFeedCell) {
+        print("user tapped show likes in video cell")
+    }
 
 
+
+}

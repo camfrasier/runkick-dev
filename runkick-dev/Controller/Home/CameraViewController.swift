@@ -191,8 +191,7 @@ class CameraViewController : UIViewController {
             videoShutterButton.isHidden = true
             isCamcorderSet = false
         }
-        
-        
+    
     }
     
     @objc func handleSelectFromAlbum() {
@@ -217,13 +216,24 @@ class CameraViewController : UIViewController {
                 
                 print("there is no issue recording and here is the url file \(url)")
                 
-                UISaveVideoAtPathToSavedPhotosAlbum(url.path, self, #selector(self.video(_:didFinishSavingWithError:contextInfo:)), nil)
+               // UISaveVideoAtPathToSavedPhotosAlbum(url.path, self, #selector(self.video(_:didFinishSavingWithError:contextInfo:)), nil)
+                
+                
+                let uploadPostVC = UploadPostVC()
+                uploadPostVC.selectedVideo = url
+                uploadPostVC.isVideoPost = true
+                uploadPostVC.uploadAction = UploadPostVC.UploadAction(index: 2)
+
+                
+                self.navigationController?.pushViewController(uploadPostVC, animated: true)
                 
             }
             
             
         } else if sender.state == .ended {
             print("Long press did end..")
+            
+
             
             cameraController.stopRecording { error in
                 print(error ?? "video capture error")

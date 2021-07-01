@@ -21,6 +21,7 @@ class Post {
     var caption: String!
     var likes: Int!
     var imageUrl: String!
+    var videoUrl: String!
     var ownerUid: String!
     var creationDate: Date!
     var postId: String!
@@ -33,7 +34,7 @@ class Post {
     var storeId: String!
     var type: String!
     var photoStyle: String!
-    
+    var mediaType: String!
     var points: Int!
     var averagePace: String!
     var distance: Double!
@@ -101,6 +102,10 @@ class Post {
             self.imageUrl = imageUrl
         }
         
+        if let videoUrl = dictionary["videoUrl"] as? String {
+            self.videoUrl = videoUrl
+        }
+        
         if let ownerUid = dictionary["ownerUid"] as? String {
             self.ownerUid = ownerUid
         }
@@ -135,6 +140,10 @@ class Post {
         
         if let storeId = dictionary["storeId"] as? String {
             self.storeId = storeId
+        }
+        
+        if let mediaType = dictionary["mediaType"] as? String {
+            self.mediaType = mediaType
         }
         
         if let creationDate = dictionary["creationDate"] as? Double {

@@ -70,6 +70,17 @@ protocol FeedCellDelegate {
     func handleShowLikes(for cell: FeedCell)
 }
 
+protocol VideoFeedCellDelegate {
+    func handleUsernameTapped(for cell: VideoFeedCell)
+    func handleOptionTapped(for cell: VideoFeedCell)
+    func handleFollowFollowingTapped(for cell: VideoFeedCell)
+    func handleLikeTapped(for cell: VideoFeedCell, isDoubleTap: Bool)
+    func handlePhotoTapped(for cell: VideoFeedCell)
+    func handleCommentTapped(for cell: VideoFeedCell)
+    func handleConfigureLikeButton(for cell: VideoFeedCell)
+    func handleShowLikes(for cell: VideoFeedCell)
+}
+
 protocol UserSpecificFeedCellDelegate {
     func handleUsernameTapped(for cell: UserSpecificFeedCell)
     func handleOptionTapped(for cell: UserSpecificFeedCell)
