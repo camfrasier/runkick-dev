@@ -72,7 +72,7 @@ class CheckInCell: UICollectionViewCell {
             
 
             //likesLabel.text = "\(likes)"
-            let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+            let attributedText = NSMutableAttributedString(string: "\(likes)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
             attributedText.append(NSAttributedString(string: " likes", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
             likesLabel.attributedText = attributedText
             
@@ -351,6 +351,10 @@ class CheckInCell: UICollectionViewCell {
     lazy var mapBackgroundView: UIView = {
         let view = UIView()
         let mapTap = UITapGestureRecognizer(target: self, action: #selector(handleCommentTapped))
+        //view.layer.shadowOpacity = 95 // Shadow is 30 percent opaque.
+        //view.layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.25).cgColor
+        //view.layer.shadowRadius = 4.0
+        //view.layer.shadowOffset = CGSize(width: 1, height: 2)
         mapTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(mapTap)
@@ -1838,12 +1842,12 @@ class CheckInCell: UICollectionViewCell {
         addSubview(mapBackgroundView)
         mapBackgroundView.translatesAutoresizingMaskIntoConstraints = false
        // mapBackgroundView.clipsToBounds = true
-       // mapBackgroundView.layer.cornerRadius = 5
+        mapBackgroundView.layer.cornerRadius = 0
       
         mapBackgroundView.addSubview(mapImageView)
         mapImageView.translatesAutoresizingMaskIntoConstraints = false
-       // mapImageView.clipsToBounds = true
-        //mapImageView.layer.cornerRadius = 5
+        mapImageView.clipsToBounds = true
+        mapImageView.layer.cornerRadius = 0
         
 
 /*
@@ -2178,7 +2182,7 @@ class CheckInCell: UICollectionViewCell {
         // map background
         
         
-        mapBackgroundView.anchor(top: userCommentBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 100)
+        mapBackgroundView.anchor(top: userCommentBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 130)
         mapBackgroundView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         mapBackgroundView.layer.borderWidth = 0.50
         //mapBackgroundView.layer.borderColor = UIColor.walkzillaYellow().cgColor
@@ -2212,21 +2216,21 @@ class CheckInCell: UICollectionViewCell {
         statisticsBlock.backgroundColor = UIColor.white
         statisticsBlock.alpha = 0.75
         
-        numOfStopsBackground.anchor(top: statisticsBlock.topAnchor, left: statisticsBlock.leftAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 10, paddingBottom: 4, paddingRight: 0, width: 85, height: 0)
-        numOfStopsBackground.layer.cornerRadius = 3
+        numOfStopsBackground.anchor(top: statisticsBlock.topAnchor, left: statisticsBlock.leftAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: frame.width / 4, height: 0)
+        //numOfStopsBackground.layer.cornerRadius = 3
         
-        durationBackground.anchor(top: statisticsBlock.topAnchor, left: numOfStopsBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: 85, height: 0)
-        durationBackground.layer.cornerRadius = 3
+        durationBackground.anchor(top: statisticsBlock.topAnchor, left: numOfStopsBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: frame.width / 4, height: 0)
+        //durationBackground.layer.cornerRadius = 3
         
-        distanceBackground.anchor(top: statisticsBlock.topAnchor, left: durationBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: 85, height: 0)
-        distanceBackground.layer.cornerRadius = 3
+        distanceBackground.anchor(top: statisticsBlock.topAnchor, left: durationBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: frame.width / 4, height: 0)
+        //distanceBackground.layer.cornerRadius = 3
         
-        stepsBackground.anchor(top: statisticsBlock.topAnchor, left: distanceBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: 85, height: 0)
-        stepsBackground.layer.cornerRadius = 3
+        stepsBackground.anchor(top: statisticsBlock.topAnchor, left: distanceBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: frame.width / 4, height: 0)
+        //stepsBackground.layer.cornerRadius = 3
         
         // stop marker
         
-        stopMarkerButton.anchor(top: nil, left: numOfStopsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 11, paddingBottom: 0, paddingRight: 0, width: 13, height: 18)
+        stopMarkerButton.anchor(top: nil, left: numOfStopsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 24, paddingBottom: 0, paddingRight: 0, width: 13, height: 18)
         stopMarkerButton.centerYAnchor.constraint(equalTo: numOfStopsBackground.centerYAnchor).isActive = true
         
         
@@ -2236,7 +2240,7 @@ class CheckInCell: UICollectionViewCell {
         
             // duration marker
         
-        durationClockButton.anchor(top: nil, left: durationBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 11, paddingBottom: 0, paddingRight: 0, width: 17, height: 17)
+        durationClockButton.anchor(top: nil, left: durationBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 24, paddingBottom: 0, paddingRight: 0, width: 17, height: 17)
         durationClockButton.centerYAnchor.constraint(equalTo: durationBackground.centerYAnchor).isActive = true
         
         
@@ -2246,7 +2250,7 @@ class CheckInCell: UICollectionViewCell {
         
             // distance marker
         
-        distanceButton.anchor(top: nil, left: distanceBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 17, height: 15)
+        distanceButton.anchor(top: nil, left: distanceBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 28, paddingBottom: 0, paddingRight: 0, width: 17, height: 15)
         distanceButton.centerYAnchor.constraint(equalTo: distanceBackground.centerYAnchor).isActive = true
         
         
@@ -2257,7 +2261,7 @@ class CheckInCell: UICollectionViewCell {
         
             // steps marker
         
-        stepsButton.anchor(top: nil, left: stepsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 17, height: 17)
+        stepsButton.anchor(top: nil, left: stepsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 24, paddingBottom: 0, paddingRight: 0, width: 17, height: 17)
         stepsButton.centerYAnchor.constraint(equalTo: stepsBackground.centerYAnchor).isActive = true
         
         
@@ -3309,7 +3313,9 @@ class CheckInCell: UICollectionViewCell {
                 numberOfComments = 0
             }
 
-            let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font:  UIFont(name: "HelveticaNeue", size: 13)!])
+            let commentCount = String(numberOfComments)
+             
+             let attributedText = NSMutableAttributedString(string: "\(commentCount)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
             
             attributedText.append(NSAttributedString(string: " comments", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
 

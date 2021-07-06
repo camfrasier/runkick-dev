@@ -20,6 +20,8 @@ class FeedCell: UICollectionViewCell {
     var delegate: FeedCellDelegate?
     var altDelegate: AltFeedCellDelegate?
     var isWide = false
+    var numberOfLikes: Int!
+    
     
     var post: Post? {
         
@@ -47,10 +49,17 @@ class FeedCell: UICollectionViewCell {
             
             postImageView.loadImage(with: imageUrl)
             
+            
+            numberOfLikes = likes
+            
+            let likeCount = String(likes)
+            
+            
     
             //likesLabel.text = "\(likes)"
+            print("THE NUMBER OF LIKES FOR THIS IMAGE IS \(likeCount))")
             
-            let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
+            let attributedText = NSMutableAttributedString(string: "\(likeCount)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
             attributedText.append(NSAttributedString(string: " likes", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
             likesLabel.attributedText = attributedText
             
@@ -1008,10 +1017,11 @@ class FeedCell: UICollectionViewCell {
             } else {
                 numberOfComments = 0
             }
-
+            
+           let commentCount = String(numberOfComments)
             //let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font:  UIFont(name: "HelveticaNeue", size: 13)!])
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfComments)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
+            let attributedText = NSMutableAttributedString(string: "\(commentCount)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
             attributedText.append(NSAttributedString(string: " comments", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
             //label.attributedText = attributedText
             

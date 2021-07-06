@@ -44,7 +44,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
     var value: String?
     var users = [User]()
     var tableView: UITableView!
-    
+    var titleView: UIView!
   
     
     
@@ -81,6 +81,48 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         return cv
     }()
     
+    lazy var forYouBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.white
+        //let rewardsTap = UITapGestureRecognizer(target: self, action: #selector(handleSearchFriends))
+        //rewardsTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+       // view.addGestureRecognizer(rewardsTap)
+        view.alpha = 1
+        return view
+    }()
+    
+    lazy var indicatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.walkzillaYellow()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    lazy var forYouButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
+        button.titleLabel?.font =  UIFont(name: "HelveticaNeue", size: 15)
+        button.setTitle("For You", for: .normal)
+        button.addTarget(self, action: #selector(handleForYouFeed), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
+        return button
+    }()
+    
+    lazy var followingButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitleColor(UIColor.rgb(red: 80, green: 80, blue: 80), for: .normal)
+        button.titleLabel?.font =  UIFont(name: "HelveticaNeue", size: 15)
+        button.setTitle("Following", for: .normal)
+        button.addTarget(self, action: #selector(handleFollowingFeed), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
+        return button
+    }()
+    
+
+    
     let headerView: UIView = {
         let view = UIView()
         //view.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +131,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
     
     let lineView: UIView = {
         let view = UIView()
-        //view.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     } ()
     
@@ -831,6 +873,33 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         }
         */
     }
+
+    
+
+    @objc func handleForYouFeed() {
+
+
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+            self.indicatorView.transform = CGAffineTransform(translationX: 0, y: 0)
+        })
+        
+        //collectionViewVertical.isHidden = false
+    }
+    
+    @objc func handleFollowingFeed() {
+        print("following button pressed")
+        
+        indicatorView.transform = CGAffineTransform(translationX: 1, y: 1)
+
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            
+
+            self.indicatorView.transform = CGAffineTransform(translationX: 100, y: 0)
+        })
+        //collectionViewVertical.isHidden = true
+        
+    }
     
     @objc func handleBlurDismiss() {
         
@@ -884,6 +953,7 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         }
     }
 */
+  
     
     func configureNavigationBar() {
         /*
@@ -897,10 +967,14 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         
         // add or remove nav bar bottom border
         navigationController?.navigationBar.shadowImage = UIImage()
-        let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.25))
-        lineView.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        
+        //let lineView = UIView(frame: CGRect(x: 0, y: 45, width: view.frame.width, height: 0.75))
+        navigationController?.navigationBar.addSubview(lineView)
+        lineView.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+        lineView.anchor(top: nil, left: navigationController?.navigationBar.leftAnchor, bottom: navigationController?.navigationBar.bottomAnchor, right: navigationController?.navigationBar.rightAnchor, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 30, width: 0, height: 1)
          
+        
+        navigationController?.navigationBar.addSubview(indicatorView)
+        indicatorView.anchor(top: nil, left: lineView.leftAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: (view.frame.width / 4) - 8, paddingBottom: -1, paddingRight: 0, width: 60, height: 4)
         
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
@@ -910,10 +984,44 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
         
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)]
         
+        
+        
+        
+        
+        forYouBackground = UIView(frame: CGRect(x: view.frame.width / 4, y: 0, width: view.frame.width / 2, height: 40))
+       // let frame = CGRect(x: 0, y: 0, width: 100, height: 44)
+        //let titleView = UIView(frame: frame)
+        //searchBar.backgroundImage = UIImage()
+        //searchBar.frame = frame
+        forYouBackground.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
+        navigationController?.navigationBar.addSubview(forYouBackground)
+        
+        forYouBackground.addSubview(forYouButton)
+        forYouButton.anchor(top: forYouBackground.topAnchor, left: forYouBackground.leftAnchor, bottom: forYouBackground.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width / 4, height: 0)
+        forYouButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        forYouBackground.addSubview(followingButton)
+        followingButton.anchor(top: forYouButton.topAnchor, left: forYouButton.rightAnchor, bottom: forYouBackground.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width / 4, height: 0)
+        followingButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        
+        
+        
+        
+        /*
+        titleView.addSubview(forYouBackground)
+        forYouBackground.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        forYouBackground.addSubview(forYouLabel)
+        forYouLabel.centerXAnchor.constraint(equalTo: forYouBackground.centerXAnchor).isActive = true
+        forYouLabel.centerYAnchor.constraint(equalTo: forYouBackground.centerYAnchor).isActive = true
+        */
+
+        
+        /*
         let font = UIFont(name: "ArialRoundedMTBold", size: 17)!
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)]
         navigationItem.title = "Explore"
-        
+        */
         navigationController?.navigationBar.tintColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
         
         
@@ -1404,18 +1512,21 @@ class FeedVC: UIViewController, FeedCellDelegate, UIScrollViewDelegate {
                     //cell.newLikeButton.backgroundColor = UIColor.clear
                     //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255), for: .normal)
                     //cell.newLikeButton.alpha = 1
+                    self.collectionViewVertical.reloadData()
                 })
             }
       
         } else {
             // handle like post
             post.adjustLikes(addLike: true, completion: { (likes) in
+                
+                print("likes should be added here")
                 //cell.likesLabel.text = "\(likes)"
                 cell.newLikeButton.setImage(UIImage(named: "walkzillaHeartSelected"), for: .normal)
                 //cell.newLikeButton.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
                 //cell.newLikeButton.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0), for: .normal)
                 //cell.newLikeButton.alpha = 1
-                
+                self.collectionViewVertical.reloadData()
             })
         }
     }
@@ -1798,6 +1909,7 @@ extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
          return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
      }
     
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
 
@@ -1911,6 +2023,8 @@ extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                 if let post = self.post {
                     cell.post = post
                     
+                    
+                    /*
                     let url = URL(string: post.videoUrl)
                     
                     print("loading the video earlier in view from vc \(url)")
@@ -1923,10 +2037,13 @@ extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                     cell.postImageBlock.layer.addSublayer(playerView)
                     playerView.frame = CGRect(x: 0, y: 0, width: cell.postImageBlock.frame.width, height: cell.postImageBlock.frame.height)
                     player.play()
+ */
                 }
             } else {
                 cell.post = posts[indexPath.item]
                 
+                
+                /*
                 let url = URL(string: post.videoUrl)
                 
                 print("loading the video earlier in view from vc \(url)")
@@ -1939,7 +2056,7 @@ extension FeedVC: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                 cell.postImageBlock.layer.addSublayer(playerView)
                 playerView.frame = CGRect(x: 0, y: 0, width: cell.postImageBlock.frame.width, height: cell.postImageBlock.frame.height)
                 player.play()
-                
+                */
     
             }
     

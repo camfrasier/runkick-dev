@@ -25,7 +25,7 @@ class VideoFeedCell: UICollectionViewCell {
      
                 print("media type is video")
                 guard let url = URL(string: post?.videoUrl ?? "") else { return }
-             //   playVideo(url: url)
+                playVideo(url: url)
 
                 //guard let imageUrl = post?.imageUrl else { return }
 
@@ -50,7 +50,7 @@ class VideoFeedCell: UICollectionViewCell {
             
             //likesLabel.text = "\(likes)"
             
-            let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
+            let attributedText = NSMutableAttributedString(string: "\(likes)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
             attributedText.append(NSAttributedString(string: " likes", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
             likesLabel.attributedText = attributedText
             
@@ -623,9 +623,13 @@ class VideoFeedCell: UICollectionViewCell {
         let playerView = AVPlayerLayer()
         playerView.player = player
         playerView.videoGravity = .resizeAspectFill
-        player.volume = 4  // may need to add a mute button later
+        player.volume = 3  // may need to add a mute button later
         postImageBlock.layer.addSublayer(playerView)
         playerView.frame = CGRect(x: 0, y: 0, width: postImageBlock.frame.width, height: postImageBlock.frame.height)
+        
+        // there is a bit of delay here when the video presents.. will need to have a closure block or something to identify
+        //when loading is complete
+        
         player.play()
         
     
@@ -1037,9 +1041,10 @@ class VideoFeedCell: UICollectionViewCell {
                 numberOfComments = 0
             }
 
-            //let attributedText = NSMutableAttributedString(string: "\(numberOfComments!)", attributes: [NSAttributedString.Key.font:  UIFont(name: "HelveticaNeue", size: 13)!])
+            let commentCount = String(numberOfComments)
+ 
+             let attributedText = NSMutableAttributedString(string: "\(commentCount)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
             
-            let attributedText = NSMutableAttributedString(string: "\(numberOfComments)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13)])
             attributedText.append(NSAttributedString(string: " comments", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
             //label.attributedText = attributedText
             

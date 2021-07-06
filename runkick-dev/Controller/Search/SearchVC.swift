@@ -759,9 +759,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         tableView.isHidden = false
         groupsTableView.isHidden = true
         collectionView.isHidden = true
-        
-        
-        
+
     }
     
     @objc func handleSearchGroups() {
