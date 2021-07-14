@@ -94,7 +94,7 @@ class GroupMessageController: UIViewController, UISearchBarDelegate, GroupMessag
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        tableView.backgroundColor = UIColor.walkzillaYellow()
         tableView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         //self.tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
         

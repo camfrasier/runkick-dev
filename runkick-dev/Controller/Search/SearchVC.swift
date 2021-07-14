@@ -159,6 +159,17 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         return tf
     }()
     
+    lazy var cancelSearchBackground: UIView = {
+        let view = UIView()
+        //view.backgroundColor = UIColor.clear
+        let cancelTap = UITapGestureRecognizer(target: self, action: #selector(handleCancelSearch))
+        cancelTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(cancelTap)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var cancelSearchButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "simpleCancelIcon"), for: .normal)
@@ -545,10 +556,25 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         print("Create group here!")
         
         let createGroupVC = CreateGroupVC()
-        //createGroupVC.modalPresentationStyle = .fullScreen
-        //present(createGroupVC, animated: true, completion:nil)
+
+        let nav = self.navigationController
+        DispatchQueue.main.async {
+            
+            self.view.window!.backgroundColor = UIColor.white
+            nav?.view.layer.add(CATransition().popFromRight(), forKey: kCATransition)
+            nav?.pushViewController(createGroupVC, animated: false)
+        }
         
-        self.navigationController?.pushViewController(createGroupVC, animated: true)
+        /*
+         //createGroupVC.modalPresentationStyle = .fullScreen
+         //present(createGroupVC, animated: true, completion:nil)
+         
+         self.navigationController?.pushViewController(createGroupVC, animated: true)
+         
+         let notificationsVC = NotificationsVC()
+         //navigationController?.pushViewController(notificationsVC, animated: true)
+         
+         */
     }
     
     
@@ -635,7 +661,6 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         searchFriendsLabel.anchor(top: nil, left: searchFriendsBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         searchFriendsLabel.centerYAnchor.constraint(equalTo: searchFriendsBackground.centerYAnchor).isActive = true
         
-        
         friendsGroupsView.addSubview(searchGroupsBackground)
         searchGroupsBackground.anchor(top: nil, left: searchFriendsBackground.rightAnchor, bottom: lineView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 10, paddingRight: 0, width: 90, height: 40)
         
@@ -651,7 +676,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         searchMyGroupsLabel.centerYAnchor.constraint(equalTo: searchMyGroupsBackground.centerYAnchor).isActive = true
         
         friendsGroupsView.addSubview(createGroupBackground)
-        createGroupBackground.anchor(top: nil, left: nil, bottom: lineView.topAnchor, right: friendsGroupsView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 28, width: 40, height: 40)
+        createGroupBackground.anchor(top: nil, left: nil, bottom: lineView.topAnchor, right: friendsGroupsView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 12, paddingRight: 24, width: 35, height: 35)
         
         createGroupBackground.addSubview(createGroupButton)
         createGroupButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 28, height: 28)
@@ -713,8 +738,15 @@ class SearchVC: UIViewController, UISearchBarDelegate, SearchCellDelegate, UICol
         titleView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
         titleView.layer.cornerRadius = 3
         
-        titleView.addSubview(cancelSearchButton)
-        cancelSearchButton.anchor(top: titleView.topAnchor, left: nil, bottom: nil, right: titleView.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 15, height: 15)
+        
+        titleView.addSubview(cancelSearchBackground)
+        cancelSearchBackground.anchor(top: titleView.topAnchor, left: nil, bottom: nil, right: titleView.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 35, height: 35)
+        
+        cancelSearchBackground.addSubview(cancelSearchButton)
+        cancelSearchButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
+        
+        cancelSearchButton.centerXAnchor.constraint(equalTo: cancelSearchBackground.centerXAnchor).isActive = true
+        cancelSearchButton.centerYAnchor.constraint(equalTo: cancelSearchBackground.centerYAnchor).isActive = true
         
         titleView.addSubview(destinationTextField)
         destinationTextField.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: cancelSearchButton.leftAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 110, height: 40)
@@ -1207,9 +1239,20 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate  {
 
             let groupProfilVC = GroupProfileVC()
             groupProfilVC.group = groups[indexPath.item]
-            navigationController?.pushViewController(groupProfilVC, animated: true)
+            //navigationController?.pushViewController(groupProfilVC, animated: true)
+            
+            
+            let nav = self.navigationController
+            DispatchQueue.main.async {
+                
+                self.view.window!.backgroundColor = UIColor.white
+                nav?.view.layer.add(CATransition().popFromRight(), forKey: kCATransition)
+                nav?.pushViewController(groupProfilVC, animated: false)
+            }
+            
+            
 
-        }
+        } else {
           
           var user: User!
           
@@ -1230,6 +1273,8 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate  {
           // Push view controller.
           navigationController?.pushViewController(userProfileVC, animated: true)
           
+        }
+        
       }
 
       
@@ -1281,6 +1326,7 @@ extension SearchVC: UITextFieldDelegate {
     
         if sender == destinationTextField {
   
+            cancelSearchBackground.alpha = 1
             cancelSearchButton.alpha = 1
            
         }
@@ -1387,7 +1433,8 @@ extension SearchVC: UITextFieldDelegate {
         collectionViewEnabled = true
         
         
-        cancelSearchButton.alpha = 0
+        cancelSearchBackground.alpha = 0
+            cancelSearchButton.alpha = 0
             // added stuff
             //navigationItem.titleView = nil
             //configureSearchBarButton()
@@ -1409,6 +1456,7 @@ extension SearchVC: UITextFieldDelegate {
         if showMyGroups == true {
             collectionViewEnabled = true
             
+            cancelSearchBackground.alpha = 0
             cancelSearchButton.alpha = 0
    
             //clears search view
@@ -1430,7 +1478,8 @@ extension SearchVC: UITextFieldDelegate {
             collectionViewEnabled = true
             //collectionView.isHidden = false
             
-        cancelSearchButton.alpha = 0
+        cancelSearchBackground.alpha = 0
+            cancelSearchButton.alpha = 0
             // added stuff
             //navigationItem.titleView = nil
             //configureSearchBarButton()

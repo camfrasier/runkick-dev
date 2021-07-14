@@ -845,9 +845,9 @@ class FeedCell: UICollectionViewCell {
         
         usernameButton.anchor(top: profileImageBackground.topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 14)
         
-        locationButton.anchor(top: usernameButton.bottomAnchor, left: usernameButton.leftAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 10, height: 13)
+        locationButton.anchor(top: usernameButton.bottomAnchor, left: usernameButton.leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 10, height: 13)
         
-        locationLabel.anchor(top: usernameButton.bottomAnchor, left: locationButton.rightAnchor, bottom: nil, right: nil, paddingTop: 1, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationLabel.anchor(top: usernameButton.bottomAnchor, left: locationButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         circleDotView.anchor(top: usernameButton.topAnchor, left: usernameButton.rightAnchor, bottom: nil, right: nil, paddingTop: 9, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 2, height: 2)
 

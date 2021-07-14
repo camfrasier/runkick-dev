@@ -714,7 +714,7 @@ class UserGroupVC: UIViewController, UICollectionViewDelegate, UICollectionViewD
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            //let width = (view.frame.width - 16) / 3
-           let width = (view.frame.width - 8) / 3
+           let width = (view.frame.width - 16) / 3
            return CGSize(width: width, height: width)
        }
        

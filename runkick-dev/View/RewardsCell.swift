@@ -79,6 +79,12 @@ class RewardsCell: UITableViewCell {
         return view
     }()
     
+    let cardView: UIView = {
+        let view = UIView()
+        view.layer.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0).cgColor
+        return view
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
@@ -92,14 +98,22 @@ class RewardsCell: UITableViewCell {
         
         super.layoutSubviews()
         
+        
+        addSubview(cardView)
+        cardView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 55, height: 40)
+        cardView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        cardView.layer.cornerRadius = 5
+        
+        
         let profileImageDimension = CGFloat(40)
-        addSubview(rewardsImageView)
+        cardView.addSubview(rewardsImageView)
         rewardsImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
-        rewardsImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        rewardsImageView.centerXAnchor.constraint(equalTo: cardView.centerXAnchor).isActive = true
+        rewardsImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor).isActive = true
         rewardsImageView.layer.cornerRadius = profileImageDimension / 2
         
         addSubview(storeTitleLabel)
-        storeTitleLabel.anchor(top: topAnchor, left: rewardsImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        storeTitleLabel.anchor(top: topAnchor, left: cardView.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(categoryLabel)
         categoryLabel.anchor(top: storeTitleLabel.bottomAnchor, left: storeTitleLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)

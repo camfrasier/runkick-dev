@@ -136,12 +136,12 @@ class GroupMessageCell: UITableViewCell {
     func configureComponents() {
         
         
-        let profileImageDimension = CGFloat(40)
+        let profileImageDimension = CGFloat(42)
         addSubview(groupImageView)
         groupImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: profileImageDimension, height: profileImageDimension)
         groupImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //groupImageView.layer.cornerRadius = profileImageDimension / 2
-        groupImageView.layer.cornerRadius = profileImageDimension / 2.4
+        //groupImageView.layer.cornerRadius = profileImageDimension / 6
+        groupImageView.layer.cornerRadius = profileImageDimension / 2.45
         groupImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         

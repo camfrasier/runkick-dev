@@ -215,6 +215,7 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         plusPhotoBtn.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
         plusPhotoBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     
+      
         view.addSubview(groupNameTextField)
         groupNameTextField.anchor(top: plusPhotoBtn.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 40)
 
@@ -240,9 +241,9 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         inviteFriendsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         inviteFriendsButton.layer.cornerRadius = 25
         
-
         
-        configureInviteFriendsVC()
+        
+        //configureInviteFriendsVC()
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -448,7 +449,18 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     
      @objc func presentInviteFriendsVC() {
         
+        let inviteFriendsVC = InviteFriendsVC()
+
+        let nav = self.navigationController
+        DispatchQueue.main.async {
+            
+            self.view.window!.backgroundColor = UIColor.white
+            nav?.view.layer.add(CATransition().popFromRight(), forKey: kCATransition)
+            nav?.pushViewController(inviteFriendsVC, animated: false)
+        }
         
+        instantiateGroup()
+        /*
          
          if let applicationDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate? {
              if let window:UIWindow = applicationDelegate.window {
@@ -481,7 +493,7 @@ class CreateGroupVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                 }
              }
          }
-
+        */
      }
 
     func instantiateGroup() {

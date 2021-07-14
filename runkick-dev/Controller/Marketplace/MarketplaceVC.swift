@@ -101,8 +101,6 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         return button
     }()
     
-    
-    
     lazy var menuRewardsView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -148,6 +146,16 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
         tf.addTarget(self, action: #selector(HomeVC.textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
         view.isUserInteractionEnabled = true
         return tf
+    }()
+    
+    lazy var cancelSearchBackground: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let cancelTap = UITapGestureRecognizer(target: self, action: #selector(handleCancelSearch))
+        cancelTap.numberOfTapsRequired = 1
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(cancelTap)
+        return view
     }()
     
     lazy var cancelSearchButton: UIButton = {
@@ -377,12 +385,9 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
     }
     
     func configureCollectionViewHorizontal() {
-        
-        
-        
+
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        
         
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 130)
 
@@ -649,8 +654,15 @@ class MarketplaceVC: UIViewController, UISearchBarDelegate, UICollectionViewDele
            titleView.backgroundColor = UIColor.rgb(red: 245, green: 245, blue: 245)
            titleView.layer.cornerRadius = 3
            
-           titleView.addSubview(cancelSearchButton)
-           cancelSearchButton.anchor(top: titleView.topAnchor, left: nil, bottom: nil, right: titleView.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 15, height: 15)
+        titleView.addSubview(cancelSearchBackground)
+        cancelSearchBackground.anchor(top: titleView.topAnchor, left: nil, bottom: nil, right: titleView.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 35, height: 35)
+        
+        cancelSearchBackground.addSubview(cancelSearchButton)
+        cancelSearchButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
+        
+        cancelSearchButton.centerXAnchor.constraint(equalTo: cancelSearchBackground.centerXAnchor).isActive = true
+        cancelSearchButton.centerYAnchor.constraint(equalTo: cancelSearchBackground.centerYAnchor).isActive = true
+        
            
            titleView.addSubview(destinationTextField)
            destinationTextField.anchor(top: titleView.topAnchor, left: titleView.leftAnchor, bottom: titleView.bottomAnchor, right: cancelSearchButton.leftAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 110, height: 40)
@@ -1459,6 +1471,7 @@ extension MarketplaceVC: UITextFieldDelegate {
         
         if sender == destinationTextField {
   
+            cancelSearchBackground.alpha = 1
             cancelSearchButton.alpha = 1
            
         }
@@ -1535,7 +1548,8 @@ extension MarketplaceVC: UITextFieldDelegate {
             tableView.isHidden = true
             titleLabel.isHidden = false
           
-      cancelSearchButton.alpha = 0
+      cancelSearchBackground.alpha = 0
+            cancelSearchButton.alpha = 0
           // added stuff
           //navigationItem.titleView = nil
           //configureSearchBarButton()
@@ -1559,7 +1573,8 @@ extension MarketplaceVC: UITextFieldDelegate {
             collectionViewHorizontal.isHidden = false
               titleLabel.isHidden = false
             
-        cancelSearchButton.alpha = 0
+        cancelSearchBackground.alpha = 0
+            cancelSearchButton.alpha = 0
             // added stuff
             //navigationItem.titleView = nil
             //configureSearchBarButton()

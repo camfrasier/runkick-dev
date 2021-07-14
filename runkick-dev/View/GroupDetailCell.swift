@@ -26,6 +26,9 @@ class GroupDetailCell: UICollectionViewCell {
             guard let photoImageUrl = user?.profileImageURL else { return }
             groupMemberImageView.loadImage(with: photoImageUrl)
             
+            guard let username = user?.username else { return }
+            self.usernameLabel.text = username
+            
         }
     }
 
@@ -38,6 +41,15 @@ class GroupDetailCell: UICollectionViewCell {
         return iv
     } ()
     
+    lazy var usernameLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.font = UIFont(name: "HelveticaNeue", size: 12)
+        //label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        label.textColor = UIColor.rgb(red: 0, green: 0, blue: 0)
+        label.isUserInteractionEnabled = true
+        return label
+    } ()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,10 +80,14 @@ class GroupDetailCell: UICollectionViewCell {
         
         addSubview(groupMemberImageView)
         let groupDiminsions: CGFloat = 65
-        groupMemberImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: groupDiminsions, height: groupDiminsions)
-        groupMemberImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        groupMemberImageView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: groupDiminsions, height: groupDiminsions)
+        //groupMemberImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         groupMemberImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         groupMemberImageView.layer.cornerRadius = groupDiminsions / 2
+        
+        addSubview(usernameLabel)
+        usernameLabel.anchor(top: groupMemberImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 7, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        usernameLabel.centerXAnchor.constraint(equalTo: groupMemberImageView.centerXAnchor).isActive = true
         
     }
     

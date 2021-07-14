@@ -467,6 +467,7 @@
 		692EDB5E25547F1C00BB86B6 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
+				692EDB56253E19AF00BB86B6 /* CreateGroupVC.swift */,
 				692EDB5F25547F8D00BB86B6 /* GroupProfileVC.swift */,
 				692EDB65255C8DEF00BB86B6 /* UserGroupVC.swift */,
 				6965531C2571CB8C0027EDB6 /* ChatroomVC.swift */,
@@ -541,8 +542,9 @@
 				6937B44922A85D9B00446926 /* GradientView.swift */,
 				691A87082319D35D00EBB64A /* SearchUserCell.swift */,
 				691914E824D8C98A008DCA06 /* RewardsCell.swift */,
-				699F3D5E266FC74900D8DB1D /* StoreCarouselCell.swift */,
 				698F88F525B6307500F26CBC /* ScrollViewCell.swift */,
+				692EDB632554968900BB86B6 /* GroupDetailCell.swift */,
+				699F3D5E266FC74900D8DB1D /* StoreCarouselCell.swift */,
 				698F88F125A8034300F26CBC /* UserCarouselCell.swift */,
 				69BC689F24FAE9A80021724C /* MulticolorPolyline.swift */,
 				69757C3C24CB59C000956D53 /* GradientDiagonalView.swift */,
@@ -567,7 +569,6 @@
 				69FB5F22245E328D00A02FA1 /* AdminStorePostCell.swift */,
 				692EDB61255480ED00BB86B6 /* GroupProfileHeader.swift */,
 				6965531A255F75260027EDB6 /* GroupStatisticsCell.swift */,
-				692EDB632554968900BB86B6 /* GroupDetailCell.swift */,
 				6980617A24DBB3B300628077 /* GroupsCell.swift */,
 				69365A4B24E7808800AF156F /* CategoriesCell.swift */,
 				69FE5BCB2331B18E00039BF5 /* NotificationsCell.swift */,
@@ -667,7 +668,6 @@
 				69365A4924E361BC00AF156F /* ImageVC.swift */,
 				69EC680B24F36B5C007A5F3D /* RunKick.xcdatamodeld */,
 				69EC680724F320A8007A5F3D /* CoreDataStack.swift */,
-				692EDB56253E19AF00BB86B6 /* CreateGroupVC.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";

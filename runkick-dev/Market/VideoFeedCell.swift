@@ -623,7 +623,7 @@ class VideoFeedCell: UICollectionViewCell {
         let playerView = AVPlayerLayer()
         playerView.player = player
         playerView.videoGravity = .resizeAspectFill
-        player.volume = 3  // may need to add a mute button later
+        player.volume = 0  // may need to add a mute button later
         postImageBlock.layer.addSublayer(playerView)
         playerView.frame = CGRect(x: 0, y: 0, width: postImageBlock.frame.width, height: postImageBlock.frame.height)
         

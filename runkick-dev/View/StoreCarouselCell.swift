@@ -70,7 +70,7 @@ class StoreCarouselCell: UICollectionViewCell {
         // organize by top daily leaders or group leaders - maybe have their cells with their face and stats beneath with all else below
         
         addSubview(storeImageView)
-        let groupDiminsions: CGFloat = 70
+        let groupDiminsions: CGFloat = 65
         storeImageView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: groupDiminsions, height: groupDiminsions)
         //profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         storeImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

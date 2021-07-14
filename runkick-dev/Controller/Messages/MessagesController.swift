@@ -29,6 +29,7 @@ class MessagesController: UITableViewController {
         extendedLayoutIncludesOpaqueBars = true
         */
         
+        //view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
         view.backgroundColor = UIColor.rgb(red: 250, green: 250, blue: 250)
         tableView.separatorStyle = .none
         

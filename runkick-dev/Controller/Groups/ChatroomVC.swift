@@ -99,7 +99,7 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
         
         
         collectionView?.register(ChatroomCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        collectionView?.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        collectionView?.backgroundColor = UIColor.walkzillaYellow()
          
         observeMessages()
         
@@ -108,6 +108,8 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
         setupToHideKeyboardOnTap()
         
         configureNavigationBar()
+        
+        
         
     }
 
@@ -143,11 +145,12 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        var height: CGFloat = 80
+        var height: CGFloat = 70
         
         let message = messages[indexPath.item]
         
-        height = estimateFrameForText(message.messageText).height + 20
+        //height = estimateFrameForText(message.messageText).height + 20
+        height = estimateFrameForText(message.messageText).height + 15
         
         return CGSize(width: view.frame.width, height: height)
     }
@@ -172,6 +175,14 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
     
     // MARK: - Handlers
     
@@ -186,7 +197,7 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
     func estimateFrameForText(_ text: String) -> CGRect {
         let size = CGSize(width: 200, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)], context: nil)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], context: nil)
     }
     
     
@@ -198,14 +209,18 @@ class ChatroomVC: UICollectionViewController, UICollectionViewDelegateFlowLayout
        // guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
         // accounting for the width of the message bubble based on text
-        cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.messageText).width + 32
+        cell.bubbleWidthAnchor?.constant = estimateFrameForText(message.messageText).width
         
         // accounting for the height of the message bubble based on text
-        cell.frame.size.height = estimateFrameForText(message.messageText).height + 20
+        
+        
+        cell.frame.size.height = estimateFrameForText(message.messageText).height + 10
         
         cell.bubbleViewLeftAnchor?.isActive = true
-        cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
-        cell.textView.textColor = .black
+        //cell.bubbleView.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        cell.bubbleView.backgroundColor = UIColor.clear
+        cell.textView.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        cell.textView.isScrollEnabled = false
         cell.profileImageView.isHidden = false
         
     }

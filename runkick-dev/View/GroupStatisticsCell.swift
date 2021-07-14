@@ -41,24 +41,24 @@ class GroupStatisticsCell: UITableViewCell {
     
     let usernameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont(name: "HelveticaNeue", size: 17)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
         label.text = "Username"
         return label
     }()
     
     let firstnameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
-        label.font = UIFont(name: "HelveticaNeue", size: 17)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "Firstname"
         return label
     }()
     
     let distanceLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "0"
          label.numberOfLines = 0
         return label
@@ -66,9 +66,18 @@ class GroupStatisticsCell: UITableViewCell {
     
     let stepCountLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
-        label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.text = "0"
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let averagePaceLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        label.font = UIFont(name: "HelveticaNeue", size: 13)
+        label.text = "13"
         label.numberOfLines = 0
         return label
     }()
@@ -100,22 +109,28 @@ class GroupStatisticsCell: UITableViewCell {
     
     func configureViewComponents() {
         
-        let postImageDimension = CGFloat(35)
-        addSubview(profileImageView)
-        profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: postImageDimension, height: postImageDimension)
-        profileImageView.layer.cornerRadius = postImageDimension / 2
-        profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        //let postImageDimension = CGFloat(35)
+       // addSubview(profileImageView)
+        //profileImageView.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: postImageDimension, height: postImageDimension)
+        //profileImageView.layer.cornerRadius = postImageDimension / 2
+        //profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         
         addSubview(usernameLabel)
-        usernameLabel.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        //usernameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+        usernameLabel.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         addSubview(distanceLabel)
-        distanceLabel.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 120, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        distanceLabel.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 167, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        distanceLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         addSubview(stepCountLabel)
-        stepCountLabel.anchor(top: topAnchor, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 80, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stepCountLabel.anchor(top: nil, left: distanceLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 80, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        stepCountLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        addSubview(averagePaceLabel)
+        averagePaceLabel.anchor(top: nil, left: stepCountLabel.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 80, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        averagePaceLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         
     }

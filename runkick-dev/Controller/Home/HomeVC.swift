@@ -339,7 +339,7 @@ class HomeVC: UIViewController, Alertable {
         view.layer.shadowColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 0.25).cgColor
         view.layer.shadowRadius = 4.0
         view.layer.shadowOffset = CGSize(width: 1, height: 2)
-        view.layer.borderWidth = 1
+        view.layer.borderWidth = 4
         view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
  
         view.backgroundColor = UIColor.walkzillaYellow()
@@ -350,6 +350,26 @@ class HomeVC: UIViewController, Alertable {
         view.addGestureRecognizer(rewardsTap)
         view.alpha = 1
         return view
+    }()
+    
+    let activityLabelBackground: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        return view
+    }()
+    
+    let activityLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Activity"
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 9)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        //label.font = UIFont.systemFont(ofSize: 10)
+        label.textAlignment = .center
+        return label
     }()
 
     /*
@@ -390,6 +410,26 @@ class HomeVC: UIViewController, Alertable {
         view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         view.alpha = 0
         return view
+    }()
+    
+    let messagesLabelBackground: UIView = {
+        let view = UIView()
+        view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
+        view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
+        view.layer.shadowRadius = 5.0
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        return view
+    }()
+    
+    let messagesLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Messages"
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 9)
+        label.textColor = UIColor.rgb(red: 40, green: 40, blue: 40)
+        //label.font = UIFont.systemFont(ofSize: 10)
+        label.textAlignment = .center
+        return label
     }()
     
     lazy var cancelSearchButton: UIButton = {
@@ -523,10 +563,10 @@ class HomeVC: UIViewController, Alertable {
     lazy var simpleMenuBackground: UIView = {
         let view = UIView()
         //view.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-        view.backgroundColor = UIColor.walkzillaYellow()
+        //view.backgroundColor = UIColor.walkzillaYellow()
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
-        //view.backgroundColor = .clear
+        view.backgroundColor = .clear
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheck))
         menuTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
@@ -565,7 +605,7 @@ class HomeVC: UIViewController, Alertable {
         view.backgroundColor = UIColor.walkzillaYellow()
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(expansionStateCheckGroups))
         menuTap.numberOfTapsRequired = 1
-        view.layer.borderWidth = 1
+        view.layer.borderWidth = 4
         view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(menuTap)
@@ -734,9 +774,10 @@ class HomeVC: UIViewController, Alertable {
     lazy var settingsButtonBackground: UIView = {
         let view = UIView()
         
-        view.backgroundColor = UIColor.walkzillaYellow()
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
+       // view.backgroundColor = UIColor.walkzillaYellow()
+        view.backgroundColor = UIColor.black
+        //view.layer.borderWidth = 1
+        //view.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         //view.layer.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255).cgColor
         view.layer.shadowOpacity = 50 // Shadow is 30 percent opaque.
         view.layer.shadowColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 0.20).cgColor
@@ -746,11 +787,12 @@ class HomeVC: UIViewController, Alertable {
         settingsTap.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(settingsTap)
+        view.alpha = 0.40
         return view
     }()
     
     let settingsButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
+        let button = UIButton(type: UIButton.ButtonType.system)
         button.setImage(UIImage(named: "menu"), for: .normal)
         //button.setImage(UIImage(named: "simple-gear-white"), for: .normal)
         button.addTarget(self, action: #selector(expansionStateCheck), for: .touchUpInside)
@@ -1334,10 +1376,21 @@ class HomeVC: UIViewController, Alertable {
         
         */
         
-        let groupsBackgroundDimension: CGFloat = 45
+        let groupsBackgroundDimension: CGFloat = 50
         mapView.addSubview(notificationBoltBackground)
-        notificationBoltBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 20, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
+        notificationBoltBackground.anchor(top: nil, left: nil, bottom: mapView.bottomAnchor, right: mapView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 38, paddingRight: 20, width: groupsBackgroundDimension, height: groupsBackgroundDimension)
         notificationBoltBackground.layer.cornerRadius = groupsBackgroundDimension / 2
+        
+        mapView.addSubview(messagesLabelBackground)
+        messagesLabelBackground.anchor(top: notificationBoltBackground.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: -4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 56, height: 18)
+        messagesLabelBackground.layer.cornerRadius = 9
+        messagesLabelBackground.centerXAnchor.constraint(equalTo: notificationBoltBackground.centerXAnchor).isActive = true
+        
+        messagesLabelBackground.addSubview(messagesLabel)
+        messagesLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        messagesLabel.centerXAnchor.constraint(equalTo: messagesLabelBackground.centerXAnchor).isActive = true
+        messagesLabel.centerYAnchor.constraint(equalTo: messagesLabelBackground.centerYAnchor).isActive = true
+        
         //notificationButtonBackground.layer.cornerRadius = 10
         //groupsButtonBackground.layer.cornerRadius = 23
         
@@ -1728,14 +1781,24 @@ class HomeVC: UIViewController, Alertable {
         mapView.tintColor = UIColor.walkzillaYellow()
         
         mapView.addSubview(userActivityButtonBackground)
-        userActivityButtonBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 30, paddingRight: 0, width: 45, height: 45)
-        userActivityButtonBackground.layer.cornerRadius = 45 / 2
+        userActivityButtonBackground.anchor(top: nil, left: mapView.leftAnchor, bottom: mapView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 38, paddingRight: 0, width: 50, height: 50)
+        userActivityButtonBackground.layer.cornerRadius = 50 / 2
         //userActivityButtonBackground.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
             
         userActivityButtonBackground.addSubview(userActivityButton)
         userActivityButton.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 20, height: 15)
         userActivityButton.centerXAnchor.constraint(equalTo: userActivityButtonBackground.centerXAnchor).isActive = true
         userActivityButton.centerYAnchor.constraint(equalTo: userActivityButtonBackground.centerYAnchor).isActive = true
+        
+        mapView.addSubview(activityLabelBackground)
+        activityLabelBackground.anchor(top: userActivityButtonBackground.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: -4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 56, height: 18)
+        activityLabelBackground.layer.cornerRadius = 9
+        activityLabelBackground.centerXAnchor.constraint(equalTo: userActivityButtonBackground.centerXAnchor).isActive = true
+        
+        activityLabelBackground.addSubview(activityLabel)
+        activityLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityLabel.centerXAnchor.constraint(equalTo: activityLabelBackground.centerXAnchor).isActive = true
+        activityLabel.centerYAnchor.constraint(equalTo: activityLabelBackground.centerYAnchor).isActive = true
         
         
         //mapView.tintColor = UIColor(red: 26/255, green: 172/255, blue: 239/255, alpha: 1) // true blue
@@ -2116,14 +2179,18 @@ class HomeVC: UIViewController, Alertable {
         centerMapButton.centerYAnchor.constraint(equalTo: centerMapBackground.centerYAnchor).isActive = true
         
         
-        let settingsDimension: CGFloat = 45
+        let settingsDimension: CGFloat = 35
         mapView.addSubview(settingsButtonBackground)
         settingsButtonBackground.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: settingsDimension, height: settingsDimension)
         settingsButtonBackground.layer.cornerRadius = settingsDimension / 2
         //settingsButtonBackground.layer.cornerRadius = 10
         
         mapView.addSubview(settingsButton)
-        settingsButton.anchor(top: settingsButtonBackground.topAnchor , left: settingsButtonBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 22, height: 23)
+        settingsButton.anchor(top: nil , left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 22, height: 23)
+        settingsButton.centerXAnchor.constraint(equalTo: settingsButtonBackground.centerXAnchor).isActive = true
+        settingsButton.centerYAnchor.constraint(equalTo: settingsButtonBackground.centerYAnchor).isActive = true
+        settingsButton.tintColor = UIColor.rgb(red: 220, green: 220, blue: 220)
+        
         
         let cancelTripButtonDimension: CGFloat = 45
         mapView.addSubview(cancelTripBackground)
@@ -4044,7 +4111,7 @@ extension HomeVC: MKMapViewDelegate {
         if annotationView == nil {
             
            //imageView.frame = CGRect(x: 40, y: 9, width: 11, height: 14 ) // lightening bolt
-            hotImageView.frame = CGRect(x: -4, y: -4, width: 15, height: 15)   // green dot
+            hotImageView.frame = CGRect(x: -2, y: -4, width: 15, height: 15)   // green dot
             
           annotationView = CKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
           if case let annotationView as CKAnnotationView = annotationView {
@@ -4052,7 +4119,7 @@ extension HomeVC: MKMapViewDelegate {
             //annotationView.canShowCallout = true
             
             
-            annotationView.label = UILabel(frame: CGRect(x: 6, y: 7.5, width: 34.0, height: 18.0))
+            annotationView.label = UILabel(frame: CGRect(x: 7, y: 7.5, width: 34.0, height: 18.0))
         
             if let label = annotationView.label {
                 label.font = UIFont(name: "Avenir-Black", size: 13)
@@ -4123,7 +4190,7 @@ extension HomeVC: MKMapViewDelegate {
                     let pinImage = UIImage(named: "roundedRecMarkerHeart")
                     let size = CGSize(width: 62, height: 32)
                     UIGraphicsBeginImageContextWithOptions(size, false, 10)
-                    pinImage!.draw(in: CGRect(x: -2, y: 0, width: size.width, height: size.height))
+                    pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
                     let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     UIGraphicsEndImageContext()
                     
@@ -4140,7 +4207,7 @@ extension HomeVC: MKMapViewDelegate {
                             let pinImage = UIImage(named: "roundedRecMarkerHeart")
                             let size = CGSize(width: 62, height: 32)
                             UIGraphicsBeginImageContextWithOptions(size, false, 10)
-                            pinImage!.draw(in: CGRect(x: -2, y: 0, width: size.width, height: size.height))
+                            pinImage!.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
                             let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                             UIGraphicsEndImageContext()
                     
@@ -4154,11 +4221,13 @@ extension HomeVC: MKMapViewDelegate {
                     let pinImage = UIImage(named: "roundedRecMarkerShort")
                     let size = CGSize(width: 55, height: 30)
                     UIGraphicsBeginImageContextWithOptions(size, false, 10)
-                    pinImage!.draw(in: CGRect(x: -8, y: 0, width: size.width, height: size.height))
+                    pinImage!.draw(in: CGRect(x: -7, y: 0, width: size.width, height: size.height))
                     let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                     UIGraphicsEndImageContext()
             
                     annotationView.image = resizedImage
+                    
+                    annotationView.label = UILabel(frame: CGRect(x: 13, y: 7.5, width: 34.0, height: 18.0))
                     
     
                 case 750 ... 1000:
@@ -4168,12 +4237,12 @@ extension HomeVC: MKMapViewDelegate {
                                     let pinImage = UIImage(named: "roundedRecMarkerShort")
                                     let size = CGSize(width: 55, height: 30)
                                     UIGraphicsBeginImageContextWithOptions(size, false, 10)
-                                    pinImage!.draw(in: CGRect(x: -8, y: 0, width: size.width, height: size.height))
+                                    pinImage!.draw(in: CGRect(x: -7, y: 0, width: size.width, height: size.height))
                                     let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
                                     UIGraphicsEndImageContext()
                             
                                     annotationView.image = resizedImage
-      
+                    annotationView.label = UILabel(frame: CGRect(x: 13, y: 7.5, width: 34.0, height: 18.0))
                     hotImageView.image = UIImage(named: "greenDot")
                 
                     

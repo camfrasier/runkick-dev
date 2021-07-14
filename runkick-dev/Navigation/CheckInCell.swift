@@ -129,14 +129,16 @@ class CheckInCell: UICollectionViewCell {
         label.font = UIFont(name: "HelveticaNeue", size: 13)
         label.textColor = UIColor.rgb(red: 140, green: 140, blue: 140)
         label.textAlignment = .left
-        label.text = "180+ other people want to do this"
+        label.text = "180+ other people want to try this"
         return label
     } ()
     
     let statisticsBlock: UIView = {
         let view = UIView()
-        //view.backgroundColor = UIColor.rgb(red: 248, green: 248, blue: 248)
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        view.backgroundColor = UIColor.white
+        view.layer.cornerRadius = 4
+        view.alpha = 0.80
         return view
     }()
     
@@ -183,7 +185,8 @@ class CheckInCell: UICollectionViewCell {
     
     let lineViewClear: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.55)
+        //view.backgroundColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.25)
+        view.backgroundColor = UIColor.walkzillaYellow()
         return view
     }()
     
@@ -681,7 +684,7 @@ class CheckInCell: UICollectionViewCell {
         label.textAlignment = .left
         //label.text = "Sponsored partnership with #Cava #TheRiggsby #BanditTaco"
    
-        let attributedText = NSMutableAttributedString(string: "Sponsored partnership with", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+        let attributedText = NSMutableAttributedString(string: "Congratulations on completing your trip! Enjoy your meals from our partners at", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
         attributedText.append(NSAttributedString(string: " #Cava #TheRiggsby #BanditTaco", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.foregroundColor: UIColor.rgb(red: 50, green: 80, blue: 150)]))
         label.attributedText = attributedText
         label.numberOfLines = 2
@@ -1179,10 +1182,9 @@ class CheckInCell: UICollectionViewCell {
     
     let postTimeLabel: UILabel = {
         let label = UILabel()
-        //label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
-        label.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
-        //label.textColor = UIColor.rgb(red: 80, green: 80, blue: 80)
-        label.textColor = UIColor.rgb(red: 180, green: 180, blue: 180)
+        label.font = UIFont(name: "ArialRoundedMTBold", size: 13)
+        //label.font = UIFont(name: "AvenirNextCondensed-Bold", size: 14)
+        label.textColor = UIColor.rgb(red: 120, green: 120, blue: 120)
         label.text = "2d"
         return label
     } ()
@@ -1932,8 +1934,8 @@ class CheckInCell: UICollectionViewCell {
         tripCompletedBackground.addSubview(tripCompletedLabel)
         tripCompletedLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        tripCompletedBackground.addSubview(checkMarkButton)
-        checkMarkButton.translatesAutoresizingMaskIntoConstraints = false
+        //tripCompletedBackground.addSubview(checkMarkButton)
+        //checkMarkButton.translatesAutoresizingMaskIntoConstraints = false
         
         
         mapImageView.addSubview(statisticsBlock)
@@ -1990,10 +1992,6 @@ class CheckInCell: UICollectionViewCell {
         
         addSubview(userCommentBlock)
         userCommentBlock.translatesAutoresizingMaskIntoConstraints = false
-        
-        //addSubview(separatorLowerView)
-        //separatorLowerView.translatesAutoresizingMaskIntoConstraints = false
-        
         
         userCommentBlock.addSubview(viewAddComment)
         viewAddComment.translatesAutoresizingMaskIntoConstraints = false
@@ -2133,9 +2131,9 @@ class CheckInCell: UICollectionViewCell {
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[profileImage(30)]-8-[location]-4-[marker(8)]", options: [], metrics: nil, views: ["profileImage": profileImageView, "marker": locationButton, "location": locationLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-0-[location]", options: [], metrics: nil, views: ["username": usernameButton, "location": locationLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-2-[location]", options: [], metrics: nil, views: ["username": usernameButton, "location": locationLabel]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-0-[marker(12)]", options: [], metrics: nil, views: ["username": usernameButton, "marker": locationButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[username]-2-[marker(12)]", options: [], metrics: nil, views: ["username": usernameButton, "marker": locationButton]))
         
         
 
@@ -2157,12 +2155,15 @@ class CheckInCell: UICollectionViewCell {
         
         
         // check in background
+        
+        imageTranslucentBar.anchor(top: mapBackgroundView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 45)
+        imageTranslucentBar.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
     
-        checkInBackground.anchor(top: mapBackgroundView.bottomAnchor, left: leftAnchor, bottom: lineViewTop.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        checkInBackground.anchor(top: imageTranslucentBar.bottomAnchor, left: leftAnchor, bottom: lineViewClear.topAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        lineViewClear.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: checkInBackground.bottomAnchor, right: checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 42)
+        lineViewClear.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: lineViewTop.topAnchor, right: checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 42)
         
-        lineViewTop.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: imageTranslucentBar.topAnchor, right: checkInBackground.rightAnchor, paddingTop: 32, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 62)
+        lineViewTop.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: bottomAnchor, right: checkInBackground.rightAnchor, paddingTop: 32, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 62)
         lineViewTop.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         //lineView.anchor(top: nil, left: checkInBackground.leftAnchor, bottom: imageTranslucentBar.topAnchor, right: checkInBackground.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 6)
@@ -2182,7 +2183,7 @@ class CheckInCell: UICollectionViewCell {
         // map background
         
         
-        mapBackgroundView.anchor(top: userCommentBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 130)
+        mapBackgroundView.anchor(top: userCommentBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 160)
         mapBackgroundView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         mapBackgroundView.layer.borderWidth = 0.50
         //mapBackgroundView.layer.borderColor = UIColor.walkzillaYellow().cgColor
@@ -2212,20 +2213,19 @@ class CheckInCell: UICollectionViewCell {
         
         mapImageView.anchor(top: mapBackgroundView.topAnchor, left: mapBackgroundView.leftAnchor, bottom: mapBackgroundView.bottomAnchor, right: mapBackgroundView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        statisticsBlock.anchor(top: nil, left: mapImageView.leftAnchor, bottom: mapImageView.bottomAnchor, right: mapImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 30)
-        statisticsBlock.backgroundColor = UIColor.white
-        statisticsBlock.alpha = 0.75
+        statisticsBlock.anchor(top: nil, left: mapImageView.leftAnchor, bottom: mapImageView.bottomAnchor, right: mapImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
+
         
-        numOfStopsBackground.anchor(top: statisticsBlock.topAnchor, left: statisticsBlock.leftAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: frame.width / 4, height: 0)
+        numOfStopsBackground.anchor(top: statisticsBlock.topAnchor, left: statisticsBlock.leftAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: (frame.width / 4) - 8, height: 0)
         //numOfStopsBackground.layer.cornerRadius = 3
         
-        durationBackground.anchor(top: statisticsBlock.topAnchor, left: numOfStopsBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: frame.width / 4, height: 0)
+        durationBackground.anchor(top: statisticsBlock.topAnchor, left: numOfStopsBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: (frame.width / 4) - 8, height: 0)
         //durationBackground.layer.cornerRadius = 3
         
-        distanceBackground.anchor(top: statisticsBlock.topAnchor, left: durationBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: frame.width / 4, height: 0)
+        distanceBackground.anchor(top: statisticsBlock.topAnchor, left: durationBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: (frame.width / 4) - 8, height: 0)
         //distanceBackground.layer.cornerRadius = 3
         
-        stepsBackground.anchor(top: statisticsBlock.topAnchor, left: distanceBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: frame.width / 4, height: 0)
+        stepsBackground.anchor(top: statisticsBlock.topAnchor, left: distanceBackground.rightAnchor, bottom: statisticsBlock.bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: (frame.width / 4) - 8, height: 0)
         //stepsBackground.layer.cornerRadius = 3
         
         // stop marker
@@ -2270,8 +2270,8 @@ class CheckInCell: UICollectionViewCell {
         
         
         
-        imageTranslucentBar.anchor(top: lineViewTop.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 48)
-        imageTranslucentBar.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
+        //imageTranslucentBar.anchor(top: mapBackgroundView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 48)
+        //imageTranslucentBar.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
 
         
@@ -2322,19 +2322,23 @@ class CheckInCell: UICollectionViewCell {
         userLocationBlock.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 40)
         userLocationBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
-        tripCompletedBackground.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 90, height: 36)
+        
+        tripCompletedBackground.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 80, height: 32)
         //tripCompletedBackground.backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0)
         tripCompletedBackground.backgroundColor = UIColor.walkzillaYellow()
-        tripCompletedBackground.layer.cornerRadius = 18
+        tripCompletedBackground.layer.cornerRadius = 14
         
-        tripCompletedLabel.anchor(top: nil, left: tripCompletedBackground.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 14, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        tripCompletedLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         //tripCompletedLabel.centerXAnchor.constraint(equalTo: tripCompletedBackground.centerXAnchor).isActive = true
         tripCompletedLabel.centerYAnchor.constraint(equalTo: tripCompletedBackground.centerYAnchor).isActive = true
+        tripCompletedLabel.centerXAnchor.constraint(equalTo: tripCompletedBackground.centerXAnchor).isActive = true
         
-        checkMarkButton.anchor(top: nil, left: tripCompletedLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 11, height: 9)
-        checkMarkButton.centerYAnchor.constraint(equalTo: tripCompletedBackground.centerYAnchor).isActive = true
         
-        userCommentBlock.anchor(top: userLocationBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: userLocationBlock.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
+        //checkMarkButton.anchor(top: nil, left: tripCompletedLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 11, height: 9)
+        //checkMarkButton.centerYAnchor.constraint(equalTo: tripCompletedBackground.centerYAnchor).isActive = true
+        
+        
+        userCommentBlock.anchor(top: userLocationBlock.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
         userCommentBlock.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255)
         
         viewAddComment.anchor(top: userCommentBlock.topAnchor, left: userCommentBlock.leftAnchor, bottom: nil, right: userCommentBlock.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
@@ -3057,7 +3061,8 @@ class CheckInCell: UICollectionViewCell {
                          
                     UIView.animate(withDuration: 0.75, delay: 3, usingSpringWithDamping: 0.60, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                             
-                            self.tripCompletedBackground.alpha = 1
+                            //self.tripCompletedBackground.alpha = 1
+                        self.tripCompletedBackground.alpha = 0
                              self.tripCompletedBackground.transform = CGAffineTransform(scaleX: 1, y: 1)
                              
 
